@@ -3,7 +3,7 @@ import {  toClass } from "@blockware/ui-web-utils";
 import {PanelStructure} from "../helpers/PanelStructure";
 import {OverlayComponent, OverlayContextType} from "../overlay/OverlayContext";
 import {OverlayContext} from "../overlay/OverlayContext";
-import {RenderInBody} from "../overlay/RenderInBody";
+import {RenderInBody} from "..";
 
 import "./SidePanel.less";
 

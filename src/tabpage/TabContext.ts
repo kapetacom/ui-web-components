@@ -1,6 +1,6 @@
 import React, {Context} from "react";
 
-interface TabContextData  {
+export interface TabContextData  {
     currentTabId?:string
     onTabAdded:(id:string,title:string) => void
     onTabUpdated:(id:string, title:string) => void

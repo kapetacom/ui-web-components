@@ -4,7 +4,7 @@ import {DnDDrop} from "./DnDDrop";
 import {DnDDrag} from "./DnDDrag";
 import {DraggableContext} from "./DraggableContext";
 
-interface DnDContextData extends DraggableContext<DnDDrag> {
+export interface DnDContextData extends DraggableContext<DnDDrag> {
     scrollTop: number;
     scrollLeft: number;
     onDropZoneRemoved:(dropZone: DnDDrop) => void

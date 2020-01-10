@@ -1,7 +1,6 @@
 import React, {Context} from "react";
 
-
-interface StackContextData  {
+export interface StackContextData  {
     currentStackId?:string
     onStackAdded:(id:string, title:string) => void
     onStackUpdated:(id:string, title:string) => void

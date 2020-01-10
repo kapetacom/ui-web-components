@@ -1,6 +1,6 @@
 {
     "name": "@blockware/ui-web-components",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "main": "src/index.ts",
     "description": "Provides shared ReactJS components for implementing Blockware UI",
     "keywords": [
@@ -8,15 +8,24 @@
     ],
     "license": "MIT",
     "scripts": {
-        "storybook": "start-storybook -p 9010"
+        "storybook": "start-storybook -p 9010",
+        "prepublishOnly": "npm run check",
+        "check": "npm run check:ts && npm run check:less",
+        "check:ts": "tsc --noEmit",
+        "check:less": "find ./src -name *.less -exec ./node_modules/less/bin/lessc -l {} \\;"
     },
     "eslintConfig": {
         "extends": "react-app"
     },
     "dependencies": {
-        "@blockware/ui-web-context": "0.0.4",
-        "@blockware/ui-web-types": "0.0.2",
-        "@blockware/ui-web-utils": "0.0.3",
+        "@types/lodash": "4.14.149",
+        "@types/node": "13.1.6",
+        "@types/react": "16.9.17",
+        "@types/react-dom": "16.9.4",
+        "@types/yaml": "^1.2.0",
+        "@blockware/ui-web-context": "0.0.5",
+        "@blockware/ui-web-types": "0.0.7",
+        "@blockware/ui-web-utils": "0.0.5",
         "guid-typescript": "1.0.9",
         "lodash": "4.17.15",
         "mobx": "5.9.4",
@@ -31,11 +40,6 @@
         "@storybook/addon-links": "^5.2.8",
         "@storybook/addons": "^5.0.10",
         "@storybook/react": "^5.0.10",
-        "@types/lodash": "4.14.149",
-        "@types/node": "13.1.6",
-        "@types/react": "16.9.17",
-        "@types/react-dom": "16.9.4",
-        "@types/yaml": "^1.2.0",
         "awesome-typescript-loader": "^5.2.1",
         "babel-loader": "^8.0.6",
         "babel-plugin-import": "^1.12.0",

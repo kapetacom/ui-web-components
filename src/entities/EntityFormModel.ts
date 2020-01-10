@@ -37,7 +37,7 @@ function toEditProperties(original:SchemaProperties):SchemaEntryEdit[] {
 }
 
 function fromEditProperties(original:SchemaEntryEdit[]):SchemaProperties {
-    const properties = {};
+    const properties:{[key:string]:any} = {};
 
     original.forEach((field) => {
         const copiedField:any = {...field};

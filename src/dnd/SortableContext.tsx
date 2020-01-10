@@ -9,7 +9,7 @@ export enum SwapMode {
     NONE
 }
 
-interface SortableContext extends DraggableContext<SortableItem> {
+export interface SortableContext extends DraggableContext<SortableItem> {
     container?:SortableContainer
     onSortableItemRemoved:(item: SortableItem) => void
     onSortableItemCreated:(item: SortableItem) => void

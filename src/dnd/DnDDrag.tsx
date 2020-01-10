@@ -1,5 +1,5 @@
 import React from "react";
-import DnDContext, { DnDContextType } from './DnDContext';
+import DnDContext, {DnDContextType} from './DnDContext';
 import { asHTMLElement, DOMElement } from "@blockware/ui-web-utils";
 import {Draggable} from "./Draggable";
 
