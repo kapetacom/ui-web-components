@@ -24,8 +24,7 @@
     "moduleResolution": "node",
     "rootDirs": [
       "src",
-      "stories",
-      "definitions"
+      "stories"
     ],
     "baseUrl": "src",
     "forceConsistentCasingInFileNames": true,
@@ -40,8 +39,8 @@
     "isolatedModules": true
   },
   "include": [
-    "src",
-    "src/**/*"
+    "src/**/*",
+    "stories/**/*"
   ],
   "exclude": [
     "node_modules",

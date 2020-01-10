@@ -8,7 +8,7 @@ import {
     typeName
 } from "@blockware/ui-web-types";
 
-import FormRow from "../form/FormRow";
+import {FormRow} from "..";
 
 interface IDEntry {
     id: string
@@ -48,7 +48,7 @@ function getItems(entry: any) {
     return {type: 'string'};
 }
 
-class EntityMapper extends React.Component<EntityMapperProps, EntityMapperState> {
+export class EntityMapper extends React.Component<EntityMapperProps, EntityMapperState> {
 
 
     constructor(props: EntityMapperProps) {
@@ -175,5 +175,3 @@ class EntityMapper extends React.Component<EntityMapperProps, EntityMapperState>
         );
     }
 }
-
-export EntityMapper;

@@ -10,7 +10,7 @@ interface FileBrowserDialogProps {
     service: FileSystemStore
     onSelect: (file:FileInfo) => void
     onClose: () => void
-    selectable: (file:FileInfo) => boolean
+    selectable?: (file:FileInfo) => boolean
     open?: boolean
     skipFiles:string[] //files that already are imported
 }

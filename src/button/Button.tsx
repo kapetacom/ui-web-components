@@ -34,14 +34,14 @@ interface ButtonState {
     textSize: number
     textDefinedWidth: boolean
     disabled: boolean
-    onClick: (evt: React.MouseEvent<SVGSVGElement, MouseEvent>)=>void
+    onClick?: (evt: React.MouseEvent<SVGSVGElement, MouseEvent>)=>void
 }
 
 
 interface ButtonProps {
-    onClick: (evt: React.MouseEvent<SVGSVGElement, MouseEvent>) => void
+    onClick?: (evt: React.MouseEvent<SVGSVGElement, MouseEvent>) => void
     text: string
-    style: React.CSSProperties
+    style?: React.CSSProperties
     width?: number
     height?: number
     x?: number
