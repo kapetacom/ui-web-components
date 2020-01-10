@@ -1,0 +1,114 @@
+.form-row{
+    padding: 4px 0;
+    box-sizing: border-box;
+
+    .row-label {
+        display: block;
+        font-size: 12px;
+        line-height: 24px;
+        color: #666;
+    }
+
+    .row-help, .row-error {
+        font-size: 10px;
+        line-height: 18px;
+        color: #666;
+        font-style: italic;
+    }
+
+    .row-error {
+        color: rgb(179, 17, 24);
+    }
+
+    input, select, textarea, .input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 4px;
+        line-height: 24px;
+        height: 22px;
+        border: 1px solid #BBB;
+        border-radius: 0;
+
+        &[readonly] {
+            color: #BBB;
+        }
+
+        &[disabled] {
+            background-color: #fafafa;
+        }
+
+        &.touched {
+            background-color: #fff5c9;
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 60px;
+    }
+
+    &.error {
+        input, select, textarea, .input {
+            border:1px solid rgb(179, 17, 24);
+        }
+    }
+
+    &.warning {
+        input, select, textarea, .input {
+            border:1px solid rgb(179,165,36);
+        }
+    }
+
+    &.unready {
+        .row-label {
+            color: #1d2b91;
+        }
+    }
+}
+
+.form-horizontal-rows {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    align-content: stretch;
+    justify-content: stretch;
+
+    .form-row {
+        flex: 1;
+        margin-right: 10px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}
+
+.form-section {
+    margin-top:5px;
+    padding: 10px 10px 10px 20px;
+
+    background-color: #fafafa;
+
+    h3, h4 {
+        margin: 0 0 5px 0;
+        color: #AAA;
+        font-size: 14px;
+
+    }
+
+    h4 {
+        font-size: 12px;
+    }
+
+    .form-row {
+        padding-right: 0px;
+    }
+
+    input, select, textarea, .input {
+        border: 1px solid #AAA;
+    }
+}

@@ -1,0 +1,53 @@
+@import '../../styles/values.less';
+@import '../../styles/functions.less';
+
+@side-panel-right-shadow: -5px 0 20px 0 @shadow-color;
+@side-panel-left-shadow: 5px 0 20px 0 @shadow-color;
+
+.side-panel-container {
+    .transition(all 200ms);
+    position: fixed;
+    background-color: white;
+    top: 0;
+    bottom: 0;
+    opacity: 0;
+
+    &.left {
+        .drop-shadow(@side-panel-left-shadow);
+        .transform(translateX(-100%));
+        left:0;
+    }
+
+    &.right {
+        .drop-shadow(@side-panel-right-shadow);
+        .transform(translateX(100%));
+        right: 0;
+
+        .side-panel-title {
+            flex-direction: row-reverse;
+        }
+    }
+
+    &.small {
+        width: 550px;
+    }
+
+    &.medium {
+        width: 650px;
+    }
+
+    &.large {
+        width: 850px;
+    }
+
+    &.open {
+        opacity: 1;
+
+        &.right,
+        &.left {
+            .transform(translateX(0));
+        }
+    }
+
+
+}

@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "outDir": "build/lib",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "es5",
+      "es6",
+      "es7",
+      "es2017"
+    ],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "module": "esnext",
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "allowJs": true,
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "rootDirs": [
+      "src",
+      "stories",
+      "definitions"
+    ],
+    "baseUrl": "src",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": false,
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "src",
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts"
+  ]
+}

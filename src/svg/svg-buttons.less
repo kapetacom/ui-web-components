@@ -1,0 +1,75 @@
+@import "../../styles/values";
+@import "../../styles/functions";
+
+.svg-button {
+    .transition(opacity 500ms);
+    fill: none;
+    cursor: pointer;
+
+
+    .svg-button-background,
+    .svg-button-foreground {
+        .transition();
+    }
+
+    .svg-button-background {
+        fill: @btn-bg;
+        stroke-width: 1;
+        stroke: @btn-bg;
+    }
+
+    .svg-button-foreground {
+        stroke: @btn-fg;
+    }
+
+    &.delete, &.add {
+
+        .svg-button-foreground {
+            stroke-width:2;
+            stroke-linecap:round;
+        }
+    }
+
+    &.edit, &.inspect {
+        .svg-button-foreground {
+            fill: @btn-fg;
+            stroke: @btn-fg;
+        }
+    }
+
+    &.edit, &.add  {
+
+        .svg-button-background {
+            fill: @btn-friendly-bg;
+            stroke: @btn-friendly-bg;
+        }
+    }
+
+    &:hover {
+        .svg-button-background {
+            fill: @gray-xlight;
+            stroke:@btn-bg;
+        }
+
+        .svg-button-foreground {
+            stroke: @btn-bg;
+        }
+
+        &.edit {
+            .svg-button-foreground {
+                fill: @btn-bg;
+                stroke: none;
+            }
+        }
+
+        &.inspect {
+            .svg-button-foreground {
+                fill: @btn-bg;
+                stroke: none;
+            }
+        }
+
+
+    }
+
+}

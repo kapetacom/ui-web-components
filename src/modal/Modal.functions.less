@@ -1,0 +1,96 @@
+
+.sub-horizontal(@size: "small") {
+    &.left-h {
+        left: 10vw;
+        .sub-vertical(@size);
+    }
+
+    &.center-h {
+        left:100px;
+        & when (@size = "big") {
+            left: 10vw;
+        }
+        & when (@size = "medium") {
+            left: 30vw;
+        }
+        & when (@size = "small") {
+            left: 40vw;
+        }
+        & when (@size = "full") {
+            left: 2vw;
+        }
+        .sub-vertical(@size);
+    }
+
+    &.right-h {
+        right: 10vw;
+        .sub-vertical(@size);
+    }
+}
+
+.sub-vertical(@size: "small") {
+
+    & when (@size ="small") {
+        &.center-v {
+            bottom: 0;
+            top: 0;
+            margin: auto;
+        }
+
+        &.top-v {
+            top: 10%;
+        }
+
+        &.bottom-v {
+            bottom: 10%;
+        }
+    }
+
+    & when (@size ="medium") {
+        &.center-v {
+            bottom: 0;
+            top: 0;
+            margin: auto;
+        }
+
+        &.top-v {
+            top: 10%;
+        }
+
+        &.bottom-v {
+            bottom: 10%;
+        }
+    }
+
+    & when (@size ="big") {
+        &.center-v {
+            bottom: 0;
+            top: 0;
+            margin: auto;
+        }
+
+        &.top-v {
+            top: 5%;
+        }
+
+        &.bottom-v {
+            bottom: 5%;
+        }
+    }
+
+    & when (@size ="full") {
+        &.center-v {
+            bottom: 0;
+            top: 0;
+            margin: auto;
+        }
+
+        &.top-v {
+            top: 2%;
+        }
+
+        &.bottom-v {
+            bottom: 2%;
+        }
+    }
+}

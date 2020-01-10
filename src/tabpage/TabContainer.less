@@ -1,0 +1,42 @@
+@import '../../styles/values.less';
+@import '../../styles/functions.less';
+
+.tab-container {
+    .tab-buttons, .tab-buttons > li {
+        list-style: none;
+        padding:0;
+        margin:0;
+    }
+
+    .tab-buttons > li {
+        display: inline-block;
+        button {
+            .border-radius(0);
+            border-color: @gray-light;
+            font-size: 14px;
+            line-height: 26px;
+            border-bottom:0;
+            border-right-width: 0;
+            padding:0 15px;
+
+        }
+
+        &:last-child {
+            button {
+                border-right-width: 1px;
+            }
+        }
+
+
+        &.current {
+            button {
+                background-color: @gray-light;
+            }
+        }
+
+    }
+
+    .tab-pages {
+        border:1px solid @gray-light;
+    }
+}

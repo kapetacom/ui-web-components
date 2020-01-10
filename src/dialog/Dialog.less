@@ -1,0 +1,66 @@
+@import "../../styles/values.less";
+@import "../../styles/functions.less";
+@import "../../styles/animation.less";
+
+.dialog-container {
+    .transition(opacity 200ms);
+    position: fixed;
+    filter: url("#dialog-shadow");
+    animation: scale-down-center 400ms  cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    opacity: 0;
+    pointer-events: none;
+
+    .dialog-shape {
+        overflow: visible;
+        fill: #f3f3f3; //@bw-menu-dark;
+
+        .dialog-title {
+            .drop-shadow();
+            font-size: 20px;
+            font-weight: 600;
+            fill: @bw-menu-dark;
+            text-transform: capitalize;
+        }
+    }
+
+    &.open {
+        pointer-events: all;
+        opacity: 1;
+        animation: scale-up-center 400ms  cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    }
+
+    ~.dialog-holder {
+        .transition(all 200ms);
+      
+        &.dialog-opening {
+            opacity: 1;
+            animation: scale-up-center 400ms  cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        }
+
+        filter: url("#dialog-shadow");
+
+        .dialog-shape {
+            fill: #f3f3f3; //@bw-menu-dark;
+            overflow: visible;
+
+            .dialog-title {
+                .drop-shadow();
+                font-size: 20px;
+                font-weight: 600;
+                fill: @bw-menu-dark;
+                text-transform: capitalize;
+            }
+
+
+        }
+        &.dialog-closing {
+            animation: scale-down-center 400ms  cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+            opacity: 0;
+            .dialog-shape{
+                display: none;
+            }
+
+        }
+        
+    }
+}

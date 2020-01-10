@@ -1,0 +1,65 @@
+@import '../../styles/values.less';
+@import '../../styles/functions.less';
+
+.stack-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    min-height: 350px;
+
+    .stack-breadcrumbs {
+        line-height: 0;
+
+        .mouse-trap {
+            fill: transparent;
+            stroke: transparent;
+        }
+
+        .background {
+            fill: white;
+            stroke: @gray;
+            stroke-width: .5px;
+        }
+
+        .title {
+            text-anchor: end;
+            dominant-baseline: central;
+            transform: rotate(-90deg);
+            letter-spacing: 2px;
+            fill: @gray-xdark;
+        }
+
+        .stack-breadcrumb {
+
+
+            &.current {
+                .background {
+                    fill: @gray-xlight;
+                }
+            }
+
+            &:not(.current) {
+                cursor: pointer;
+
+                &:hover {
+                    .background {
+                        fill: @blue-xxlight;
+                    }
+
+                    .title {
+                        fill: white;
+                    }
+                }
+            }
+        }
+
+    }
+
+    .stack-pages {
+        height: 100%;
+        overflow: auto;
+        margin-left: 10px;
+        border-bottom:1px solid @gray;
+    }
+}

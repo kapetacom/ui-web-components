@@ -1,0 +1,168 @@
+@import "../../styles/values";
+@import "../../styles/functions";
+
+.entity-form {
+    .no-select();
+
+    .field-row {
+        display: flex;
+        flex-wrap: nowrap;
+        flex-flow: row;
+        line-height: 24px;
+        margin-bottom: 5px;
+
+        > .mover,
+        > .remover,
+        > .opener {
+            width: 24px;
+            text-align: center;
+            line-height: 24px;
+            i {
+                font-weight: 100;
+                cursor: pointer;
+                color: @gray;
+            }
+
+            &:hover {
+                i {
+                    color: @gray-dark;
+                }
+            }
+        }
+
+        > .mover {
+            i {
+                cursor: ns-resize;
+            }
+        }
+
+        > .opener {
+            i {
+                .transition();
+                font-size: 14px;
+
+                &.open {
+                    .transform(rotate(90deg));
+                }
+            }
+        }
+
+        > .remover {
+            i {
+                color: @red-light;
+            }
+
+            &:hover {
+                i {
+                    color: @red;
+                }
+            }
+        }
+
+        > .field-name {
+            flex: 1;
+            padding:0 5px;
+            font-size: 12px;
+            input {
+                outline: none;
+                box-sizing: border-box;
+                width: 100%;
+                display: block;
+                border:0;
+                padding:0;
+                border-bottom: 1px solid @gray-light;
+                line-height: 21px;
+                font-size: inherit;
+            }
+
+            &.error {
+                input {
+                    border-bottom: 1px solid @red-light;
+                    color: @red;
+                }
+            }
+        }
+
+        > .field-type {
+            width: 100px;
+
+            select {
+                height: 18px;
+                margin-top: 4px;
+                width:75px;
+            }
+        }
+
+        &.header {
+            font-weight: bold;
+            font-size: 12px;
+            border-bottom: 1px solid @gray;
+        }
+
+        &.new {
+            .transition();
+            color: @blue-light;
+            width: 70px;
+            cursor: pointer;
+            line-height: 24px;
+
+            .field-name {
+                font-weight: 200;
+                padding: 0;
+                flex: 0;
+                min-width: 60px;
+            }
+
+            .adder {
+                text-align: center;
+                i {
+                    width: 24px;
+                    font-weight: 100;
+                }
+            }
+
+            &:hover {
+                color: @blue-dark;
+            }
+        }
+
+        &.dragging-source {
+            & > * {
+                opacity: 0;
+            }
+
+            background-color: @gray-light;
+
+            + .field-list-container {
+                display: none;
+                + .field-row.new {
+                    display: none;
+                }
+            }
+        }
+
+        &.dragging-handle {
+
+            border: 1px solid @gray-light;
+            background-color: rgba(255,255,255,.6);
+
+            input {
+                background-color: transparent;
+                border-bottom: 0;
+            }
+
+            & > .mover {
+                i {
+                    color: @gray-dark;
+                }
+            }
+
+            & > .field-type,
+            & > .remover,
+            & > .opener {
+                opacity: 0;
+            }
+        }
+
+    }
+}

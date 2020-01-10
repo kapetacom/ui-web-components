@@ -1,0 +1,20 @@
+@import '../../styles/values.less';
+@import '../../styles/functions.less';
+
+.overlay-container {
+    .transition(opacity 200ms);
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    opacity: 0;
+    pointer-events: none;
+
+    &.visible {
+        opacity: 1;
+        pointer-events: all;
+    }
+}

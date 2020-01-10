@@ -1,0 +1,72 @@
+@import "./values.less";
+@import "./functions.less";
+
+@keyframes pulse {
+    0% {
+        background-color: lighten(@bw-planner-background, 80);
+    }
+
+    10% {
+        background-color: lighten(@bw-planner-background, 70);
+    }
+
+    20% {
+        background-color: lighten(@bw-planner-background, 60);
+    }
+
+    30% {
+        background-color: lighten(@bw-planner-background, 50);
+    }
+
+    40% {
+        background-color: lighten(@bw-planner-background, 40);
+    }
+
+    50% {
+        background-color: lighten(@bw-planner-background, 30);
+    }
+
+    60% {
+        background-color: lighten(@bw-planner-background, 20);
+    }
+
+    70% {
+        background-color: lighten(@bw-planner-background, 30);
+    }
+
+    80% {
+        background-color: lighten(@bw-planner-background, 50);
+    }
+
+    90% {
+        background-color: lighten(@bw-planner-background, 70);
+    }
+
+    100% {
+        background-color: lighten(@bw-planner-background, 100);
+    }
+}
+
+@keyframes scale-down-center {
+    0% {
+        .transform(scale(1));
+        transform-origin: center;
+    }
+
+    100% {
+        .transform(scale(0.8));
+        transform-origin: center;
+    }
+}
+
+@keyframes scale-up-center {
+    100% {
+        .transform(scale(1));
+        transform-origin: center;
+    }
+    
+    0% {
+        .transform(scale(0.8));
+        transform-origin: center;
+    }
+}

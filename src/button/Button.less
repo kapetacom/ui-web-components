@@ -1,0 +1,134 @@
+@import "../../styles/values.less";
+
+.blockware-button {
+    overflow: visible;
+    text-anchor: middle;
+    dominant-baseline: central;
+    user-select: none;
+    cursor: pointer;
+
+    &.regular-button {
+        fill: @btn-disabled-path;
+
+        text {
+            fill: @btn-regular-text;
+        }
+
+        &:hover {
+            path {
+                fill: @btn-regular-hover-bg;
+            }
+
+            text {
+                fill: @btn-text-w;
+            }
+        }
+
+        &:active {
+            path {
+                fill: @btn-regular-active-bg;
+            }
+
+            text {
+                fill: @btn-text-w;
+            }
+        }
+
+        &.button-disabled {
+            path {
+                fill: @btn-disabled-path;
+                stroke: @btn-disabled-dark;
+                stroke-width: 1px;
+            }
+            text{
+                fill:@btn-disabled-dark;
+            }
+        }
+    }
+
+    &.proceed-button {
+        fill: @btn-friendly-bg;
+
+        text {
+            fill: @btn-text-w;
+        }
+
+        &:active {
+            path {
+                fill: @btn-friendly-bg-active;
+            }
+
+            text {
+                fill: @btn-text-w;
+            }
+        }
+
+        &.button-disabled {
+            path {
+                fill: @btn-disabled-light;
+            }
+        }
+    }
+
+    &.cancel-button {
+        fill: @btn-cancel-bg;
+
+        text {
+            fill: @btn-text-w;
+        }
+
+        &:active {
+            path {
+                fill: @btn-cancel-bg-active;
+            }
+
+            text {
+                fill: @btn-text-w;
+            }
+        }
+        &.button-disabled {
+            path {
+                fill: @btn-disabled-light;
+            }
+            filter: none;
+        }
+    }
+
+    &.proceed-button,
+    &.cancel-button {
+        &:hover {
+            filter: url("#hover-shadow");
+        }
+
+        &:active {
+            filter: url("#active-shadow");
+
+        }
+        &.button-disabled {
+            filter: none;
+        }
+    }
+
+    &.regular-button {
+        stroke-width: 1;
+        stroke:@bw-menu-dark;
+
+        &:hover {
+            stroke: none;
+        }
+
+        &:active {
+            stroke: none;
+        }
+
+        text {
+            stroke-width: 0px;
+            stroke: none;
+        }
+       
+    }
+
+    
+
+
+}
