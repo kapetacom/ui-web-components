@@ -11,5 +11,10 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "forceConsistentCasingInFileNames": true
-    }
+    },
+    "exclude": [
+        "node_modules",
+        "stories",
+        "dist"
+    ]
 }
