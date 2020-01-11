@@ -1,6 +1,6 @@
 {
     "name": "@blockware/ui-web-components",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "description": "Provides shared ReactJS components for implementing Blockware UI",
@@ -16,7 +16,7 @@
         "storybook": "start-storybook -p 9010",
         "prepublishOnly": "npm run build",
         "build": "npm run build:types && npm run build:js && npm run build:less",
-        "build:less": "copyfiles -u 1 ./src/**/*.less dist/",
+        "build:less": "copyfiles -u 1 './src/**/*.less' dist/",
         "build:types": "tsc --emitDeclarationOnly --rootDir src --baseUrl src ",
         "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
         "check": "npm run check:ts && npm run check:less",
