@@ -1,8 +1,12 @@
 {
     "name": "@blockware/ui-web-components",
-    "version": "0.0.3",
+    "version": "0.0.5",
     "main": "src/index.ts",
     "description": "Provides shared ReactJS components for implementing Blockware UI",
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
     "keywords": [
         "blockware"
     ],
@@ -14,24 +18,23 @@
         "check:ts": "tsc --noEmit",
         "check:less": "find ./src -name *.less -exec ./node_modules/less/bin/lessc -l {} \\;"
     },
-    "eslintConfig": {
-        "extends": "react-app"
-    },
     "dependencies": {
         "@types/lodash": "4.14.149",
         "@types/node": "13.1.6",
         "@types/react": "16.9.17",
         "@types/react-dom": "16.9.4",
         "@types/yaml": "^1.2.0",
-        "@blockware/ui-web-context": "0.0.5",
-        "@blockware/ui-web-types": "0.0.7",
-        "@blockware/ui-web-utils": "0.0.5",
-        "guid-typescript": "1.0.9",
-        "lodash": "4.17.15",
-        "mobx": "5.9.4",
-        "mobx-react": "5.4.4",
-        "react": "16.8.6",
-        "yaml": "1.6.0"
+        "@blockware/ui-web-context": "^0.0.7",
+        "@blockware/ui-web-types": "^0.0.8",
+        "@blockware/ui-web-utils": "^0.0.6"
+    },
+    "peerDependencies": {
+        "guid-typescript": "^1.0.9",
+        "lodash": "^4.17.15",
+        "mobx": "^5.9.4",
+        "mobx-react": "^5.4.4",
+        "react": "^16.8.6",
+        "yaml": "^1.6.0"
     },
     "devDependencies": {
         "@sambego/storybook-state": "^1.3.6",
@@ -45,12 +48,19 @@
         "babel-plugin-import": "^1.12.0",
         "babel-plugin-transform-class-properties": "^6.24.1",
         "css-loader": "^3.2.0",
+        "guid-typescript": "^1.0.9",
         "less": "^3.9.0",
         "less-loader": "^5.0.0",
+        "lodash": "^4.17.15",
+        "mobx": "^5.9.4",
+        "mobx-react": "^5.4.4",
+        "react": "^16.8.6",
         "react-docgen-typescript-loader": "^3.1.0",
         "react-scripts": "^3.3.0",
+        "socket.io-client": "^2.3.0",
         "style-loader": "^1.0.0",
         "typescript": "^3.4.5",
+        "yaml": "^1.6.0",
         "yaml-loader": "^0.5.0"
     }
 }
