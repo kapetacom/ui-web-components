@@ -1,6 +1,6 @@
 {
     "name": "@blockware/ui-web-components",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "description": "Provides shared ReactJS components for implementing Blockware UI",
@@ -28,12 +28,12 @@
         "@types/node": "13.1.6",
         "@types/react": "16.9.17",
         "@types/react-dom": "16.9.4",
-        "@types/yaml": "^1.2.0",
-        "@blockware/ui-web-context": "^0.0.7",
-        "@blockware/ui-web-types": "^0.0.8",
-        "@blockware/ui-web-utils": "^0.0.6"
+        "@types/yaml": "^1.2.0"
     },
     "peerDependencies": {
+        "@blockware/ui-web-context": "^0.0.10",
+        "@blockware/ui-web-types": "^0.0.9",
+        "@blockware/ui-web-utils": "^0.0.6",
         "guid-typescript": "^1.0.9",
         "lodash": "^4.17.15",
         "mobx": "^5.9.4",
@@ -41,6 +41,9 @@
         "react": "^16.8.6"
     },
     "devDependencies": {
+        "@blockware/ui-web-context": "^0.0.10",
+        "@blockware/ui-web-types": "^0.0.9",
+        "@blockware/ui-web-utils": "^0.0.6",
         "@babel/cli": "^7.7.7",
         "@sambego/storybook-state": "^1.3.6",
         "@storybook/addon-actions": "^5.2.8",
