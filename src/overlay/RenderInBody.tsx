@@ -13,10 +13,12 @@ export class RenderInBody extends React.Component<RenderInBodyProps> {
     context!: React.ContextType<OverlayContextType>;
 
     render() {
+        const destinationContainer = this.context.container?this.context.container:document.body
+
         return ReactDOM.createPortal((
             <div className={this.props.className}>
                 {this.props.children}
             </div>
-        ), document.body);
+        ), destinationContainer);
     }
 }
