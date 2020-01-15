@@ -16,7 +16,7 @@ interface OverlayContainerState {
 }
 
 @observer
-export default class OverlayContainer extends React.Component<OverlayContainerProps,OverlayContainerState> {
+export class OverlayContainer extends React.Component<OverlayContainerProps,OverlayContainerState> {
 
     private modalContainer :HTMLElement|null = null;
 
