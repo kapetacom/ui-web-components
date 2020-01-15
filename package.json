@@ -13,7 +13,7 @@
     ],
     "license": "MIT",
     "scripts": {
-        "storybook": "start-storybook -p 9010",
+        "storybook": "start-storybook",
         "prepublishOnly": "npm run build",
         "build": "npm run build:types && npm run build:js && npm run build:less",
         "build:less": "copyfiles -u 1 './src/**/*.less' dist/",
@@ -41,16 +41,16 @@
         "react": "^16.8.6"
     },
     "devDependencies": {
+        "@babel/cli": "^7.7.7",
         "@blockware/ui-web-context": "^0.0.10",
         "@blockware/ui-web-types": "^0.0.9",
         "@blockware/ui-web-utils": "^0.0.6",
-        "@babel/cli": "^7.7.7",
         "@sambego/storybook-state": "^1.3.6",
         "@storybook/addon-actions": "^5.2.8",
         "@storybook/addon-info": "^5.0.11",
         "@storybook/addon-links": "^5.2.8",
         "@storybook/addons": "^5.0.10",
-        "@storybook/react": "^5.0.10",
+        "@storybook/react": "^5.3.3",
         "awesome-typescript-loader": "^5.2.1",
         "babel-loader": "^8.0.6",
         "babel-plugin-import": "^1.12.0",

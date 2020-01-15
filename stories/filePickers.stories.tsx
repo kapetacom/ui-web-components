@@ -1,36 +1,44 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import {FilePicker, SchemaKindImporter, FileBrowser, FileBrowserDialog} from "../src";
-import {FileSystemService} from '@blockware/ui-web-context';
+import {FileSystemStore} from '@blockware/ui-web-context';
 
 function createFolderList(path:string) {
     return [
         {
-            path: path + 'first-folder',
+            path: path + '/first-folder',
             folder: true
         },
         {
-            path: path + 'second-folder',
+            path: path + '/second-folder',
             folder: true
         },
         {
-            path: path + 'a-yml-file.yml',
+            path: path + '/a-yml-file.yml',
             folder: false
         },
         {
-            path: path + 'a-json-file.json',
+            path: path + '/a-json-file.json',
             folder: false
         },
         {
-            path: path + 'my-image.png',
+            path: path + '/my-image.png',
             folder: false
         },
         {
-            path: path + 'my-document.doc',
+            path: path + '/my-document.doc',
             folder: false
         }
     ];
 }
+
+const mockFileStore:FileSystemStore = {
+    createFolder: (path, folderName) => Promise.resolve(true),
+    getHomeFolder: () => { return Promise.resolve('/home') },
+    listFilesInFolder: (path:string) => {
+        return Promise.resolve(createFolderList(path))
+    }
+};
 
 
 storiesOf('File UI', module)
@@ -47,7 +55,8 @@ storiesOf('File UI', module)
     ))
     .add("File Browser", () => (
         <div style={{ 'padding': '25px', 'width': '350px', height: '350px' }}>
-            <FileBrowser service={FileSystemService}
+            <FileBrowser
+                service={mockFileStore}
                 skipFiles={[]}
                 selectable={(file) => file.folder || file.path.endsWith('.yml')}
                 onSelect={(file) => console.log('file selection changed', file)} />
@@ -56,9 +65,9 @@ storiesOf('File UI', module)
     .add("File Browser Modal", () => (
         <div style={{ 'padding': '25px', 'width': '350px', height: '350px' }}>
             <FileBrowserDialog
-                open={true}
+                ref={(dialog) => dialog && dialog.open ? dialog.open() : null}
                 skipFiles={[]}
-                service={FileSystemService}
+                service={mockFileStore}
                 onClose={() => { }}
                 onSelect={(file) => console.log('file selection changed', file)} />
         </div>
