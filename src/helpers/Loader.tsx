@@ -11,7 +11,7 @@ interface LoaderState {
     content?:JSX.Element
 }
 
-export function Loader(props:LoaderProps) {
+export const Loader = (props:LoaderProps) => {
 
     const initialState:LoaderState = {
         loading: true,

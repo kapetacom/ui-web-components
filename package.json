@@ -15,6 +15,7 @@
     "scripts": {
         "storybook": "start-storybook",
         "prepublishOnly": "npm run build",
+        "start": "nodemon -e js,jsx,less,ts,tsx,json --ignore dist/ --ignore node_modules/ --exec 'npm run build'",
         "build": "npm run build:types && npm run build:js && npm run build:less",
         "build:less": "copyfiles -u 1 './src/**/*.less' dist/",
         "build:types": "tsc --emitDeclarationOnly --rootDir src --baseUrl src ",
@@ -38,7 +39,7 @@
         "lodash": "^4.17.15",
         "mobx": "^5.9.4",
         "mobx-react": "^5.4.4",
-        "react": "^16.8.6"
+        "react": "^16.12.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.7.7",
@@ -63,7 +64,6 @@
         "lodash": "^4.17.15",
         "mobx": "^5.9.4",
         "mobx-react": "^5.4.4",
-        "react": "^16.8.6",
         "react-docgen-typescript-loader": "^3.1.0",
         "react-scripts": "^3.3.0",
         "socket.io-client": "^2.3.0",

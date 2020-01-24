@@ -9,12 +9,13 @@ interface SVGTextProps {
 }
 
 export function SVGText(props: SVGTextProps) {
+    
     const text = useRef<SVGTextElement>(null);
-
+    
     const [state,setState] = useState({
         text:props.value
     });
-
+    
     const overflowPostfix = '...';
 
     useEffect(() => {
