@@ -1,0 +1,127 @@
+@import "../../styles/values";
+@import "../../styles/functions";
+
+.entity-list {
+    width: calc(100% - 60px);
+    height: calc(100% - 100px);
+    margin: 50px 30px 50px 30px;
+    position: relative;
+
+    .entities-items {
+        max-height: 100%;
+        overflow: auto;
+        border-bottom:1px solid @gray;
+    }
+
+    .add-entity-box {
+        position: relative;
+        background: @cyan-dark;
+        border: 1px solid @cyan-dark;
+        height: 30px;
+        
+        .add-entity-text {
+            position: relative;
+            top: 15%;
+            left: 5%;
+            font-weight: 600;
+            font-size: 14px;
+            color: @btn-text-w;
+        }
+    }
+    
+    .entity-row {        
+        position: relative;
+        background: @btn-text-w;
+        border: 1px solid @gray;
+        height: 50px;
+        padding-left: 5%;
+        padding-right: 10%;
+        
+
+        &:hover {
+            .drop-shadow(0px 1px 15px #00000050);          
+            z-index: 2;
+        }
+        
+        .entity-name {
+            width: 150px;
+            position: relative;
+            top: 10px;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 15px;
+            color: @gray-xdark;            
+        }
+
+        .entity-status {
+            width: 100px;
+            position: relative;
+            bottom: -10px;
+            font-size: 14px;
+            font-weight: normal;
+            
+            &.status-green {
+                color: @green-light;
+            }
+
+            &.status-gray {
+                color: @gray-dark;
+            }
+        }
+
+        >.entity-icons {
+            width: 70px;
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            left: 80%;
+            bottom: 22.5px;
+            color: @btn-text-w;
+                        
+            .edit-icon {
+                display: flex ;
+                align-items: center;
+                justify-content:center;
+                background-color: @cyan-dark;
+                margin-right: 10px;
+                width: 25px;
+                height: 25px;
+                .border-radius(3px);
+                
+                &:hover {
+                    .drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.12));
+                    .drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.24));
+                }
+
+                &:active {
+                    background-color: lighten(@cyan-dark, 10%);
+                    .drop-shadow(0px 0px 6px rgba(0, 0, 0, 0.14));
+                    .drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.12));
+                }
+            }
+
+            .delete-icon {
+                display: flex ;
+                align-items: center;
+                justify-content:center;
+                width: 25px;
+                height: 25px;
+                .border-radius(3px);
+                background-color: @bw-orange;
+                
+                &:hover {
+                    .drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.12));
+                    .drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.24));
+                }
+
+                &:active {
+                    background-color: lighten(@bw-orange, 10%);
+                    .drop-shadow(0px 0px 6px rgba(0, 0, 0, 0.14));
+                    .drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.12));
+                }
+            }
+            
+        }
+    }
+
+}

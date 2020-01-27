@@ -4,7 +4,8 @@ import { storiesOf } from '@storybook/react';
 import { Store, StateDecorator, State } from "@sambego/storybook-state";
 
 import {EntityMapper, EntityPicker, EntityForm, EntityFormModel} from "../src";
-import { SchemaEntryType } from '@blockware/ui-web-types';
+import { EntityList} from "../src/entities/EntityList";
+import { SchemaEntryType, SchemaEntity } from '@blockware/ui-web-types';
 
 const EntityFrom = {
     name: {
@@ -126,4 +127,106 @@ storiesOf('Entity Forms', module)
                 </State>
             </div>
         )
-    });
+    })
+    .add("Entity List", () => {
+        const demoEntities: SchemaEntity[] = [
+            {
+                name: "Entity 1",
+                properties: {},
+                status: true
+            },
+            {
+                name: "Entity 2",
+                properties: {},
+                status: true
+            },
+            {
+                name: "Entity 3",
+                properties: {},
+                status: false
+            },
+            {
+                name: "Entity 4",
+                properties: {},
+                status: false
+            },
+            {
+                name: "Entity 5",
+                properties: {},
+                status: true
+            },
+            {
+                name: "Entity 6",
+                properties: {},
+                status: false
+            },
+            {
+                name: "Entity 1",
+                properties: {},
+                status: true
+            },
+            {
+                name: "Entity 2",
+                properties: {},
+                status: true
+            },
+            {
+                name: "Entity 3",
+                properties: {},
+                status: false
+            },
+            {
+                name: "Entity 4",
+                properties: {},
+                status: false
+            },
+            {
+                name: "Entity 5",
+                properties: {},
+                status: true
+            },
+            {
+                name: "Entity 6",
+                properties: {},
+                status: false
+            },
+            {
+                name: "Entity 1",
+                properties: {},
+                status: true
+            },
+            {
+                name: "Entity 2",
+                properties: {},
+                status: true
+            },
+            {
+                name: "Entity 3",
+                properties: {},
+                status: false
+            },
+            {
+                name: "Entity 4",
+                properties: {},
+                status: false
+            },
+            {
+                name: "Entity 5",
+                properties: {},
+                status: true
+            },
+            {
+                name: "Entity 6",
+                properties: {},
+                status: false
+            }
+        ];
+
+        return (
+            <div style={{ width: "400px", height:"600px" }}>
+                <EntityList  entities={demoEntities} />
+            </div>
+        )
+    }
+
+    );
