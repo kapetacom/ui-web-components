@@ -1,5 +1,5 @@
 import React from "react";
-import { SchemaEntity, SchemaEntryType } from "@blockware/ui-web-types";
+import { SchemaEntity } from "@blockware/ui-web-types";
 import {  toClass } from "@blockware/ui-web-utils";
 import "./EntityList.less"
 
@@ -38,20 +38,22 @@ export const EntityList = (props: EntityListProps) => {
             'status-gray': !entity.status
         });
         
-        return (        <div className={'entity-row'} key={entity.name}>
-            <div className={'entity-name'}> {entity.name}</div>
-            <div className={'entity-status '+ entityStatusClass}>
-                {entity.status ? "In use" : "Unused"}
-            </div>
-            <div className={'entity-icons'}>
-                <div className="edit-icon">
-                    <EditIcon />
+        return (
+            <div className={'entity-row'} key={entity.name}>
+                <div className={'entity-name'}> {entity.name}</div>
+                <div className={'entity-status ' + entityStatusClass}>
+                    {entity.status ? "In use" : "Unused"}
                 </div>
-                <div className="delete-icon">
-                    <DeleteIcon />
+                <div className={'entity-icons'}>
+                    <div className="edit-icon">
+                        <EditIcon />
+                    </div>
+                    <div className="delete-icon">
+                        <DeleteIcon />
+                    </div>
                 </div>
             </div>
-        </div>);
+        );
 
     });
     return (
