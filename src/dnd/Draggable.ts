@@ -19,11 +19,6 @@ interface DraggableOptions<T> {
     context?: DraggableContext<T>
 }
 
-export enum Direction{
-    left="LEFT",
-    right="RIGHT"
-}
-
 export class Draggable<T> {
 
     private options: DraggableOptions<T>;
@@ -249,7 +244,7 @@ export class Draggable<T> {
 
         this.dragging = false;
 
-        this.updateDraggingTarget(dimensions,evt.movementX>0?Direction.right:Direction.left);
+        this.updateDraggingTarget(dimensions);
 
         if (this.options.dragCopy) {
             this.draggingTarget.remove();
@@ -258,7 +253,7 @@ export class Draggable<T> {
     };
 
 
-    private updateDraggingTarget(dimensions:Dimensions,direction?:Direction) {
+    private updateDraggingTarget(dimensions:Dimensions) {
         if (!this.draggingTarget ||
             !this.elm) {
             return;

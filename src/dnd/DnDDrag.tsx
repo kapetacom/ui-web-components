@@ -39,7 +39,6 @@ export class DnDDrag extends React.Component<DnDDragProps> {
     }
 
     render() {
-        
         //TODO: FIGURE OUT HOW TO ADD PLACEHOLDER ELEMENT TO THE DOM TO BE ABLE TO PROVIDE IT TO THE Draggable.ts class
         const child = React.Children.only(this.props.children);
 
