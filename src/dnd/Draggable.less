@@ -3,16 +3,6 @@
 .dragging-handle {
     .no-select();
     position: absolute !important;
-    box-sizing: border-box !important;
     z-index: 10;
-    &.dragging-right{
-        .translate(-5deg)
-    }
-    &.dragging-left{
-        .translate(5deg)
-    }
-}
-
-.dragging-source {
-    fill: turquoise;
+    filter: url("#drop-shadow");
 }
