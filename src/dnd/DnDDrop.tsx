@@ -71,6 +71,17 @@ export class DnDDrop extends React.Component<DnDDropProps, DnDDropState> {
         this.context.onDropZoneRemoved(this);
     }
 
+    private getDimensionsForElement(dimensions:Dimensions) {
+        if (!this.elm) {
+            return dimensions;
+        }
+
+        return {...dimensions,
+            left: dimensions.left + this.elm.scrollLeft,
+            top: dimensions.top + this.elm.scrollTop
+        }
+    }
+
     onDragStart(drag: DnDDrag) {
         if (!this.elm) {
             return;
@@ -91,7 +102,7 @@ export class DnDDrop extends React.Component<DnDDropProps, DnDDropState> {
         const hitTest = isDragOverDrop(zoneRect, dragRect);
 
         if (hitTest) {
-            this.props.onDrop(drag.props.type, drag.props.value, dimensions);
+            this.props.onDrop(drag.props.type, drag.props.value, this.getDimensionsForElement(dimensions));
         }
 
         return hitTest;
@@ -108,7 +119,7 @@ export class DnDDrop extends React.Component<DnDDropProps, DnDDropState> {
 
         if (hitTest) {
             if (this.props.onDrag) {
-                this.props.onDrag(drag.props.type, drag.props.value, dimensions);
+                this.props.onDrag(drag.props.type, drag.props.value, this.getDimensionsForElement(dimensions));
             }
             this.elm.classList.add(CSS_HOVERING);
         } else {
