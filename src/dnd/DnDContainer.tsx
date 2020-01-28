@@ -9,6 +9,8 @@ import {asHTMLElement, DOMElement} from "@blockware/ui-web-utils";
 
 interface DnDContainerProps {
     children: any
+    overflowX?:boolean
+    overflowY?:boolean
 }
 
 interface DnDContainerState {
@@ -143,6 +145,8 @@ export class DnDContainer extends React.Component<DnDContainerProps, DnDContaine
                 onDragEnd: this.onDragEnd.bind(this),
                 scrollLeft: this.state.scrollLeft,
                 scrollTop: this.state.scrollTop,
+                overflowX: this.props.overflowX,
+                overflowY: this.props.overflowY
             }}>
                 {clone}
             </DnDContext.Provider>

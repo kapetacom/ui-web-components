@@ -16,7 +16,13 @@ interface DraggableOptions<T> {
     vertical?:boolean
     handle?:string
     target?:DOMElement
+    container?:Element
     context?: DraggableContext<T>
+    overflowX?:boolean
+    overflowY?:boolean
+    onDragStart?: () => void
+    onDragMove?: (dimensions: Dimensions) => boolean
+    onDragEnd?: (dimensions: Dimensions) => boolean
 }
 
 export class Draggable<T> {
@@ -41,6 +47,8 @@ export class Draggable<T> {
 
     private containerDimensions:Dimensions = {top:0,left:0,width:0,height:0};
 
+    private svgContainer?:boolean;
+
     private enabledAxis:{
         horizontal:boolean,
         vertical:boolean
@@ -52,6 +60,14 @@ export class Draggable<T> {
     constructor(item:T, options:DraggableOptions<T>) {
         this.item = item;
         this.options = options;
+
+        if (!this.options.overflowX) {
+            this.options.overflowX = false;
+        }
+
+        if (!this.options.overflowY) {
+            this.options.overflowY = false;
+        }
 
         this.elm = options.elm;
         this.handle = this.elm;
@@ -79,9 +95,14 @@ export class Draggable<T> {
     }
 
     private getContainerElement() {
+        if (this.options.container) {
+            return this.options.container;
+        }
+
         if (!this.options.context) {
             return document.documentElement;
         }
+
         return this.options.context.containerElement();
     }
 
@@ -104,28 +125,69 @@ export class Draggable<T> {
         return this.elm.ownerDocument.defaultView;
     }
 
-    private calculateDimensions(evt: MouseEvent) {
-        const scrolling = {
-            left:0,
-            top:0
-        };
-        const container = this.getContainerElement();
-        if (container) {
-            scrolling.left = container.scrollLeft;
-            scrolling.top = container.scrollTop;
+
+    private isSVG() {
+        if (this.svgContainer !== undefined) {
+            return this.svgContainer;
         }
 
+        const container = this.getContainerElement();
+        if (!container) {
+            return this.svgContainer = false;
+        }
+
+        return this.svgContainer = container.matches('svg');
+    }
+
+    private calculateDimensions(mousePosition: Point) {
+
         return {
-            left: evt.pageX - this.mouseElementOffset.x + scrolling.left - this.containerDimensions.left,
-            top: evt.pageY - this.mouseElementOffset.y + scrolling.top - this.containerDimensions.top,
+            left: mousePosition.x - this.mouseElementOffset.x,
+            top: mousePosition.y - this.mouseElementOffset.y,
             width: this.initialSize.width,
             height: this.initialSize.height
         };
     }
 
+    /**
+     * Gets the mouse position translated down to the local coordinate system of the element
+     * @param evt
+     */
+    private getTranslatedMousePosition(evt:MouseEvent):Point {
+        const container = this.getContainerElement();
+        let scrolling = {left:0,top:0};
+
+        if (container) {
+            scrolling.top = container.scrollTop;
+            scrolling.left = container.scrollLeft;
+        }
+
+        return {
+            x: evt.pageX + scrolling.left - this.containerDimensions.left,
+            y : evt.pageY + scrolling.top - this.containerDimensions.top
+        };
+    }
+
+    private updateContainerDimensions() {
+        const container = this.getContainerElement();
+        if (!container) {
+            return;
+        }
+
+        const containerRect = container.getBoundingClientRect();
+
+        this.containerDimensions = {
+            left: containerRect.left,
+            top: containerRect.top,
+            width: containerRect.width,
+            height: containerRect.height
+        };
+
+    }
+
     private handleMouseDown = (evt: any) => {
         if (evt.button !== 0) {
-            return; //Not left click
+            return; //Only drag on left click
         }
         const container = this.getContainerElement();
         const body = this.getDocumentBody();
@@ -138,33 +200,25 @@ export class Draggable<T> {
             return;
         }
 
-        this.startPosition = {
-            x: evt.pageX,
-            y: evt.pageY,
-        };
+        const mousePosition = this.getTranslatedMousePosition(evt);
 
-        let containerRect = container.getBoundingClientRect();
+        this.startPosition = {... mousePosition};
 
-        this.containerDimensions = {
-            left: containerRect.left,
-            top: containerRect.top,
-            width: containerRect.width,
-            height: containerRect.height
-        };
+        this.updateContainerDimensions();
 
         window.addEventListener('mousemove', this.handleMouseMove);
         window.addEventListener('mouseup', this.handleMouseUp);
 
-        let clientRect = this.elm.getBoundingClientRect();
+        let elmRect = this.elm.getBoundingClientRect();
 
         this.mouseElementOffset = {
-            x: evt.pageX - clientRect.left,
-            y: evt.pageY - clientRect.top
+            x: evt.pageX - elmRect.left,
+            y: evt.pageY - elmRect.top
         };
 
         this.initialSize = {
-            width: clientRect.width,
-            height: clientRect.height
+            width: elmRect.width,
+            height: elmRect.height
         };
     };
 
@@ -176,8 +230,12 @@ export class Draggable<T> {
             return;
         }
 
-        if (Math.abs(this.startPosition.x - evt.pageX) < MIN_MOVE_BEFORE_DRAG &&
-            Math.abs(this.startPosition.y - evt.pageY) < MIN_MOVE_BEFORE_DRAG) {
+        this.updateContainerDimensions();
+
+        const mousePosition = this.getTranslatedMousePosition(evt);
+
+        if (Math.abs(this.startPosition.x - mousePosition.x) < MIN_MOVE_BEFORE_DRAG &&
+            Math.abs(this.startPosition.y - mousePosition.y) < MIN_MOVE_BEFORE_DRAG) {
             return;
         }
 
@@ -185,6 +243,10 @@ export class Draggable<T> {
             this.dragging = true;
             if (this.options.context) {
                 this.options.context.onDragStart(this.item);
+            }
+
+            if (this.options.onDragStart) {
+                this.options.onDragStart();
             }
         }
 
@@ -207,7 +269,13 @@ export class Draggable<T> {
             }
         }
 
-        const dimensions = this.calculateDimensions(evt);
+        const dimensions = this.calculateDimensions(mousePosition);
+
+        if (this.options.onDragMove) {
+            if (!this.options.onDragMove(dimensions)) {
+                return;
+            }
+        }
 
         this.updateDraggingTarget(dimensions);
 
@@ -216,6 +284,7 @@ export class Draggable<T> {
         if (this.options.context) {
             this.options.context.onDragMove(dimensions, clientRect, this.item);
         }
+
 
     };
 
@@ -234,7 +303,11 @@ export class Draggable<T> {
             return;
         }
 
-        const dimensions = this.calculateDimensions(evt);
+        this.updateContainerDimensions();
+
+        const mousePosition = this.getTranslatedMousePosition(evt);
+
+        const dimensions = this.calculateDimensions(mousePosition);
 
         const clientRect = this.draggingTarget.getBoundingClientRect();
 
@@ -244,12 +317,17 @@ export class Draggable<T> {
 
         this.dragging = false;
 
-        this.updateDraggingTarget(dimensions);
+        if (!(this.options.onDragEnd &&
+                this.options.onDragEnd(dimensions))) {
+            this.updateDraggingTarget(dimensions);
+        }
 
         if (this.options.dragCopy) {
             this.draggingTarget.remove();
         }
+
         this.draggingTarget = null;
+
     };
 
 
@@ -266,30 +344,47 @@ export class Draggable<T> {
             let top = Math.max(0, dimensions.top);
             let left = Math.max(0, dimensions.left);
 
-            const containerRight = this.containerDimensions.width;
-            const containerBottom = this.containerDimensions.height || 0;
-
             const right = left + dimensions.width;
             const bottom = top + (dimensions.height || 0);
 
-            if (right > containerRight) {
-                left -= (right - containerRight);
+            if (!this.options.overflowX) {
+                const containerRight = this.containerDimensions.left + this.containerDimensions.width;
+                if (right > containerRight) {
+                    left -= (right - containerRight);
+                }
             }
 
-            if (bottom > containerBottom) {
-                top -= (bottom - containerBottom);
+            if (!this.options.overflowY) {
+                const containerBottom = this.containerDimensions.top + this.containerDimensions.height || 0;
+                if (bottom > containerBottom) {
+                    top -= (bottom - containerBottom);
+                }
             }
 
-            if (this.enabledAxis.vertical) {
-                this.draggingTarget.style.top = top + 'px';
+            if (this.isSVG()) {
+                if (this.enabledAxis.vertical) {
+                    this.draggingTarget.setAttribute('y', top + 'px');
+                }
+
+                if (this.enabledAxis.horizontal) {
+                    this.draggingTarget.setAttribute('x', left + 'px');
+                }
+
+                this.draggingTarget.setAttribute('width', dimensions.width + 'px');
+                this.draggingTarget.setAttribute('height', dimensions.height + 'px');
+            } else {
+                if (this.enabledAxis.vertical) {
+                    this.draggingTarget.style.top = top + 'px';
+                }
+
+                if (this.enabledAxis.horizontal) {
+                    this.draggingTarget.style.left = left + 'px';
+                }
+
+                this.draggingTarget.style.width = dimensions.width + 'px';
+                this.draggingTarget.style.height = dimensions.height + 'px';
             }
 
-            if (this.enabledAxis.horizontal) {
-                this.draggingTarget.style.left = left + 'px';
-            }
-
-            this.draggingTarget.style.width = dimensions.width + 'px';
-            this.draggingTarget.style.height = dimensions.height + 'px';
         } else {
             this.draggingTarget.classList.remove(DRAGGING_HANDLE_CSS);
             this.elm.classList.remove(DRAGGING_SOURCE_CSS);

@@ -1,0 +1,93 @@
+@import "../styles/functions";
+
+.container {
+    padding:50px;
+    width: 500px;
+    height: 500px;
+    overflow: auto;
+}
+
+.dnd-container {
+    overflow: visible;
+    position: relative;
+
+    text {
+        fill: black;
+        font-size: 10px;
+    }
+
+    .draggable {
+        .no-select();
+        position: absolute;
+        background: greenyellow;
+
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+        font-size: 10px;
+        padding:10px;
+        z-index: 10;
+        box-sizing: border-box;
+
+        > rect {
+            fill: greenyellow;
+        }
+    }
+
+    .droppable {
+        position: absolute;
+        background: yellow;
+        width: 100px;
+        height: 100px;
+
+        > rect {
+            fill: yellow;
+        }
+
+        &.big {
+            width: 1000px;
+            height: 1000px;
+        }
+
+        &.dnd-zone-hovering {
+            background: #1EA7FD;
+            border: 1px solid blue;
+
+            > rect {
+                fill: #1EA7FD;
+                stroke-width: 1px;
+                stroke: blue;
+            }
+        }
+    }
+
+    .dnd-scrolling {
+        padding:50px;
+        left:150px;
+        background: #efefef;
+
+        position: relative;
+        overflow: auto;
+        width: 500px;
+        height: 500px;
+
+        > rect {
+            fill: #efefef;
+        }
+
+        &.dnd-zone-hovering {
+            background: rgba(30, 167, 253, 0.2);
+            border: 1px solid blue;
+
+            > rect {
+                fill: rgba(30, 167, 253, 0.2);
+                stroke-width: 1px;
+                stroke: blue;
+            }
+        }
+    }
+
+    .dragging-source {
+        opacity: .5;
+    }
+}
