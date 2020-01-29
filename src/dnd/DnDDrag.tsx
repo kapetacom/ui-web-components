@@ -2,6 +2,7 @@ import React from "react";
 import DnDContext, {DnDContextType} from './DnDContext';
 import { asHTMLElement, DOMElement } from "@blockware/ui-web-utils";
 import {Draggable} from "./Draggable";
+import {Dimensions} from "@blockware/ui-web-types";
 
 interface DnDDragProps {
     children: any
@@ -10,7 +11,13 @@ interface DnDDragProps {
     horizontal?: boolean
     vertical?: boolean
     copyElm?: () => JSX.Element
+    onDragStart?: () => void
+    onDragMove?: (dimensions: Dimensions) => boolean
+    onDragEnd?: (dimensions: Dimensions) => boolean
+    dragCopy?:boolean
+    container?:DOMElement|string
 }
+
 
 export class DnDDrag extends React.Component<DnDDragProps> {
     static contextType = DnDContext;
@@ -26,13 +33,28 @@ export class DnDDrag extends React.Component<DnDDragProps> {
         if (!this.elm || !this.target) {
             return;
         }
+        let container:Element|undefined;
+        if (this.props.container) {
+            if (typeof this.props.container === 'string') {
+                let selector:string = this.props.container;
+                let closestParent = this.elm.closest(selector);
+                if (closestParent) {
+                    container = closestParent;
+                }
+            } else {
+                container = this.props.container;
+            }
+        }
 
         this.draggable = new Draggable<DnDDrag>(this, {
             ...this.props,
             elm: this.elm,
             target: this.target,
-            dragCopy: true,
-            context: this.context
+            container: container,
+            dragCopy: this.props.dragCopy !== undefined ? this.props.dragCopy : true,
+            context: this.context,
+            overflowX: this.context ? this.context.overflowX : false,
+            overflowY: this.context ? this.context.overflowY : false
         });
 
         this.draggable.start();
