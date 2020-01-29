@@ -4,8 +4,9 @@ import { storiesOf } from '@storybook/react';
 import { Store, StateDecorator, State } from "@sambego/storybook-state";
 
 import {EntityMapper, EntityPicker, EntityForm, EntityFormModel} from "../src";
-import { EntityList} from "../src/entities/EntityList";
-import { SchemaEntryType, SchemaEntity } from '@blockware/ui-web-types';
+
+import { EntityList } from "../src/entities/EntityList";
+import { SchemaEntryType } from '@blockware/ui-web-types';
 
 const EntityFrom = {
     name: {
@@ -129,16 +130,16 @@ storiesOf('Entity Forms', module)
         )
     })
     .add("Entity List", () => {
-        const demoEntities: SchemaEntity[] = [
+        const demoEntities: any[] = [
             {
                 name: "Entity 1",
                 properties: {},
-                status: true
+                status: "In use"
             },
             {
                 name: "Entity 2",
                 properties: {},
-                status: true
+                status: "In use"
             },
             {
                 name: "Entity 3",
@@ -223,7 +224,7 @@ storiesOf('Entity Forms', module)
         ];
 
         return (
-            <div style={{ width: "400px", height:"600px" }}>
+            <div style={{ width: "400px", height:"600px" }}>       
                 <EntityList  entities={demoEntities} />
             </div>
         )
