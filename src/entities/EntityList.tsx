@@ -6,7 +6,10 @@ import "./EntityList.less"
 
 
 interface EntityListProps {
-    entities: SchemaEntity[]
+    entities: SchemaEntity[],
+    handleCreateEntity: ()=>void,
+    handleEditEntity:(entity: SchemaEntity)=> void,
+    handleRemoveEntity:(entity: SchemaEntity)=> void
 }
 
 const EditIcon:React.FC = ()=> (
@@ -25,10 +28,7 @@ const DeleteIcon:React.FC = ()=> (
 
 export const EntityList = (props: EntityListProps) => {
 
-    const entityList: SchemaEntity[] = props.entities;
-    console.log(props);
-
-
+    const entityList: SchemaEntity[] = props.entities ;
 
     const listItems = entityList.map((entity: SchemaEntity) => {
 
@@ -45,10 +45,10 @@ export const EntityList = (props: EntityListProps) => {
                     {entity.status ? "In use" : "Unused"}
                 </div>
                 <div className={'entity-icons'}>
-                    <div className="edit-icon">
+                    <div className="edit-icon" onClick={()=> props.handleEditEntity(entity)}>
                         <EditIcon />
                     </div>
-                    <div className="delete-icon">
+                    <div className="delete-icon" onClick={()=> props.handleRemoveEntity(entity)}>
                         <DeleteIcon />
                     </div>
                 </div>
@@ -58,7 +58,7 @@ export const EntityList = (props: EntityListProps) => {
     });
     return (
         <div className="entity-list">
-            <div className="add-entity-box">
+            <div className="add-entity-box" onClick={()=> props.handleCreateEntity()}>
                 <span className="add-entity-text">+ Add New Entity</span>
             </div>
             <div className="entities-items">{listItems}</div>

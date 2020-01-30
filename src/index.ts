@@ -14,6 +14,7 @@ export * from './dnd/SortableItem';
 export * from './entities/EntityForm';
 export * from './entities/EntityFormModel';
 export * from './entities/EntityMapper';
+export * from './entities/EntityList';
 
 export * from './form/field-handlers/EntityPicker';
 export * from './form/FormButtons';
