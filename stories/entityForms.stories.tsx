@@ -6,6 +6,7 @@ import { Store, StateDecorator, State } from "@sambego/storybook-state";
 import {EntityMapper, EntityPicker, EntityForm, EntityFormModel} from "../src";
 
 import { EntityList } from "../src/entities/EntityList";
+import { DropdownInput } from "../src/form/dropdownInput/dropdownInput"
 import { SchemaEntryType } from '@blockware/ui-web-types';
 
 const EntityFrom = {
@@ -230,4 +231,40 @@ storiesOf('Entity Forms', module)
         )
     }
 
-    );
+    )
+
+    .add("Dropdown Input ", () => {
+        const countryList = [
+            "Afghanistan",
+            "Albania",
+            "Algeria",
+            "American Samoa",
+            "Andorra",
+            "Angola",
+            "Anguilla",
+            "Antarctica",
+            "Antigua and Barbuda",
+            "Argentina",
+            "Armenia",
+            "Aruba",
+            "Australia",
+            "Austria",
+            "Azerbaijan",
+            "Bahamas (the)",
+            "Bahrain",
+            "Bangladesh",
+            "Barbados",
+            "Belarus",
+            "Belgium"
+        ];
+
+        
+        return (
+            <div style={{ width: "350px", padding: '10px', backgroundColor: '#E5E5E5' }}>
+                <DropdownInput
+                    placeholder={"Test Placeholder"}
+                    optionList={countryList}
+                    required={false} />
+            </div>
+        )
+    })
