@@ -11,11 +11,13 @@ interface DnDContainerProps {
     children: any
     overflowX?:boolean
     overflowY?:boolean
+    zoom?:number
 }
 
 interface DnDContainerState {
     scrollLeft: number
     scrollTop: number
+    zoom?:number
 }
 
 export class DnDContainer extends React.Component<DnDContainerProps, DnDContainerState> {
@@ -31,7 +33,8 @@ export class DnDContainer extends React.Component<DnDContainerProps, DnDContaine
 
         this.state = {
             scrollLeft:0,
-            scrollTop:0
+            scrollTop:0,
+            zoom:this.props.zoom
         };
     }
 
@@ -146,7 +149,8 @@ export class DnDContainer extends React.Component<DnDContainerProps, DnDContaine
                 scrollLeft: this.state.scrollLeft,
                 scrollTop: this.state.scrollTop,
                 overflowX: this.props.overflowX,
-                overflowY: this.props.overflowY
+                overflowY: this.props.overflowY,
+                zoom: this.props.zoom
             }}>
                 {clone}
             </DnDContext.Provider>

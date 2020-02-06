@@ -18,6 +18,7 @@ interface DraggableOptions<T> {
     target?:DOMElement
     container?:Element
     context?: DraggableContext<T>
+    zoom?:number
     overflowX?:boolean
     overflowY?:boolean
     onDragStart?: () => void
@@ -149,11 +150,18 @@ export class Draggable<T> {
         };
     }
 
+    private getZoomLevel(){
+        if(this.options.zoom){
+            return this.options.zoom;
+        }
+        return 1;
+    }
     /**
      * Gets the mouse position translated down to the local coordinate system of the element
      * @param evt
      */
-    private getTranslatedMousePosition(evt:MouseEvent):Point {
+    private getTranslatedMousePosition(evt:MouseEvent):Point {   
+        this.updateContainerDimensions();     
         const container = this.getContainerElement();
         let scrolling = {left:0,top:0};
 
@@ -163,8 +171,8 @@ export class Draggable<T> {
         }
 
         return {
-            x: evt.pageX + scrolling.left - this.containerDimensions.left,
-            y : evt.pageY + scrolling.top - this.containerDimensions.top
+            x: (evt.pageX*this.getZoomLevel() + scrolling.left - this.containerDimensions.left),
+            y : (evt.pageY*this.getZoomLevel()+ scrolling.top+ this.containerDimensions.top)//) 
         };
     }
 
@@ -173,16 +181,16 @@ export class Draggable<T> {
         if (!container) {
             return;
         }
-
+        
         const containerRect = container.getBoundingClientRect();
-
+        
         this.containerDimensions = {
             left: containerRect.left,
             top: containerRect.top,
-            width: containerRect.width,
-            height: containerRect.height
+            width: +(containerRect.width).toFixed(),//trim decimal points and parse to number
+            height: +(containerRect.height).toFixed()
         };
-
+        
     }
 
     private handleMouseDown = (evt: any) => {

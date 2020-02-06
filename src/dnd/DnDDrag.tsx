@@ -10,6 +10,7 @@ interface DnDDragProps {
     value: any
     horizontal?: boolean
     vertical?: boolean
+    zoom?:number
     copyElm?: () => JSX.Element
     onDragStart?: () => void
     onDragMove?: (dimensions: Dimensions) => boolean
@@ -46,6 +47,8 @@ export class DnDDrag extends React.Component<DnDDragProps> {
             }
         }
 
+        
+        
         this.draggable = new Draggable<DnDDrag>(this, {
             ...this.props,
             elm: this.elm,
@@ -53,6 +56,40 @@ export class DnDDrag extends React.Component<DnDDragProps> {
             container: container,
             dragCopy: this.props.dragCopy !== undefined ? this.props.dragCopy : true,
             context: this.context,
+            zoom: this.props.zoom?this.props.zoom:this.context.zoom,
+            overflowX: this.context ? this.context.overflowX : false,
+            overflowY: this.context ? this.context.overflowY : false
+        });
+
+        this.draggable.start();
+    }
+    
+    componentWillReceiveProps(props:DnDDragProps){
+        if (!this.elm || !this.target) {
+            return;
+        }
+        let container:Element|undefined;
+        if (this.props.container) {
+            if (typeof this.props.container === 'string') {
+                let selector:string = this.props.container;
+                let closestParent = this.elm.closest(selector);
+                if (closestParent) {
+                    container = closestParent;
+                }
+            } else {
+                container = this.props.container;
+            }
+        }
+
+        this.draggable?.stop()
+        this.draggable = new Draggable<DnDDrag>(this, {
+            ...props,
+            elm: this.elm,
+            target: this.target,
+            container: container,
+            dragCopy: props.dragCopy !== undefined ? props.dragCopy : true,
+            context: this.context,
+            zoom: props.zoom?props.zoom:this.context.zoom,
             overflowX: this.context ? this.context.overflowX : false,
             overflowY: this.context ? this.context.overflowY : false
         });
