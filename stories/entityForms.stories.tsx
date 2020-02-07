@@ -262,9 +262,9 @@ storiesOf('Entity Forms', module)
         return (
             <div style={{ width: "350px", padding: '10px', backgroundColor: '#E5E5E5' }}>
                 <DropdownInput
-                    placeholder={"Test Placeholder"}
+                    label={"Test label"}
                     optionList={countryList}
-                    required={false} />
+                    required={true} />
             </div>
         )
     })
