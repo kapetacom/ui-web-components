@@ -242,29 +242,64 @@ storiesOf('Entity Forms', module)
             "Andorra",
             "Angola",
             "Anguilla",
-            "Antarctica",
+            "antarctica",
             "Antigua and Barbuda",
-            "Argentina",
+            "argentina",
             "Armenia",
             "Aruba",
-            "Australia",
+            "australia",
             "Austria",
             "Azerbaijan",
-            "Bahamas (the)",
-            "Bahrain",
+            "bahamas (the)",
+            "bahrain",
             "Bangladesh",
             "Barbados",
             "Belarus",
             "Belgium"
         ];
 
+        let userSelection= [];
+        const inputCallback= (userInput) => {
+            userSelection = userInput;
+        };
+
         
         return (
-            <div style={{ width: "350px", padding: '10px', backgroundColor: '#E5E5E5' }}>
-                <DropdownInput
-                    label={"Test label"}
-                    optionList={countryList}
-                    required={true} />
+                
+            <div style={{ width: "600px", padding: '10px', backgroundColor: '#E5E5E5' }}>
+                <form onSubmit={() => console.log("submited")} style={{ backgroundColor: '#E5E5E5' }}>
+                    <DropdownInput
+                        id="test1"
+                        label={"Multiple selection and required"}
+                        optionList={countryList}
+                        multiSelection={true}
+                        required={true} 
+                        selectionCallback={inputCallback}
+                        message={"this is just a message."}
+                        />
+                        <br></br>
+                        <DropdownInput
+                        id="test2"
+                        label={"Single Selection and required"}
+                        optionList={countryList}
+                        multiSelection={false}
+                        required={true}
+                        selectionCallback={inputCallback}
+                        message={"this is another message"} />
+                         <br></br>
+                        <DropdownInput
+                        id="test3"
+                        label={"Single selection & not required"}
+                        optionList={countryList}
+                        multiSelection={false}
+                        required={false}
+                        selectionCallback={inputCallback}
+                        message={"this is one more message"} />
+                        <br></br>
+                    <input type="submit" value="Submit" />
+                </form>
             </div>
+
+
         )
     })
