@@ -156,6 +156,25 @@ export class Draggable<T> {
         }
         return 1;
     }
+
+
+    private updateContainerDimensions() {
+        const container = this.getContainerElement();
+        if (!container) {
+            return;
+        }
+        
+        const containerRect = container.getBoundingClientRect();
+        
+        this.containerDimensions = {
+            left: containerRect.left,
+            top: containerRect.top,
+            width: containerRect.width,//trim decimal points and parse to number
+            height: containerRect.height
+        };
+        
+    }
+    
     /**
      * Gets the mouse position translated down to the local coordinate system of the element
      * @param evt
@@ -174,23 +193,6 @@ export class Draggable<T> {
             x : Math.round((evt.pageX - this.containerDimensions.left)*(this.getZoomLevel()) + scrolling.left),
             y : Math.round((evt.pageY +  this.containerDimensions.top)*(this.getZoomLevel()) + scrolling.top*(1/this.getZoomLevel()) )
         };
-    }
-
-    private updateContainerDimensions() {
-        const container = this.getContainerElement();
-        if (!container) {
-            return;
-        }
-        
-        const containerRect = container.getBoundingClientRect();
-        
-        this.containerDimensions = {
-            left: containerRect.left,
-            top: containerRect.top,
-            width: containerRect.width,//trim decimal points and parse to number
-            height: containerRect.height
-        };
-        
     }
 
     private handleMouseDown = (evt: any) => {
