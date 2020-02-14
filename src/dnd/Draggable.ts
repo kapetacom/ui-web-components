@@ -171,8 +171,8 @@ export class Draggable<T> {
         }
 
         return {
-            x: (evt.pageX*this.getZoomLevel() + scrolling.left - this.containerDimensions.left),
-            y : (evt.pageY*this.getZoomLevel()+ scrolling.top+ this.containerDimensions.top)//) 
+            x : Math.round((evt.pageX - this.containerDimensions.left)*(this.getZoomLevel()) + scrolling.left),
+            y : Math.round((evt.pageY +  this.containerDimensions.top)*(this.getZoomLevel()) + scrolling.top*(1/this.getZoomLevel()) )
         };
     }
 
@@ -187,8 +187,8 @@ export class Draggable<T> {
         this.containerDimensions = {
             left: containerRect.left,
             top: containerRect.top,
-            width: +(containerRect.width).toFixed(),//trim decimal points and parse to number
-            height: +(containerRect.height).toFixed()
+            width: containerRect.width,//trim decimal points and parse to number
+            height: containerRect.height
         };
         
     }
@@ -211,8 +211,6 @@ export class Draggable<T> {
         const mousePosition = this.getTranslatedMousePosition(evt);
 
         this.startPosition = {... mousePosition};
-
-        this.updateContainerDimensions();
 
         window.addEventListener('mousemove', this.handleMouseMove);
         window.addEventListener('mouseup', this.handleMouseUp);
@@ -237,8 +235,6 @@ export class Draggable<T> {
             !container) {
             return;
         }
-
-        this.updateContainerDimensions();
 
         const mousePosition = this.getTranslatedMousePosition(evt);
 
@@ -310,8 +306,6 @@ export class Draggable<T> {
             !this.draggingTarget) {
             return;
         }
-
-        this.updateContainerDimensions();
 
         const mousePosition = this.getTranslatedMousePosition(evt);
 
