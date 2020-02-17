@@ -32,7 +32,7 @@
         "@types/yaml": "^1.2.0"
     },
     "peerDependencies": {
-        "@blockware/ui-web-context": "^0.0.10",
+        "@blockware/ui-web-context": "^0.0.16",
         "@blockware/ui-web-types": "^0.0.20",
         "@blockware/ui-web-utils": "^0.0.6",
         "guid-typescript": "^1.0.9",
