@@ -18,6 +18,7 @@ interface DraggableOptions<T> {
     target?:DOMElement
     container?:Element
     context?: DraggableContext<T>
+    zoom?:number
     overflowX?:boolean
     overflowY?:boolean
     onDragStart?: () => void
@@ -149,11 +150,37 @@ export class Draggable<T> {
         };
     }
 
+    private getZoomLevel(){
+        if(this.options.zoom){
+            return this.options.zoom;
+        }
+        return 1;
+    }
+
+
+    private updateContainerDimensions() {
+        const container = this.getContainerElement();
+        if (!container) {
+            return;
+        }
+        
+        const containerRect = container.getBoundingClientRect();
+        
+        this.containerDimensions = {
+            left: containerRect.left,
+            top: containerRect.top,
+            width: containerRect.width,//trim decimal points and parse to number
+            height: containerRect.height
+        };
+        
+    }
+    
     /**
      * Gets the mouse position translated down to the local coordinate system of the element
      * @param evt
      */
-    private getTranslatedMousePosition(evt:MouseEvent):Point {
+    private getTranslatedMousePosition(evt:MouseEvent):Point {   
+        this.updateContainerDimensions();     
         const container = this.getContainerElement();
         let scrolling = {left:0,top:0};
 
@@ -163,26 +190,9 @@ export class Draggable<T> {
         }
 
         return {
-            x: evt.pageX + scrolling.left - this.containerDimensions.left,
-            y : evt.pageY + scrolling.top - this.containerDimensions.top
+            x : Math.round((evt.pageX - this.containerDimensions.left)*(this.getZoomLevel()) + scrolling.left),
+            y : Math.round((evt.pageY +  this.containerDimensions.top)*(this.getZoomLevel()) + scrolling.top*(1/this.getZoomLevel()) )
         };
-    }
-
-    private updateContainerDimensions() {
-        const container = this.getContainerElement();
-        if (!container) {
-            return;
-        }
-
-        const containerRect = container.getBoundingClientRect();
-
-        this.containerDimensions = {
-            left: containerRect.left,
-            top: containerRect.top,
-            width: containerRect.width,
-            height: containerRect.height
-        };
-
     }
 
     private handleMouseDown = (evt: any) => {
@@ -203,8 +213,6 @@ export class Draggable<T> {
         const mousePosition = this.getTranslatedMousePosition(evt);
 
         this.startPosition = {... mousePosition};
-
-        this.updateContainerDimensions();
 
         window.addEventListener('mousemove', this.handleMouseMove);
         window.addEventListener('mouseup', this.handleMouseUp);
@@ -229,8 +237,6 @@ export class Draggable<T> {
             !container) {
             return;
         }
-
-        this.updateContainerDimensions();
 
         const mousePosition = this.getTranslatedMousePosition(evt);
 
@@ -288,7 +294,7 @@ export class Draggable<T> {
 
     };
 
-    private handleMouseUp = (evt: any) => {
+    private handleMouseUp = (evt: MouseEvent) => {
         const body = this.getDocumentBody();
         const window = this.getWindow();
         if (!body || !window) {
@@ -302,8 +308,6 @@ export class Draggable<T> {
             !this.draggingTarget) {
             return;
         }
-
-        this.updateContainerDimensions();
 
         const mousePosition = this.getTranslatedMousePosition(evt);
 

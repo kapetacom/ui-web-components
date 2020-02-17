@@ -9,6 +9,7 @@ export interface DnDContextData extends DraggableContext<DnDDrag> {
     scrollLeft: number;
     overflowX?:boolean
     overflowY?:boolean
+    zoom?:number
     onDropZoneRemoved:(dropZone: DnDDrop) => void
     onDropZoneCreated:(dropZone: DnDDrop) => void
     container?:DnDContainer
