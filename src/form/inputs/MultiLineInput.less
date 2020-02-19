@@ -1,0 +1,81 @@
+@import "../../../styles/values";
+@import "../../../styles/functions";
+
+
+
+
+.textarea-wrapper {
+
+    display: block;
+    max-width: 400px;
+    min-width: 350px;
+    height:40px;
+    width:100%;
+    background-color: inherit;
+    border: 1px solid @gray-dark;
+    .border-radius(3px);
+    overflow: visible;
+    box-sizing: border-box;
+
+    &.focused {
+        border: 1.5px solid @cyan-dark;
+        font-size:inherit;
+        color: @gray-xxdark;
+    }
+
+    &.required {
+        border-color: @btn-cancel-bg ;
+    }
+    
+    &.warning-status {
+        border: 1.5px solid @btn-regular-active-bg !important;
+    }
+
+    &.error-status {
+        border: 1.5px solid @btn-cancel-bg !important;
+    }
+
+    .textarea {
+        display: block;
+        border: none;
+        height: 100%;
+        width:100%;
+        padding: 10px 15px 5px 15px;
+        opacity: 0.7;
+        box-shadow: none;
+        outline: none;
+        box-sizing: border-box;
+        background-color: transparent;
+        font-size:inherit;
+        color: @gray-xdark;
+        resize: none;
+        overflow: auto;
+        margin-right: 10px;
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+            background: transparent;
+
+        }
+        
+        /* Track */
+        ::-webkit-scrollbar-track-piece {
+            display: none;
+        }
+        
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: @gray-dark;
+            height:50px;
+        }
+        
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: @gray-xdark; 
+        }
+    }
+
+
+
+}
