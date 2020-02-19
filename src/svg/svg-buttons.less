@@ -22,6 +22,16 @@
         stroke: @btn-fg;
     }
 
+    &.warning{
+        .svg-button-background{
+            fill:@yellow-alert;
+            stroke: none;
+        }
+        .svg-button-foreground {
+            stroke: none;
+            fill: @bw-gray
+        }
+    }
     &.delete, &.add {
 
         .svg-button-foreground {
@@ -65,6 +75,16 @@
         &.inspect {
             .svg-button-foreground {
                 fill: @btn-bg;
+                stroke: none;
+            }
+        }
+        &.warning{
+            .svg-button-background{
+                fill: @btn-bg;
+                stroke: none;
+            }
+            .svg-button-foreground {
+                fill: @bw-gray;
                 stroke: none;
             }
         }

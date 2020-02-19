@@ -42,5 +42,6 @@ export * from './svg/SVGAutoSizeText';
 export * from './svg/SVGButtonAdd';
 export * from './svg/SVGButtonDelete';
 export * from './svg/SVGButtonEdit';
+export * from './svg/SVGButtonWarning';
 export * from './svg/SVGButtonInspect';
 export * from './svg/SVGText';
