@@ -15,7 +15,7 @@ export interface DropdownInputProps {
     inputStatus?: string,
     optionList: string[],
     multiSelection: boolean,
-    inputCallback: (userSelection: string[]) => void
+    inputCallback: (inputId:string,userSelection: string[]) => void
 }
 
 @observer
@@ -93,7 +93,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             if (isSelected > -1) {
                 tempUserSelection.splice(isSelected, 1);
                 this.setUserSelection(tempUserSelection);
-                this.props.inputCallback(this.userSelection);
+                this.props.inputCallback(this.props.inputId, this.userSelection);
                 return;
             }
         }
@@ -106,7 +106,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         this.userInput = "";
         this.setInputSuggestion();
         this.setUserSelection(tempUserSelection);
-        this.props.inputCallback(this.userSelection);
+        this.props.inputCallback(this.props.inputId, this.userSelection);
     };
 
     private optionListFiltered = () => {
@@ -173,7 +173,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         })
 
         let classNameInput = toClass({
-            "input": true,
+            "dropdown-input": true,
             "focused": !!this.inputFocus,
             "required": !!this.required && !this.userSelection.length && !this.inputFocus,
             "warning-status": this.props.inputStatus === "warning",

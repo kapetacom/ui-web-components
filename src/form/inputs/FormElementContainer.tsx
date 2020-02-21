@@ -1,4 +1,4 @@
-import React, { ChangeEvent, MouseEventHandler } from "react";
+import React from "react";
 import "./FormElementContainer.less";
 import { observable, action } from "mobx";
 import { toClass } from "@blockware/ui-web-utils";
@@ -29,7 +29,8 @@ export interface FormElementContainerProps {
     statusMessage?: string,
     inputStatus?: string,
     hasValue: boolean,
-    inputMode?: string
+    inputMode?: string,
+    inputType?:string
 
 }
 
@@ -37,40 +38,36 @@ export interface FormElementContainerProps {
 @observer
 export class FormElementContainer extends React.Component<FormElementContainerProps> {
 
-    @observable
-    labelZoomOut: boolean = false;
 
-    required: string = this.props.required ? 'required' : '';
-
-
+    
     private uppercaseFirstLetter = (string: string) => {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
 
     render() {
 
-        let classNameLabel = toClass({
-            "label": true,
-            "zoom-out": this.labelZoomOut || this.props.hasValue || this.props.inputFocused,
+        let required: string = this.props.required ? 'required' : '';
+
+        let classFormElemContainer = toClass({
+            "form-element-container": true,
             "focused": this.props.inputFocused,
-            "required": !!this.required && !this.props.hasValue && this.props.inputFocused,
+            "required": !!required && !this.props.hasValue ,
             "warning-status": this.props.inputStatus === "warning",
             "error-status": this.props.inputStatus === "error"
         });
 
-        let classFormElemContainer = toClass({
-            "form-element-container": true,
-            "focused": this.props.inputFocused
+        let classNameLabel = toClass({
+            "label": true,
+            "label-icon-number": this.props.inputType==="number" ,
+            "zoom-out": this.props.hasValue || this.props.inputFocused,
         });
 
         let classNameMessage = toClass({
             "message": true,
-            "required": !!this.required && !this.props.inputFocused && !this.props.hasValue,
-            "warning": this.props.inputStatus === "warning"
         })
 
         let classNameStatusIcon = toClass({
-            "icon": this.props.inputStatus === "warning" || this.props.inputStatus === "error",
+            "status-icon": this.props.inputStatus === "warning" || this.props.inputStatus === "error",
         })
 
         return (
@@ -79,13 +76,13 @@ export class FormElementContainer extends React.Component<FormElementContainerPr
 
                 {this.props.children}
 
-                {this.required && !this.props.hasValue ?
+                {required && !this.props.hasValue ?
                     <span className={classNameMessage}><sup>*</sup>Please provide an input.</span> : null
                 }
                 {
-                    (this.props.message.length > 0 && this.props.hasValue) || !this.required ?
+                    (this.props.message.length > 0 && this.props.hasValue) || !required ?
                         <span className={classNameMessage} >
-                            {"*" && !!this.required && !this.props.inputFocused && !this.props.hasValue}
+                            {"*" && !!required && !this.props.inputFocused && !this.props.hasValue}
                             {this.uppercaseFirstLetter(this.props.message)}</span> : null
                 }
 
@@ -103,14 +100,9 @@ export class FormElementContainer extends React.Component<FormElementContainerPr
                                 <i></i>
                             </div>
                         </span>
-
-
-
                     </>
                 }
-
             </div>
         )
     }
-
 }

@@ -2,7 +2,7 @@
 @import "../../../styles/functions";
 
 
-.input {
+.singleline-input {
     width: 100%;
     height: 40px;
     padding: 10px 15px 5px 15px;
@@ -20,7 +20,7 @@
     text-transform: capitalize;
 
     &:hover {
-        border: 1px solid red ;//@gray-xdark        
+        border: 1px solid @gray-xdark ;      
     }
 
     &:focus {
@@ -29,16 +29,16 @@
     }
 
     &.required {
-        border-color: @btn-cancel-bg !important;
+        border-color: @btn-cancel-bg ;
     }
 
     &.warning-status {
-        border: 1.5px solid @btn-regular-active-bg !important;
-        padding-right: 35px;
+        border: 1.5px solid @btn-regular-active-bg ;
+        padding-right: 55px;
     }
     &.error-status {
-        border: 1.5px solid @btn-cancel-bg !important;
-        padding-right: 35px;
+        border: 1.5px solid @btn-cancel-bg ;
+        padding-right: 55px;
     }
 }
 
@@ -46,18 +46,55 @@
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
-  margin: 0;
+
 }
 
 /* Firefox to remove the arrows on input[type=number]*/
 input[type=number] {
   -moz-appearance:textfield;
-  padding-right: 35px;
+  padding-left: 40px;
+  padding-top: 7px;
 }
 
-.icon {
-    position: absolute;
+.upper-arrow{
+    top: 5px;
+}
+
+.lower-arrow {
+    top: 20px;
+}
+.arrows{
+    position:absolute;
     right: 10px;
+
+    path {
+        fill: #908988;
+    }
+
+    &:hover {
+        rect {
+            fill: #A6DCE1;
+        }
+    }
+    &:active {
+        rect {
+            fill: #A6DCE1;
+        }
+        path {
+            fill: #009AA9;
+        }
+
+    }
+
+    &.error-or-warning {
+        right: 38px;
+    }
+}
+
+.icon-numbers {
+    position: absolute;
+    left: 10px;
     top: 10px;
+    z-index: 3;
 }
 

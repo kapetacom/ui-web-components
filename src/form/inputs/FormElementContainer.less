@@ -17,12 +17,43 @@
             color: @gray-xdark;
         }
 
-        .input {
+        .input, .textarea {
             color:@gray-xxdark;
         }
-        
-        .textarea {
-            color:@gray-xxdark;
+    }
+
+    &.focused {
+        .label.zoom-out {
+            color: @cyan-dark;
+        }
+
+        .tooltip >.right {
+            z-index: 300;
+        }
+    }
+
+    &.required {
+        .message {
+            color : @btn-cancel-bg;
+        }
+    }
+
+    &.warning-status {
+        .label.zoom-out {
+            color: @btn-regular-active-bg;
+        }
+
+        .message {
+            color: @btn-regular-active-bg;
+        }
+    }
+
+    &.error-status {
+        .label.zoom-out {
+            color: @btn-cancel-bg;
+        }
+        .message {
+            color : @btn-cancel-bg;
         }
     }
 
@@ -34,6 +65,10 @@
         color: @gray-dark;
         .transition();
 
+        &.label-icon-number {
+            padding-left: 25px;
+        }
+
         &.zoom-out {
             position: absolute;
             font-size: 11px;
@@ -41,23 +76,11 @@
             top: -7px;
             background-color: inherit;
             z-index: 2;
-            padding: 0 5px 0 5px;
-
-            &.focused {
-                color: @cyan-dark;
-            }
-
-            &.warning-status {
-                color: @btn-regular-active-bg !important;
-            }
-
-            &.error-status {
-                color: @btn-cancel-bg !important;
-            }
+            padding: 0 5px;
         }
     }
 
-    .icon {
+    .status-icon {
         position: absolute;
         right: 10px;
         top: 10px;
@@ -68,62 +91,53 @@
         top: 20px;
         position: absolute;
         right: 0px;
-    }
-    
-    .tooltip .right {
-        min-width:190px; 
-        top:50%;
-        left:100%;
-        margin-left:20px;
-        transform:translate(0, -20px);
-        padding:0px 20px;
-        color:@gray-xdark;
-        background-color: @btn-text-w;
-        font-weight:normal;
-        font-size:13px;
-        .border-radius(3px);
-        position:absolute;
-        z-index:99999999;
-        box-sizing:border-box;
-        box-shadow:0 1px 8px rgba(0,0,0,0.5);
-        display:block;
-    }
-    
-    .tooltip .right i {
-        position:absolute;
-        top:20px;
-        right:100%;
-        margin-top:-12px;
-        width:12px;
-        height:24px;
-        overflow:hidden;
-    }
-    
-    .tooltip .right i::after {
-        content:'';
-        position:absolute;
-        width:12px;
-        height:12px;
-        left:0;
-        top:50%;
-        transform:translate(50%,-50%) rotate(-45deg);
-        background-color: @btn-text-w;
-        box-shadow:0 1px 8px rgba(0,0,0,0.5);
-    }
 
+        .right {
+            min-width:190px; 
+            top:50%;
+            left:100%;
+            margin-left:20px;
+            transform:translate(0, -20px);
+            padding:0px 20px;
+            color:@gray-xdark;
+            background-color: @btn-text-w;
+            font-weight:normal;
+            font-size:13px;
+            .border-radius(3px);
+            position:absolute;
+            z-index: 200;
+            box-sizing:border-box;
+            box-shadow:0 1px 8px rgba(0,0,0,0.5);
+            display:block;
+    
+            i {
+                position:absolute;
+                top:20px;
+                right:100%;
+                margin-top:-12px;
+                width:12px;
+                height:24px;
+                overflow:hidden;
+
+                &::after {
+                    content:'';
+                    position:absolute;
+                    width:12px;
+                    height:12px;
+                    left:0;
+                    top:50%;
+                    transform:translate(50%,-50%) rotate(-45deg);
+                    background-color: @btn-text-w;
+                    box-shadow:0 1px 8px rgba(0,0,0,0.5);
+                }
+            }        
+        }
+    }
 
     .message {
         color: @gray-xdark;
         font-size: 11px;
         opacity: 0.8;
-        padding-left: 2px;
-
-        &.required {
-            color : @btn-cancel-bg;
-        }
-
-        &.warning {
-            color: @btn-regular-active-bg;
-        }
+        padding-left: 2px;        
     }
 }

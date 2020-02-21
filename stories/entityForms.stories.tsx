@@ -275,7 +275,7 @@ storiesOf('Entity Forms', module)
         let handleSubmit = (event) => { event.preventDefault(); console.log("event submitted") }
         return (
 
-            <div style={{ width: "600px", padding: '10px', backgroundColor: '#e0ecff' }}>
+            <div style={{ width: "1200px", padding: '10px', backgroundColor: '#e0ecff' }}>
                 <form style={{ backgroundColor: 'inherit' }} onSubmit={handleSubmit}>
 
 
@@ -311,10 +311,10 @@ storiesOf('Entity Forms', module)
 
                     <SingleLineInput
                         inputId={"SingleInput2"}
-                        label={"Just a test Label"}
+                        label={"Single line input with warning status"}
                         required={false}
                         message={"Specify the name of your block."}
-                        statusMessage={"Block name already in use. Block name already in use. Block name already in use. Block name already in use. Block name already in use. Block name already in use."}
+                        statusMessage={"Block name already in use. Block name already in use. Block name already in use."}
                         inputStatus={InputStatusTypes.WARNING}
                         inputType={InputTypes.TEXT}
                         inputCallback={inputReturnCallback}>
@@ -322,6 +322,17 @@ storiesOf('Entity Forms', module)
 
                     <SingleLineInput
                         inputId={"SingleInput3"}
+                        label={"Single line input with error status"}
+                        required={false}
+                        message={"Specify the name of your block."}
+                        statusMessage={"Block name already in use. Block name already in use."}
+                        inputStatus={InputStatusTypes.ERROR}
+                        inputType={InputTypes.TEXT}
+                        inputCallback={inputReturnCallback}>
+                    </SingleLineInput>
+
+                    <SingleLineInput
+                        inputId={"SingleInput4"}
                         label={"Number Input"}
                         required={false}
                         message={"Specify the number of your block."}
@@ -330,6 +341,18 @@ storiesOf('Entity Forms', module)
                         inputType={InputTypes.NUMBER}
                         inputCallback={inputReturnCallback}>
                     </SingleLineInput>
+
+                    <SingleLineInput
+                        inputId={"SingleInput5"}
+                        label={"Number Input"}
+                        required={false}
+                        message={"Specify the number of your block."}
+                        statusMessage={"Specify the number of your block."}
+                        inputStatus={InputStatusTypes.ERROR}
+                        inputType={InputTypes.NUMBER}
+                        inputCallback={inputReturnCallback}>
+                    </SingleLineInput>
+
 
                     <input type="submit" value="Submit" />
                 </form>
