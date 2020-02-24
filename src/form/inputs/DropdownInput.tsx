@@ -5,17 +5,11 @@ import { toClass } from "@blockware/ui-web-utils";
 import * as _ from "lodash";
 import { observer } from "mobx-react";
 import { FormElementContainer } from "../inputs/FormElementContainer";
+import {  InputModeTypes, InputTypes, InputAdvanceProps } from "./InputBasePropsInterface";
 
-export interface DropdownInputProps {
-    inputId: string,
-    label: string,
-    required: boolean,
-    message: string,
-    statusMessage?: string,
-    inputStatus?: string,
+interface DropdownInputProps extends InputAdvanceProps {
     optionList: string[],
     multiSelection: boolean,
-    inputCallback: (inputId:string,userSelection: string[]) => void
 }
 
 @observer
@@ -23,27 +17,21 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
 
 
     @observable
-    inputFocus: boolean = false;
+    private inputFocus: boolean = false;
 
     @observable
-    inputSuggestion: string = '';
+    private inputSuggestion: string = '';
 
     @observable
-    labelZoomOut: boolean = false;
-
-    iconClass: string = 'arrow-icon';
-    required: string = this.props.required ? 'required' : '';
+    private userInput: string = "";
 
     @observable
-    userInput: string = "";
+    private userSelection: string[] = [];
 
     @observable
-    userSelection: string[] = [];
+    private inputElement = React.createRef<HTMLInputElement>();
 
-    @observable
-    inputElement = React.createRef<HTMLInputElement>();
-
-    optionList: string[] = this.props.optionList;
+    private optionList: string[] = this.props.optionList;
 
     @action
     private onInputFocus = () => {
@@ -93,7 +81,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             if (isSelected > -1) {
                 tempUserSelection.splice(isSelected, 1);
                 this.setUserSelection(tempUserSelection);
-                this.props.inputCallback(this.props.inputId, this.userSelection);
+                this.props.inputCallback(this.props.inputName, this.userSelection);
                 return;
             }
         }
@@ -106,7 +94,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         this.userInput = "";
         this.setInputSuggestion();
         this.setUserSelection(tempUserSelection);
-        this.props.inputCallback(this.props.inputId, this.userSelection);
+        this.props.inputCallback(this.props.inputName, this.userSelection);
     };
 
     private optionListFiltered = () => {
@@ -115,7 +103,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         })
     }
 
-    options = () => {
+    private renderOptions = () => {
         let filteredList = this.optionListFiltered();
         return filteredList.map((option: string) => {
             let row = (
@@ -172,14 +160,6 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             "show-list": this.inputFocus
         })
 
-        let classNameInput = toClass({
-            "dropdown-input": true,
-            "focused": !!this.inputFocus,
-            "required": !!this.required && !this.userSelection.length && !this.inputFocus,
-            "warning-status": this.props.inputStatus === "warning",
-            "error-status": this.props.inputStatus === "error"
-        })
-
         let classNameArrowIcon = toClass({
             "arrow-icon": true,
             "focus-icon": !!this.inputFocus
@@ -187,7 +167,6 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
 
         return (
             <FormElementContainer
-                inputId={this.props.inputId}
                 label={this.props.label}
                 required={this.props.required}
                 inputFocused={this.inputFocus}
@@ -195,30 +174,30 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
                 statusMessage={this.props.statusMessage}
                 inputStatus={this.props.inputStatus}
                 hasValue={this.userInput.length > 0}
-                inputMode= {"dropdown"}
+                inputType= { InputTypes.TEXT }
             >
-                { this.inputFocus && this.userInput.length > 0 && <span className={"user-suggestion"}>{this.inputSuggestion}</span>}
+                <div className={"dropdown-input"}>
+                    {this.inputFocus && this.userInput.length > 0 && <span className={"user-suggestion"}>{this.inputSuggestion}</span>}
 
-                <input id={this.props.inputId}
-                    type={"text"}
-                    onChange={(event) => { this.setUserInput(event) }}
-                    onFocus={this.onInputFocus}
-                    onBlur={this.onInputBlur}
-                    ref={this.inputElement}
-                    className={classNameInput} list="datalist-input"
-                    value={this.userInput}
-                    autoComplete="off"></input>
-                <div className={classNameArrowIcon}>
-                    <svg width="13" height="5" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={this.onInputToggle}>
-                        <path d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z" fill="#908988" />
-                    </svg>
+                    <input name={this.props.inputName}
+                        type={"text"}
+                        onChange={(event) => { this.setUserInput(event) }}
+                        onFocus={this.onInputFocus}
+                        onBlur={this.onInputBlur}
+                        ref={this.inputElement}
+                        value={this.userInput}
+                        autoComplete="off"></input>
+                    <div className={classNameArrowIcon}>
+                        <svg width="13" height="5" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={this.onInputToggle}>
+                            <path d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z" fill="#908988" />
+                        </svg>
+                    </div>
+                    {this.userSelection.length > 0 && !this.props.inputStatus && <span className="selected-number">({this.userSelection.length})</span>}
+                    <ul id="datalist-input" className={classNameList}>
+                        {this.renderOptions()}
+                    </ul>
                 </div>
-                {this.userSelection.length > 0 && !this.props.inputStatus && <span className="selected-number">({this.userSelection.length})</span> }
-                <ul id="datalist-input" className={classNameList}>
-                    {this.options()}
-                </ul>
             </FormElementContainer>
         )
     }
-
 }

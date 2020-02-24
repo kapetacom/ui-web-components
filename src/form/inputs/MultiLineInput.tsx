@@ -4,71 +4,43 @@ import { observable, action } from "mobx";
 import { toClass } from "@blockware/ui-web-utils";
 import { observer } from "mobx-react";
 import { FormElementContainer } from "../inputs/FormElementContainer";
+import { InputAdvanceProps, InputTypes } from "./InputBasePropsInterface";
 
-export interface MultiLineInputProps {
-    inputId: string,
-    label: string,
-    required: boolean,
-    message: string,
-    statusMessage?: string,
-    inputStatus?: string,
-    inputCallback: (inputId:string, userSelection: string) => void
-}
 
+const MIN_HEIGHT: number = 22;
+const MAX_HEIGHT: number = 200;
 @observer
-export class MultiLineInput extends React.Component<MultiLineInputProps> {
-
-
-    @observable
-    inputFocused: boolean = false;
+export class MultiLineInput extends React.Component<InputAdvanceProps> {
 
     @observable
-    minHeight: number = 22;
+    private inputFocused: boolean = false;
 
-    wrapperBorder: number = 3;
-
-    @observable
-    currentHeight: number = 40;
-
-    maxHeight: number = 200;
-
-    textareaWrapperRef: RefObject<HTMLDivElement> = React.createRef();
-
-    divRef: RefObject<HTMLDivElement> = React.createRef();
-
-    textareaScrollHeight: number | null = null;
-
-    iconClass: string = '';
+    private textHeightElementRef: RefObject<HTMLDivElement> = React.createRef();
 
     @observable
-    userInput: string = "";
-
-    constructor(props: MultiLineInputProps) {
-        super(props);
-        this.currentHeight = this.minHeight;
-    }
+    private userInput: string = "";
 
     @action
-    inputOnBlur = () => {
+    private inputOnBlur = () => {
         this.inputFocused = false;
     }
 
     @action
-    inputOnFocus = () => {
+    private inputOnFocus = () => {
         this.inputFocused = true;
     }
 
-    calculateHeight() {
-        let currentHeight = this.minHeight;
-        if (this.divRef.current) {
-            this.divRef.current.innerHTML = this.userInput + 'X';
-            currentHeight = this.divRef.current.offsetHeight;
-            if (this.minHeight > currentHeight) {
-                currentHeight = this.minHeight;
+    private calculateHeight() {
+        let currentHeight = MIN_HEIGHT;
+        if (this.textHeightElementRef.current) {
+            this.textHeightElementRef.current.innerHTML = this.userInput + 'X';
+            currentHeight = this.textHeightElementRef.current.offsetHeight;
+            if (MIN_HEIGHT > currentHeight) {
+                currentHeight = MIN_HEIGHT;
             }
 
-            if (this.maxHeight < currentHeight) {
-                currentHeight = this.maxHeight;
+            if (MAX_HEIGHT < currentHeight) {
+                currentHeight = MAX_HEIGHT;
             }
         }
 
@@ -79,30 +51,15 @@ export class MultiLineInput extends React.Component<MultiLineInputProps> {
     private setUserInput = (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         let val = evt.target.value;
         this.userInput = val;
-        this.props.inputCallback(this.props.inputId, this.userInput);
+        this.props.inputCallback(this.props.inputName, this.userInput);
     }
 
     render() {
 
         let currentHeight = this.calculateHeight();
 
-        let required: string = this.props.required ? 'required' : '';
-
-        let classNameWrapper = toClass({
-            "textarea-wrapper": true,
-            "required": !!required && !this.userInput.length && !this.inputFocused,
-            "warning-status": this.props.inputStatus === "warning",
-            "error-status": this.props.inputStatus === "error",
-            "focused": this.inputFocused
-        });
-
-        let classNameTextarea = toClass({
-            "textarea": true
-        });
-
         return (
             <FormElementContainer
-                inputId={this.props.inputId}
                 label={this.props.label}
                 required={this.props.required}
                 inputFocused={this.inputFocused}
@@ -110,22 +67,21 @@ export class MultiLineInput extends React.Component<MultiLineInputProps> {
                 statusMessage={this.props.statusMessage}
                 inputStatus={this.props.inputStatus}
                 hasValue={this.userInput.length > 0}
-                inputMode={"multiline"}
+                inputType= { InputTypes.TEXT}
             >
                 <div
-                    className={classNameWrapper}
-                    ref={this.textareaWrapperRef}
+                    className={"textarea-wrapper"}
                 >
-                    <textarea id={this.props.inputId}
+                    <textarea name={this.props.inputName}
                         onChange={(event) => { this.setUserInput(event) }}
                         style={{ height: currentHeight + "px" }}
                         onFocus={this.inputOnFocus}
                         onBlur={this.inputOnBlur}
-                        className={classNameTextarea}
+                        className={"textarea"}
                         value={this.userInput}
                         autoComplete="off">
                     </textarea>
-                    <div ref={this.divRef} className={'text-height'}></div>
+                    <div ref={this.textHeightElementRef} className={'text-height'}></div>
                 </div>
             </FormElementContainer>
         )

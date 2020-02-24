@@ -12,51 +12,6 @@
     box-sizing: border-box;
     background-color: inherit;
 
-    &:hover {
-        .label {
-            color: @gray-xdark;
-        }
-
-        .input, .textarea {
-            color:@gray-xxdark;
-        }
-    }
-
-    &.focused {
-        .label.zoom-out {
-            color: @cyan-dark;
-        }
-
-        .tooltip >.right {
-            z-index: 300;
-        }
-    }
-
-    &.required {
-        .message {
-            color : @btn-cancel-bg;
-        }
-    }
-
-    &.warning-status {
-        .label.zoom-out {
-            color: @btn-regular-active-bg;
-        }
-
-        .message {
-            color: @btn-regular-active-bg;
-        }
-    }
-
-    &.error-status {
-        .label.zoom-out {
-            color: @btn-cancel-bg;
-        }
-        .message {
-            color : @btn-cancel-bg;
-        }
-    }
-
     .label {
         position:absolute;
         background-color: inherit;
@@ -85,7 +40,7 @@
         right: 10px;
         top: 10px;
     }
-    
+  
     .tooltip {
         display: block;
         top: 20px;
@@ -139,5 +94,76 @@
         font-size: 11px;
         opacity: 0.8;
         padding-left: 2px;        
+    }    
+
+
+    &.required {
+        .message {
+            color : @btn-cancel-bg;
+        }
+
+        input ,.textarea-wrapper {
+            border-color: @btn-cancel-bg ;
+        }            
+    }
+
+    &.warning-status {
+        .label.zoom-out {
+            color: @btn-regular-active-bg;
+        }
+
+        .message {
+            color: @btn-regular-active-bg;
+        }
+
+        input ,.textarea-wrapper {
+            border: 1.5px solid @btn-regular-active-bg ;
+        }
+        input {
+            padding-right: 55px;
+        }
+    }
+
+    &.error-status {
+        .label.zoom-out {
+            color: @btn-cancel-bg;
+        }
+        .message {
+            color : @btn-cancel-bg;
+        }
+        input ,.textarea-wrapper {
+            border: 1.5px solid @btn-cancel-bg;
+        }
+        input {
+            padding-right: 55px;
+        }
+    }
+
+    &:hover {
+        .label ,.label.zoom-out{
+            color: @gray-xdark;
+
+        }
+
+        input ,.textarea-wrapper {
+            border: 1px solid @gray-xdark ;
+            color: @gray-xxdark;
+        } 
+    }
+
+    &.focused {
+        .label.zoom-out {
+            color: @cyan-dark;
+        }
+
+        .tooltip >.right {
+            z-index: 300;
+        }
+
+        input ,.textarea-wrapper {
+            border: 1.5px solid @cyan-dark;
+            font-size:inherit;
+            color: @gray-xxdark
+        }
     }
 }

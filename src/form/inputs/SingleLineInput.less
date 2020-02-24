@@ -2,99 +2,77 @@
 @import "../../../styles/functions";
 
 
-.singleline-input {
-    width: 100%;
-    height: 40px;
-    padding: 10px 15px 5px 15px;
-    opacity: 0.7;
-    border: 1px solid @gray-dark;
-    box-shadow: none;
-    outline: none;
-    .border-radius(3px);
-    box-sizing: border-box;
-    .text-overflow();
-    background-color: transparent;
-    font-size:inherit;
-    color: @gray-xdark;
-    z-index: 1;
-    text-transform: capitalize;
+.singleline-input{
 
-    &:hover {
-        border: 1px solid @gray-xdark ;      
-    }
-
-    &:focus {
-        border: 1.5px solid @cyan-dark;
+    input {
+        width: 100%;
+        height: 40px;
+        padding: 10px 15px 5px 15px;
+        opacity: 0.7;
+        border: 1px solid @gray-dark;
+        box-shadow: none;
+        outline: none;
+        .border-radius(3px);
+        box-sizing: border-box;
+        .text-overflow();
+        background-color: transparent;
         font-size:inherit;
+        color: @gray-xdark;
+        z-index: 1;
+        text-transform: capitalize;
     }
 
-    &.required {
-        border-color: @btn-cancel-bg ;
+    /* Chrome, Safari, Edge, Opera  to remove the arrows on input[type=number]*/
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
     }
 
-    &.warning-status {
-        border: 1.5px solid @btn-regular-active-bg ;
-        padding-right: 55px;
-    }
-    &.error-status {
-        border: 1.5px solid @btn-cancel-bg ;
-        padding-right: 55px;
-    }
-}
-
-/* Chrome, Safari, Edge, Opera  to remove the arrows on input[type=number]*/
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-
-}
-
-/* Firefox to remove the arrows on input[type=number]*/
-input[type=number] {
-  -moz-appearance:textfield;
-  padding-left: 40px;
-  padding-top: 7px;
-}
-
-.upper-arrow{
-    top: 5px;
-}
-
-.lower-arrow {
-    top: 20px;
-}
-.arrows{
-    position:absolute;
-    right: 10px;
-
-    path {
-        fill: #908988;
+    /* Firefox to remove the arrows on input[type=number]*/
+    input[type=number] {
+    -moz-appearance:textfield;
+    padding-left: 40px;
+    padding-top: 7px;
     }
 
-    &:hover {
-        rect {
-            fill: #A6DCE1;
-        }
+    .upper-arrow{
+        top: 5px;
     }
-    &:active {
-        rect {
-            fill: #A6DCE1;
-        }
+
+    .lower-arrow {
+        top: 20px;
+    }
+    .arrows{
+        position:absolute;
+        right: 10px;
+
         path {
-            fill: #009AA9;
+            fill: #908988;
         }
 
+        &.error-or-warning {
+            right: 38px;
+        }
+
+        &:hover {
+            rect {
+                fill: #A6DCE1;
+            }
+        }
+        &:active {
+            rect {
+                fill: #A6DCE1;
+            }
+            path {
+                fill: #009AA9;
+            }
+        }
     }
 
-    &.error-or-warning {
-        right: 38px;
+    .icon-numbers {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        z-index: 3;
     }
 }
-
-.icon-numbers {
-    position: absolute;
-    left: 10px;
-    top: 10px;
-    z-index: 3;
-}
-
