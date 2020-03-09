@@ -26,7 +26,7 @@ export interface InputBaseProps {
     required: boolean,
     message: string,
     statusMessage?: string | undefined,
-    inputStatus?: InputStatusTypes,
+    inputStatus?: InputStatusTypes | undefined,
     inputType?: InputTypes,
     inputMode?: InputModeTypes,
 

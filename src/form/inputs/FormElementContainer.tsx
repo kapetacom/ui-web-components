@@ -15,17 +15,19 @@ export class FormElementContainer extends React.Component<FormElementContainerPr
     
     render() {
 
+        const inputType = this.props.inputType || 'text';
+
         let classFormElemContainer = toClass({
             "form-element-container": true,
             "focused": this.props.inputFocused,
             "required": !!this.props.required && !this.props.hasValue ,
             "warning-status": this.props.inputStatus === "warning",
-            "error-status": this.props.inputStatus === "error"
+            "error-status": this.props.inputStatus === "error",
+            ["type-" + inputType]: true
         });
 
         let classNameLabel = toClass({
             "label": true,
-            "label-icon-number": this.props.inputType==="number" ,
             "zoom-out": this.props.hasValue || this.props.inputFocused,
         });
 
@@ -35,9 +37,11 @@ export class FormElementContainer extends React.Component<FormElementContainerPr
 
         return (
             <div className={classFormElemContainer} >
-                <span className={classNameLabel} >{this.props.label}</span>
+                <div className={"input-container"}>
+                    <span className={classNameLabel} >{this.props.label}</span>
 
-                {this.props.children}
+                    {this.props.children}
+                </div>
 
                 {this.props.required && !this.props.hasValue ?
                     <span className={classNameMessage}><sup>*</sup>Please provide an input.</span> : null
