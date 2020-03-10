@@ -1,0 +1,74 @@
+@import "../../../styles/values";
+@import "../../../styles/functions";
+
+
+.textarea-wrapper {
+    display: block;
+    max-width: 400px;
+    min-width: 350px;
+    width:100%;
+    background-color: transparent;
+    border:none;
+    overflow: visible;
+    box-sizing: border-box;
+    position: relative;
+    
+    textarea, .text-height {
+        display: block;
+        position: relative;
+        border: none;
+        height: 100%;
+        min-height:40px;
+        width:100%;
+        padding:0;
+        opacity: 0.7;
+        box-shadow: none;
+        box-sizing: border-box;
+        padding: 10px 15px 8px 15px;
+        outline: none;
+        background-color: transparent;
+        font-size:inherit;
+        color: @gray-xdark;
+        resize: none;
+        overflow: auto;
+        margin-right: 10px;
+        line-height: 22px;
+        font-weight: normal;
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+            background: transparent;
+
+        }
+        
+        /* Track */
+        ::-webkit-scrollbar-track-piece {
+            display: none;
+        }
+        
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: @gray-dark;
+            height:50px;
+        }
+        
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: @gray-xdark; 
+        }
+    }
+
+    .text-height {
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+        max-height: auto;
+        height:auto;
+        overflow: visible;
+        padding: 10px 15px 8px 15px;
+        position: absolute;
+        top:0;
+        left:-99999px;
+        box-sizing: border-box;
+    }
+}

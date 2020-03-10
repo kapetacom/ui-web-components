@@ -6,7 +6,11 @@ import { Store, StateDecorator, State } from "@sambego/storybook-state";
 import {EntityMapper, EntityPicker, EntityForm, EntityFormModel} from "../src";
 
 import { EntityList } from "../src/entities/EntityList";
+import { SingleLineInput, } from "../src/form/inputs/SingleLineInput";
+import { MultiLineInput,  } from "../src/form/inputs/MultiLineInput";
+import { DropdownInput } from "../src/form/inputs/DropdownInput";
 import { SchemaEntryType } from '@blockware/ui-web-types';
+import { InputModeTypes, InputStatusTypes, InputTypes } from "../src//form//inputs//InputBasePropsInterface"
 
 const EntityFrom = {
     name: {
@@ -134,66 +138,6 @@ storiesOf('Entity Forms', module)
             {
                 name: "Entity 1",
                 properties: {},
-                status: "In use"
-            },
-            {
-                name: "Entity 2",
-                properties: {},
-                status: "In use"
-            },
-            {
-                name: "Entity 3",
-                properties: {},
-                status: false
-            },
-            {
-                name: "Entity 4",
-                properties: {},
-                status: false
-            },
-            {
-                name: "Entity 5",
-                properties: {},
-                status: true
-            },
-            {
-                name: "Entity 6",
-                properties: {},
-                status: false
-            },
-            {
-                name: "Entity 1",
-                properties: {},
-                status: true
-            },
-            {
-                name: "Entity 2",
-                properties: {},
-                status: true
-            },
-            {
-                name: "Entity 3",
-                properties: {},
-                status: false
-            },
-            {
-                name: "Entity 4",
-                properties: {},
-                status: false
-            },
-            {
-                name: "Entity 5",
-                properties: {},
-                status: true
-            },
-            {
-                name: "Entity 6",
-                properties: {},
-                status: false
-            },
-            {
-                name: "Entity 1",
-                properties: {},
                 status: true
             },
             {
@@ -230,4 +174,192 @@ storiesOf('Entity Forms', module)
         )
     }
 
-    );
+    )
+
+    .add("Dropdown Input ", () => {
+        const countryList = [
+            "Algeria",
+            "American Samoa",
+            "Andorra",
+            "Angola",
+            "Anguilla",
+            "antarctica",
+            "Antigua and Barbuda",
+            "argentina",
+            "Armenia",
+            "Aruba",
+            "australia",
+            "Austria",
+            "Azerbaijan",
+            "bahamas (the)",
+            "bahrain",
+            "Bangladesh",
+            "Barbados",
+            "Belarus",
+            "Belgium"
+        ];
+
+        let userSelection= [];
+        const inputCallback= (userInput) => {
+            userSelection = userInput;
+        };
+
+        
+        return (
+                
+            <div style={{ width: "600px", padding: '10px', backgroundColor: '#e0ecff' }}>
+                <form onSubmit={() => console.log("submited")} style={{ backgroundColor: 'inherit' }}>
+                    <DropdownInput
+                        inputName ="test1"
+                        label={"Multiple selection and required"}
+                        optionList={countryList}
+                        multiSelection={true}
+                        required={true} 
+                        inputType={InputTypes.TEXT}
+                        inputCallback={inputCallback}
+                        message={"this is just a message."}
+                        />
+                        <br></br>
+                        <DropdownInput
+                        inputName="test2"
+                        label={"Single Selection and required"}
+                        optionList={countryList}
+                        multiSelection={false}
+                        required={true}
+                        inputType={InputTypes.TEXT}
+                        inputCallback={inputCallback}
+                        message={"this is another message"} />
+                         <br></br>
+                        <DropdownInput
+                        inputName="test3"
+                        label={"Single selection & not required"}
+                        optionList={countryList}
+                        multiSelection={false}
+                        required={false}
+                        inputType={InputTypes.TEXT}
+                        inputCallback={inputCallback}
+                        message={"this is one more message"} />
+                        <br></br>
+                        <DropdownInput
+                        inputName={"test3"}
+                        label={"Single selection not required (warning)"}
+                        optionList={countryList}
+                        multiSelection={false}
+                        required={false}
+                        inputCallback={inputCallback}
+                        inputType={InputTypes.TEXT}
+                        statusMessage={"Block name already in use. Block name already in use."}
+                        inputStatus={InputStatusTypes.WARNING}
+                        message={"this is one more message"} />
+                        <br></br>
+
+                        <DropdownInput
+                        inputName="test3"
+                        label={"Single selection not required (warning)"}
+                        optionList={countryList}
+                        multiSelection={false}
+                        required={false}
+                        inputCallback={inputCallback}
+                        statusMessage={"Block name already in use. "}
+                        inputStatus={InputStatusTypes.ERROR}
+                        message={"this is one more message"} />
+                        <br></br>
+
+                    <input type="submit" value="Submit" />
+                </form>
+            </div>
+
+
+        )
+    })
+    .add("Single & Multi line Input", () => {
+
+        let inputReturnCallback = (inputReturn) => { console.log("Input Returned : ", inputReturn) }
+
+        let handleSubmit = (event) => { event.preventDefault(); console.log("event submitted") }
+        return (
+
+            <div style={{ width: "1200px", padding: '10px', backgroundColor: '#e0ecff' }}>
+                <form style={{ backgroundColor: 'inherit' }} onSubmit={handleSubmit}>
+
+
+                    <MultiLineInput
+                        inputName={"MultiLineInput1"}
+                        label={"Required Multi line Input"}
+                        required={true}
+                        inputType={InputTypes.TEXT}
+                        message={"Provide a description to your block."}
+                        statusMessage={"Block name already in use. Block name already in use. Block name already in use. Block name already in use. Block name already in use. Block name already in use."}
+                        inputStatus={InputStatusTypes.ERROR}
+                        inputCallback={inputReturnCallback}>
+                    </MultiLineInput>
+
+                    <MultiLineInput
+                        inputName={"MultiLineInput2"}
+                        label={"Required Multi line Input"}
+                        required={false}
+                        inputType={InputTypes.TEXT}
+                        message={"Provide a description to your block."}
+                        inputCallback={inputReturnCallback}>
+                    </MultiLineInput>
+
+
+                    <SingleLineInput
+                        inputName={"SingleInput1"}
+                        label={"Required Text Input"}
+                        required={true}
+                        message={"Specify the name of your block."}
+                        inputType={InputTypes.TEXT}
+                        inputCallback={inputReturnCallback}>
+                    </SingleLineInput>
+
+                    <SingleLineInput
+                        inputName={"SingleInput2"}
+                        label={"Single line input with warning status"}
+                        required={false}
+                        message={"Specify the name of your block."}
+                        statusMessage={"Block name already in use. Block name already in use. Block name already in use."}
+                        inputStatus={InputStatusTypes.WARNING}
+                        inputType={InputTypes.TEXT}
+                        inputCallback={inputReturnCallback}>
+                    </SingleLineInput>
+
+                    <SingleLineInput
+                        inputName={"SingleInput3"}
+                        label={"Single line input with error status"}
+                        required={false}
+                        message={"Specify the name of your block."}
+                        statusMessage={"Block name already in use. Block name already in use."}
+                        inputStatus={InputStatusTypes.ERROR}
+                        inputType={InputTypes.TEXT}
+                        inputCallback={inputReturnCallback}>
+                    </SingleLineInput>
+
+                    <SingleLineInput
+                        inputName={"SingleInput4"}
+                        label={"Number Input"}
+                        required={false}
+                        message={"Specify the number of your block."}
+                        inputType={InputTypes.NUMBER}
+                        inputCallback={inputReturnCallback}>
+                    </SingleLineInput>
+
+                    <SingleLineInput
+                        inputName={"SingleInput5"}
+                        label={"Number Input"}
+                        required={false}
+                        message={"Specify the number of your block."}
+                        statusMessage={"Specify the number of your block."}
+                        inputStatus={InputStatusTypes.ERROR}
+                        inputType={InputTypes.NUMBER}
+                        inputCallback={inputReturnCallback}>
+                    </SingleLineInput>
+
+
+                    <input type="submit" value="Submit" />
+                </form>
+            </div>
+
+
+        )
+    })
