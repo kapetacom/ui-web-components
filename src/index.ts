@@ -31,6 +31,7 @@ export * from './overlay/OverlayContainer';
 export * from './overlay/RenderInBody';
 
 export * from './side-panel/SidePanel';
+export * from './side-panel/SidePanelHeader';
 
 export * from './stack/StackContainer';
 export * from './stack/StackPage';
