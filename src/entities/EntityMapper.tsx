@@ -130,19 +130,23 @@ export class EntityMapper extends React.Component<EntityMapperProps, EntityMappe
         });
 
         return (
-            <FormRow label={`${id}:${entry.type}`} help={'Choose source value to map from'}>
-                <select value={this.getMapping(id)} name={id}
-                        onChange={(evt) => this.updateMapping(id, evt.target.value)}>
-                    <option value={''}>Skip</option>
-                    {
-                        targetFields.map((entry, ix) => {
-                            return (
-                                <option key={ix} value={entry.id}>{entry.id}:{typeName(entry.type)}</option>
-                            );
-                        })
-                    }
-                </select>
-            </FormRow>
+
+            <div></div>
+            //This FormRow will be replace with DropdownInput component after the PR for new inputs will be aproved  
+            //
+            // <FormRow label={`${id}:${entry.type}`} help={'Choose source value to map from'}>
+            //     <select value={this.getMapping(id)} name={id}
+            //             onChange={(evt) => this.updateMapping(id, evt.target.value)}>
+            //         <option value={''}>Skip</option>
+            //         {
+            //             targetFields.map((entry, ix) => {
+            //                 return (
+            //                     <option key={ix} value={entry.id}>{entry.id}:{typeName(entry.type)}</option>
+            //                 );
+            //             })
+            //         }
+            //     </select>
+            // </FormRow>
         );
     }
 

@@ -8,7 +8,7 @@
     margin: 15px 10px 0 10px;
     width: calc(100% - 60px);
     min-width: 150px;
-    max-width: 350px;
+    max-width: 700px;
     box-sizing: border-box;
     background-color: inherit;
 
@@ -112,7 +112,7 @@
         &:hover {
             border-color: @gray-xdark ;
 
-            .label ,.label.zoom-out{
+            .label ,.label.zoom-out {
                 color: @gray-xdark;
             }
 
@@ -137,19 +137,19 @@
         .input-container {
             border: 1.5px solid @cyan-dark;
             margin:-0.5px;
-        }
-
-        .label.zoom-out {
-            color: @cyan-dark;
+            
+            .label.zoom-out {
+                color: @cyan-dark;
+            }
+            
+            input ,.textarea-wrapper {
+                font-size:inherit;
+                color: @gray-xxdark
+            }
         }
 
         .tooltip >.right {
             z-index: 300;
-        }
-
-        input ,.textarea-wrapper {
-            font-size:inherit;
-            color: @gray-xxdark
         }
     }
 

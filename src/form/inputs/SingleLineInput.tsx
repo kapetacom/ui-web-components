@@ -3,8 +3,8 @@ import "./SingleLineInput.less";
 import { observable, action } from "mobx";
 import { toClass } from "@blockware/ui-web-utils";
 import { observer } from "mobx-react";
-import { FormElementContainer } from "../inputs/FormElementContainer";
 import { InputBaseProps, InputTypes, InputAdvanceProps, InputModeTypes } from "./InputBasePropsInterface";
+import { FormRow } from "../FormRow";
 
 @observer
 export class SingleLineInput extends React.Component<InputAdvanceProps> {
@@ -14,7 +14,7 @@ export class SingleLineInput extends React.Component<InputAdvanceProps> {
     private inputFocused: boolean = false;
 
     @observable
-    private userInput: string = "";
+    private userInput: string = this.props.value ? this.props.value :"";
 
     private inputRef: React.RefObject<HTMLInputElement> = React.createRef();
 
@@ -102,24 +102,26 @@ export class SingleLineInput extends React.Component<InputAdvanceProps> {
         return (
 
             
-                <FormElementContainer
-                    label={this.props.label}
-                    required={this.props.required}
+                <FormRow
+                    label= {this.props.label}
+                    help={this.props.message} 
                     inputFocused={this.inputFocused}
-                    message={this.props.message}
+                    validation={this.props.validation}
                     statusMessage={this.props.statusMessage}
                     inputStatus={this.props.inputStatus}
                     inputType={this.props.inputType}
-                    hasValue={this.userInput.length > 0}
+                    hasValue={this.userInput.length || this.props.value ? true: false}
+                    value= {this.props.value}
                 
                 >
-                    <div className={classNameSinglelineWrapper}>
-                        <input name={this.props.inputName}
+                    <div className={classNameSinglelineWrapper} data-name={this.props.inputName} data-value={this.props.value}>
+                        <input 
                             type={this.props.inputType}
                             onChange={(event) => { this.setUserInput(event) }}
                             onFocus={this.inputOnFocus}
                             onBlur={this.inputOnBlur}
                             value={this.userInput}
+                            disabled={this.props.disabled}                            
                             ref={this.inputRef} />
 
                         {this.props.inputType === 'number' &&
@@ -131,7 +133,7 @@ export class SingleLineInput extends React.Component<InputAdvanceProps> {
                         }
                     </div>
 
-                </FormElementContainer>
+                </FormRow>
         )
     }
 }

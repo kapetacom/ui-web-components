@@ -23,17 +23,20 @@ export enum InputTypes {
 export interface InputBaseProps {
 
     label: string,
-    required: boolean,
+    required?: boolean,
     message: string,
     statusMessage?: string | undefined,
     inputStatus?: InputStatusTypes | undefined,
+    validation?: any | any[],
     inputType?: InputTypes,
-    inputMode?: InputModeTypes,
+    inputMode?: InputModeTypes
 
 }
 
 export interface InputAdvanceProps extends InputBaseProps {
-    inputName: string;
-    inputCallback: (inputName: string, userInput: string | string[]) => void
+    inputName: string,
+    value: any,
+    disabled?: boolean | undefined,
+    inputCallback: (inputName: string, userInput: any) => void
 
 }

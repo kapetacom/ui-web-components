@@ -209,9 +209,10 @@ storiesOf('Entity Forms', module)
                 
             <div style={{ width: "600px", padding: '10px', backgroundColor: '#e0ecff' }}>
                 <form onSubmit={() => console.log("submited")} style={{ backgroundColor: 'inherit' }}>
-                    <DropdownInput
+                     <DropdownInput
                         inputName ="test1"
                         label={"Multiple selection and required"}
+                        value={"test"}
                         optionList={countryList}
                         multiSelection={true}
                         required={true} 
@@ -222,48 +223,17 @@ storiesOf('Entity Forms', module)
                         <br></br>
                         <DropdownInput
                         inputName="test2"
-                        label={"Single Selection and required"}
+                        value={""}
+                        label={"Single Selection disabled"}
                         optionList={countryList}
                         multiSelection={false}
                         required={true}
                         inputType={InputTypes.TEXT}
                         inputCallback={inputCallback}
-                        message={"this is another message"} />
+                        message={"this is another message"}
+                        disabled={true} />
                          <br></br>
-                        <DropdownInput
-                        inputName="test3"
-                        label={"Single selection & not required"}
-                        optionList={countryList}
-                        multiSelection={false}
-                        required={false}
-                        inputType={InputTypes.TEXT}
-                        inputCallback={inputCallback}
-                        message={"this is one more message"} />
-                        <br></br>
-                        <DropdownInput
-                        inputName={"test3"}
-                        label={"Single selection not required (warning)"}
-                        optionList={countryList}
-                        multiSelection={false}
-                        required={false}
-                        inputCallback={inputCallback}
-                        inputType={InputTypes.TEXT}
-                        statusMessage={"Block name already in use. Block name already in use."}
-                        inputStatus={InputStatusTypes.WARNING}
-                        message={"this is one more message"} />
-                        <br></br>
-
-                        <DropdownInput
-                        inputName="test3"
-                        label={"Single selection not required (warning)"}
-                        optionList={countryList}
-                        multiSelection={false}
-                        required={false}
-                        inputCallback={inputCallback}
-                        statusMessage={"Block name already in use. "}
-                        inputStatus={InputStatusTypes.ERROR}
-                        message={"this is one more message"} />
-                        <br></br>
+                        <br></br> 
 
                     <input type="submit" value="Submit" />
                 </form>
@@ -282,32 +252,11 @@ storiesOf('Entity Forms', module)
             <div style={{ width: "1200px", padding: '10px', backgroundColor: '#e0ecff' }}>
                 <form style={{ backgroundColor: 'inherit' }} onSubmit={handleSubmit}>
 
-
-                    <MultiLineInput
-                        inputName={"MultiLineInput1"}
-                        label={"Required Multi line Input"}
-                        required={true}
-                        inputType={InputTypes.TEXT}
-                        message={"Provide a description to your block."}
-                        statusMessage={"Block name already in use. Block name already in use. Block name already in use. Block name already in use. Block name already in use. Block name already in use."}
-                        inputStatus={InputStatusTypes.ERROR}
-                        inputCallback={inputReturnCallback}>
-                    </MultiLineInput>
-
-                    <MultiLineInput
-                        inputName={"MultiLineInput2"}
-                        label={"Required Multi line Input"}
-                        required={false}
-                        inputType={InputTypes.TEXT}
-                        message={"Provide a description to your block."}
-                        inputCallback={inputReturnCallback}>
-                    </MultiLineInput>
-
-
-                    <SingleLineInput
+                      <SingleLineInput
                         inputName={"SingleInput1"}
-                        label={"Required Text Input"}
-                        required={true}
+                        value={'Test value'}
+                        label={"Single line input"}
+                        validation={'required'}
                         message={"Specify the name of your block."}
                         inputType={InputTypes.TEXT}
                         inputCallback={inputReturnCallback}>
@@ -315,45 +264,34 @@ storiesOf('Entity Forms', module)
 
                     <SingleLineInput
                         inputName={"SingleInput2"}
-                        label={"Single line input with warning status"}
-                        required={false}
+                        value={''}
+                        label={"Single line input"}
+                        validation={'required'}
                         message={"Specify the name of your block."}
-                        statusMessage={"Block name already in use. Block name already in use. Block name already in use."}
-                        inputStatus={InputStatusTypes.WARNING}
                         inputType={InputTypes.TEXT}
                         inputCallback={inputReturnCallback}>
                     </SingleLineInput>
 
-                    <SingleLineInput
-                        inputName={"SingleInput3"}
-                        label={"Single line input with error status"}
-                        required={false}
-                        message={"Specify the name of your block."}
-                        statusMessage={"Block name already in use. Block name already in use."}
-                        inputStatus={InputStatusTypes.ERROR}
+
+                    <MultiLineInput
+                        inputName={"MultiLineInput1"}
+                        value={''}
+                        label={"Multiline line input disabled"}
+                        validation={'required'}
+                        message={"Specify the description of your block."}
+                        inputType={InputTypes.TEXT}
+                        inputCallback={inputReturnCallback}
+                        disabled={true}>
+                    </MultiLineInput>
+                    <MultiLineInput
+                        inputName={"MultiLineInput2"}
+                        value={''}
+                        label={"Multiline line input"}
+                        validation={'required'}
+                        message={"Specify the description of your block."}
                         inputType={InputTypes.TEXT}
                         inputCallback={inputReturnCallback}>
-                    </SingleLineInput>
-
-                    <SingleLineInput
-                        inputName={"SingleInput4"}
-                        label={"Number Input"}
-                        required={false}
-                        message={"Specify the number of your block."}
-                        inputType={InputTypes.NUMBER}
-                        inputCallback={inputReturnCallback}>
-                    </SingleLineInput>
-
-                    <SingleLineInput
-                        inputName={"SingleInput5"}
-                        label={"Number Input"}
-                        required={false}
-                        message={"Specify the number of your block."}
-                        statusMessage={"Specify the number of your block."}
-                        inputStatus={InputStatusTypes.ERROR}
-                        inputType={InputTypes.NUMBER}
-                        inputCallback={inputReturnCallback}>
-                    </SingleLineInput>
+                    </MultiLineInput>
 
 
                     <input type="submit" value="Submit" />

@@ -4,8 +4,8 @@ import { observable, action } from "mobx";
 import { toClass } from "@blockware/ui-web-utils";
 import * as _ from "lodash";
 import { observer } from "mobx-react";
-import { FormElementContainer } from "../inputs/FormElementContainer";
 import {  InputModeTypes, InputTypes, InputAdvanceProps } from "./InputBasePropsInterface";
+import { FormRow } from "../FormRow";
 
 interface DropdownInputProps extends InputAdvanceProps {
     optionList: string[],
@@ -49,7 +49,9 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
 
     @action
     private onInputToggle = () => {
-        this.inputFocus = !this.inputFocus;
+        if(!this.props.disabled){
+            this.inputFocus = !this.inputFocus;  
+        }
     }
 
     @action
@@ -166,17 +168,18 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         });
 
         return (
-            <FormElementContainer
+            <FormRow
                 label={this.props.label}
-                required={this.props.required}
+                help={this.props.message}
                 inputFocused={this.inputFocus}
-                message={this.props.message}
+                validation={this.props.validation}    
                 statusMessage={this.props.statusMessage}
                 inputStatus={this.props.inputStatus}
-                hasValue={this.userInput.length > 0}
                 inputType= { InputTypes.TEXT }
+                hasValue={this.userInput.length || this.props.value ? true: false}
+                value= {this.props.value}
             >
-                <div className={"dropdown-input"}>
+                <div className={"dropdown-input"} data-name={this.props.inputName} data-value={this.props.value}>
                     {this.inputFocus && this.userInput.length > 0 && <span className={"user-suggestion"}>{this.inputSuggestion}</span>}
 
                     <input name={this.props.inputName}
@@ -185,8 +188,9 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
                         onFocus={this.onInputFocus}
                         onBlur={this.onInputBlur}
                         ref={this.inputElement}
-                        value={this.userInput}
-                        autoComplete="off"></input>
+                        value={this.userInput || this.inputFocus ? this.userInput : this.props.value}
+                        autoComplete="off"
+                        disabled={this.props.disabled} />
                     <div className={classNameArrowIcon}>
                         <svg width="13" height="5" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={this.onInputToggle}>
                             <path d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z" fill="#908988" />
@@ -197,7 +201,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
                         {this.renderOptions()}
                     </ul>
                 </div>
-            </FormElementContainer>
+            </FormRow>
         )
     }
 }

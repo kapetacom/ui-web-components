@@ -3,8 +3,8 @@ import "./MultiLineInput.less";
 import { observable, action } from "mobx";
 import { toClass } from "@blockware/ui-web-utils";
 import { observer } from "mobx-react";
-import { FormElementContainer } from "../inputs/FormElementContainer";
 import { InputAdvanceProps, InputTypes } from "./InputBasePropsInterface";
+import { FormRow } from "../FormRow";
 
 
 const MIN_HEIGHT: number = 22;
@@ -18,7 +18,7 @@ export class MultiLineInput extends React.Component<InputAdvanceProps> {
     private textHeightElementRef: RefObject<HTMLDivElement> = React.createRef();
 
     @observable
-    private userInput: string = "";
+    private userInput: string =  this.props.value ? this.props.value :"";
 
     @action
     private inputOnBlur = () => {
@@ -59,18 +59,21 @@ export class MultiLineInput extends React.Component<InputAdvanceProps> {
         let currentHeight = this.calculateHeight();
 
         return (
-            <FormElementContainer
+
+            <FormRow
                 label={this.props.label}
-                required={this.props.required}
+                help={this.props.message}
                 inputFocused={this.inputFocused}
-                message={this.props.message}
+                validation={this.props.validation}
                 statusMessage={this.props.statusMessage}
                 inputStatus={this.props.inputStatus}
-                hasValue={this.userInput.length > 0}
+                hasValue={this.userInput.length || this.props.value ? true: false}
                 inputType= { InputTypes.TEXT}
+                value={this.props.value}
+
             >
                 <div
-                    className={"textarea-wrapper"}
+                    className={"textarea-wrapper"} data-name={this.props.inputName} data-value={this.props.value}
                 >
                     <textarea name={this.props.inputName}
                         onChange={(event) => { this.setUserInput(event) }}
@@ -79,11 +82,12 @@ export class MultiLineInput extends React.Component<InputAdvanceProps> {
                         onBlur={this.inputOnBlur}
                         className={"textarea"}
                         value={this.userInput}
+                        disabled={this.props.disabled}
                         autoComplete="off">
                     </textarea>
                     <div ref={this.textHeightElementRef} className={'text-height'}></div>
                 </div>
-            </FormElementContainer>
+            </FormRow>
         )
     }
 }

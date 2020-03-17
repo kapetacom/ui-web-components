@@ -8,7 +8,10 @@ import { InputBaseProps } from "./InputBasePropsInterface";
 
 interface FormElementContainerProps extends InputBaseProps {
     inputFocused: boolean,
-    hasValue: boolean
+    required?: boolean,
+    hasValue: boolean,
+    errorMessages?: string,
+    touched: boolean
 }
 @observer
 export class FormElementContainer extends React.Component<FormElementContainerProps> {
@@ -20,7 +23,7 @@ export class FormElementContainer extends React.Component<FormElementContainerPr
         let classFormElemContainer = toClass({
             "form-element-container": true,
             "focused": this.props.inputFocused,
-            "required": !!this.props.required && !this.props.hasValue ,
+            "required": !!this.props.required && !this.props.hasValue && this.props.touched ,
             "warning-status": this.props.inputStatus === "warning",
             "error-status": this.props.inputStatus === "error",
             ["type-" + inputType]: true
@@ -43,14 +46,10 @@ export class FormElementContainer extends React.Component<FormElementContainerPr
                     {this.props.children}
                 </div>
 
-                {this.props.required && !this.props.hasValue ?
-                    <span className={classNameMessage}><sup>*</sup>Please provide an input.</span> : null
-                }
-                {
-                    (this.props.message.length > 0 && this.props.hasValue) || !this.props.required ?
-                        <span className={classNameMessage} >
-                            {"*" && !!this.props.required && !this.props.inputFocused && !this.props.hasValue}
-                            {this.props.message}</span> : null
+                {this.props.required && this.props.errorMessages && this.props.touched && !this.props.hasValue ?
+                    <span className={classNameMessage}><sup>*</sup>{ this.props.errorMessages }</span> : 
+                    <span className={classNameMessage} >
+                           {this.props.required?<sup>*</sup>:null} {this.props.message}</span>
                 }
 
                 {(this.props.inputStatus === "warning" || this.props.inputStatus === "error") &&

@@ -4,13 +4,21 @@ import {FormContext, FormContextType} from './FormContext';
 
 import "./FormRow.less";
 import {FormStateChangeEvent} from "./FormContainer";
+import { FormElementContainer } from "./inputs/FormElementContainer";
+import { InputStatusTypes, InputTypes } from "./inputs/InputBasePropsInterface";
 
 interface FormRowProps {
     label: string
-    help?: string
+    help: string
     validation?: any | any[]
     className?:string
     children:any,
+    inputFocused: boolean,
+    hasValue: boolean,
+    value?: string | string[],
+    statusMessage?: string | undefined,
+    inputStatus?: InputStatusTypes | undefined,
+    inputType?: InputTypes | undefined,
     $onReadyStateChanged?: (fieldName:string, ready:boolean) => void //Internal callback
 }
 
@@ -68,12 +76,16 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
     }
 
     getChildValue() {
-        let value = this.getChildProperties().value;
-        if (value === undefined) {
+        // At this moment I need to check for both this.props.children.props[data-value] and this.props.children.props.value.
+        // In the old FormRow component the value was under input as <input value="">  . Now the value is under <div data-value="">
+
+        let value = this.props.children.props.hasOwnProperty('data-value') ? this.getChildProperties()['data-value'] : this.getChildProperties().value;
+
+        if (value === undefined) {          
             return this.getDefaultValue();
         }
 
-        return this.getChildProperties().value;
+        return this.props.children.props.hasOwnProperty('data-value') ? this.getChildProperties()['data-value'] : this.getChildProperties().value;
     }
 
     getDefaultValue() {
@@ -81,7 +93,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
     }
 
     getChildName() {
-        return this.getChildProperties().name;
+        return this.props.children.props.hasOwnProperty('name') ? this.getChildProperties().name : this.getChildProperties()['data-name'];
     }
 
     getChildProperties() {
@@ -89,12 +101,16 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
             throw new Error('Form row requires a input table element as a child to work');
         }
 
-        if (!this.props.children.props.hasOwnProperty('value')) {
-            throw new Error('Form row requires a single child with a value property to work properly');
+        if (!this.props.children.props.hasOwnProperty('data-value')) {
+            if(!this.props.children.props.hasOwnProperty('value')){
+                throw new Error('Form row requires a single child with a "data-value" or "value" property to work properly');
+            }
         }
 
-        if (!this.props.children.props.hasOwnProperty('name')) {
-            throw new Error('Form row requires a single child with a name property to work properly');
+        if (!this.props.children.props.hasOwnProperty('data-name')) {
+            if(!this.props.children.props.hasOwnProperty('name')){
+                throw new Error('Form row requires a single child with a "name" or "data-name" property to work properly');
+            }
         }
 
         return this.props.children.props;
@@ -167,22 +183,15 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
 
     render() {
 
-        let labelTitle = '';
         let errorMessage = null;
-        const classNames = ['form-row'];
 
-        if (this.props.className) {
-            classNames.push(this.props.className);
-        }
 
         const errors = this.applyValidation();
 
         if (this.isTouched()) {
 
-            classNames.push('touched');
 
             if (errors.length > 0) {
-                classNames.push('error');
                 errorMessage = errors[0];
                 this.setReadyState(false);
             } else {
@@ -194,35 +203,20 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
 
         const required = this.isRequired();
 
-        if (required) {
-            classNames.push('required');
-            labelTitle = 'Field is required';
-        } else if (!this.readyState) {
-            labelTitle = 'Field requires changes';
-        }
 
-        classNames.push(this.readyState ? 'ready' : 'unready');
 
         return (
-            <div className={classNames.join(' ')} >
-                <label>
-                    <span className="row-label" title={labelTitle}>
-                        {this.props.label + (required ? ' *' : '')}
-                    </span>
-                    {this.props.children}
-                </label>
-
-                {
-                    this.props.help &&
-                    !errorMessage &&
-                    <div className="row-help">{this.props.help}</div>
-                }
-
-                {
-                    errorMessage &&
-                    <div className="row-error">{errorMessage}</div>
-                }
-            </div>
+            <FormElementContainer
+                hasValue={this.props.hasValue}
+                required={required}
+                touched={this.isTouched()}
+                inputFocused={this.props.inputFocused}
+                label={this.props.label}
+                message={this.props.help}
+                errorMessages={errorMessage}
+            >
+                {this.props.children}
+            </FormElementContainer>
         )
 
     }

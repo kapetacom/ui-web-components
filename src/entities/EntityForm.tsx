@@ -265,12 +265,14 @@ export class EntityForm extends React.Component<EntityFormProps> {
                 <FormReadyHandler name={this.props.name}
                                   ready={this.isValid()} />
 
+                {/* This FormRow will be replace with SinglelineInput component after the PR for new inputs will be aproved  
+                
                 <FormRow label={'Name'}>
                     <input name={'name'}
                            type={'text'}
                            value={this.props.entity.name}
                            onChange={(evt) => {this.props.entity.name = evt.target.value.trim(); this.handleChange(); }} />
-                </FormRow>
+                </FormRow> */}
 
                 <div className={'field-rows'}>
                     <div className={'field-row header'}>
