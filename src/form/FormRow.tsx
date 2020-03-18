@@ -9,7 +9,7 @@ import { InputStatusTypes, InputTypes } from "./inputs/InputBasePropsInterface";
 
 interface FormRowProps {
     label: string
-    help: string
+    help?: string
     validation?: any | any[]
     className?:string
     children:any,
@@ -76,16 +76,14 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
     }
 
     getChildValue() {
-        // At this moment I need to check for both this.props.children.props[data-value] and this.props.children.props.value.
-        // In the old FormRow component the value was under input as <input value="">  . Now the value is under <div data-value="">
 
-        let value = this.props.children.props.hasOwnProperty('data-value') ? this.getChildProperties()['data-value'] : this.getChildProperties().value;
+        let value = this.getChildProperties()['data-value'];
 
         if (value === undefined) {          
             return this.getDefaultValue();
         }
-
-        return this.props.children.props.hasOwnProperty('data-value') ? this.getChildProperties()['data-value'] : this.getChildProperties().value;
+        
+        return value;
     }
 
     getDefaultValue() {
@@ -93,7 +91,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
     }
 
     getChildName() {
-        return this.props.children.props.hasOwnProperty('name') ? this.getChildProperties().name : this.getChildProperties()['data-name'];
+        return this.getChildProperties()['data-name'];
     }
 
     getChildProperties() {
@@ -102,16 +100,12 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
         }
 
         if (!this.props.children.props.hasOwnProperty('data-value')) {
-            if(!this.props.children.props.hasOwnProperty('value')){
-                throw new Error('Form row requires a single child with a "data-value" or "value" property to work properly');
-            }
+            throw new Error('Form row requires a single child with a "data-value" property to work properly');            
         }
 
         if (!this.props.children.props.hasOwnProperty('data-name')) {
-            if(!this.props.children.props.hasOwnProperty('name')){
-                throw new Error('Form row requires a single child with a "name" or "data-name" property to work properly');
+            throw new Error('Form row requires a single child with a "data-name" property to work properly');
             }
-        }
 
         return this.props.children.props;
     }

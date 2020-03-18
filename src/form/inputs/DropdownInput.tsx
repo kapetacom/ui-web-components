@@ -121,7 +121,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
                     {
                         this.userSelection.indexOf(option) < 0 ? null :
                             <span className={"selected-icon"} >
-                                <svg width="14" height="10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg width="14" height="10" fill="none" >
                                     <path fillRule="evenodd" clipRule="evenodd" d="M5 9.61957L0 4.99477L1.4 3.69983L5 7.02968L12.6 0L14 1.29494L5 9.61957Z" fill="#686868" />
                                 </svg>
                             </span>
@@ -192,7 +192,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
                         autoComplete="off"
                         disabled={this.props.disabled} />
                     <div className={classNameArrowIcon}>
-                        <svg width="13" height="5" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={this.onInputToggle}>
+                        <svg width="13" height="5" fill="none" onClick={this.onInputToggle}>
                             <path d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z" fill="#908988" />
                         </svg>
                     </div>

@@ -87,7 +87,7 @@ storiesOf('Entity Forms', module)
     .addDecorator(StateDecorator(pickerState))
 
     .add("Entity Mapper", () => (
-        <div style={{ width: "700px", padding: '10px' }}>
+        <div style={{ width: "700px", padding: '10px', backgroundColor: '#e0ecff' }}>
             <EntityMapper fromEntities={[]} toEntities={[]} from={EntityFrom} to={EntityTo} onChange={(mapping) => console.log('mapping', mapping)} />
         </div>
     ))
@@ -119,7 +119,7 @@ storiesOf('Entity Forms', module)
     .addDecorator(StateDecorator(entityFormState))
     .add("Entity Form ", () => {
         return (
-            <div style={{ width: "700px", padding: '10px' }}>
+            <div style={{ width: "700px", padding: '10px', backgroundColor: '#e0ecff'}}>
                 <State store={entityFormState} >
                     <EntityForm
                         name={'test'}

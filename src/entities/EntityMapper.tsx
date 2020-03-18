@@ -8,7 +8,8 @@ import {
     typeName
 } from "@blockware/ui-web-types";
 
-import {FormRow} from "..";
+import { DropdownInput} from "../form/inputs/DropdownInput";
+import { InputTypes } from "../form/inputs/InputBasePropsInterface";
 
 interface IDEntry {
     id: string
@@ -129,24 +130,21 @@ export class EntityMapper extends React.Component<EntityMapperProps, EntityMappe
             return isCompatibleTypes(targetField.type, entry.type, this.props.fromEntities, this.props.toEntities);
         });
 
+        let targetFieldsList: string[] = targetFields.map(target=> `${target.id}:${typeName(target.type)}`);
         return (
 
-            <div></div>
-            //This FormRow will be replace with DropdownInput component after the PR for new inputs will be aproved  
-            //
-            // <FormRow label={`${id}:${entry.type}`} help={'Choose source value to map from'}>
-            //     <select value={this.getMapping(id)} name={id}
-            //             onChange={(evt) => this.updateMapping(id, evt.target.value)}>
-            //         <option value={''}>Skip</option>
-            //         {
-            //             targetFields.map((entry, ix) => {
-            //                 return (
-            //                     <option key={ix} value={entry.id}>{entry.id}:{typeName(entry.type)}</option>
-            //                 );
-            //             })
-            //         }
-            //     </select>
-            // </FormRow>
+            <DropdownInput
+            inputName ={id}
+            label={`${id}:${entry.type}`}
+            value={this.getMapping(id)}
+            optionList={targetFieldsList}
+            multiSelection={false}
+            required={true} 
+            inputType={InputTypes.TEXT}
+            inputCallback={(userInput) => this.updateMapping(id, userInput)}
+            message={'Choose source value to map from'}
+            />
+
         );
     }
 
