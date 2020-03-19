@@ -270,8 +270,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
                     name={"name"}
                     value={this.props.entity.name}
                     label={"Name"}
-                    validation={['required']}                    
-                    disabled={false}
+                    validation={['required']}
                     onChange={(inputName, userInput)=>{this.props.entity.name = userInput.trim(); this.handleChange(); }} >                    
                 </SingleLineInput>
 

@@ -9,7 +9,7 @@ import { FormElementContainer } from "./inputs/FormElementContainer";
 interface FormRowProps {
     label: string
     help?: string
-    validation?: any | any[]
+    validation?: string[],
     children:any,
     type?: string,
     focused: boolean,
@@ -40,7 +40,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
     }
 
     getValidators() {
-        let validators = [];
+        let validators = [""];
         if (this.props.validation) {
             if (Array.isArray(this.props.validation)) {
                 validators = this.props.validation;
@@ -81,8 +81,6 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
     }
 
     hasValue() {
-        console.log(this.getChildValue().length > 0);
-        
         return this.getChildValue().length > 0;
     }
 
@@ -209,7 +207,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
                 label={this.props.label}
                 type={this.props.type}
                 focused={this.props.focused}
-                status={''}
+                status={ errorMessage && errorMessage.length > 0 ? "error": ""}
                 infoBox={''}                
             >
                 {this.props.children}

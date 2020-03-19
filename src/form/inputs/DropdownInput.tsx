@@ -13,7 +13,7 @@ interface DropdownInputProps {
     validation: string[],
     help?: string,
     disabled?: boolean,
-    multi: boolean,
+    multi?: boolean,
     options: string[],
     onChange: (inputName: string, userInput: any) => void
 }

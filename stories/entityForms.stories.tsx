@@ -211,12 +211,23 @@ storiesOf('Entity Forms', module)
                      <DropdownInput
                         name="test2"
                         value={""}
-                        label={"Single Selection disabled"}
+                        label={"Single Selection "}
                         validation={["required"]}
                         help={"this is another message"}
-                        multi={true}
                         options={countryList}
                         onChange={(name, input)=>console.log("name:",name, "input:",input)}/>
+
+                    <br></br>
+
+                    <DropdownInput
+                        name="test2"
+                        value={""}
+                        label={"Multi Selection "}
+                        validation={["required"]}
+                        help={"this is another message"}
+                        options={countryList}
+                        onChange={(name, input)=>console.log("name:",name, "input:",input)}
+                        multi={true}/>
 
                     <br></br>
 
@@ -226,7 +237,6 @@ storiesOf('Entity Forms', module)
                         label={"Single Selection disabled"}
                         validation={["required"]}
                         help={"this is another message"}
-                        multi={false}
                         disabled={true}
                         options={countryList}
                         onChange={(name, input)=>console.log("name:",name, "input:",input)}/>
