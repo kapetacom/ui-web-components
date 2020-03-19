@@ -5,20 +5,14 @@ import {FormContext, FormContextType} from './FormContext';
 import "./FormRow.less";
 import {FormStateChangeEvent} from "./FormContainer";
 import { FormElementContainer } from "./inputs/FormElementContainer";
-import { InputStatusTypes, InputTypes } from "./inputs/InputBasePropsInterface";
 
 interface FormRowProps {
     label: string
     help?: string
     validation?: any | any[]
-    className?:string
     children:any,
-    inputFocused: boolean,
-    hasValue: boolean,
-    value?: string | string[],
-    statusMessage?: string | undefined,
-    inputStatus?: InputStatusTypes | undefined,
-    inputType?: InputTypes | undefined,
+    type?: string,
+    focused: boolean,
     $onReadyStateChanged?: (fieldName:string, ready:boolean) => void //Internal callback
 }
 
@@ -82,8 +76,14 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
         if (value === undefined) {          
             return this.getDefaultValue();
         }
-        
+
         return value;
+    }
+
+    hasValue() {
+        console.log(this.getChildValue().length > 0);
+        
+        return this.getChildValue().length > 0;
     }
 
     getDefaultValue() {
@@ -127,7 +127,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
             }
 
             try {
-                validator.call(Validators, this.props.label, childProps.value);
+                validator.call(Validators, this.props.label, childProps['data-value']);
                 return null;
             } catch (err) {
                 if (typeof err === 'string') {
@@ -201,13 +201,16 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
 
         return (
             <FormElementContainer
-                hasValue={this.props.hasValue}
                 required={required}
+                hasValue={this.hasValue()}
                 touched={this.isTouched()}
-                inputFocused={this.props.inputFocused}
+                help={this.props.help}
+                errorMessage={errorMessage}
                 label={this.props.label}
-                message={this.props.help}
-                errorMessages={errorMessage}
+                type={this.props.type}
+                focused={this.props.focused}
+                status={''}
+                infoBox={''}                
             >
                 {this.props.children}
             </FormElementContainer>

@@ -6,11 +6,10 @@ import { Store, StateDecorator, State } from "@sambego/storybook-state";
 import {EntityMapper, EntityPicker, EntityForm, EntityFormModel} from "../src";
 
 import { EntityList } from "../src/entities/EntityList";
-import { SingleLineInput, } from "../src/form/inputs/SingleLineInput";
+import { SingleLineInput, Types, } from "../src/form/inputs/SingleLineInput";
 import { MultiLineInput,  } from "../src/form/inputs/MultiLineInput";
 import { DropdownInput } from "../src/form/inputs/DropdownInput";
 import { SchemaEntryType } from '@blockware/ui-web-types';
-import { InputModeTypes, InputStatusTypes, InputTypes } from "../src//form//inputs//InputBasePropsInterface"
 
 const EntityFrom = {
     name: {
@@ -210,30 +209,29 @@ storiesOf('Entity Forms', module)
             <div style={{ width: "600px", padding: '10px', backgroundColor: '#e0ecff' }}>
                 <form onSubmit={() => console.log("submited")} style={{ backgroundColor: 'inherit' }}>
                      <DropdownInput
-                        inputName ="test1"
-                        label={"Multiple selection and required"}
-                        value={"test"}
-                        optionList={countryList}
-                        multiSelection={true}
-                        required={true} 
-                        inputType={InputTypes.TEXT}
-                        inputCallback={inputCallback}
-                        message={"this is just a message."}
-                        />
-                        <br></br>
-                        <DropdownInput
-                        inputName="test2"
+                        name="test2"
                         value={""}
                         label={"Single Selection disabled"}
-                        optionList={countryList}
-                        multiSelection={false}
-                        required={true}
-                        inputType={InputTypes.TEXT}
-                        inputCallback={inputCallback}
-                        message={"this is another message"}
-                        disabled={true} />
-                         <br></br>
-                        <br></br> 
+                        validation={["required"]}
+                        help={"this is another message"}
+                        multi={true}
+                        options={countryList}
+                        onChange={(name, input)=>console.log("name:",name, "input:",input)}/>
+
+                    <br></br>
+
+                    <DropdownInput
+                        name="test2"
+                        value={""}
+                        label={"Single Selection disabled"}
+                        validation={["required"]}
+                        help={"this is another message"}
+                        multi={false}
+                        disabled={true}
+                        options={countryList}
+                        onChange={(name, input)=>console.log("name:",name, "input:",input)}/>
+                    <br></br>
+                    <br></br> 
 
                     <input type="submit" value="Submit" />
                 </form>
@@ -253,44 +251,50 @@ storiesOf('Entity Forms', module)
                 <form style={{ backgroundColor: 'inherit' }} onSubmit={handleSubmit}>
 
                       <SingleLineInput
-                        inputName={"SingleInput1"}
+                        name={"SingleInput1"}
                         value={'Test value'}
                         label={"Single line input"}
-                        validation={'required'}
-                        message={"Specify the name of your block."}
-                        inputType={InputTypes.TEXT}
-                        inputCallback={inputReturnCallback}>
+                        validation={['required']}
+                        help={"Specify the name of your block."}
+                        onChange={inputReturnCallback}>
                     </SingleLineInput>
 
                     <SingleLineInput
-                        inputName={"SingleInput2"}
+                        name={"SingleInput2"}
                         value={''}
                         label={"Single line input"}
-                        validation={'required'}
-                        message={"Specify the name of your block."}
-                        inputType={InputTypes.TEXT}
-                        inputCallback={inputReturnCallback}>
+                        validation={['required']}
+                        help={"Specify the name of your block."}
+                        onChange={inputReturnCallback}>
+                    </SingleLineInput>
+
+                    <SingleLineInput
+                        name={"SingleInput3"}
+                        value={''}
+                        label={"Single line input type number"}
+                        validation={['required']}
+                        help={"Specify the ID of your block."}
+                        type={Types.NUMBER}
+                        onChange={inputReturnCallback}>
                     </SingleLineInput>
 
 
                     <MultiLineInput
-                        inputName={"MultiLineInput1"}
+                        name={"MultiLineInput1"}
                         value={''}
                         label={"Multiline line input disabled"}
-                        validation={'required'}
-                        message={"Specify the description of your block."}
-                        inputType={InputTypes.TEXT}
-                        inputCallback={inputReturnCallback}
+                        validation={['required']}
+                        help={"Specify the description of your block."}
+                        onChange={inputReturnCallback}
                         disabled={true}>
                     </MultiLineInput>
                     <MultiLineInput
-                        inputName={"MultiLineInput2"}
+                        name={"MultiLineInput2"}
                         value={''}
                         label={"Multiline line input"}
-                        validation={'required'}
-                        message={"Specify the description of your block."}
-                        inputType={InputTypes.TEXT}
-                        inputCallback={inputReturnCallback}>
+                        validation={['required']}
+                        help={"Specify the description of your block."}
+                        onChange={inputReturnCallback}>
                     </MultiLineInput>
 
 

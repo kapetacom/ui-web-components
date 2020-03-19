@@ -9,7 +9,6 @@ import {
 } from "@blockware/ui-web-types";
 
 import { DropdownInput} from "../form/inputs/DropdownInput";
-import { InputTypes } from "../form/inputs/InputBasePropsInterface";
 
 interface IDEntry {
     id: string
@@ -134,15 +133,14 @@ export class EntityMapper extends React.Component<EntityMapperProps, EntityMappe
         return (
 
             <DropdownInput
-            inputName ={id}
+            name ={id}
             label={`${id}:${entry.type}`}
             value={this.getMapping(id)}
-            optionList={targetFieldsList}
-            multiSelection={false}
-            required={true} 
-            inputType={InputTypes.TEXT}
-            inputCallback={(userInput) => this.updateMapping(id, userInput)}
-            message={'Choose source value to map from'}
+            options={targetFieldsList}
+            multi={false}
+            validation={['required']}
+            onChange={( userInput) => this.updateMapping(id, userInput)}
+            help={'Choose source value to map from'}
             />
 
         );

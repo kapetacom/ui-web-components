@@ -4,12 +4,18 @@ import { observable, action } from "mobx";
 import { toClass } from "@blockware/ui-web-utils";
 import * as _ from "lodash";
 import { observer } from "mobx-react";
-import {  InputModeTypes, InputTypes, InputAdvanceProps } from "./InputBasePropsInterface";
 import { FormRow } from "../FormRow";
 
-interface DropdownInputProps extends InputAdvanceProps {
-    optionList: string[],
-    multiSelection: boolean,
+interface DropdownInputProps {
+    name: string,
+    value: any,
+    label: string,
+    validation: string[],
+    help?: string,
+    disabled?: boolean,
+    multi: boolean,
+    options: string[],
+    onChange: (inputName: string, userInput: any) => void
 }
 
 @observer
@@ -23,7 +29,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
     private inputSuggestion: string = '';
 
     @observable
-    private userInput: string = "";
+    private userInput: string = this.props.value ? this.props.value :"";
 
     @observable
     private userSelection: string[] = [];
@@ -31,7 +37,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
     @observable
     private inputElement = React.createRef<HTMLInputElement>();
 
-    private optionList: string[] = this.props.optionList;
+    private optionList: string[] = this.props.options;
 
     @action
     private onInputFocus = () => {
@@ -83,12 +89,12 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             if (isSelected > -1) {
                 tempUserSelection.splice(isSelected, 1);
                 this.setUserSelection(tempUserSelection);
-                this.props.inputCallback(this.props.inputName, this.userSelection);
+                this.props.onChange(this.props.name, this.userSelection);
                 return;
             }
         }
 
-        if (!this.props.multiSelection && tempUserSelection.length > 0) {
+        if (!this.props.multi && tempUserSelection.length > 0) {
             tempUserSelection = [];
         }
 
@@ -96,7 +102,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         this.userInput = "";
         this.setInputSuggestion();
         this.setUserSelection(tempUserSelection);
-        this.props.inputCallback(this.props.inputName, this.userSelection);
+        this.props.onChange(this.props.name, this.userSelection);
     };
 
     private optionListFiltered = () => {
@@ -170,19 +176,14 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         return (
             <FormRow
                 label={this.props.label}
-                help={this.props.message}
-                inputFocused={this.inputFocus}
-                validation={this.props.validation}    
-                statusMessage={this.props.statusMessage}
-                inputStatus={this.props.inputStatus}
-                inputType= { InputTypes.TEXT }
-                hasValue={this.userInput.length || this.props.value ? true: false}
-                value= {this.props.value}
+                help={this.props.help}
+                validation={this.props.validation}
+                focused={this.inputFocus}
             >
-                <div className={"dropdown-input"} data-name={this.props.inputName} data-value={this.props.value}>
+                <div className={"dropdown-input"} data-name={this.props.name} data-value={this.userInput}>
                     {this.inputFocus && this.userInput.length > 0 && <span className={"user-suggestion"}>{this.inputSuggestion}</span>}
 
-                    <input name={this.props.inputName}
+                    <input name={this.props.name}
                         type={"text"}
                         onChange={(event) => { this.setUserInput(event) }}
                         onFocus={this.onInputFocus}
@@ -196,7 +197,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
                             <path d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z" fill="#908988" />
                         </svg>
                     </div>
-                    {this.userSelection.length > 0 && !this.props.inputStatus && <span className="selected-number">({this.userSelection.length})</span>}
+                    {this.userSelection.length > 0 && <span className="selected-number">({this.userSelection.length})</span>}
                     <ul id="datalist-input" className={classNameList}>
                         {this.renderOptions()}
                     </ul>

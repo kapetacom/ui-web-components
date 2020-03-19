@@ -267,12 +267,12 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                   ready={this.isValid()} />
 
                 <SingleLineInput
-                    inputName={"name"}
+                    name={"name"}
                     value={this.props.entity.name}
                     label={"Name"}
-                    validation={'required'}                    
+                    validation={['required']}                    
                     disabled={false}
-                    inputCallback={(inputName, userInput)=>{this.props.entity.name = userInput.trim(); this.handleChange(); }} >                    
+                    onChange={(inputName, userInput)=>{this.props.entity.name = userInput.trim(); this.handleChange(); }} >                    
                 </SingleLineInput>
 
                 <div className={'field-rows'}>
