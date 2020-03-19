@@ -4,12 +4,18 @@ import { observable, action } from "mobx";
 import { toClass } from "@blockware/ui-web-utils";
 import * as _ from "lodash";
 import { observer } from "mobx-react";
-import { FormElementContainer } from "../inputs/FormElementContainer";
-import {  InputModeTypes, InputTypes, InputAdvanceProps } from "./InputBasePropsInterface";
+import { FormRow } from "../FormRow";
 
-interface DropdownInputProps extends InputAdvanceProps {
-    optionList: string[],
-    multiSelection: boolean,
+interface DropdownInputProps {
+    name: string,
+    value: any,
+    label: string,
+    validation: string[],
+    help?: string,
+    disabled?: boolean,
+    multi?: boolean,
+    options: string[],
+    onChange: (inputName: string, userInput: any) => void
 }
 
 @observer
@@ -23,7 +29,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
     private inputSuggestion: string = '';
 
     @observable
-    private userInput: string = "";
+    private userInput: string = this.props.value ? this.props.value :"";
 
     @observable
     private userSelection: string[] = [];
@@ -31,7 +37,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
     @observable
     private inputElement = React.createRef<HTMLInputElement>();
 
-    private optionList: string[] = this.props.optionList;
+    private optionList: string[] = this.props.options;
 
     @action
     private onInputFocus = () => {
@@ -49,7 +55,9 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
 
     @action
     private onInputToggle = () => {
-        this.inputFocus = !this.inputFocus;
+        if(!this.props.disabled){
+            this.inputFocus = !this.inputFocus;  
+        }
     }
 
     @action
@@ -81,12 +89,12 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             if (isSelected > -1) {
                 tempUserSelection.splice(isSelected, 1);
                 this.setUserSelection(tempUserSelection);
-                this.props.inputCallback(this.props.inputName, this.userSelection);
+                this.props.onChange(this.props.name, this.userSelection);
                 return;
             }
         }
 
-        if (!this.props.multiSelection && tempUserSelection.length > 0) {
+        if (!this.props.multi && tempUserSelection.length > 0) {
             tempUserSelection = [];
         }
 
@@ -94,7 +102,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         this.userInput = "";
         this.setInputSuggestion();
         this.setUserSelection(tempUserSelection);
-        this.props.inputCallback(this.props.inputName, this.userSelection);
+        this.props.onChange(this.props.name, this.userSelection);
     };
 
     private optionListFiltered = () => {
@@ -119,7 +127,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
                     {
                         this.userSelection.indexOf(option) < 0 ? null :
                             <span className={"selected-icon"} >
-                                <svg width="14" height="10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg width="14" height="10" fill="none" >
                                     <path fillRule="evenodd" clipRule="evenodd" d="M5 9.61957L0 4.99477L1.4 3.69983L5 7.02968L12.6 0L14 1.29494L5 9.61957Z" fill="#686868" />
                                 </svg>
                             </span>
@@ -166,38 +174,35 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         });
 
         return (
-            <FormElementContainer
+            <FormRow
                 label={this.props.label}
-                required={this.props.required}
-                inputFocused={this.inputFocus}
-                message={this.props.message}
-                statusMessage={this.props.statusMessage}
-                inputStatus={this.props.inputStatus}
-                hasValue={this.userInput.length > 0}
-                inputType= { InputTypes.TEXT }
+                help={this.props.help}
+                validation={this.props.validation}
+                focused={this.inputFocus}
             >
-                <div className={"dropdown-input"}>
+                <div className={"dropdown-input"} data-name={this.props.name} data-value={this.userInput}>
                     {this.inputFocus && this.userInput.length > 0 && <span className={"user-suggestion"}>{this.inputSuggestion}</span>}
 
-                    <input name={this.props.inputName}
+                    <input name={this.props.name}
                         type={"text"}
                         onChange={(event) => { this.setUserInput(event) }}
                         onFocus={this.onInputFocus}
                         onBlur={this.onInputBlur}
                         ref={this.inputElement}
-                        value={this.userInput}
-                        autoComplete="off"></input>
+                        value={this.userInput || this.inputFocus ? this.userInput : this.props.value}
+                        autoComplete="off"
+                        disabled={this.props.disabled} />
                     <div className={classNameArrowIcon}>
-                        <svg width="13" height="5" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={this.onInputToggle}>
+                        <svg width="13" height="5" fill="none" onClick={this.onInputToggle}>
                             <path d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z" fill="#908988" />
                         </svg>
                     </div>
-                    {this.userSelection.length > 0 && !this.props.inputStatus && <span className="selected-number">({this.userSelection.length})</span>}
+                    {this.userSelection.length > 0 && <span className="selected-number">({this.userSelection.length})</span>}
                     <ul id="datalist-input" className={classNameList}>
                         {this.renderOptions()}
                     </ul>
                 </div>
-            </FormElementContainer>
+            </FormRow>
         )
     }
 }

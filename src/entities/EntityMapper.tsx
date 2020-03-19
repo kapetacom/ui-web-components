@@ -8,7 +8,7 @@ import {
     typeName
 } from "@blockware/ui-web-types";
 
-import {FormRow} from "..";
+import { DropdownInput} from "../form/inputs/DropdownInput";
 
 interface IDEntry {
     id: string
@@ -129,20 +129,19 @@ export class EntityMapper extends React.Component<EntityMapperProps, EntityMappe
             return isCompatibleTypes(targetField.type, entry.type, this.props.fromEntities, this.props.toEntities);
         });
 
+        let targetFieldsList: string[] = targetFields.map(target=> `${target.id}:${typeName(target.type)}`);
         return (
-            <FormRow label={`${id}:${entry.type}`} help={'Choose source value to map from'}>
-                <select value={this.getMapping(id)} name={id}
-                        onChange={(evt) => this.updateMapping(id, evt.target.value)}>
-                    <option value={''}>Skip</option>
-                    {
-                        targetFields.map((entry, ix) => {
-                            return (
-                                <option key={ix} value={entry.id}>{entry.id}:{typeName(entry.type)}</option>
-                            );
-                        })
-                    }
-                </select>
-            </FormRow>
+
+            <DropdownInput
+            name ={id}
+            label={`${id}:${entry.type}`}
+            value={this.getMapping(id)}
+            options={targetFieldsList}
+            validation={['required']}
+            onChange={( userInput) => this.updateMapping(id, userInput)}
+            help={'Choose source value to map from'}
+            />
+
         );
     }
 

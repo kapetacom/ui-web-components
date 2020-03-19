@@ -16,6 +16,7 @@ import {FormReadyHandler} from "../form/FormReadyHandler";
 import {EntityFormModel, SchemaEntryEdit} from "./EntityFormModel";
 
 import './EntityForm.less';
+import { SingleLineInput } from "../form/inputs/SingleLineInput";
 
 
 function toTypeName(entry:SchemaEntryEdit):string {
@@ -265,12 +266,13 @@ export class EntityForm extends React.Component<EntityFormProps> {
                 <FormReadyHandler name={this.props.name}
                                   ready={this.isValid()} />
 
-                <FormRow label={'Name'}>
-                    <input name={'name'}
-                           type={'text'}
-                           value={this.props.entity.name}
-                           onChange={(evt) => {this.props.entity.name = evt.target.value.trim(); this.handleChange(); }} />
-                </FormRow>
+                <SingleLineInput
+                    name={"name"}
+                    value={this.props.entity.name}
+                    label={"Name"}
+                    validation={['required']}
+                    onChange={(inputName, userInput)=>{this.props.entity.name = userInput.trim(); this.handleChange(); }} >                    
+                </SingleLineInput>
 
                 <div className={'field-rows'}>
                     <div className={'field-row header'}>
