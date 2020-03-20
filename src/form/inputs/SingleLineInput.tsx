@@ -5,7 +5,7 @@ import { toClass } from "@blockware/ui-web-utils";
 import { observer } from "mobx-react";
 import { FormRow } from "../FormRow";
 
-export enum Types {
+export enum Type {
     DATE = "date",
     EMAIL = "email",
     NUMBER = "number",
@@ -23,7 +23,7 @@ interface SingleLineInputProps {
     help?: string,
     disabled?: boolean,
     onChange: (inputName: string, userInput: any) => void,
-    type?: Types
+    type?: Type
 }
 @observer
 export class SingleLineInput extends React.Component<SingleLineInputProps> {
@@ -121,7 +121,7 @@ export class SingleLineInput extends React.Component<SingleLineInputProps> {
                 >
                     <div className={classNameSinglelineWrapper} data-name={this.props.name} data-value={this.userInput}>
                         <input 
-                            type={this.props.type ? this.props.type : "text"}
+                            type={this.props.type ? this.props.type : Type.TEXT}
                             onChange={(event) => { this.setUserInput(event) }}
                             onFocus={this.inputOnFocus}
                             onBlur={this.inputOnBlur}
@@ -129,7 +129,7 @@ export class SingleLineInput extends React.Component<SingleLineInputProps> {
                             disabled={this.props.disabled}                            
                             ref={this.inputRef} />
 
-                        {this.props.type === 'number' &&
+                        {this.props.type === Type.NUMBER &&
                             this.renderNumberFeatures()
                             }
 
