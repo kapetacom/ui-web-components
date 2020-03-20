@@ -18,7 +18,8 @@ interface FormRowProps {
 
 enum StatusType {
     WARNING = "warning",
-    ERROR = "error"
+    ERROR = "error",
+    OK = "ok"
 }
 interface FormRowState {
     touched:boolean
@@ -218,7 +219,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
                 label={this.props.label}
                 type={this.props.type}
                 focused={this.props.focused}
-                status={ errorMessage && errorMessage.length > 0 ? StatusType.ERROR: ""}
+                status={ errorMessage && errorMessage.length > 0 ? StatusType.ERROR: StatusType.OK}
                 infoBox={''}                
             >
                 {this.props.children}

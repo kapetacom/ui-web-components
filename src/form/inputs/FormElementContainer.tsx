@@ -7,7 +7,8 @@ import { observer } from "mobx-react";
 
 enum StatusType {
     WARNING = "warning",
-    ERROR = "error"
+    ERROR = "error",
+    OK = "ok"
 }
 interface FormElementContainerProps {
     required?: boolean,
