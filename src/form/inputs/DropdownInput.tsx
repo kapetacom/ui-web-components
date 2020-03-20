@@ -50,6 +50,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         this.inputFocus = false;
         if (this.inputElement.current) {
             this.userInput = this.userSelection.join(', ');
+            this.inputElement.current.blur();
         }
     };
 
@@ -103,6 +104,9 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         this.setInputSuggestion();
         this.setUserSelection(tempUserSelection);
         this.props.onChange(this.props.name, this.userSelection);
+        if(!this.props.multi){
+            this.onInputBlur();
+        }
     };
 
     private optionListFiltered = () => {
