@@ -6,7 +6,7 @@ import { Store, StateDecorator, State } from "@sambego/storybook-state";
 import {EntityMapper, EntityPicker, EntityForm, EntityFormModel} from "../src";
 
 import { EntityList } from "../src/entities/EntityList";
-import { SingleLineInput, Types, } from "../src/form/inputs/SingleLineInput";
+import { SingleLineInput, Type, } from "../src/form/inputs/SingleLineInput";
 import { MultiLineInput,  } from "../src/form/inputs/MultiLineInput";
 import { DropdownInput } from "../src/form/inputs/DropdownInput";
 import { SchemaEntryType } from '@blockware/ui-web-types';
@@ -284,7 +284,7 @@ storiesOf('Entity Forms', module)
                         label={"Single line input type number"}
                         validation={['required']}
                         help={"Specify the ID of your block."}
-                        type={Types.NUMBER}
+                        type={Type.NUMBER}
                         onChange={inputReturnCallback}>
                     </SingleLineInput>
 
