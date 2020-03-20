@@ -37,7 +37,7 @@ export class FormElementContainer extends React.Component<FormElementContainerPr
     
     render() {
 
-        const showStatusIcon = this.props.touched && (this.props.status === StatusType.OK ? false : true );
+        const showStatusIcon = this.props.touched && (this.props.status !== StatusType.OK ? true : false );
 
         const inputType = this.props.type || 'text';
 
