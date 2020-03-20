@@ -3,18 +3,37 @@ import "./SingleLineInput.less";
 import { observable, action } from "mobx";
 import { toClass } from "@blockware/ui-web-utils";
 import { observer } from "mobx-react";
-import { FormElementContainer } from "../inputs/FormElementContainer";
-import { InputBaseProps, InputTypes, InputAdvanceProps, InputModeTypes } from "./InputBasePropsInterface";
+import { FormRow } from "../FormRow";
 
+export enum Type {
+    DATE = "date",
+    EMAIL = "email",
+    NUMBER = "number",
+    PASSWORD = "password",
+    TEXT = "text",
+    CHECKBOX = "checkbox",
+    RADIO = "radio"
+}
+
+interface SingleLineInputProps {
+    name: string,
+    value: any,
+    label: string,
+    validation: string[],
+    help?: string,
+    disabled?: boolean,
+    onChange: (inputName: string, userInput: any) => void,
+    type?: Type
+}
 @observer
-export class SingleLineInput extends React.Component<InputAdvanceProps> {
+export class SingleLineInput extends React.Component<SingleLineInputProps> {
 
 
     @observable
     private inputFocused: boolean = false;
 
     @observable
-    private userInput: string = "";
+    private userInput: string = this.props.value ? this.props.value :"";
 
     private inputRef: React.RefObject<HTMLInputElement> = React.createRef();
 
@@ -32,7 +51,7 @@ export class SingleLineInput extends React.Component<InputAdvanceProps> {
     private setUserInput = (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         let val = evt.target.value;
         this.userInput = val;
-        this.props.inputCallback(this.props.inputName, this.userInput);
+        this.props.onChange(this.props.name, this.userInput);
     }
 
     private upperArrowHandler = () => {
@@ -60,7 +79,7 @@ export class SingleLineInput extends React.Component<InputAdvanceProps> {
                     this.eventPreventDefault(evt);
                     this.upperArrowHandler()
                 }}
-                    className={`upper-arrow arrows ${this.props.inputStatus ? `error-or-warning` : ``}`}
+                    className={`upper-arrow arrows `}
                     width="15" height="14" viewBox="0 0 15 14" fill="none">
                     <rect width="15" height="14" rx="2" />
                     <path d="M7.5 5L13.1292 9.5L1.87083 9.5L7.5 5Z" />
@@ -69,7 +88,7 @@ export class SingleLineInput extends React.Component<InputAdvanceProps> {
                     this.eventPreventDefault(evt);
                     this.lowerArrowHandler()
                 }}
-                    className={`lower-arrow arrows ${this.props.inputStatus ? `error-or-warning` : ``}`}
+                    className={`lower-arrow arrows `}
                     width="15" height="14" viewBox="0 0 15 14" fill="none" >
                     <rect width="15" height="14" rx="2" />
                     <path d="M7.5 9L1.87084 4.5L13.1292 4.5L7.5 9Z" />
@@ -82,18 +101,9 @@ export class SingleLineInput extends React.Component<InputAdvanceProps> {
         );
     }
 
-    private renderStatusIcon() {
-        return (
-            <svg className={'status-icon'} width="22" height="19" viewBox="0 0 22 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0.676375 10.5692C0.263313 9.91625 0.263313 9.08376 0.676374 8.43079L5.42082 0.930792C5.7874 0.351295 6.42531 1.62649e-06 7.11102 1.59652e-06L14.889 1.25653e-06C15.5747 1.22656e-06 16.2126 0.351295 16.5792 0.930789L21.3236 8.43079C21.7367 9.08375 21.7367 9.91624 21.3236 10.5692L16.5792 18.0692C16.2126 18.6487 15.5747 19 14.889 19L7.11102 19C6.42531 19 5.7874 18.6487 5.42082 18.0692L0.676375 10.5692Z" fill={this.props.inputStatus === "warning" ? "#FCC024" : "#E35A4C"} />
-                <path d="M11.9613 11.448H10.0413V3.672H11.9613V11.448ZM9.72125 13.88C9.72125 13.5387 9.84392 13.2453 10.0893 13C10.3453 12.7547 10.6493 12.632 11.0013 12.632C11.3426 12.632 11.6413 12.7493 11.8973 12.984C12.1533 13.2187 12.2812 13.5067 12.2812 13.848C12.2812 14.1893 12.1533 14.4827 11.8973 14.728C11.6519 14.9733 11.3533 15.096 11.0013 15.096C10.8306 15.096 10.6653 15.064 10.5053 15C10.3559 14.936 10.2226 14.8507 10.1053 14.744C9.98792 14.6373 9.89192 14.5093 9.81725 14.36C9.75325 14.2107 9.72125 14.0507 9.72125 13.88Z" fill="white" />
-            </svg>
-        );
-    }
-
     render() {
 
-        const showStatusIcon = this.props.inputStatus === "warning" || this.props.inputStatus === "error";
+
 
         let classNameSinglelineWrapper = toClass({
             "singleline-input": true
@@ -102,36 +112,30 @@ export class SingleLineInput extends React.Component<InputAdvanceProps> {
         return (
 
             
-                <FormElementContainer
+                <FormRow
                     label={this.props.label}
-                    required={this.props.required}
-                    inputFocused={this.inputFocused}
-                    message={this.props.message}
-                    statusMessage={this.props.statusMessage}
-                    inputStatus={this.props.inputStatus}
-                    inputType={this.props.inputType}
-                    hasValue={this.userInput.length > 0}
-                
+                    help={this.props.help}
+                    validation={this.props.validation}
+                    type= {this.props.type}
+                    focused={this.inputFocused}
                 >
-                    <div className={classNameSinglelineWrapper}>
-                        <input name={this.props.inputName}
-                            type={this.props.inputType}
+                    <div className={classNameSinglelineWrapper} data-name={this.props.name} data-value={this.userInput}>
+                        <input 
+                            type={this.props.type ? this.props.type : Type.TEXT}
                             onChange={(event) => { this.setUserInput(event) }}
                             onFocus={this.inputOnFocus}
                             onBlur={this.inputOnBlur}
                             value={this.userInput}
+                            disabled={this.props.disabled}                            
                             ref={this.inputRef} />
 
-                        {this.props.inputType === 'number' &&
+                        {this.props.type === Type.NUMBER &&
                             this.renderNumberFeatures()
                             }
 
-                        {showStatusIcon &&
-                            this.renderStatusIcon()
-                        }
                     </div>
 
-                </FormElementContainer>
+                </FormRow>
         )
     }
 }
