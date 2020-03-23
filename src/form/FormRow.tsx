@@ -9,13 +9,18 @@ import { FormElementContainer } from "./inputs/FormElementContainer";
 interface FormRowProps {
     label: string
     help?: string
-    validation?: string[],
+    validation?: any | any[],
     children:any,
     type?: string,
     focused: boolean,
     $onReadyStateChanged?: (fieldName:string, ready:boolean) => void //Internal callback
 }
 
+enum StatusType {
+    WARNING = "warning",
+    ERROR = "error",
+    OK = "ok"
+}
 interface FormRowState {
     touched:boolean
 }
@@ -40,7 +45,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
     }
 
     getValidators() {
-        let validators = [""];
+        let validators = [];
         if (this.props.validation) {
             if (Array.isArray(this.props.validation)) {
                 validators = this.props.validation;
@@ -81,7 +86,14 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
     }
 
     hasValue() {
-        return this.getChildValue().length > 0;
+        const value = this.getChildValue();
+        if (value === undefined || value === null) {
+            return false;
+        }
+        if (typeof value === 'string') {
+             return value.length > 0;
+        }        
+        return true;
     }
 
     getDefaultValue() {
@@ -207,7 +219,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
                 label={this.props.label}
                 type={this.props.type}
                 focused={this.props.focused}
-                status={ errorMessage && errorMessage.length > 0 ? "error": ""}
+                status={ errorMessage && errorMessage.length > 0 ? StatusType.ERROR: StatusType.OK}
                 infoBox={''}                
             >
                 {this.props.children}
