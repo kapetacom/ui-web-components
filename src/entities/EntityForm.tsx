@@ -16,7 +16,12 @@ import {FormReadyHandler} from "../form/FormReadyHandler";
 import {EntityFormModel, SchemaEntryEdit} from "./EntityFormModel";
 
 import './EntityForm.less';
+
+import PlusHexagon from "../svg/SVGAddEntityButton";
 import { SingleLineInput } from "../form/inputs/SingleLineInput";
+import SVGGrabber from "../svg/SVGGrabber";
+import SVGDeleteHexagon from "../svg/SVGDeleteHexagon";
+import { isArray } from "util";
 
 
 function toTypeName(entry:SchemaEntryEdit):string {
@@ -66,6 +71,9 @@ export class EntityForm extends React.Component<EntityFormProps> {
     @observable
     private openedObjects:{[key:string]:boolean} = {};
 
+    @observable
+    private isHovered = "";
+
     @action
     private removeEntry(properties:SchemaEntryEdit[], field: SchemaEntryEdit) {
         _.pull(properties, field);
@@ -87,8 +95,9 @@ export class EntityForm extends React.Component<EntityFormProps> {
         this.handleChange();
     }
 
+
     @action
-    private addField(properties: SchemaEntryEdit[]): void {
+    private addField(properties: SchemaEntryEdit[],position?:number): void {
 
         const field = {
             uid: Guid.create().toString(),
@@ -98,7 +107,14 @@ export class EntityForm extends React.Component<EntityFormProps> {
 
         this.validateField(properties, field, field.id);
 
-        properties.push(field);
+        if(position){
+            properties.splice(position, 0, field);
+        }else{
+            if(!properties[0].properties){
+                properties[0].properties=[];
+            }
+            properties[0].properties.push(field)
+        }
 
         this.handleChange();
     }
@@ -137,10 +153,12 @@ export class EntityForm extends React.Component<EntityFormProps> {
         return this.openedObjects[key];
     }
 
-    private renderAddField(properties:SchemaEntryEdit[], depth:number) {
+    private renderAddFirstAddLine(field:SchemaEntryEdit[], depth:number,index:number){
         return (
             <div className={'field-row new'}  style={{marginLeft: depth * 24}}
-                onClick={() => this.addField(properties)}>
+                onClick={() => {
+                    this.addField(field,0)
+                }}>
                 <div className="adder" >
                     <i className="fa fa-plus"/>
                 </div>
@@ -151,11 +169,19 @@ export class EntityForm extends React.Component<EntityFormProps> {
         )
     }
 
+    private renderAddField(properties:SchemaEntryEdit[], depth:number,index:number) {
+        return(
+            <div className={'field-row single-plus'}  style={{marginLeft: depth * 24}}
+                onClick={() => this.addField(properties,index)}>
+                <PlusHexagon />
+            </div>
+        )
+    }
+    
     private renderSubProperties(properties:SchemaEntryEdit[], depth:number, parentId?:string) {
         return (
-            <>
+            <> 
                 {this.renderProperties(properties, depth, parentId)}
-                {this.renderAddField(properties, depth)}
             </>
         );
     }
@@ -166,7 +192,8 @@ export class EntityForm extends React.Component<EntityFormProps> {
 
             <SortableContainer list={properties} onChange={() => this.handleChange()} >
                 <div className={'field-list-container'}>
-                    {properties.map((field) => {
+             
+                    {properties.map((field,index) => {
 
                             let type = toTypeName(field);
                             const objectType = isObject(field);
@@ -182,20 +209,26 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                 'error': !!field.error
                             });
 
+                            const addClassNames=toClass({
+                                "add-visible":this.isHovered===field.uid,
+                                "add-hidden":this.isHovered!==field.uid
+                            })
+console.log(field);
+
                             return (
-                                <div key={field.uid} >
+                                <div key={field.uid} 
+                                     onMouseMove={(evt)=>{this.isHovered=field.uid; evt.stopPropagation() }} 
+                                     onMouseLeave={(evt)=>{this.isHovered="";  evt.stopPropagation() }}>
+                                
                                     <SortableItem item={field} handle={'.mover'}>
                                         <div className={'field-row data'} style={{marginLeft: depth * 24}}>
                                             <div className={'mover'}>
-                                                <i className={'fa fa-bars'} />
+                                                <SVGGrabber />
                                             </div>
                                             <div className={'opener'}>
                                                 {objectType &&
                                                 <i className={openerClass} onClick={() => this.toggleOpen(key)} />
                                                 }
-                                            </div>
-                                            <div className={'remover'}>
-                                                <i className={'fa fa-times'} onClick={() => this.removeEntry(properties, field)} />
                                             </div>
                                             <div className={fieldNameClass}>
                                                 <input type={'text'} value={field.id}
@@ -207,11 +240,19 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                                               allowObject={true}
                                                               onChange={(type: SchemaEntryType) => { this.updateType(field, type)}} />
                                             </div>
+                                            <div onClick={()=>{this.removeEntry(properties,field)}} className={'remover'}>
+                                                <SVGDeleteHexagon/>
+                                            </div>
+                                   
                                         </div>
                                     </SortableItem>
-                                    {objectType && field.properties && this.isOpen(key) &&
-                                        this.renderSubProperties(field.properties, depth + 1, key)
+                                    <div className={addClassNames}>
+                                        {this.renderAddField(properties, depth,index)}
+                                    </div>
+                                    {objectType && this.isOpen(key) &&
+                                        this.renderSubProperties(field.properties?field.properties:[], depth + 1, key)
                                     }
+                                    { (this.isOpen(key) && (field.type === "object" && !isArray(field.properties) ))&& this.renderAddFirstAddLine(field.properties?field.properties:[] as SchemaEntryEdit[], depth+1,index)}
                                 </div>
                             )
                         })
@@ -263,8 +304,6 @@ export class EntityForm extends React.Component<EntityFormProps> {
 
         return (
             <div className={'entity-form'}>
-                <FormReadyHandler name={this.props.name}
-                                  ready={this.isValid()} />
 
                 <SingleLineInput
                     name={"name"}

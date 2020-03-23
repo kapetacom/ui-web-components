@@ -2,19 +2,49 @@
 @import "../../styles/functions";
 
 .entity-form {
-    .no-select();
 
+    .add-visible{
+        .transition();
+        transform: scale(1);
+    }
+    
+    .add-hidden{
+        .transition();
+        transform: scale(0);
+    }
+    .no-select();
+    width: 500px;
+    overflow: hidden;
+    border-right: 1px solid #C4C4C4;
     .field-row {
         display: flex;
+        top:-1px;
         flex-wrap: nowrap;
         flex-flow: row;
-        line-height: 24px;
-        margin-bottom: 5px;
+        height: 44px;
+        border-left: 1px solid #C4C4C4;
+        border-bottom: 1px solid #C4C4C4;
+        .delete-attribute-line{
+            
+            padding-left: 10px;
+            padding-right: 10px;
+            svg {
+                overflow: visible;
+                fill: @red-light;
+                &:hover {
+                    fill: blue;
+                }
+            }
 
-        > .mover,
-        > .remover,
+        }
+        > .mover, 
+        > .grab-area,
+        > .delete-attribute-line,
         > .opener {
             width: 24px;
+            vertical-align: middle;
+            margin: auto;
+            padding-right: 5px ;
             text-align: center;
             line-height: 24px;
             i {
@@ -47,32 +77,24 @@
             }
         }
 
-        > .remover {
-            i {
-                color: @red-light;
-            }
-
-            &:hover {
-                i {
-                    color: @red;
-                }
-            }
-        }
-
         > .field-name {
             flex: 1;
-            padding:0 5px;
+            padding:5px 5px;
+            margin: auto;
+            margin-left: 5px;
             font-size: 12px;
+
             input {
                 outline: none;
                 box-sizing: border-box;
                 width: 100%;
                 display: block;
                 border:0;
-                padding:0;
-                border-bottom: 1px solid @gray-light;
-                line-height: 21px;
+                padding-left: 5px;               
+                line-height: 26px;
                 font-size: inherit;
+                border-radius: 3px;
+                background-color:#009aa932;
             }
 
             &.error {
@@ -85,9 +107,15 @@
 
         > .field-type {
             width: 100px;
-
+            margin: auto;
             select {
-                height: 18px;
+                border:none;
+                height: 26px;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                border-radius: 3px;
+                background-color:#009aa932;
                 margin-top: 4px;
                 width:75px;
             }
@@ -99,13 +127,16 @@
             border-bottom: 1px solid @gray;
         }
 
+        &.single-plus{
+            height: 0;
+            align-content: center;
+        }
         &.new {
             .transition();
-            color: @blue-light;
-            width: 70px;
+            color: white;
+            width: 100%;
             cursor: pointer;
-            line-height: 24px;
-
+            height: fit-content;
             .field-name {
                 font-weight: 200;
                 padding: 0;
@@ -114,6 +145,8 @@
             }
 
             .adder {
+                height: 20px;
+                background-color: @blue-light;
                 text-align: center;
                 i {
                     width: 24px;
