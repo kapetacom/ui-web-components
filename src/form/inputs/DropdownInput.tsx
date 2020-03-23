@@ -50,6 +50,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         this.inputFocus = false;
         if (this.inputElement.current) {
             this.userInput = this.userSelection.join(', ');
+            this.inputElement.current.blur();
         }
     };
 
@@ -103,6 +104,9 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         this.setInputSuggestion();
         this.setUserSelection(tempUserSelection);
         this.props.onChange(this.props.name, this.userSelection);
+        if(!this.props.multi){
+            this.onInputBlur();
+        }
     };
 
     private optionListFiltered = () => {
@@ -173,6 +177,8 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             "focus-icon": !!this.inputFocus
         });
 
+        let inputValue= this.userInput || this.inputFocus ? this.userInput : this.props.value;
+
         return (
             <FormRow
                 label={this.props.label}
@@ -180,7 +186,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
                 validation={this.props.validation}
                 focused={this.inputFocus}
             >
-                <div className={"dropdown-input"} data-name={this.props.name} data-value={this.userInput}>
+                <div className={"dropdown-input"} data-name={this.props.name} data-value={inputValue}>
                     {this.inputFocus && this.userInput.length > 0 && <span className={"user-suggestion"}>{this.inputSuggestion}</span>}
 
                     <input name={this.props.name}
@@ -189,7 +195,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
                         onFocus={this.onInputFocus}
                         onBlur={this.onInputBlur}
                         ref={this.inputElement}
-                        value={this.userInput || this.inputFocus ? this.userInput : this.props.value}
+                        value={inputValue}
                         autoComplete="off"
                         disabled={this.props.disabled} />
                     <div className={classNameArrowIcon}>
