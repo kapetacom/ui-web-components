@@ -14,7 +14,7 @@ interface DropdownInputProps {
     help?: string,
     disabled?: boolean,
     multi?: boolean,
-    options: string[],
+    options: string[] | {[key:string]:string;},
     onChange: (inputName: string, userInput: any) => void
 }
 
@@ -37,7 +37,8 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
     @observable
     private inputElement = React.createRef<HTMLInputElement>();
 
-    private optionList: string[] = this.props.options;
+    @observable
+    private finalOptions: {[key:string]:string} = {};
 
     @action
     private onInputFocus = () => {
@@ -78,12 +79,14 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
 
     @action
     private selectHandler(selection: string) {
+        console.log(selection);
+        
         if (this.inputElement.current) {
             this.inputElement.current.focus();
         }
 
         let tempUserSelection: string[] = this.userSelection;
-        const isSelected: number = tempUserSelection.indexOf(selection);
+        const isSelected: number = tempUserSelection.indexOf(this.finalOptions[selection]);
 
         if (tempUserSelection.length > 0) {
 
@@ -99,7 +102,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             tempUserSelection = [];
         }
 
-        tempUserSelection.push(selection);
+        tempUserSelection.push(this.finalOptions[selection]);
         this.userInput = "";
         this.setInputSuggestion();
         this.setUserSelection(tempUserSelection);
@@ -110,9 +113,47 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
     };
 
     private optionListFiltered = () => {
-        return this.optionList.filter((item) => {
+        //return new Map([...this.finalOptions.entries()].sort());
+        
+
+        const orderedMap = Object.keys(this.finalOptions).sort();
+        
+        return orderedMap.filter((item) => {
             return item.toUpperCase().startsWith(this.userInput.toUpperCase())
         })
+    }
+
+    @action
+    private createOptions = () => {
+
+        if (this.props.options === null || this.props.options === undefined) {
+            throw new Error("Provide an array of strings or an object of options.");
+        }
+        
+        let options:{[key:string]:string} = {};
+        if (_.isArray(this.props.options)) {
+            console.log("it is an Array",this.props.name);
+            this.props.options.forEach(item => options[item]= item);
+            this.finalOptions=options;
+            return;
+        }
+
+        if (_.isObject(this.props.options)) {
+            console.log("it is an object", this.props.name);
+            const tempOptions:{[key: string]: string;} = this.props.options;
+
+            Array.from(tempOptions.keys()).forEach(function(key:string){
+                console.log(key, tempOptions.get(key));
+                
+                options[key]=tempOptions.get(key);
+            });
+            console.log(options);
+            
+            this.finalOptions=options;
+        }
+
+
+        return;
     }
 
     private renderOptions = () => {
@@ -164,6 +205,9 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         </span>
     }
 
+    componentWillMount(){
+        this.createOptions();
+    }
 
     render() {
 
