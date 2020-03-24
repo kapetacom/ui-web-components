@@ -2,7 +2,7 @@
 @import "../../styles/functions";
 
 .entity-form {
-
+    
     .add-visible{
         .transition();
         transform: scale(1);
@@ -15,6 +15,7 @@
     .no-select();
     width: 500px;
     overflow: hidden;
+    background-color: white;
     border-right: 1px solid #C4C4C4;
     .field-row {
         display: flex;
@@ -22,8 +23,8 @@
         flex-wrap: nowrap;
         flex-flow: row;
         height: 44px;
-        border-left: 1px solid #C4C4C4;
-        border-bottom: 1px solid #C4C4C4;
+        border: 1px solid #C4C4C4;
+        margin: -1.5px;
         .delete-attribute-line{
             
             padding-left: 10px;
@@ -42,6 +43,7 @@
         > .delete-attribute-line,
         > .opener {
             width: 24px;
+            flex:1;
             vertical-align: middle;
             margin: auto;
             padding-right: 5px ;
@@ -78,23 +80,43 @@
         }
 
         > .field-name {
-            flex: 1;
+            flex: 10;
             padding:5px 5px;
             margin: auto;
             margin-left: 5px;
             font-size: 12px;
 
-            input {
-                outline: none;
-                box-sizing: border-box;
-                width: 100%;
-                display: block;
-                border:0;
-                padding-left: 5px;               
-                line-height: 26px;
-                font-size: inherit;
-                border-radius: 3px;
-                background-color:#009aa932;
+            .form-element-container{
+                height: 20px;
+                margin: 0;
+                .singleline-input input{
+                    outline: none;
+                    box-sizing: border-box;
+                    width: 100%;
+                    display: block;
+                    border:0;
+                    height: 26px;
+                    padding-left: 5px;               
+                    line-height: 26px;
+                    font-size: inherit;
+                    border-radius: 3px;
+                    &:focus{
+                        outline: none;
+                        box-sizing: border-box;
+                        width: 100%;
+                        display: block;
+                        border:0;
+                        padding-left: 5px;               
+                        line-height: 26px;
+                        font-size: inherit;
+                        border-radius: 3px;
+                        background-color:#009aa932;
+                    }
+                }
+                .input-container{
+                    border: none;
+                    height: 20px;
+                }
             }
 
             &.error {
@@ -107,6 +129,7 @@
 
         > .field-type {
             width: 100px;
+            float: 6px;
             margin: auto;
             select {
                 border:none;
@@ -136,9 +159,10 @@
             color: white;
             width: 100%;
             cursor: pointer;
+            background-color: #009AA9;
             height: fit-content;
             .field-name {
-                font-weight: 200;
+                font-weight: 400;
                 padding: 0;
                 flex: 0;
                 min-width: 60px;
@@ -146,10 +170,11 @@
 
             .adder {
                 height: 20px;
-                background-color: @blue-light;
                 text-align: center;
+                padding-left: 20px;
                 i {
-                    width: 24px;
+                    font-weight: 800;
+                    width: 14px;
                     font-weight: 100;
                 }
             }
@@ -164,7 +189,7 @@
                 opacity: 0;
             }
 
-            background-color: @gray-light;
+            background-color: @bw-planner-background;
 
             + .field-list-container {
                 display: none;

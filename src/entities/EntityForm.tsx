@@ -18,7 +18,7 @@ import {EntityFormModel, SchemaEntryEdit} from "./EntityFormModel";
 import './EntityForm.less';
 
 import PlusHexagon from "../svg/SVGAddEntityButton";
-import { SingleLineInput } from "../form/inputs/SingleLineInput";
+import { SingleLineInput, Type } from "../form/inputs/SingleLineInput";
 import SVGGrabber from "../svg/SVGGrabber";
 import SVGDeleteHexagon from "../svg/SVGDeleteHexagon";
 import { isArray } from "util";
@@ -157,7 +157,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
         return (
             <div className={'field-row new'}  style={{marginLeft: depth * 24}}
                 onClick={() => {
-                    this.addField(field,0)
+                    this.addField(field,depth)
                 }}>
                 <div className="adder" >
                     <i className="fa fa-plus"/>
@@ -210,10 +210,10 @@ export class EntityForm extends React.Component<EntityFormProps> {
                             });
 
                             const addClassNames=toClass({
-                                "add-visible":this.isHovered===field.uid,
+                                "add-visible":this.isHovered===field.uid && !this.isOpen(key),
                                 "add-hidden":this.isHovered!==field.uid
                             })
-console.log(field);
+                            console.log(field);
 
                             return (
                                 <div key={field.uid} 
@@ -231,8 +231,8 @@ console.log(field);
                                                 }
                                             </div>
                                             <div className={fieldNameClass}>
-                                                <input type={'text'} value={field.id}
-                                                       onChange={(evt) => {this.updateFieldId(properties, field, evt.target.value)}} />
+                                                <SingleLineInput validation={["required"]} name="" label=""  type={Type.TEXT} value={field.id}
+                                                       onChange={(_,value) => {this.updateFieldId(properties, field, value)}} />
                                             </div>
                                             <div className={'field-type'} onClick={(evt) => evt.stopPropagation()}>
                                                 <EntityPicker name={'fieldType'}
@@ -323,6 +323,9 @@ console.log(field);
                         </div>
                         <div className={'field-type'}>
                             Type
+                        </div>
+                        <div className={'field-type'}>
+                            List
                         </div>
                     </div>
                     {this.renderSubProperties(this.props.entity.properties, 0)}
