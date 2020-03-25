@@ -14,7 +14,7 @@ interface DropdownInputProps {
     help?: string,
     disabled?: boolean,
     multi?: boolean,
-    options: string[] | {[key:string]:string;},
+    options: string[] | {[key: string]: {value:string};},
     onChange: (inputName: string, userInput: any) => void
 }
 
@@ -84,16 +84,21 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         if (this.inputElement.current) {
             this.inputElement.current.focus();
         }
+        const getMappedValeus = ()=>{
+            return this.userSelection.map(key=>{
+                return this.finalOptions[key];
+            })
+        }
 
         let tempUserSelection: string[] = this.userSelection;
-        const isSelected: number = tempUserSelection.indexOf(this.finalOptions[selection]);
+        const isSelected: number = tempUserSelection.indexOf(selection);
 
         if (tempUserSelection.length > 0) {
 
             if (isSelected > -1) {
                 tempUserSelection.splice(isSelected, 1);
                 this.setUserSelection(tempUserSelection);
-                this.props.onChange(this.props.name, this.userSelection);
+                this.props.onChange(this.props.name,getMappedValeus() );
                 return;
             }
         }
@@ -102,11 +107,11 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             tempUserSelection = [];
         }
 
-        tempUserSelection.push(this.finalOptions[selection]);
+        tempUserSelection.push(selection);
         this.userInput = "";
         this.setInputSuggestion();
         this.setUserSelection(tempUserSelection);
-        this.props.onChange(this.props.name, this.userSelection);
+        this.props.onChange(this.props.name, getMappedValeus());
         if(!this.props.multi){
             this.onInputBlur();
         }
@@ -140,11 +145,19 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
 
         if (_.isObject(this.props.options)) {
             console.log("it is an object", this.props.name);
-            const tempOptions:{[key: string]: string;} = this.props.options;
-
-            Array.from(tempOptions.keys()).forEach(function(key:string){
-                console.log(key, tempOptions.get(key));
-                
+            const tempOptions:{[key: string]: {value:string}}  = this.props.options;
+            console.log( Object.keys(tempOptions ))
+            for (let [key, valueIn] of Object.entries(tempOptions)) {
+             
+                let value = tempOptions[key];
+               console.log(value);
+               
+            }
+            console.log("Object.fromEntries(tempOptions)", Object.fromEntries(tempOptions));
+            
+            
+            Object.keys(Object.fromEntries(tempOptions)).forEach(function(key:string){
+                console.log(key, tempOptions[key]);
                 options[key]=tempOptions.get(key);
             });
             console.log(options);
