@@ -164,7 +164,8 @@ export class FormContainer extends React.Component<FormContainerProps, any> {
         const buttonSelector = [
             'button:not([type=button]):not([form-bound])',
             'input[type=submit]:not([form-bound])',
-            'input[type=image]:not([form-bound])'
+            'input[type=image]:not([form-bound])',
+            '.submit-button'
         ];
 
         const buttons = this.container.querySelectorAll(buttonSelector.join(','));
