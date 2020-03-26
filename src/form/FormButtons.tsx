@@ -2,6 +2,7 @@ import React from "react";
 import {FormContext, FormContextType} from './FormContext';
 
 import "./FormButtons.less";
+import { Button } from "../button/Button";
 
 interface FormButtonsProps {
     children: any
@@ -44,10 +45,12 @@ export class FormButtons extends React.Component<FormButtonsProps, any> {
             }
 
             //Disable submit buttons when form is invalid
-            return React.cloneElement(child, {
+            //do a switcheroo with a disabled copy of the button 
+            const newChild =  React.cloneElement(child, {
                 disabled: true,
                 key: ix
             });
+            return newChild;
         });
 
         return (

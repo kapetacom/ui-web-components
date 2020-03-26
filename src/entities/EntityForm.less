@@ -2,7 +2,12 @@
 @import "../../styles/functions";
 
 .entity-form {
-    
+    .no-select();
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: white;
+    border-right: 1px solid #C4C4C4;
     .add-visible{
         .transition();
         transform: scale(1);
@@ -12,23 +17,72 @@
         .transition();
         transform: scale(0);
     }
-    .no-select();
-    width: 500px;
-    overflow: hidden;
-    background-color: white;
-    border-right: 1px solid #C4C4C4;
+    
     .field-row {
         display: flex;
         top:-1px;
         flex-wrap: nowrap;
         flex-flow: row;
+        overflow: visible;
         height: 44px;
         border: 1px solid #C4C4C4;
         margin: -1.5px;
-        .delete-attribute-line{
+
+        .form-element-container{
+            height: 20px;
+            margin: 0;
+            padding: 0;
+            border: none;
+            span{
+                display: none;
+            }
+            &.focused{
+                outline: none;
+                box-sizing: border-box;
+                width: 100%;
+                display: block;
+                padding-left: 5px;               
+                line-height: 26px;
+                font-size: inherit;
+                border-radius: 3px;
+                background-color:#009aa932;
+            }
+            input {
+                border: none;
+            }
+            .input-container {
+                outline: none;
+                box-sizing: border-box;
+                width: 100%;
+                display: block;
+                border: none;
+                height: 26px;
+                padding-left: 5px;               
+                line-height: 26px;
+                font-size: inherit;
+                border-radius: 3px;
+                .dropdown-input {
+                    border:none;
+                    height: 26px;
+                    width: auto;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                    border-radius: 3px;
+                 
+                }
+            }
             
+        }
+        .delete-attribute-line{
             padding-left: 10px;
             padding-right: 10px;
+            width: 24px;
+            vertical-align: middle;
+            margin: auto;
+            padding-right: 5px ;
+            text-align: center;
+            line-height: 24px;
             svg {
                 overflow: visible;
                 fill: @red-light;
@@ -43,7 +97,6 @@
         > .delete-attribute-line,
         > .opener {
             width: 24px;
-            flex:1;
             vertical-align: middle;
             margin: auto;
             padding-right: 5px ;
@@ -86,36 +139,9 @@
             margin-left: 5px;
             font-size: 12px;
 
-            .form-element-container{
-                height: 20px;
-                margin: 0;
-                .singleline-input input{
-                    outline: none;
-                    box-sizing: border-box;
-                    width: 100%;
-                    display: block;
-                    border:0;
-                    height: 26px;
-                    padding-left: 5px;               
-                    line-height: 26px;
-                    font-size: inherit;
-                    border-radius: 3px;
-                    &:focus{
-                        outline: none;
-                        box-sizing: border-box;
-                        width: 100%;
-                        display: block;
-                        border:0;
-                        padding-left: 5px;               
-                        line-height: 26px;
-                        font-size: inherit;
-                        border-radius: 3px;
-                        background-color:#009aa932;
-                    }
-                }
-                .input-container{
-                    border: none;
-                    height: 20px;
+            .form-container{
+                .field-list-container{
+                    position: absolute;    
                 }
             }
 
@@ -128,19 +154,12 @@
         }
 
         > .field-type {
-            width: 100px;
-            float: 6px;
+            width: 200px;
             margin: auto;
-            select {
-                border:none;
-                height: 26px;
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                appearance: none;
-                border-radius: 3px;
-                background-color:#009aa932;
-                margin-top: 4px;
-                width:75px;
+            .object-attribute-count{
+                position: relative;
+                left:10px;
+
             }
         }
 
