@@ -12,6 +12,7 @@ import {FormButtons} from "../FormButtons";
 import {EntityFormModel} from "../../entities/EntityFormModel";
 
 import './EntityPicker.less';
+import { DropdownInput } from "../inputs/DropdownInput";
 
 const CREATE_VALUE = '__create__';
 
@@ -71,14 +72,16 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
     };
 
     @action
-    private onSelectHandler = (event: any) => {
-
-        if (event.target.value === CREATE_VALUE) {
+    private onSelectHandler = (value: string) => {
+        console.log(value);
+        
+        if (value === CREATE_VALUE) {
             this.openModal();
             return;
         }
+
         const parsedValue = this.asValue();
-        parsedValue.type = event.target.value;
+        parsedValue.type = value;
         this.handleOnChange(parsedValue);
     };
 
@@ -163,11 +166,37 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
             "hidden-check-box":parsedValue.list,
         })
 
-
+        let options = new Map<string,string>();
+        options.set("string","string");
+        options.set("integer","integer")
+        options.set("double","double")
+        options.set("float","float")
+        options.set("long","long")
+        options.set("short","short")
+        options.set("boolean","boolean")
+        options.set("char","char")
+        options.set("byte","byte")
+        
+        if(this.props.allowObject){
+            options.set("object","object")
+        }
+        if(this.props.allowVoid){
+            options.set("void","void")
+        }
+        if(this.props.entities){
+            this.props.entities.forEach((item, ix) => {
+                options.set(item,"$ref:" + item)
+            })
+        }
         return (
             <>
                 <div className={"entity-picker"}>
-                    <select value={currentType} onChange={this.onSelectHandler} >
+                    <DropdownInput value={parsedValue.type} validation={["required"]} label="" name="" 
+                        onChange={(_,event2)=>{
+                            this.onSelectHandler(event2)
+                        }} 
+                        options={options}  />
+                    {/* <select value={currentType} onChange={this.onSelectHandler} >
                         <optgroup label={"Built-in"} className={"entity-attribute-types"} >
                             <option value={""} >Select...</option>
                             <option value={"string"} >{typeName('String')}</option>
@@ -194,7 +223,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
                             <option value={CREATE_VALUE} >Create...</option>
                         </optgroup>
                         }
-                    </select>
+                    </select> */}
                     {!isVoid() &&
                         <div className={"picker-list-section"} onClick={this.toggleList} >
                             <input className={"picker-list-checkbox"} type="checkbox"

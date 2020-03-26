@@ -3,7 +3,7 @@ import {observable} from "mobx";
 import { storiesOf } from '@storybook/react';
 import { Store, StateDecorator, State } from "@sambego/storybook-state";
 
-import {EntityMapper, EntityPicker, EntityForm, EntityFormModel} from "../src";
+import {EntityMapper, EntityPicker, EntityForm, EntityFormModel, FormButtons, Button} from "../src";
 
 import { EntityList } from "../src/entities/EntityList";
 import { SingleLineInput, Type } from "../src/form/inputs/SingleLineInput";
@@ -128,6 +128,7 @@ storiesOf('Entity Forms', module)
                             entityFormState.set({entity});
                         }}
                     />
+              
                 </State>
             </div>
         )
@@ -332,5 +333,13 @@ storiesOf('Entity Forms', module)
             </div>
 
 
+        )
+    }).add("FormButtons",()=>{
+        return(
+            <div>
+                <FormButtons>
+                    <Button text={"test"} />
+                </FormButtons>
+            </div>
         )
     })

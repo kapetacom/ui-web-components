@@ -22,6 +22,9 @@ import { SingleLineInput, Type } from "../form/inputs/SingleLineInput";
 import SVGGrabber from "../svg/SVGGrabber";
 import SVGDeleteHexagon from "../svg/SVGDeleteHexagon";
 import { isArray } from "util";
+import { FormContainer } from "../form/FormContainer";
+import { FormButtons } from "../form/FormButtons";
+import { DropdownInput } from "../form/inputs/DropdownInput";
 
 
 function toTypeName(entry:SchemaEntryEdit):string {
@@ -171,9 +174,11 @@ export class EntityForm extends React.Component<EntityFormProps> {
 
     private renderAddField(properties:SchemaEntryEdit[], depth:number,index:number) {
         return(
-            <div className={'field-row single-plus'}  style={{marginLeft: depth * 24}}
-                onClick={() => this.addField(properties,index)}>
-                <PlusHexagon />
+            <div className={'field-row single-plus'} style={{ marginLeft: depth * 24 }}>
+                <div className="single-plus"></div>
+                <div onClick={() => this.addField(properties, index)}>
+                    <PlusHexagon />
+                </div>
             </div>
         )
     }
@@ -236,9 +241,15 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                             </div>
                                             <div className={'field-type'} onClick={(evt) => evt.stopPropagation()}>
                                                 <EntityPicker name={'fieldType'}
-                                                              value={type}
-                                                              allowObject={true}
-                                                              onChange={(type: SchemaEntryType) => { this.updateType(field, type)}} />
+                                                    value={type}
+                                                    allowObject={true}
+                                                    onChange={(type: SchemaEntryType) => { this.updateType(field, type) }} />
+
+                                                <div className={"object-attribute-count"}>
+                                                    {field.properties&& 
+                                                    <>({field.properties.length})</>
+                                                    }
+                                                </div>
                                             </div>
                                             <div onClick={()=>{this.removeEntry(properties,field)}} className={'remover'}>
                                                 <SVGDeleteHexagon/>
@@ -303,12 +314,14 @@ export class EntityForm extends React.Component<EntityFormProps> {
     render() {
 
         return (
-            <div className={'entity-form'}>
+            <FormContainer onSubmit={()=>{this.handleChange()}}>
+                
+            <div className={'entity-form'}> 
 
                 <SingleLineInput
                     name={"name"}
                     value={this.props.entity.name}
-                    label={"Name"}
+                    label={"Entity name"}
                     validation={['required']}
                     onChange={(inputName, userInput)=>{this.props.entity.name = userInput.trim(); this.handleChange(); }} >                    
                 </SingleLineInput>
@@ -331,6 +344,13 @@ export class EntityForm extends React.Component<EntityFormProps> {
                     {this.renderSubProperties(this.props.entity.properties, 0)}
                 </div>
             </div>
+                <FormButtons>
+                    <button type="button" onClick={() => {}}>Cancel</button>
+                    <button type="submit">
+                        {'Create' }
+                    </button>
+                </FormButtons>
+            </FormContainer>
         );
     }
 }
