@@ -198,9 +198,16 @@ storiesOf('Entity Forms', module)
             "Belgium"
         ];
 
+        let countryCodeList = new Map()
+        
+        countryCodeList.set("Denmark","dk")
+        countryCodeList.set("Romania","RO")
+        countryCodeList.set("Greece","GR")
+
         let userSelection= [];
         const inputCallback= (userInput) => {
             userSelection = userInput;
+            console.log()
         };
 
         
@@ -209,7 +216,7 @@ storiesOf('Entity Forms', module)
             <div style={{ width: "600px", padding: '10px', backgroundColor: '#e0ecff' }}>
                 <form onSubmit={() => console.log("submited")} style={{ backgroundColor: 'inherit' }}>
                      <DropdownInput
-                        name="test2"
+                        name="test1"
                         value={""}
                         label={"Single Selection "}
                         validation={["required"]}
@@ -232,7 +239,19 @@ storiesOf('Entity Forms', module)
                     <br></br>
 
                     <DropdownInput
-                        name="test2"
+                        name="test3"
+                        value={""}
+                        label={"Multi Selection "}
+                        validation={["required"]}
+                        help={"this is another message"}
+                        options={countryCodeList}
+                        onChange={(name, input)=>console.log("name:",name, "input:",input)}
+                        multi={true}/>
+
+                    <br></br>
+
+                    <DropdownInput
+                        name="test4"
                         value={""}
                         label={"Single Selection disabled"}
                         validation={["required"]}
