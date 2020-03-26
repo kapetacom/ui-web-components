@@ -217,7 +217,7 @@ storiesOf('Entity Forms', module)
                 <form onSubmit={() => console.log("submited")} style={{ backgroundColor: 'inherit' }}>
                      <DropdownInput
                         name="test1"
-                        value={""}
+                        value={"Angola"}
                         label={"Single Selection "}
                         validation={["required"]}
                         help={"this is another message"}

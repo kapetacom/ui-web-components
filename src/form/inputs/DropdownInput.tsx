@@ -240,7 +240,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
                             <path d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z" fill="#908988" />
                         </svg>
                     </div>
-                    {this.userSelection.length > 0 && <span className="selected-number">({this.userSelection.length})</span>}
+                    {this.userSelection.length > 0 && this.props.multi && <span className="selected-number">({this.userSelection.length})</span>}
                     <ul id="datalist-input" className={classNameList}>
                         {this.renderOptions()}
                     </ul>
