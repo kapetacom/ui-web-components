@@ -46,6 +46,7 @@ interface ButtonProps {
     height?: number
     x?: number
     y?: number
+    type?:string
     pointSize?: number
     maxWidth?: number
     radius?: number
@@ -82,6 +83,7 @@ export const Button = (props: ButtonProps) => {
         let pointSize: number = 10;
         let maxWidth: number = 0;
         let radius: number = 3;
+        let type: string = "";
         let buttonType: ButtonType = ButtonType.REGULAR;
         let textDefinedWidth = false;
         let disabled = false;
@@ -91,9 +93,14 @@ export const Button = (props: ButtonProps) => {
             radius = +props.radius;
         }
    
+        if (props.type) {
+            type = props.type;
+        }
+
         if (props.height) {
             height = +props.height;
         }
+
         if (props.disabled) {
             disabled = props.disabled;
         }
@@ -139,7 +146,13 @@ export const Button = (props: ButtonProps) => {
 
 
 
-        return { onClick: props.onClick, width, height, text, pointSize, maxWidth, radius,  buttonType,  textSize, textDefinedWidth, disabled }
+        return { 
+            onClick: props.onClick,
+            type, width, height, text, 
+            pointSize, maxWidth, radius,  
+            buttonType,  textSize, 
+            textDefinedWidth, disabled 
+        }
     };
 
     let values = calculateValues();
@@ -156,6 +169,7 @@ export const Button = (props: ButtonProps) => {
     let buttonClasses = toClass({
         [values.buttonType]: true,
         "blockware-button": true,
+        "submit":values.type==="submit",
         "button-disabled": values.disabled
     });
 

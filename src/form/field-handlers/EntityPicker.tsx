@@ -62,7 +62,9 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         if (parsedValue.list) {
             value += '[]';
         }
-        if (parsedValue.type.startsWith('$ref:')) {
+        console.log(value);
+        
+        if (value.startsWith('$ref:')) {
             this.props.onChange({
                 $ref: value.substr(5)
             });
@@ -81,7 +83,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         }
 
         const parsedValue = this.asValue();
-        parsedValue.type = value;
+        parsedValue.type = value[0];
         this.handleOnChange(parsedValue);
     };
 
@@ -151,7 +153,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
 
         let currentType = parsedValue.type;
         if (typeof this.props.value !== 'string' &&
-            this.props.value.$ref) {
+            (this.props.value && this.props.value.$ref)) {
             currentType = '$ref:' + currentType;
         }
 

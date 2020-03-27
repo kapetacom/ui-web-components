@@ -24,6 +24,11 @@ export class FormButtons extends React.Component<FormButtonsProps, any> {
             return true;
         }
 
+        if (child.type === Button &&
+            child.props.type === 'submit') {
+            return true;
+        }
+
         if (child.type === 'input' &&
             child.props.type === 'image') {
             return true;
