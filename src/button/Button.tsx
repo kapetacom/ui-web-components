@@ -146,7 +146,13 @@ export const Button = (props: ButtonProps) => {
 
 
 
-        return { onClick: props.onClick,type, width, height, text, pointSize, maxWidth, radius,  buttonType,  textSize, textDefinedWidth, disabled }
+        return { 
+            onClick: props.onClick,
+            type, width, height, text, 
+            pointSize, maxWidth, radius,  
+            buttonType,  textSize, 
+            textDefinedWidth, disabled 
+        }
     };
 
     let values = calculateValues();
@@ -163,7 +169,7 @@ export const Button = (props: ButtonProps) => {
     let buttonClasses = toClass({
         [values.buttonType]: true,
         "blockware-button": true,
-        "submit-button":values.type==="submit",
+        "submit":values.type==="submit",
         "button-disabled": values.disabled
     });
 
