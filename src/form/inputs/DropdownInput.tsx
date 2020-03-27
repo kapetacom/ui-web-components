@@ -10,7 +10,7 @@ interface DropdownInputProps {
     name: string,
     value: any,
     label: string,
-    validation: string[],
+    validation: any[],
     help?: string,
     disabled?: boolean,
     multi?: boolean,
