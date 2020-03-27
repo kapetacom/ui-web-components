@@ -3,7 +3,7 @@ import {observable} from "mobx";
 import { storiesOf } from '@storybook/react';
 import { Store, StateDecorator, State } from "@sambego/storybook-state";
 
-import {EntityMapper, EntityPicker, EntityForm, EntityFormModel} from "../src";
+import {EntityMapper, EntityPicker, EntityForm, EntityFormModel, FormContainer, FormButtons, Button, ButtonType} from "../src";
 
 import { EntityList } from "../src/entities/EntityList";
 import { SingleLineInput, Type } from "../src/form/inputs/SingleLineInput";
@@ -333,4 +333,28 @@ storiesOf('Entity Forms', module)
 
 
         )
+    }).add("Form Row Button",()=>{
+
+       return (
+       <div style={{width:500}}>
+            <FormContainer onSubmit={()=>{
+            console.log("Submitted the form");
+        }}>
+            <SingleLineInput 
+            onChange={()=>{console.log("lalalala")}} 
+            label="Test" name="" value="" validation={["required"]} type={Type.TEXT}/>
+
+            <FormButtons>
+                <Button type="submit" width={100}
+                buttonType={ButtonType.PROCEED} 
+                text="Test" />
+                <Button width={100}
+                buttonType={ButtonType.CANCEL}
+                onClick={()=>{console.log("Clicked cancel!");
+                }} 
+                text="Test" />
+            </FormButtons>
+        </FormContainer>
+       </div>
+       )
     })

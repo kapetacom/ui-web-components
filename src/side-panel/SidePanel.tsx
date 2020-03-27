@@ -4,7 +4,7 @@ import {PanelStructure} from "../helpers/PanelStructure";
 import {OverlayComponent, OverlayContextType} from "../overlay/OverlayContext";
 import {OverlayContext} from "../overlay/OverlayContext";
 import {RenderInBody} from "..";
-
+import {SidePanelHeader} from "./SidePanelHeader";
 import "./SidePanel.less";
 
 interface SidePanelProps {
@@ -14,11 +14,12 @@ interface SidePanelProps {
     onClose?: () => void
     onOpen?: () => void
     children: any
-    title?: string
+    title?: string 
     open?: boolean
     index?: number
     modal?: boolean
     className?:string
+    header?: JSX.Element
 }
 
 interface SidePanelState {
@@ -140,6 +141,7 @@ export class SidePanel extends React.Component<SidePanelProps, SidePanelState> i
                     <PanelStructure
                         title={this.props.title || ""}
                         closable={this.props.closable}
+                        header={this.props.header}
                         onClose={() => {
                             this.close();
                         }}>

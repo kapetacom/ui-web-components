@@ -2,6 +2,7 @@ import React from "react";
 import {FormContext, FormContextType} from './FormContext';
 
 import "./FormButtons.less";
+import { Button } from "../button/Button";
 
 interface FormButtonsProps {
     children: any
@@ -19,6 +20,11 @@ export class FormButtons extends React.Component<FormButtonsProps, any> {
         }
 
         if (child.type === 'input' &&
+            child.props.type === 'submit') {
+            return true;
+        }
+
+        if (child.type === Button &&
             child.props.type === 'submit') {
             return true;
         }
