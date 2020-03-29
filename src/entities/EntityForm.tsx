@@ -99,26 +99,25 @@ export class EntityForm extends React.Component<EntityFormProps> {
     @action
     private addField(properties: SchemaEntryEdit[],index:number,isSubElement?:boolean): void {
 
-        let tempTest = _.cloneDeep(this.props.entity)
         const field = {
             uid: Guid.create().toString(),
             id: 'field_' + (properties.length),
             type: 'string'
         };
-        
+
         this.validateField(properties, field, field.id);
-        
+
         if(!isSubElement){
             properties.splice(index, 0, field);
-        }else{            
+        }else{
             if(!properties[index]){
                 properties[index]=field;
             }
-            
+
             properties[index].properties = [field];
         }
 
-        
+
         this.handleChange();
     }
 
@@ -156,10 +155,10 @@ export class EntityForm extends React.Component<EntityFormProps> {
         return this.openedObjects[key];
     }
 
-    private renderAddFirstAddLine(field:SchemaEntryEdit[],depth:number,index:number){
+    private renderAddFirstAddLine(field:SchemaEntryEdit[],depth:number,index:number) {
 
         return (
-            <div className={'field-row new'}  style={{marginLeft: depth * 24}}
+            <div className={'add-first'} style={{marginLeft: depth * 24}}
                 onClick={() => {
                     this.addField(field,index,true)
                 }}>
@@ -175,18 +174,17 @@ export class EntityForm extends React.Component<EntityFormProps> {
 
     private renderAddField(properties:SchemaEntryEdit[], depth:number,index:number) {
         return(
-            <div className={'single-plus'} style={{ marginLeft: depth * 24 }}>
-                <div className="single-plus"></div>
-                <div onClick={() => this.addField(properties, index)}>
+            <div style={{ marginLeft: depth * 24 }}>
+                <div className="single-plus" onClick={() => this.addField(properties, index)}>
                     <PlusHexagon />
                 </div>
             </div>
         )
     }
-    
+
     private renderSubProperties(properties:SchemaEntryEdit[], depth:number, parentId?:string) {
         return (
-            <> 
+            <>
                 {this.renderProperties(properties, depth, parentId)}
             </>
         );
@@ -198,78 +196,79 @@ export class EntityForm extends React.Component<EntityFormProps> {
 
             <SortableContainer list={properties} onChange={() => this.handleChange()} >
                 <div className={'field-list-container'}>
-             
+
                     {properties.map((field,index) => {
 
-                            let type = toTypeName(field);
-                            const objectType = isObject(field);
-                            let key = parentId ? parentId + '.' + field.id : field.id;
+                        let type = toTypeName(field);
+                        const objectType = isObject(field);
+                        let key = parentId ? parentId + '.' + field.id : field.id;
 
-                            const openerClass = toClass({
-                                'fa fa-chevron-right':true,
-                                'open': this.isOpen(key)
-                            });
+                        const openerClass = toClass({
+                            'fa fa-chevron-right':true,
+                            'open': this.isOpen(key)
+                        });
 
-                            const fieldNameClass = toClass({
-                                'field-name':true,
-                                'error': !!field.error
-                            });
+                        const fieldNameClass = toClass({
+                            'field-name':true,
+                            'error': !!field.error
+                        });
 
-                            const addClassNames=toClass({
-                                "add-visible":this.isHovered===field.uid && !this.isOpen(key),
-                                "add-hidden":this.isHovered!==field.uid
-                            })
+                        const addClassNames=toClass({
+                            "add-visible":this.isHovered===field.uid && !this.isOpen(key),
+                            "add-hidden":this.isHovered !== field.uid || this.isOpen(key)
+                        })
 
-                            const isOpenable = (field.type === "object" && !isArray(field.properties));
+                        const isFirstAttribute = ((field.type === "object" && !field.properties) ||
+                            (isArray(field.properties) ?field.properties.length === 0 : false));
 
-                            return (
-                                <div key={field.uid} 
-                                     onMouseMove={(evt)=>{this.isHovered=field.uid; evt.stopPropagation() }} 
-                                     onMouseLeave={(evt)=>{this.isHovered="";  evt.stopPropagation() }}>
-                                
-                                    <SortableItem item={field} handle={'.mover'}>
-                                        <div className={'field-row data'} style={{marginLeft: depth * 24}}>
-                                            <div className={'mover'}>
-                                                <SVGGrabber />
-                                            </div>
-                                            <div className={'opener'}>
-                                                {objectType &&
+                        return (
+                            <div className="row" key={field.uid}
+                                onMouseMove={(evt)=>{this.isHovered=field.uid; evt.stopPropagation() }}
+                                onMouseLeave={(evt)=>{this.isHovered=""; evt.stopPropagation() }}>
+
+                                <SortableItem item={field} handle={'.mover'}>
+                                    <div className={'field-row data'} style={{marginLeft: depth * 24}}>
+                                        <div className={'mover'}>
+                                            <SVGGrabber />
+                                        </div>
+                                        <div className={'opener'}>
+                                            {objectType &&
                                                 <i className={openerClass} onClick={() => this.toggleOpen(key)} />
+                                            }
+                                        </div>
+                                        <div className={fieldNameClass}>
+                                            <SingleLineInput validation={["required"]} name="" label=""  type={Type.TEXT} value={field.id}
+                                                onChange={(_,value) => {this.updateFieldId(properties, field, value)}} />
+                                        </div>
+                                        <div className={'field-type'} onClick={(evt) => evt.stopPropagation()}>
+                                            <EntityPicker name={'fieldType'}
+                                                value={type}
+                                                allowObject={true}
+                                                onChange={(type: SchemaEntryType) => { this.updateType(field, type) }} />
+
+                                            <div className={"object-attribute-count"}>
+                                                {field.properties&&
+                                                    <>({field.properties.length})</>
                                                 }
                                             </div>
-                                            <div className={fieldNameClass}>
-                                                <SingleLineInput validation={["required"]} name="" label=""  type={Type.TEXT} value={field.id}
-                                                       onChange={(_,value) => {this.updateFieldId(properties, field, value)}} />
-                                            </div>
-                                            <div className={'field-type'} onClick={(evt) => evt.stopPropagation()}>
-                                                <EntityPicker name={'fieldType'}
-                                                    value={type}
-                                                    allowObject={true}
-                                                    onChange={(type: SchemaEntryType) => { this.updateType(field, type) }} />
-
-                                                <div className={"object-attribute-count"}>
-                                                    {field.properties&& 
-                                                    <>({field.properties.length})</>
-                                                    }
-                                                </div>
-                                            </div>
-                                            <div onClick={()=>{this.removeEntry(properties,field)}} className={'remover'}>
-                                                <SVGDeleteHexagon/>
-                                            </div>
-                                   
                                         </div>
-                                    </SortableItem>
-                                    <div className={addClassNames}>
-                                        {this.renderAddField(properties, depth,index)}
+                                        <div onClick={()=>{this.removeEntry(properties,field)}} className={'remover'}>
+                                            <SVGDeleteHexagon/>
+                                        </div>
+
                                     </div>
-                                    {objectType && this.isOpen(key) &&
-                                        this.renderSubProperties(field.properties?field.properties:[], depth + 1, key)
-                                    }
-                                    { (this.isOpen(key) && isOpenable )
-                                    && this.renderAddFirstAddLine(properties , depth+1,index)}
+                                </SortableItem>
+                                <div className={addClassNames}>
+                                    {this.renderAddField(properties, depth,index)}
                                 </div>
-                            )
-                        })
+                                {objectType && this.isOpen(key) &&
+                                    this.renderSubProperties(field.properties?field.properties:[], depth + 1, key)
+                                }
+                                {((this.isOpen(key) && isFirstAttribute)||!properties)
+                                    && this.renderAddFirstAddLine(properties, depth + 1, index)}
+                            </div>
+                        )
+                    })
                     }
                 </div>
             </SortableContainer>
@@ -278,7 +277,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
     }
 
     private isValidProperties(properties:SchemaEntryEdit[]) {
-        for(let i = 0 ; i < properties.length; i++) {
+        for(let i = 0; i < properties.length; i++) {
             const entry = properties[i];
 
             if (!entry.id) {
@@ -318,18 +317,17 @@ export class EntityForm extends React.Component<EntityFormProps> {
 
         return (
             <FormContainer onSubmit={()=>{this.handleChange()}}>
-                
-            <div className={'entity-form'}> 
 
-                <SingleLineInput
-                    name={"name"}
-                    value={this.props.entity.name}
-                    label={"Entity name"}
-                    validation={['required']}
-                    onChange={(inputName, userInput)=>{this.props.entity.name = userInput.trim(); this.handleChange(); }} >                    
-                </SingleLineInput>
+                <div className={'entity-form'}>
 
-                <div className={'field-rows'}>
+                    <SingleLineInput
+                        name={"name"}
+                        value={this.props.entity.name}
+                        label={"Entity name"}
+                        validation={['required']}
+                        onChange={(inputName, userInput)=>{this.props.entity.name = userInput.trim(); this.handleChange(); }} >
+                    </SingleLineInput>
+
                     <div className={'field-row header'}>
                         <div className={'mover'}/>
                         <div className={'opener'}/>
@@ -344,13 +342,16 @@ export class EntityForm extends React.Component<EntityFormProps> {
                         </div>
                         <div className={'remover'}/>
                     </div>
-                    {this.renderSubProperties(this.props.entity.properties, 0)}
+                    {
+                        this.props.entity.properties.length > 0 ?
+                            this.renderSubProperties(this.props.entity.properties, 0)
+                            :
+                            this.renderAddFirstAddLine(this.props.entity.properties, 0, 0)}
                 </div>
-            </div>
                 <FormButtons>
-                    <button type="button" onClick={() => {}}>Cancel</button>
+                    <button type="button" onClick={() => { }}>Cancel</button>
                     <button type="submit">
-                        {'Create' }
+                        {'Create'}
                     </button>
                 </FormButtons>
             </FormContainer>
