@@ -2,37 +2,37 @@
 
 import React, { CSSProperties } from "react";
 
-const PlusHexagon = ()=>{
+const PlusHexagon = () => {
 
-    const addFieldButtonStyle:CSSProperties = {
-        width:"100%",
-        padding:0,
-        height:"20px"
+    const addFieldButtonStyle: CSSProperties = {
+        padding: 0,
     }
 
-    const addRectangleStyle:CSSProperties = {
-        margin:"auto",
-        height:"4px",
-        position:"sticky",
-        top:"16px",
-        width:"100%",
-        backgroundColor:"#009AA9"
+    const addRectangleStyle: CSSProperties = {
+        margin: "auto",
+        height: "4px",
+        position: "static",
+        width: "100%",
+        backgroundColor: "#009AA9"
     }
 
-    const plusHexStyle:CSSProperties = {
-        position:"sticky",
-        marginTop:"-12px",
-        overflow:"visible",
+    const plusHexStyle: CSSProperties = {
+        overflow: "visible",
+        marginLeft: "50%",
+
     }
-    
+
     return (
         <div style={addFieldButtonStyle}>
             <div style={addRectangleStyle} ></div>
             <div className={"add-button-wrapper"}>
-                <svg style={plusHexStyle} height="40px" width="40px" viewBox="100 0 40 40" >
-                    <path d="M321.051 12.6273C320.411 11.6367 320.411 10.3633 321.051 9.37273L326.216 1.37273C326.769 0.516931 327.718 1.57e-06 328.736 1.52547e-06L337.264 1.15273e-06C338.282 1.1082e-06 339.231 0.516931 339.784 1.37273L344.949 9.37272C345.589 10.3633 345.589 11.6367 344.949 12.6273L339.784 20.6273C339.231 21.4831 338.282 22 337.264 22L328.736 22C327.718 22 326.769 21.4831 326.216 20.6273L321.051 12.6273Z" fill="#009AA9"/>
-                    <path d="M338.314 10.6569L327.001 10.6576" stroke="white" strokeWidth="1.5" fill="#fff" strokeLinecap="round"/>
-                    <path d="M332.657 5L332.657 16.313" stroke="white" strokeWidth="1.5" fill="#fff" strokeLinecap="round"/>
+
+                <svg style={plusHexStyle} width="26" height="22" viewBox="16 0 26 22" fill="none">
+                    <path d="M1.05067 12.6273C0.411088 11.6367 0.411088 10.3633 1.05067 9.37273L6.21597 1.37273C6.76853 0.516931 7.7176 1.57e-06 8.73628 1.52547e-06L17.2637 1.15273e-06C18.2824 1.1082e-06 19.2315 0.516931 19.784 1.37273L24.9493 9.37272C25.5889 10.3633 25.5889 11.6367 24.9493 12.6273L19.784 20.6273C19.2315 21.4831 18.2824 22 17.2637 22L8.73629 22C7.71761 22 6.76853 21.4831 6.21597 20.6273L1.05067 12.6273Z" fill="#009AA9" />
+                    <svg width="24" height="24" viewBox="-7 -5 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.3145 6.65686L1.00144 6.65756" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M6.65723 1L6.65653 12.313" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
                 </svg>
             </div>
         </div>

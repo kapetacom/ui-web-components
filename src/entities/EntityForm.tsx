@@ -163,11 +163,9 @@ export class EntityForm extends React.Component<EntityFormProps> {
                 onClick={() => {
                     this.addField(field,index,true)
                 }}>
-                <div className="adder" >
-                    <i className="fa fa-plus"/>
-                </div>
+               
                 <div className={'field-name'}>
-                    Add field
+                     + Add field
                 </div>
             </div>
         )
@@ -176,20 +174,14 @@ export class EntityForm extends React.Component<EntityFormProps> {
     private renderAddField(properties:SchemaEntryEdit[], depth:number,index:number) {
         return(
             <div style={{ marginLeft: depth * 24 }}>
-                <div className="single-plus" onClick={() => this.addField(properties, index)}>
+                <div
+                    className="single-plus" onClick={() => this.addField(properties, index)}>
                     <PlusHexagon />
                 </div>
             </div>
         )
     }
 
-    private renderSubProperties(properties:SchemaEntryEdit[], depth:number, parentId?:string) {
-        return (
-            <>
-                {this.renderProperties(properties, depth, parentId)}
-            </>
-        );
-    }
 
     private renderProperties(properties:SchemaEntryEdit[], depth:number, parentId?:string):JSX.Element {
 
@@ -205,7 +197,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
                         let key = parentId ? parentId + '.' + field.id : field.id;
 
                         const openerClass = toClass({
-                            'fa fa-chevron-right':true,
+                            'closed':true,
                             'open': this.isOpen(key)
                         });
 
@@ -215,7 +207,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
                         });
 
                         const addClassNames=toClass({
-                            "add-visible":this.isHovered===field.uid && !this.isOpen(key),
+                            "add-visible": this.isHovered===field.uid ,
                             "add-hidden":this.isHovered !== field.uid || this.isOpen(key)
                         })
 
@@ -234,7 +226,9 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                         </div>
                                         <div className={'opener'}>
                                             {objectType &&
-                                                <i className={openerClass} onClick={() => this.toggleOpen(key)} />
+                                                <svg className={openerClass} width="7" height="13" viewBox="0 0 7 13" fill="none" onClick={() => this.toggleOpen(key)} >
+                                                    <path d="M0.75 12.25L6.25 6.75L0.75 1.25" stroke="#5C5F64" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                                </svg>
                                             }
                                         </div>
                                         <div className={fieldNameClass}>
@@ -248,8 +242,8 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                                 onChange={(type: SchemaEntryType) => { this.updateType(field, type) }} />
 
                                             <div className={"object-attribute-count"}>
-                                                {field.properties&&
-                                                    <>({field.properties.length})</>
+                                                { isObject(field) && field.properties &&
+                                                    <>  ({field.properties.length})</>
                                                 }
                                             </div>
                                         </div>
@@ -263,7 +257,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                     {this.renderAddField(properties, depth,index)}
                                 </div>
                                 {objectType && this.isOpen(key) &&
-                                    this.renderSubProperties(field.properties?field.properties:[], depth + 1, key)
+                                    this.renderProperties(field.properties?field.properties:[], depth + 1, key)
                                 }
                                 {((this.isOpen(key) && isFirstAttribute)||!properties)
                                     && this.renderAddFirstAddLine(properties, depth + 1, index)}
@@ -347,7 +341,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
                     </div>
                     {
                         this.props.entity.properties.length > 0 ?
-                            this.renderSubProperties(this.props.entity.properties, 0)
+                            this.renderProperties(this.props.entity.properties, 0)
                             :
                             this.renderAddFirstAddLine(this.props.entity.properties, 0, 0)}
                 </div>

@@ -3,215 +3,305 @@
 
 
 
-.form-container{
+.form-container {
     height: fit-content;
     padding: 30px;
-    .add-first{
-        display: flex;
-        height: 24px;
+
+    .add-first {
         color: white;
+        user-select: none;
+        padding: 4px;
+        font-weight: 500;
         padding-left: 20px;
-        background-color:#009aa9;
-        .adder{
+        font-size: 13px;
+        background-color: @cyan-dark;
+
+        .adder {
+            width: 20px;
+            float: left;
             padding-right: 20px;
         }
     }
 
-    .entity-name-field{
+    .entity-name-field {
         background-color: white;
     }
 
-    .field-list-container{
-        position: relative;   
-        width: 100%; 
+    .field-list-container {
+        position: relative;
+        width: 100%;
     }
 
-    .row{
+    .row {
         display: contents;
+
         .add-hidden {
-            .transition();
+            .transition(50ms);
+            position: relative;
             transform: scale(0);
             margin-top: -1px;
             height: 0;
+            top: -45px;
         }
+
         .add-visible {
+            position: relative;
+            margin-top: -1px;
+            top: -45px;
+            height: 0;
+
+            .add-button-wrapper {
+                position: relative;
+                top: -12px;
+                left: 0;
+                height: 0;
+            }
+
             .transition();
             transform: scale(1);
-            .single-plus{
-                height: 0;
-                margin-left: 30px;
-                align-content: center;
-                margin: auto;
+
+            .single-plus {
+                width: 100%;
             }
         }
     }
-   
-        .field-row {
+
+    .field-row {
         top: 2px;
         display: block;
         height: 40px;
         background-color: white;
         width: inherit;
 
-      
 
-      /* all field row items  */     
-        .field-type,.remover,.mover,.field-sub-elements,.field-name{
+
+        /* all field row items  */
+        .field-type,
+        .remover,
+        .mover,
+        .field-sub-elements,
+        .field-name {
             position: relative;
             float: left;
             margin-right: 10px;
             height: 100%;
         }
 
-        .mover,.field-sub-elements,.field-name{
+        .field-type,
+        .remover,
+        .mover,
+        .field-sub-elements,
+        .field-name {
             margin-left: 10px;
-            
+            user-select: none;
         }
-        .field-type,.remover,.mover,.field-sub-elements,.field-name{
-            margin-left: 10px;
-        }
-        
-        .mover{
+
+        .mover {
             margin-top: 7px;
             height: fit-content;
-            svg{
+            cursor: grab;
+
+            svg {
                 overflow: visible;
-                
             }
         }
+
         .opener {
             float: left;
             margin: 0;
-            margin-top: 9px;
+            margin-top: 11px;
             width: 0;
-            i {
+            cursor: pointer;
+
+            svg {
                 .transition();
                 font-size: 14px;
+
                 &.open {
                     .transform(rotate(90deg));
                 }
             }
         }
 
-        &.data{
+        &.data {
             border: 1px solid @gray;
-            &:hover{
+
+            &:hover {
+                input {
+                    background-color: #009aa932;
+                }
                 box-shadow: inset 0px 0px 0px 2px @btn-regular-active-bg;
             }
         }
 
-        .field-name{
-            width: calc( 100% - 350px );
+        .field-name {
+            width: calc(100% - 350px);
             margin-left: 20px;
+
+            .singleline-input {
+                input {
+                    padding-left: 5px;
+                }
+            }
         }
 
-        .field-type{
+        .field-type {
             width: 210px;
+
             .entity-picker {
                 margin-top: 7px;
                 height: 26px;
                 float: left;
-                
-                .arrow-icon{
+
+                .arrow-icon {
                     margin-top: -7px;
                     padding-left: -19px;
                 }
             }
-            .picker-list-section{
+
+            .picker-list-section {
                 padding-left: 10px;
                 margin-top: -4px;
             }
-            .object-attribute-count{
+
+            .object-attribute-count {
                 position: absolute;
                 margin-top: 10px;
-                right: 0px;
+                right: -5px;
             }
         }
-        
-        .form-element-container{
+
+        .form-element-container {
             box-sizing: border-box;
             display: block;
             font-size: 14px;
             width: 100%;
             margin: 0;
             height: 100%;
-            color:black;
-            
-            &.error-status{
-               .input-container{
-                border: 2px red solid;
-                margin-top: 7px;
-               }
+            color: black;
+
+            &.error-status {
+                .input-container {
+                    border: 2px red solid;
+                    margin-top: 7px;
+                }
             }
-            .status-icon{
+
+            .status-icon {
                 margin-top: -8px;
             }
+
             .message {
                 display: none;
             }
-            input{
-                color:black;
+
+            input {
+                color: black;
                 padding: 0;
-                outline: none;
                 box-sizing: border-box;
-                width: 100%;
                 display: block;
                 font-size: inherit;
                 height: 26px;
                 border-radius: 3px;
             }
+
             &.focused {
-                input{
-                    background-color:#009aa932;
+                input {
+                    background-color: #009aa932;
                 }
             }
+
             .input-container {
                 margin: 0;
                 padding: 0;
                 border: none;
-                color:black;
-                height: 26px; 
-                
-                .dropdown-input{
-                    input{
+                color: black;
+                height: 26px;
+
+                .dropdown-input {
+                    input {
                         padding-left: 10px;
                     }
                 }
-                .singleline-input{
+
+                .singleline-input {
                     margin-top: 7px;
-                    input{
+                    input {
                         padding-left: 10px;
-                        padding: 0;
                     }
                 }
             }
-            span sup{
+
+            span sup {
                 display: none;
             }
-           
+
         }
     }
 
 }
 
-.form-buttons{
+.form-buttons {
     padding-top: 20px;
     height: 40px;
     display: block;
     padding-right: 30px;
-    .blockware-button{
+
+    .blockware-button {
         position: relative;
         padding-left: 40px;
         right: 0;
-        &.proceed-button{
-            fill:@cyan-dark;
+
+        &.proceed-button {
+            path {
+                fill: @cyan-dark;
+            }
+
+            &:active {
+                path {
+                    fill: @cyan-light;
+                }
+            }
+            &.button-disabled{
+                path {
+                    fill: @gray;
+                }
+            }
+
         }
-        &.cancel-button{
-            fill:white;
-            .blockware-button-text{
+
+        &.cancel-button {
+            fill: white;
+
+            .blockware-button-text {
                 fill: black;
             }
-            path{
+
+            &:hover {
+                path {
+                    fill: @gray-xdark;
+                }
+                text{
+                    fill:white;
+                }
+            }
+
+            &:active {
+                path {
+                    stroke:@btn-regular-active-bg;
+                    fill: @btn-regular-active-bg;
+                }
+                text{
+                    fill:white;
+                }
+            }
+
+            &.button-disabled{
+                path {
+                    fill: @gray-xdark;
+                }
+            }
+            path {
                 stroke: black;
             }
         }
