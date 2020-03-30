@@ -174,7 +174,7 @@ export const Button = (props: ButtonProps) => {
     });
 
     return (
-        <div>
+        <>
             <svg className={buttonClasses} onClick={!values.disabled ? values.onClick : (evt: React.MouseEvent<SVGSVGElement, MouseEvent>) => { }} width={values.width} height={values.height} style={props.style} >
                 <defs>
                     <filter id="hover-shadow" x="-50%" y="-50%" width="200%" height="200%" >
@@ -193,7 +193,7 @@ export const Button = (props: ButtonProps) => {
                         value={values.text} x={getHorizontalTextPosition(values)} y={values.height ? values.height / 2 : props.y ? props.y : 10} />
                 </g>
             </svg>
-        </div>
+        </>
     );
 
 };

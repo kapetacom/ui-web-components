@@ -22,6 +22,7 @@ import SVGDeleteHexagon from "../svg/SVGDeleteHexagon";
 import { isArray } from "util";
 import { FormContainer } from "../form/FormContainer";
 import { FormButtons } from "../form/FormButtons";
+import { Button, ButtonType } from "../button/Button";
 
 
 function toTypeName(entry:SchemaEntryEdit):string {
@@ -320,13 +321,15 @@ export class EntityForm extends React.Component<EntityFormProps> {
 
                 <div className={'entity-form'}>
 
-                    <SingleLineInput
-                        name={"name"}
-                        value={this.props.entity.name}
-                        label={"Entity name"}
-                        validation={['required']}
-                        onChange={(inputName, userInput)=>{this.props.entity.name = userInput.trim(); this.handleChange(); }} >
-                    </SingleLineInput>
+                    <div className={"entity-name-field"}>
+                        <SingleLineInput
+                            name={"name"}
+                            value={this.props.entity.name}
+                            label={"Entity name"}
+                            validation={['required']}
+                            onChange={(inputName, userInput)=>{this.props.entity.name = userInput.trim(); this.handleChange(); }} >
+                        </SingleLineInput>
+                    </div>
 
                     <div className={'field-row header'}>
                         <div className={'mover'}/>
@@ -349,10 +352,8 @@ export class EntityForm extends React.Component<EntityFormProps> {
                             this.renderAddFirstAddLine(this.props.entity.properties, 0, 0)}
                 </div>
                 <FormButtons>
-                    <button type="button" onClick={() => { }}>Cancel</button>
-                    <button type="submit">
-                        {'Create'}
-                    </button>
+                    <Button height={35} radius={2} width={70} text="Cancel" type="button"  buttonType={ButtonType.CANCEL}  onClick={() => { }}/>
+                    <Button height={35} radius={2} width={70} text="Create" type="submit" buttonType={ButtonType.PROCEED} />
                 </FormButtons>
             </FormContainer>
         );
