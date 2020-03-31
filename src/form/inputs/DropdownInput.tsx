@@ -14,7 +14,7 @@ interface DropdownInputProps {
     help?: string,
     disabled?: boolean,
     multi?: boolean,
-    options: string[] | Map<string,any>,
+    options: string[] | {[key:string]:string},
     onChange: (inputName: string, userInput: any) => void
 }
 
@@ -37,9 +37,6 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
     @observable
     private inputElement = React.createRef<HTMLInputElement>();
 
-    @observable
-    private finalOptions: {[key:string]:string} = {};
-
     @action
     private onInputFocus = () => {
         this.inputFocus = true;
@@ -58,7 +55,12 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
     @action
     private onInputToggle = () => {
         if(!this.props.disabled){
-            this.inputFocus = !this.inputFocus;  
+            if(this.inputFocus) {
+                this.onInputBlur();
+            }
+            else {
+                this.onInputFocus();
+            }  
         }
     }
 
@@ -69,9 +71,8 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
 
     @action
     private setInputSuggestion() {
-        if (this.userInput && this.userInput.length > 0) {
-            let temp: string[] = this.optionListFiltered();
-            this.inputSuggestion = temp[0];
+        if (this.userInput && this.userInput.length > 0 ) {
+                this.inputSuggestion = this.optionListFiltered()![0];
         } else {
             this.inputSuggestion = "";
         }
@@ -82,10 +83,14 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         if (this.inputElement.current) {
             this.inputElement.current.focus();
         }
-        const getMappedValeus = ()=>{
-            return this.userSelection.map(key=>{
-                return this.finalOptions[key];
-            })
+        const getMappedValues = (): string[] | string=>{
+            let selection = this.userSelection.map(key=>{                
+                return this.getOptions()[key];
+            });
+            if(!this.props.multi) {
+                return selection[0];
+            }
+            return selection;
         }
 
         let tempUserSelection: string[] = this.userSelection;
@@ -96,7 +101,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             if (isSelected > -1) {
                 tempUserSelection.splice(isSelected, 1);
                 this.setUserSelection(tempUserSelection);
-                this.props.onChange(this.props.name,getMappedValeus() );
+                this.props.onChange(this.props.name,getMappedValues() );
                 return;
             }
         }
@@ -109,22 +114,19 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         this.userInput = "";
         this.setInputSuggestion();
         this.setUserSelection(tempUserSelection);
-        this.props.onChange(this.props.name, getMappedValeus());
+        this.props.onChange(this.props.name, getMappedValues());
         if(!this.props.multi){
             this.onInputBlur();
         }
     };
 
     private optionListFiltered = () => {
-
-        const orderedMap = Object.keys(this.finalOptions).sort();
-        return orderedMap.filter((item) => {
-            return item.toUpperCase().startsWith(this.userInput.toUpperCase())
-        })
+            return Object.keys(this.getOptions()).sort().filter((item:string) => {
+                return item.toUpperCase().startsWith(this.userInput.toUpperCase())
+            });
     }
 
-    @action
-    private createOptions = () => {
+    private getOptions = (): { [key: string]: string } => {
 
         if (this.props.options === null || this.props.options === undefined) {
             throw new Error("Provide an array of strings or an object of options.");
@@ -133,47 +135,42 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         let options: { [key: string]: string } = {};
         if (_.isArray(this.props.options)) {
             this.props.options.forEach(item => options[item] = item);
-            this.finalOptions = options;
-            return;
+            return options;
         }
 
         if (_.isObject(this.props.options)) {
-
-            const tempOptions = this.props.options;
-            tempOptions.forEach(function (value: any, key: string) {
-                options[key] = tempOptions.get(key);
-            });
-            this.finalOptions = options;
+            return this.props.options;
         }
-
-        return;
+        return options;
     }
 
     private renderOptions = () => {
-        let filteredList = this.optionListFiltered();
-        return filteredList.map((option: string) => {
-            let row = (
-                <li key={option} className={`option ${(this.userSelection.indexOf(option) > -1 ? " selected" : "")}`}
-                    onMouseDown={(evt: React.MouseEvent) => {
-                        evt.nativeEvent.stopImmediatePropagation();
-                        evt.preventDefault();
+        let filteredList = this.optionListFiltered();        
+        if(filteredList) {
+            return filteredList.map((option: string) => {
+                let row = (
+                    <li key={option} className={`option ${(this.userSelection.indexOf(option) > -1 ? " selected" : "")}`}
+                        onMouseDown={(evt: React.MouseEvent) => {
+                            evt.nativeEvent.stopImmediatePropagation();
+                            evt.preventDefault();
 
-                        this.selectHandler(option)
-                    }}>
-                    {this.boldQuery(option, this.userInput)}
+                            this.selectHandler(option)
+                        }}>
+                        {this.boldQuery(option, this.userInput)}
 
-                    {
-                        this.userSelection.indexOf(option) < 0 ? null :
-                            <span className={"selected-icon"} >
-                                <svg width="14" height="10" fill="none" >
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M5 9.61957L0 4.99477L1.4 3.69983L5 7.02968L12.6 0L14 1.29494L5 9.61957Z" fill="#686868" />
-                                </svg>
-                            </span>
-                    }
-                </li>
-            );
-            return row;
-        });
+                        {
+                            this.userSelection.indexOf(option) < 0 ? null :
+                                <span className={"selected-icon"} >
+                                    <svg width="14" height="10" fill="none" >
+                                        <path fillRule="evenodd" clipRule="evenodd" d="M5 9.61957L0 4.99477L1.4 3.69983L5 7.02968L12.6 0L14 1.29494L5 9.61957Z" fill="#686868" />
+                                    </svg>
+                                </span>
+                        }
+                    </li>
+                );
+                return row;
+            });
+        }
     }
 
     @action
@@ -196,10 +193,6 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             <b>{str.substr(queryIndex, queryLength)}</b>
             {str.substr(queryIndex + queryLength)}
         </span>
-    }
-
-    componentWillMount(){
-        this.createOptions();
     }
 
     render() {

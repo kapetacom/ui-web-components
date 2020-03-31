@@ -204,6 +204,12 @@ storiesOf('Entity Forms', module)
         countryCodeList.set("Romania","RO")
         countryCodeList.set("Greece","GR")
 
+        let countryCodeList2 ={
+            "Denmark": "DK",
+            "Romania": "RO",
+            "Greece":"GR"
+        }
+
         let userSelection= [];
         const inputCallback= (userInput) => {
             userSelection = userInput;
@@ -244,7 +250,7 @@ storiesOf('Entity Forms', module)
                         label={"Multi Selection "}
                         validation={["required"]}
                         help={"this is another message"}
-                        options={countryCodeList}
+                        options={countryCodeList2}
                         onChange={(name, input)=>console.log("name:",name, "input:",input)}
                         multi={true}/>
 
