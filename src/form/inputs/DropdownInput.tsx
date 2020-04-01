@@ -101,7 +101,9 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             if (isSelected > -1) {
                 tempUserSelection.splice(isSelected, 1);
                 this.setUserSelection(tempUserSelection);
-                this.props.onChange(this.props.name,getMappedKeys() );
+                if(this.userSelection.length > 0){
+                    this.props.onChange(this.props.name,getMappedKeys() );
+                }
                 return;
             }
         }
