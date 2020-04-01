@@ -198,16 +198,10 @@ storiesOf('Entity Forms', module)
             "Belgium"
         ];
 
-        let countryCodeList = new Map()
-        
-        countryCodeList.set("Denmark","dk")
-        countryCodeList.set("Romania","RO")
-        countryCodeList.set("Greece","GR")
-
         let countryCodeList2 ={
-            "Denmark": "DK",
-            "Romania": "RO",
-            "Greece":"GR"
+            "DK": "Denmark",
+            "RO": "Romania",
+            "GR": "Greece"
         }
 
         let userSelection= [];

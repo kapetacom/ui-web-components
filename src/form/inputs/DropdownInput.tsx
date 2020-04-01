@@ -83,9 +83,9 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         if (this.inputElement.current) {
             this.inputElement.current.focus();
         }
-        const getMappedValues = (): string[] | string=>{
-            let selection = this.userSelection.map(key=>{                
-                return this.getOptions()[key];
+        const getMappedKeys = (): string[] | string=>{
+            let selection = this.userSelection.map(value=>{                
+                return _.invert(this.getOptions())[value];
             });
             if(!this.props.multi) {
                 return selection[0];
@@ -101,7 +101,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             if (isSelected > -1) {
                 tempUserSelection.splice(isSelected, 1);
                 this.setUserSelection(tempUserSelection);
-                this.props.onChange(this.props.name,getMappedValues() );
+                this.props.onChange(this.props.name,getMappedKeys() );
                 return;
             }
         }
@@ -114,14 +114,14 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         this.userInput = "";
         this.setInputSuggestion();
         this.setUserSelection(tempUserSelection);
-        this.props.onChange(this.props.name, getMappedValues());
+        this.props.onChange(this.props.name, getMappedKeys());
         if(!this.props.multi){
             this.onInputBlur();
         }
     };
 
     private optionListFiltered = () => {
-            return Object.keys(this.getOptions()).sort().filter((item:string) => {
+            return Object.values(this.getOptions()).sort().filter((item:string) => {
                 return item.toUpperCase().startsWith(this.userInput.toUpperCase())
             });
     }
