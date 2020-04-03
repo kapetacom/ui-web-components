@@ -86,10 +86,8 @@ let dropdowns: { [key:string]: string| string[]} = observable({
 let dropdownState = new Store({
 dropdowns: dropdowns,
     handleValueUpdate: (name: string ,valueIn:string | string[]) => {
-        dropdowns[name]=valueIn
-        
+        dropdowns[name]=valueIn;        
         dropdownState.set({dropdowns: dropdowns});
-        console.log("dropdownState.state",dropdownState.state.dropdowns[name]);
     }
 });
 
@@ -219,18 +217,12 @@ storiesOf('Entity Forms', module)
             "GR": "Greece"
         }
 
-        let userSelection= [];
-        const inputCallback= (userInput) => {
-            userSelection = userInput;
-            console.log()
-        };
-
         
         return (
                 
              
             <div style={{ width: "600px", padding: '10px', backgroundColor: '#e0ecff' }}>
-                <form onSubmit={() => console.log("submited")} style={{ backgroundColor: 'inherit' }}>
+                <form onSubmit={() => {}} style={{ backgroundColor: 'inherit' }}>
                 <State store={dropdownState} >
                      <DropdownInput
                         name="test1"
@@ -286,7 +278,7 @@ storiesOf('Entity Forms', module)
                         help={"this is another message"}
                         disabled={true}
                         options={countryList}
-                        onChange={(name, input)=>console.log("name:",name, "input:",input)}/>
+                        onChange={(name, input)=>{}}/>
                     <br></br>
                     <br></br> 
                 </State>
@@ -300,9 +292,9 @@ storiesOf('Entity Forms', module)
     })
     .add("Single & Multi line Input", () => {
 
-        let inputReturnCallback = (inputReturn) => { console.log("Input Returned : ", inputReturn) }
+        let inputReturnCallback = (inputReturn) => {  }
 
-        let handleSubmit = (event) => { event.preventDefault(); console.log("event submitted") }
+        let handleSubmit = (event) => { event.preventDefault() }
         return (
 
             <div style={{ width: "1200px", padding: '10px', backgroundColor: '#e0ecff' }}>
