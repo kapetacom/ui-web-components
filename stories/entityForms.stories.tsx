@@ -76,7 +76,22 @@ let entityFormState = new Store({
     entity: new EntityFormModel(entity)
 });
 
+let dropdowns: { [key:string]: string| string[]} = observable({
+    test1: [""],
+    test2: [""],
+    test3: ["DK", "RO"],
+    test4: ["DK", "RO"]
+});
 
+let dropdownState = new Store({
+dropdowns: dropdowns,
+    handleValueUpdate: (name: string ,valueIn:string | string[]) => {
+        dropdowns[name]=valueIn
+        
+        dropdownState.set({dropdowns: dropdowns});
+        console.log("dropdownState.state",dropdownState.state.dropdowns[name]);
+    }
+});
 
 
 
@@ -174,7 +189,7 @@ storiesOf('Entity Forms', module)
     }
 
     )
-
+    .addDecorator(StateDecorator(dropdownState))
     .add("Dropdown Input ", () => {
         const countryList = [
             "Algeria",
@@ -213,45 +228,58 @@ storiesOf('Entity Forms', module)
         
         return (
                 
+             
             <div style={{ width: "600px", padding: '10px', backgroundColor: '#e0ecff' }}>
                 <form onSubmit={() => console.log("submited")} style={{ backgroundColor: 'inherit' }}>
+                <State store={dropdownState} >
                      <DropdownInput
                         name="test1"
-                        value={"Angola"}
+                        value={dropdownState.state.dropdowns.test1}
                         label={"Single Selection "}
                         validation={["required"]}
                         help={"this is another message"}
                         options={countryList}
-                        onChange={(name, input)=>console.log("name:",name, "input:",input)}/>
+                        onChange={(name: string ,valueIn:string | string[])=>dropdownState.state.handleValueUpdate(name, valueIn)}/>
 
                     <br></br>
 
                     <DropdownInput
                         name="test2"
-                        value={""}
+                        value={dropdownState.state.dropdowns.test2}
                         label={"Multi Selection "}
                         validation={["required"]}
                         help={"this is another message"}
                         options={countryList}
-                        onChange={(name, input)=>console.log("name:",name, "input:",input)}
+                        onChange={(name: string ,valueIn:string | string[])=>dropdownState.state.handleValueUpdate(name, valueIn)}
                         multi={true}/>
 
                     <br></br>
 
                     <DropdownInput
                         name="test3"
-                        value={""}
+                        value={dropdownState.state.dropdowns.test3}
                         label={"Multi Selection "}
                         validation={["required"]}
                         help={"this is another message"}
                         options={countryCodeList2}
-                        onChange={(name, input)=>console.log("name:",name, "input:",input)}
+                        onChange={(name: string ,valueIn:string | string[])=>dropdownState.state.handleValueUpdate(name, valueIn)}
                         multi={true}/>
 
                     <br></br>
 
                     <DropdownInput
                         name="test4"
+                        value={dropdownState.state.dropdowns.test4}
+                        label={"Single Selection "}
+                        validation={["required"]}
+                        help={"this is another message"}
+                        options={countryCodeList2}
+                        onChange={(name: string ,valueIn:string | string[])=>dropdownState.state.handleValueUpdate(name, valueIn)}/>
+
+                    <br></br>
+
+                    <DropdownInput
+                        name="test5"
                         value={""}
                         label={"Single Selection disabled"}
                         validation={["required"]}
@@ -261,6 +289,7 @@ storiesOf('Entity Forms', module)
                         onChange={(name, input)=>console.log("name:",name, "input:",input)}/>
                     <br></br>
                     <br></br> 
+                </State>
 
                     <input type="submit" value="Submit" />
                 </form>
