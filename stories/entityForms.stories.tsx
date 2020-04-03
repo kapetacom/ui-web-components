@@ -76,19 +76,12 @@ let entityFormState = new Store({
     entity: new EntityFormModel(entity)
 });
 
-let dropdowns: { [key:string]: string| string[]} = observable({
-    test1: [""],
-    test2: [""],
-    test3: ["DK", "RO"],
-    test4: ["DK", "RO"]
-});
 
 let dropdownState = new Store({
-dropdowns: dropdowns,
-    handleValueUpdate: (name: string ,valueIn:string | string[]) => {
-        dropdowns[name]=valueIn;        
-        dropdownState.set({dropdowns: dropdowns});
-    }
+    test1: [],
+    test2: [],
+    test3: ["DK", "RO"],
+    test4: ["GR"]
 });
 
 
@@ -220,55 +213,58 @@ storiesOf('Entity Forms', module)
         
         return (
                 
-             
+
             <div style={{ width: "600px", padding: '10px', backgroundColor: '#e0ecff' }}>
                 <form onSubmit={() => {}} style={{ backgroundColor: 'inherit' }}>
-                <State store={dropdownState} >
+                <State store={dropdownState} > 
+                {state => [
                      <DropdownInput
                         name="test1"
-                        value={dropdownState.state.dropdowns.test1}
+                        value={dropdownState.get("test1")}
                         label={"Single Selection "}
                         validation={["required"]}
                         help={"this is another message"}
                         options={countryList}
-                        onChange={(name: string ,valueIn:string | string[])=>dropdownState.state.handleValueUpdate(name, valueIn)}/>
+                        onChange={(name: string ,valueIn:string | string[])=>dropdownState.set({[name] : valueIn})}/>,
 
-                    <br></br>
+                    <br></br>,
 
                     <DropdownInput
                         name="test2"
-                        value={dropdownState.state.dropdowns.test2}
+                        value={dropdownState.get("test2")}
                         label={"Multi Selection "}
                         validation={["required"]}
                         help={"this is another message"}
                         options={countryList}
-                        onChange={(name: string ,valueIn:string | string[])=>dropdownState.state.handleValueUpdate(name, valueIn)}
-                        multi={true}/>
+                        onChange={
+                            (name: string ,valueIn:string | string[])=>dropdownState.set({[name] : valueIn})
+                        }
+                        multi={true}/>,
 
-                    <br></br>
+                    <br></br>,
 
                     <DropdownInput
                         name="test3"
-                        value={dropdownState.state.dropdowns.test3}
+                        value={dropdownState.get("test3")}
                         label={"Multi Selection "}
                         validation={["required"]}
                         help={"this is another message"}
                         options={countryCodeList2}
-                        onChange={(name: string ,valueIn:string | string[])=>dropdownState.state.handleValueUpdate(name, valueIn)}
-                        multi={true}/>
+                        onChange={(name: string ,valueIn:string | string[])=>dropdownState.set({[name]: valueIn})}
+                        multi={true}/>,
 
-                    <br></br>
+                    <br></br>,
 
                     <DropdownInput
                         name="test4"
-                        value={dropdownState.state.dropdowns.test4}
+                        value={dropdownState.get("test4")}
                         label={"Single Selection "}
                         validation={["required"]}
                         help={"this is another message"}
                         options={countryCodeList2}
-                        onChange={(name: string ,valueIn:string | string[])=>dropdownState.state.handleValueUpdate(name, valueIn)}/>
+                        onChange={(name: string ,valueIn:string | string[])=>dropdownState.set({[name]: valueIn})}/>,
 
-                    <br></br>
+                    <br></br>,
 
                     <DropdownInput
                         name="test5"
@@ -278,16 +274,17 @@ storiesOf('Entity Forms', module)
                         help={"this is another message"}
                         disabled={true}
                         options={countryList}
-                        onChange={(name, input)=>{}}/>
-                    <br></br>
+                        onChange={(name, input)=>{}}/>,
+                    <br></br>,
                     <br></br> 
-                </State>
+                ]}
+                    </State>
 
                     <input type="submit" value="Submit" />
                 </form>
             </div>
 
-
+            
         )
     })
     .add("Single & Multi line Input", () => {
