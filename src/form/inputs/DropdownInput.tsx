@@ -50,6 +50,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
 
     @action
     private onInputBlur = () => {
+        // Select value if it is equal to suggestion
         if(this.userInputDisplay && this.inputSuggestion && this.inputSuggestion.toUpperCase() === this.userInputDisplay.toUpperCase()) {
             this.props.onChange(this.props.name, _.invert(this.optionListFiltered())[this.inputSuggestion]);
         }        
@@ -60,7 +61,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         }
     };
 
-    private renderKeysAtValues = (keys: string | string[]) => {
+    private renderKeysAsValues = (keys: string | string[]) => {
         const options = this.getOptions();
         if(!Array.isArray(keys)) {
             keys = keys ? [keys] : [];
@@ -214,7 +215,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             "focus-icon": !!this.inputFocus
         });
 
-        let inputValue= (this.userInputDisplay || this.inputFocus )? this.userInputDisplay : this.renderKeysAtValues(this.props.value);
+        let inputValue= (this.userInputDisplay || this.inputFocus )? this.userInputDisplay : this.renderKeysAsValues(this.props.value);
 
         return (
             <FormRow
