@@ -77,6 +77,12 @@ let entityFormState = new Store({
 });
 
 
+let dropdownState = new Store({
+    test1: [],
+    test2: [],
+    test3: ["DK", "RO"],
+    test4: ["GR"]
+});
 
 
 
@@ -174,7 +180,7 @@ storiesOf('Entity Forms', module)
     }
 
     )
-
+    .addDecorator(StateDecorator(dropdownState))
     .add("Dropdown Input ", () => {
         const countryList = [
             "Algeria",
@@ -198,63 +204,94 @@ storiesOf('Entity Forms', module)
             "Belgium"
         ];
 
-        let userSelection= [];
-        const inputCallback= (userInput) => {
-            userSelection = userInput;
-        };
+        let countryCodeList2 ={
+            "DK": "Denmark",
+            "RO": "Romania",
+            "GR": "Greece"
+        }
 
         
         return (
                 
+
             <div style={{ width: "600px", padding: '10px', backgroundColor: '#e0ecff' }}>
-                <form onSubmit={() => console.log("submited")} style={{ backgroundColor: 'inherit' }}>
+                <form onSubmit={() => {}} style={{ backgroundColor: 'inherit' }}>
+                <State store={dropdownState} > 
+                {state => [
                      <DropdownInput
-                        name="test2"
-                        value={""}
+                        name="test1"
+                        value={dropdownState.get("test1")}
                         label={"Single Selection "}
                         validation={["required"]}
                         help={"this is another message"}
                         options={countryList}
-                        onChange={(name, input)=>console.log("name:",name, "input:",input)}/>
+                        onChange={(name: string ,valueIn:string | string[])=>dropdownState.set({[name] : valueIn})}/>,
 
-                    <br></br>
+                    <br></br>,
 
                     <DropdownInput
                         name="test2"
-                        value={""}
+                        value={dropdownState.get("test2")}
                         label={"Multi Selection "}
                         validation={["required"]}
                         help={"this is another message"}
                         options={countryList}
-                        onChange={(name, input)=>console.log("name:",name, "input:",input)}
-                        multi={true}/>
+                        onChange={
+                            (name: string ,valueIn:string | string[])=>dropdownState.set({[name] : valueIn})
+                        }
+                        multi={true}/>,
 
-                    <br></br>
+                    <br></br>,
 
                     <DropdownInput
-                        name="test2"
+                        name="test3"
+                        value={dropdownState.get("test3")}
+                        label={"Multi Selection "}
+                        validation={["required"]}
+                        help={"this is another message"}
+                        options={countryCodeList2}
+                        onChange={(name: string ,valueIn:string | string[])=>dropdownState.set({[name]: valueIn})}
+                        multi={true}/>,
+
+                    <br></br>,
+
+                    <DropdownInput
+                        name="test4"
+                        value={dropdownState.get("test4")}
+                        label={"Single Selection "}
+                        validation={["required"]}
+                        help={"this is another message"}
+                        options={countryCodeList2}
+                        onChange={(name: string ,valueIn:string | string[])=>dropdownState.set({[name]: valueIn})}/>,
+
+                    <br></br>,
+
+                    <DropdownInput
+                        name="test5"
                         value={""}
                         label={"Single Selection disabled"}
                         validation={["required"]}
                         help={"this is another message"}
                         disabled={true}
                         options={countryList}
-                        onChange={(name, input)=>console.log("name:",name, "input:",input)}/>
-                    <br></br>
+                        onChange={(name, input)=>{}}/>,
+                    <br></br>,
                     <br></br> 
+                ]}
+                    </State>
 
                     <input type="submit" value="Submit" />
                 </form>
             </div>
 
-
+            
         )
     })
     .add("Single & Multi line Input", () => {
 
-        let inputReturnCallback = (inputReturn) => { console.log("Input Returned : ", inputReturn) }
+        let inputReturnCallback = (inputReturn) => {  }
 
-        let handleSubmit = (event) => { event.preventDefault(); console.log("event submitted") }
+        let handleSubmit = (event) => { event.preventDefault() }
         return (
 
             <div style={{ width: "1200px", padding: '10px', backgroundColor: '#e0ecff' }}>

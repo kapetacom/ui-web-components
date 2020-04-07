@@ -34,14 +34,15 @@
         width: 13px;
         height: 5px;
         right: 10px;
-        top: 8px;
-        .transition();
+        top: 10px;
+        svg{
+            .transition();
+        }
 
         &.focus-icon {
-            width: 13px;
-            height: 5px;
-            top: 30px;
-            .transform(rotate(-180deg))
+            svg{
+                .transform(rotate(-180deg));
+            }
         }
     }
 
@@ -111,7 +112,7 @@
     .user-suggestion {
         position: absolute;
         background-color: inherit;
-        top: 9px;
+        top: 10px;
         left: 16px;
         color: @gray-dark;
         box-sizing: border-box;

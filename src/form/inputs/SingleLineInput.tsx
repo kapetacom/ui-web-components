@@ -19,7 +19,7 @@ interface SingleLineInputProps {
     name: string,
     value: any,
     label: string,
-    validation: string[],
+    validation: any[],
     help?: string,
     disabled?: boolean,
     onChange: (inputName: string, userInput: any) => void,
