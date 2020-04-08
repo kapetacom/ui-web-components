@@ -8,6 +8,7 @@ storiesOf('Buttons', module)
            <Button buttonType={ButtonType.PROCEED} disabled width={80}  text="Yes" />
            <Button buttonType={ButtonType.PROCEED} width={80}  text="Yes" />
            <Button buttonType={ButtonType.PROCEED_CYAN} width={80}  text="Yes" />
+           <Button buttonType={ButtonType.PROCEED_CYAN} width={80} disabled text="Disabled" />
            <Button buttonType={ButtonType.CANCEL} text="Cancel" width={80} />
            <Button buttonType={ButtonType.CANCEL_TRANSPARENT} text="Cancel" width={80} />
            <Button buttonType={ButtonType.CANCEL} text="Text defined width that can be infinitely long " />

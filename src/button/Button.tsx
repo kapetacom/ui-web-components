@@ -19,10 +19,10 @@ export enum MouseState {
 
 export enum ButtonType {
     CANCEL = "cancel-button",
-    CANCEL_TRANSPARENT = "cancel-button transparent",
+    CANCEL_TRANSPARENT = "cancel-button-transparent",
     REGULAR = "regular-button",
     PROCEED = "proceed-button",
-    PROCEED_CYAN = "proceed-button cyan-color"
+    PROCEED_CYAN = "proceed-button-cyan"
 }
 
 interface ButtonState {

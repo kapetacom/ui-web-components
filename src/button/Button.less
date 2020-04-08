@@ -69,22 +69,32 @@
                 fill: @btn-disabled-light;
             }
         }
+    }
 
-        &.cyan-color {
-            fill: @cyan-dark;
-    
-            &:active {
-                path {
-                    fill: @cyan-light;
-                }
+    &.proceed-button-cyan {
+
+        fill: @cyan-dark;
+
+        text {
+            fill: @btn-text-w;
+        }
+
+        &:active {
+            path {
+                fill: @cyan-light;
             }
-    
-            &.button-disabled {
-                path {
-                    fill: @cyan-xlight;
-                }
+
+            text {
+                fill: @btn-text-w;
             }
         }
+
+        &.button-disabled {
+            path {
+                fill: @cyan-xlight;
+            }
+        }
+
     }
 
     &.cancel-button {
@@ -109,30 +119,48 @@
             }
             filter: none;
         }
+    }
 
-        &.transparent {
-            fill: transparent;
-            stroke-width: 1;
-            stroke: @gray-xdark;
-    
-            text {
-                fill: @btn-regular-text;
-                stroke-width: 0px;
-                stroke: none;
+    &.cancel-button-transparent {
+        fill: transparent;
+        stroke-width: 1;
+        stroke: @gray-xdark;
+
+        text {
+            fill: @btn-regular-text;
+            stroke-width: 0px;
+            stroke: none;
+        }
+
+        &:active {
+            path {
+                fill: @btn-cancel-bg-active;
             }
-            &:hover{
-                fill: @btn-cancel-bg;
-                stroke-width: 0px;
-                stroke: none;
-                text { 
-                    fill: @btn-text-w;
-                }
+
+            text {
+                fill: @btn-text-w;
             }
         }
 
+        &:hover{
+            fill: @btn-cancel-bg;
+            stroke-width: 0px;
+            stroke: none;
+            text { 
+                fill: @btn-text-w;
+            }
+        }
+        &.button-disabled {
+            path {
+                fill: @btn-disabled-light;
+            }
+            filter: none;
+        }
     }
 
     &.proceed-button,
+    &.proceed-button-cyan,
+    &.cancel-button-transparent,
     &.cancel-button {
         &:hover {
             filter: url("#hover-shadow");
