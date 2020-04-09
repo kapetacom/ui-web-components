@@ -3,6 +3,7 @@
 
 
 .entity-form {
+    .no-select();
     .form-container {
         height: fit-content;
         padding: 30px;
@@ -35,35 +36,36 @@
         .row {
             display: contents;
 
-            .add-hidden {
+            .add {
                 .transition(50ms);
                 position: relative;
                 transform: scale(0);
                 margin-top: -1px;
                 height: 0;
                 top: -45px;
-            }
-
-            .add-visible {
-                position: relative;
-                margin-top: -1px;
-                top: -45px;
-                height: 0;
-
-                .add-button-wrapper {
+                &.add-visible {
                     position: relative;
-                    top: -12px;
-                    left: 0;
+                    margin-top: -1px;
+                    top: -45px;
                     height: 0;
-                }
-
-                .transition();
-                transform: scale(1);
-
-                .single-plus {
-                    width: 100%;
+    
+                    .add-button-wrapper {
+                        position: relative;
+                        top: -12px;
+                        left: 0;
+                        height: 0;
+                    }
+    
+                    .transition();
+                    transform: scale(1);
+    
+                    .single-plus {
+                        width: 100%;
+                    }
                 }
             }
+
+            
         }
 
         .field-row {
@@ -128,7 +130,7 @@
 
                 &:hover {
                     input {
-                        background-color: #009aa932;
+                        background-color: @turquoise-light;
                     }
 
                     box-shadow: inset 0px 0px 0px 2px @btn-regular-active-bg;
@@ -208,7 +210,7 @@
 
                 &.focused {
                     input {
-                        background-color: #009aa932;
+                        background-color: @turquoise-light;
                     }
                 }
 
@@ -242,7 +244,7 @@
 
             &.header {
                 position: relative;
-                display: -webkit-box;
+                display: block;
 
                 >.field-name {
                     padding-left: 20px;
@@ -262,10 +264,8 @@
     }
 
     .form-buttons {
-        padding-top: 20px;
-        height: 40px;
-        display: block;
-        padding-right: 30px;
+       
+       
 
         .blockware-button {
             position: relative;

@@ -176,9 +176,9 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
             <>
                 <div className={"entity-picker"}>
                     <DropdownInput value={parsedValue.type} validation={["required"]} label="" name="" 
-                        onChange={(_,event2)=>{
+                        onChange={(_,value)=>{
                             
-                            this.onSelectHandler(event2)
+                            this.onSelectHandler(value)
                         }} 
                         options={options}  />
                     {!isVoid() &&

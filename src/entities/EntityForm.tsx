@@ -155,12 +155,12 @@ export class EntityForm extends React.Component<EntityFormProps> {
         return !!this.openedObjects[key];
     }
 
-    private renderAddFirst(field:SchemaEntryEdit[],depth:number,index:number) {
+    private renderAddFirst(properties:SchemaEntryEdit[],depth:number,index:number) {
 
         return (
             <div className={'add-first'} style={{marginLeft: depth * 24}}
                 onClick={() => {
-                    this.addField(field,index,true)
+                    this.addField(properties,index,true)
                 }}>
 
                 <div className={'field-name'}>
@@ -196,7 +196,6 @@ export class EntityForm extends React.Component<EntityFormProps> {
                         let key = parentId ? parentId + '.' + field.id : field.id;
 
                         const openerClass = toClass({
-                            'closed':true,
                             'open': this.isOpen(key)
                         });
 
@@ -206,8 +205,8 @@ export class EntityForm extends React.Component<EntityFormProps> {
                         });
 
                         const addClassNames=toClass({
+                            "add":true,
                             "add-visible": this.hoveredItemId === field.uid,
-                            "add-hidden":this.hoveredItemId !== field.uid || this.isOpen(key)
                         })
 
                         const isFirstAttribute = ((field.type === "object"||field.type === "object[]") && (!field.properties || field.properties.length===0) );
@@ -305,8 +304,8 @@ export class EntityForm extends React.Component<EntityFormProps> {
                             this.renderAddFirst(this.props.entity.properties, 0, 0)}
 
                     <FormButtons>
-                        <Button height={35} radius={2} width={70} text="Cancel" type="button"  buttonType={ButtonType.CANCEL}  onClick={() => { }}/>
-                        <Button height={35} radius={2} width={70} text="Create" type="submit" buttonType={ButtonType.PROCEED} />
+                        <Button height={35} radius={2} width={70} text="Cancel" type="button"  buttonType={ButtonType.CANCEL}  onClick={() => {}}/>
+                        <Button height={35} radius={2} width={70} text="Create" type="submit" buttonType={ButtonType.PROCEED_CYAN} />
                     </FormButtons>
                 </FormContainer>
             </div>
