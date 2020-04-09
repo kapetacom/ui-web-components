@@ -1,5 +1,5 @@
 import React from "react";
-import {action, observable} from "mobx";
+import {action, observable, toJS} from "mobx";
 import {observer} from "mobx-react";
 
 import {SchemaEntryType, typeName} from "@blockware/ui-web-types";
@@ -19,7 +19,6 @@ import PlusHexagon from "../svg/SVGAddEntityButton";
 import { SingleLineInput, Type } from "../form/inputs/SingleLineInput";
 import SVGGrabber from "../svg/SVGGrabber";
 import SVGDeleteHexagon from "../svg/SVGDeleteHexagon";
-import { isArray } from "util";
 import { FormContainer } from "../form/FormContainer";
 import { FormButtons } from "../form/FormButtons";
 import { Button, ButtonType } from "../button/Button";
@@ -73,7 +72,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
     private openedObjects:{[key:string]:boolean} = {};
 
     @observable
-    private isHovered = "";
+    private hoveredItemId = "";
 
     @action
     private removeEntry(properties:SchemaEntryEdit[], field: SchemaEntryEdit) {
@@ -153,19 +152,19 @@ export class EntityForm extends React.Component<EntityFormProps> {
     }
 
     private isOpen(key:string) {
-        return this.openedObjects[key];
+        return !!this.openedObjects[key];
     }
 
-    private renderAddFirstAddLine(field:SchemaEntryEdit[],depth:number,index:number) {
+    private renderAddFirst(field:SchemaEntryEdit[],depth:number,index:number) {
 
         return (
             <div className={'add-first'} style={{marginLeft: depth * 24}}
                 onClick={() => {
                     this.addField(field,index,true)
                 }}>
-               
+
                 <div className={'field-name'}>
-                     + Add field
+                    + Add field
                 </div>
             </div>
         )
@@ -190,7 +189,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
             <SortableContainer list={properties} onChange={() => this.handleChange()} >
                 <div className={'field-list-container'}>
 
-                    {properties.map((field,index) => {
+                    {properties.map((field, index) => {
 
                         let type = toTypeName(field);
                         const objectType = isObject(field);
@@ -207,17 +206,16 @@ export class EntityForm extends React.Component<EntityFormProps> {
                         });
 
                         const addClassNames=toClass({
-                            "add-visible": this.isHovered===field.uid ,
-                            "add-hidden":this.isHovered !== field.uid || this.isOpen(key)
+                            "add-visible": this.hoveredItemId === field.uid,
+                            "add-hidden":this.hoveredItemId !== field.uid || this.isOpen(key)
                         })
 
-                        const isFirstAttribute = ((field.type === "object" && !field.properties) ||
-                            (isArray(field.properties) ?field.properties.length === 0 : false));
-
+                        const isFirstAttribute = ((field.type === "object"||field.type === "object[]") && (!field.properties || field.properties.length===0) );
+    
                         return (
                             <div className="row" key={field.uid}
-                                onMouseMove={(evt)=>{this.isHovered=field.uid; evt.stopPropagation() }}
-                                onMouseLeave={(evt)=>{this.isHovered=""; evt.stopPropagation() }}>
+                                onMouseMove={(evt)=>{this.hoveredItemId = field.uid; evt.stopPropagation() }}
+                                onMouseLeave={(evt)=>{this.hoveredItemId = ""; evt.stopPropagation() }}>
 
                                 <SortableItem item={field} handle={'.mover'}>
                                     <div className={'field-row data'} style={{marginLeft: depth * 24}}>
@@ -239,10 +237,10 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                             <EntityPicker name={'fieldType'}
                                                 value={type}
                                                 allowObject={true}
-                                                onChange={(type: SchemaEntryType) => { this.updateType(field, type) }} />
+                                                onChange={(value: SchemaEntryType) => { this.updateType(field, value) }} />
 
                                             <div className={"object-attribute-count"}>
-                                                { isObject(field) && field.properties &&
+                                                {isObject(field) && field.properties &&
                                                     <>  ({field.properties.length})</>
                                                 }
                                             </div>
@@ -259,8 +257,8 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                 {objectType && this.isOpen(key) &&
                                     this.renderProperties(field.properties?field.properties:[], depth + 1, key)
                                 }
-                                {((this.isOpen(key) && isFirstAttribute)||!properties)
-                                    && this.renderAddFirstAddLine(properties, depth + 1, index)}
+                                {(this.isOpen(key) && isFirstAttribute)
+                                    && this.renderAddFirst(properties, depth + 1, index)}
                             </div>
                         )
                     })
@@ -271,50 +269,11 @@ export class EntityForm extends React.Component<EntityFormProps> {
         );
     }
 
-    private isValidProperties(properties:SchemaEntryEdit[]) {
-        for(let i = 0; i < properties.length; i++) {
-            const entry = properties[i];
-
-            if (!entry.id) {
-                return false;
-            }
-
-            if (entry.error) {
-                return false;
-            }
-
-            if (entry.items && entry.items.error) {
-                return false;
-            }
-
-            if (entry.properties &&
-                !this.isValidProperties(entry.properties)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private isValid() {
-        if (!this.props.entity.name) {
-            return false;
-        }
-
-        if (this.props.entity.properties.length < 1) {
-            return false;
-        }
-
-        return this.isValidProperties(this.props.entity.properties);
-    }
-
     render() {
 
         return (
-            <FormContainer onSubmit={()=>{this.handleChange()}}>
-
-                <div className={'entity-form'}>
-
+            <div className={'entity-form'}>
+                <FormContainer onSubmit={()=>{this.handleChange()}}>
                     <div className={"entity-name-field"}>
                         <SingleLineInput
                             name={"name"}
@@ -343,13 +302,14 @@ export class EntityForm extends React.Component<EntityFormProps> {
                         this.props.entity.properties.length > 0 ?
                             this.renderProperties(this.props.entity.properties, 0)
                             :
-                            this.renderAddFirstAddLine(this.props.entity.properties, 0, 0)}
-                </div>
-                <FormButtons>
-                    <Button height={35} radius={2} width={70} text="Cancel" type="button"  buttonType={ButtonType.CANCEL}  onClick={() => { }}/>
-                    <Button height={35} radius={2} width={70} text="Create" type="submit" buttonType={ButtonType.PROCEED} />
-                </FormButtons>
-            </FormContainer>
+                            this.renderAddFirst(this.props.entity.properties, 0, 0)}
+
+                    <FormButtons>
+                        <Button height={35} radius={2} width={70} text="Cancel" type="button"  buttonType={ButtonType.CANCEL}  onClick={() => { }}/>
+                        <Button height={35} radius={2} width={70} text="Create" type="submit" buttonType={ButtonType.PROCEED} />
+                    </FormButtons>
+                </FormContainer>
+            </div>
         );
     }
 }

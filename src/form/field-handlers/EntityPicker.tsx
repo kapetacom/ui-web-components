@@ -2,9 +2,8 @@ import React from "react";
 import {action, observable } from "mobx";
 import {observer} from "mobx-react";
 
-import {toggleClasses, toClass} from '@blockware/ui-web-utils';
+import {toClass} from '@blockware/ui-web-utils';
 import {SchemaEntity, SchemaEntryType} from "@blockware/ui-web-types";
-
 import {Modal, ModalSize} from "../../modal/Modal";
 import {EntityForm} from "../../entities/EntityForm";
 import {FormContainer} from "../FormContainer";
@@ -62,7 +61,6 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         if (parsedValue.list) {
             value += '[]';
         }
-        console.log(value);
         
         if (value.startsWith('$ref:')) {
             this.props.onChange({
@@ -75,7 +73,6 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
 
     @action
     private onSelectHandler = (value: string) => {
-        console.log(value);
         
         if (value === CREATE_VALUE) {
             this.openModal();
@@ -83,7 +80,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         }
 
         const parsedValue = this.asValue();
-        parsedValue.type = value[0];
+        parsedValue.type = value;
         this.handleOnChange(parsedValue);
     };
 
@@ -91,8 +88,6 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
     private toggleList = () => {
         const parsedValue = this.asValue();
         parsedValue.list = !parsedValue.list;
-        console.log("toggling ");
-        
         this.handleOnChange(parsedValue);
     };
 
@@ -114,11 +109,6 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
     };
 
     @action
-    private updateEntity = (entity:SchemaEntity) => {
-        this.newEntity = new EntityFormModel(entity);
-    };
-
-    @action
     private saveEntity = () =>  {
         if (this.createEntityModal) {
             this.createEntityModal.close();
@@ -137,16 +127,6 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
 
     render() {
         const parsedValue = this.asValue();
-
-        const typeName = (name:string) => {
-
-            if (parsedValue.list) {
-                return name + '[]';
-            }
-
-            return name;
-        };
-
         const isVoid = () => {
             return parsedValue.type === 'void';
         };
@@ -168,26 +148,28 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
             "hidden-check-box":parsedValue.list,
         })
 
-        let options = new Map<string,string>();
-        options.set("string","string");
-        options.set("integer","integer")
-        options.set("double","double")
-        options.set("float","float")
-        options.set("long","long")
-        options.set("short","short")
-        options.set("boolean","boolean")
-        options.set("char","char")
-        options.set("byte","byte")
-        
+        let options:{[key:string]:string} ={
+            "string":"string",
+            "integer":"integer",
+            "double":"double",
+            "float":"float",
+            "long":"long",
+            "short":"short",
+            "boolean":"boolean",
+            "char":"char",
+            "byte":"byte",
+             };
+              
         if(this.props.allowObject){
-            options.set("object","object")
+            options["object"]="object";                
         }
         if(this.props.allowVoid){
-            options.set("void","void")
+            options["void"]="void";                
+            
         }
         if(this.props.entities){
             this.props.entities.forEach((item, ix) => {
-                options.set(item,"$ref:" + item)
+                options[item]="$ref:" + item;
             })
         }
         return (
@@ -195,37 +177,10 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
                 <div className={"entity-picker"}>
                     <DropdownInput value={parsedValue.type} validation={["required"]} label="" name="" 
                         onChange={(_,event2)=>{
+                            
                             this.onSelectHandler(event2)
                         }} 
                         options={options}  />
-                    {/* <select value={currentType} onChange={this.onSelectHandler} >
-                        <optgroup label={"Built-in"} className={"entity-attribute-types"} >
-                            <option value={""} >Select...</option>
-                            <option value={"string"} >{typeName('String')}</option>
-                            <option value={"integer"} >{typeName('Integer')}</option>
-                            <option value={"double"} >{typeName('Double')}</option>
-                            <option value={"float"} >{typeName('Float')}</option>
-                            <option value={"long"} >{typeName('Long')}</option>
-                            <option value={"short"} >{typeName('Short')}</option>
-                            <option value={"boolean"} >{typeName('Boolean')}</option>
-                            <option value={"char"} >{typeName('Char')}</option>
-                            <option value={"byte"} >{typeName('Byte')}</option>
-                            {this.props.allowVoid &&
-                            <option value={"void"} >Void</option>
-                            }
-                            {this.props.allowObject &&
-                            <option value={"object"} >{typeName('Object')}</option>
-                            }
-                        </optgroup>
-                        {this.props.entities &&
-                        <optgroup label={"Entities"} >
-                            {this.props.entities.map((item, ix) => {
-                                return <option key={ix} value={"$ref:" + item}>{typeName(item)}</option>
-                            })}
-                            <option value={CREATE_VALUE} >Create...</option>
-                        </optgroup>
-                        }
-                    </select> */}
                     {!isVoid() &&
                         <div className={"picker-list-section"} onClick={this.toggleList} >
                             <input className={"picker-list-checkbox"} type="checkbox"

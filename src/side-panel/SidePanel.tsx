@@ -4,7 +4,6 @@ import {PanelStructure} from "../helpers/PanelStructure";
 import {OverlayComponent, OverlayContextType} from "../overlay/OverlayContext";
 import {OverlayContext} from "../overlay/OverlayContext";
 import {RenderInBody} from "..";
-import {SidePanelHeader} from "./SidePanelHeader";
 import "./SidePanel.less";
 
 interface SidePanelProps {

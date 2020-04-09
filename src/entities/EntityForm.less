@@ -2,320 +2,332 @@
 @import "../../styles/functions";
 
 
+.entity-form {
+    .form-container {
+        height: fit-content;
+        padding: 30px;
 
-.form-container {
-    height: fit-content;
-    padding: 30px;
-
-    .add-first {
-        color: white;
-        user-select: none;
-        padding: 4px;
-        font-weight: 500;
-        padding-left: 20px;
-        font-size: 13px;
-        background-color: @cyan-dark;
-
-        .adder {
-            width: 20px;
-            float: left;
-            padding-right: 20px;
-        }
-    }
-
-    .entity-name-field {
-        background-color: white;
-    }
-
-    .field-list-container {
-        position: relative;
-        width: 100%;
-    }
-
-    .row {
-        display: contents;
-
-        .add-hidden {
-            .transition(50ms);
-            position: relative;
-            transform: scale(0);
-            margin-top: -1px;
-            height: 0;
-            top: -45px;
-        }
-
-        .add-visible {
-            position: relative;
-            margin-top: -1px;
-            top: -45px;
-            height: 0;
-
-            .add-button-wrapper {
-                position: relative;
-                top: -12px;
-                left: 0;
-                height: 0;
-            }
-
-            .transition();
-            transform: scale(1);
-
-            .single-plus {
-                width: 100%;
-            }
-        }
-    }
-
-    .field-row {
-        top: 2px;
-        display: block;
-        height: 40px;
-        background-color: white;
-        width: inherit;
-
-
-
-        /* all field row items  */
-        .field-type,
-        .remover,
-        .mover,
-        .field-sub-elements,
-        .field-name {
-            position: relative;
-            float: left;
-            margin-right: 10px;
-            height: 100%;
-        }
-
-        .field-type,
-        .remover,
-        .mover,
-        .field-sub-elements,
-        .field-name {
-            margin-left: 10px;
+        .add-first {
+            color: white;
             user-select: none;
-        }
+            padding: 4px;
+            font-weight: 500;
+            padding-left: 20px;
+            font-size: 13px;
+            background-color: @cyan-dark;
 
-        .mover {
-            margin-top: 7px;
-            height: fit-content;
-            cursor: grab;
-
-            svg {
-                overflow: visible;
-            }
-        }
-
-        .opener {
-            float: left;
-            margin: 0;
-            margin-top: 11px;
-            width: 0;
-            cursor: pointer;
-
-            svg {
-                .transition();
-                font-size: 14px;
-
-                &.open {
-                    .transform(rotate(90deg));
-                }
-            }
-        }
-
-        &.data {
-            border: 1px solid @gray;
-
-            &:hover {
-                input {
-                    background-color: #009aa932;
-                }
-                box-shadow: inset 0px 0px 0px 2px @btn-regular-active-bg;
-            }
-        }
-
-        .field-name {
-            width: calc(100% - 350px);
-            margin-left: 20px;
-
-            .singleline-input {
-                input {
-                    padding-left: 5px;
-                }
-            }
-        }
-
-        .field-type {
-            width: 210px;
-
-            .entity-picker {
-                margin-top: 7px;
-                height: 26px;
+            .adder {
+                width: 20px;
                 float: left;
-
-                .arrow-icon {
-                    margin-top: -7px;
-                    padding-left: -19px;
-                }
-            }
-
-            .picker-list-section {
-                padding-left: 10px;
-                margin-top: -4px;
-            }
-
-            .object-attribute-count {
-                position: absolute;
-                margin-top: 10px;
-                right: -5px;
+                padding-right: 20px;
             }
         }
 
-        .form-element-container {
-            box-sizing: border-box;
-            display: block;
-            font-size: 14px;
+        .entity-name-field {
+            background-color: white;
+        }
+
+        .field-list-container {
+            position: relative;
             width: 100%;
-            margin: 0;
-            height: 100%;
-            color: black;
+        }
 
-            &.error-status {
-                .input-container {
-                    border: 2px red solid;
-                    margin-top: 7px;
+        .row {
+            display: contents;
+
+            .add-hidden {
+                .transition(50ms);
+                position: relative;
+                transform: scale(0);
+                margin-top: -1px;
+                height: 0;
+                top: -45px;
+            }
+
+            .add-visible {
+                position: relative;
+                margin-top: -1px;
+                top: -45px;
+                height: 0;
+
+                .add-button-wrapper {
+                    position: relative;
+                    top: -12px;
+                    left: 0;
+                    height: 0;
+                }
+
+                .transition();
+                transform: scale(1);
+
+                .single-plus {
+                    width: 100%;
+                }
+            }
+        }
+
+        .field-row {
+            top: 2px;
+            display: block;
+            height: 40px;
+            background-color: white;
+            width: inherit;
+
+
+
+            /* all field row items  */
+            .field-type,
+            .remover,
+            .mover,
+            .field-sub-elements,
+            .field-name {
+                position: relative;
+                float: left;
+                margin-right: 10px;
+                height: 100%;
+            }
+
+            .field-type,
+            .remover,
+            .mover,
+            .field-sub-elements,
+            .field-name {
+                margin-left: 10px;
+                user-select: none;
+            }
+
+            .mover {
+                margin-top: 7px;
+                height: fit-content;
+                cursor: grab;
+
+                svg {
+                    overflow: visible;
                 }
             }
 
-            .status-icon {
-                margin-top: -8px;
-            }
-
-            .message {
-                display: none;
-            }
-
-            input {
-                color: black;
-                padding: 0;
-                box-sizing: border-box;
-                display: block;
-                font-size: inherit;
-                height: 26px;
-                border-radius: 3px;
-            }
-
-            &.focused {
-                input {
-                    background-color: #009aa932;
-                }
-            }
-
-            .input-container {
+            .opener {
+                float: left;
                 margin: 0;
-                padding: 0;
-                border: none;
-                color: black;
-                height: 26px;
+                margin-top: 11px;
+                width: 0;
+                cursor: pointer;
 
-                .dropdown-input {
-                    input {
-                        padding-left: 10px;
+                svg {
+                    .transition();
+                    font-size: 14px;
+
+                    &.open {
+                        .transform(rotate(90deg));
                     }
                 }
+            }
+
+            &.data {
+                border: 1px solid @gray;
+
+                &:hover {
+                    input {
+                        background-color: #009aa932;
+                    }
+
+                    box-shadow: inset 0px 0px 0px 2px @btn-regular-active-bg;
+                }
+            }
+
+            .field-name {
+                width: calc(100% - 350px);
+                margin-left: 20px;
 
                 .singleline-input {
-                    margin-top: 7px;
                     input {
-                        padding-left: 10px;
+                        padding-left: 5px;
                     }
                 }
             }
 
-            span sup {
-                display: none;
+            .field-type {
+                width: 210px;
+
+                .entity-picker {
+                    margin-top: 7px;
+                    height: 26px;
+                    float: left;
+
+                    .arrow-icon {
+                        margin-top: -7px;
+                        padding-left: -19px;
+                    }
+                }
+
+                .picker-list-section {
+                    padding-left: 10px;
+                    margin-top: -4px;
+                }
+
+                .object-attribute-count {
+                    position: absolute;
+                    margin-top: 10px;
+                    right: -5px;
+                }
             }
 
+            .form-element-container {
+                box-sizing: border-box;
+                display: block;
+                font-size: 14px;
+                width: 100%;
+                margin: 0;
+                height: 100%;
+                color: black;
+
+                &.error-status {
+                    .input-container {
+                        border: 2px red solid;
+                        margin-top: 7px;
+                    }
+                }
+
+                .status-icon {
+                    margin-top: -8px;
+                }
+
+                .message {
+                    display: none;
+                }
+
+                input {
+                    color: black;
+                    padding: 0;
+                    box-sizing: border-box;
+                    display: block;
+                    font-size: inherit;
+                    height: 26px;
+                    border-radius: 3px;
+                }
+
+                &.focused {
+                    input {
+                        background-color: #009aa932;
+                    }
+                }
+
+                .input-container {
+                    margin: 0;
+                    padding: 0;
+                    border: none;
+                    color: black;
+                    height: 26px;
+
+                    .dropdown-input {
+                        input {
+                            padding-left: 10px;
+                        }
+                    }
+
+                    .singleline-input {
+                        margin-top: 7px;
+
+                        input {
+                            padding-left: 10px;
+                        }
+                    }
+                }
+
+                span sup {
+                    display: none;
+                }
+
+            }
+
+            &.header {
+                position: relative;
+                display: -webkit-box;
+
+                >.field-name {
+                    padding-left: 20px;
+                }
+
+                >.field-type {
+                    margin-left: 0px;
+                }
+
+                >.field-sub-elements {
+                    margin-left: -55px;
+                    ;
+                }
+            }
         }
-        &.header{
-            position: relative;
-            display: -webkit-box;
-            > .field-name{
-                padding-left: 20px;
-            }
-            > .field-type{
-                margin-left: 0px;
-            }
-            > .field-sub-elements{
-                margin-left: -55px;;
-            }
-        }
+
     }
 
-}
+    .form-buttons {
+        padding-top: 20px;
+        height: 40px;
+        display: block;
+        padding-right: 30px;
 
-.form-buttons {
-    padding-top: 20px;
-    height: 40px;
-    display: block;
-    padding-right: 30px;
+        .blockware-button {
+            position: relative;
+            padding-left: 40px;
+            right: 0;
 
-    .blockware-button {
-        position: relative;
-        padding-left: 40px;
-        right: 0;
-
-        &.proceed-button {
-            path {
-                fill: @cyan-dark;
-            }
-
-            &:active {
+            &.proceed-button {
                 path {
-                    fill: @cyan-light;
+                    fill: @cyan-dark;
                 }
+
+                &:active {
+                    path {
+                        fill: @cyan-light;
+                    }
+                }
+
+                &.button-disabled {
+                    path {
+                        fill: @gray;
+                    }
+                }
+
             }
-            &.button-disabled{
+
+            &.cancel-button {
+                fill: white;
+
+                .blockware-button-text {
+                    fill: black;
+                }
+
+                &:hover {
+                    path {
+                        fill: @gray-xdark;
+                    }
+
+                    text {
+                        fill: white;
+                    }
+                }
+
+                &:active {
+                    path {
+                        stroke: @btn-regular-active-bg;
+                        fill: @btn-regular-active-bg;
+                    }
+
+                    text {
+                        fill: white;
+                    }
+                }
+
+                &.button-disabled {
+                    path {
+                        fill: @gray-xdark;
+                    }
+                }
+
                 path {
-                    fill: @gray;
+                    stroke: black;
                 }
-            }
-
-        }
-
-        &.cancel-button {
-            fill: white;
-
-            .blockware-button-text {
-                fill: black;
-            }
-
-            &:hover {
-                path {
-                    fill: @gray-xdark;
-                }
-                text{
-                    fill:white;
-                }
-            }
-
-            &:active {
-                path {
-                    stroke:@btn-regular-active-bg;
-                    fill: @btn-regular-active-bg;
-                }
-                text{
-                    fill:white;
-                }
-            }
-
-            &.button-disabled{
-                path {
-                    fill: @gray-xdark;
-                }
-            }
-            path {
-                stroke: black;
             }
         }
     }

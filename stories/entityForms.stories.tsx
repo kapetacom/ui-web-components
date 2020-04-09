@@ -13,23 +13,23 @@ const EntityFrom = {
     name: {
         type: 'string'
     },
-    // age: {
-    //     type: 'number'
-    // },
-    // tags: {
-    //     type: 'array' //Defaults to string
-    // },
-    // connections: {
-    //     type: 'object',
-    //     properties: {
-    //         google: {
-    //             type: 'boolean'
-    //         },
-    //         github: {
-    //             type: 'boolean'
-    //         }
-    //     }
-    // }
+    age: {
+        type: 'number'
+    },
+    tags: {
+        type: 'array' //Defaults to string
+    },
+    connections: {
+        type: 'object',
+        properties: {
+            google: {
+                type: 'boolean'
+            },
+            github: {
+                type: 'boolean'
+            }
+        }
+    }
 };
 
 const EntityTo = {
