@@ -305,7 +305,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
 
                     <FormButtons>
                         <Button height={35} radius={2} width={70} text="Cancel" type="button"  buttonType={ButtonType.CANCEL}  onClick={() => {}}/>
-                        <Button height={35} radius={2} width={70} text="Create" type="submit" buttonType={ButtonType.PROCEED_CYAN} />
+                        <Button height={35} radius={2} width={70} text="Create" type="submit" buttonType={ButtonType.PROCEED} />
                     </FormButtons>
                 </FormContainer>
             </div>
