@@ -110,11 +110,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
         if(!isSubElement){
             properties.splice(index, 0, field);
         }else{
-            const field = {
-                uid: Guid.create().toString(),
-                id: 'field_0',
-                type: 'string'
-            };
+            field.id= 'field_0';
             properties[index].properties = [field];
         }
 
