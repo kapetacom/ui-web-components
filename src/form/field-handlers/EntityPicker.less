@@ -6,16 +6,70 @@
     flex-direction: row;
 
     select {
-        margin-right:5px;
+        margin:5px;
+        padding:5px;
         border:1px solid @gray;
+        option{
+            height: 20px;
+        }
     }
 
     .picker-list-checkbox {
         display: none;
+        margin: auto;
     }
-
+    .entity-attribute-types{
+        option{
+            &:after {
+                position: absolute;
+                content: "";
+                top: 14px;
+                right: 10px;
+                width: 0;
+                height: 0;
+                border: 6px solid transparent;
+                border-color: #fff transparent transparent transparent;
+              }
+            background-color: @turquoise-light;
+            height: 20px;
+        }
+    }
     .picker-list-section {
+        input{
+            padding-left: 5px;
+            margin-left: 5px;
+        }
         cursor: pointer;
+        overflow: visible;
+        vertical-align: middle;
+        
+
+        .list-option-icon{
+            position: absolute;
+            padding-top: 5px;
+            vertical-align: middle;
+            svg{
+                overflow: visible;
+            }
+
+            &.list-check{
+                .transition();
+                transform-origin: center;
+                transform: scale(0);
+               &.checked {
+                   transform: scale(1);
+               }
+            }
+            &.check-box{
+                .transition();
+                transform-origin: center;
+                transform: scale(1);
+                &.checked{
+                    transform: scale(0);
+                }
+            }
+        }
+       
     }
 
 }

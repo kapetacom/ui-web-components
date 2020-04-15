@@ -2,9 +2,7 @@ import React from 'react';
 import {observable} from "mobx";
 import { storiesOf } from '@storybook/react';
 import { Store, StateDecorator, State } from "@sambego/storybook-state";
-
-import {EntityMapper, EntityPicker, EntityForm, EntityFormModel, FormContainer, FormButtons, Button, ButtonType} from "../src";
-
+import {EntityMapper, EntityPicker, EntityForm, EntityFormModel, FormButtons, Button, FormContainer, ButtonType} from "../src";
 import { EntityList } from "../src/entities/EntityList";
 import { SingleLineInput, Type } from "../src/form/inputs/SingleLineInput";
 import { MultiLineInput,  } from "../src/form/inputs/MultiLineInput";
@@ -134,6 +132,7 @@ storiesOf('Entity Forms', module)
                             entityFormState.set({entity});
                         }}
                     />
+              
                 </State>
             </div>
         )
@@ -351,6 +350,7 @@ storiesOf('Entity Forms', module)
 
 
         )
+
     }).add("Form Row Button",()=>{
 
        return (
