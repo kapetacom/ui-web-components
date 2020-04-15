@@ -52,25 +52,23 @@
                 overflow: visible;
             }
         }
-        .hidden-list-check{
-            .transition();
-            transform-origin: center;
-            transform: scale(0);
-        }
         .list-check{
             .transition();
             transform-origin: center;
-            transform: scale(1);
-        }
-        .hidden-check-box{
-            .transition();
-            transform-origin: center;
             transform: scale(0);
-        }
+           &.checked {
+               transform: scale(1);
+           }
+       }
         .check-box{
             .transition();
             transform-origin: center;
-            transform: scale(1);
+            transform: scale(0);
+            &.unchecked{
+                .transition();
+                transform-origin: center;
+                transform: scale(1);
+            }
         }
     }
 
