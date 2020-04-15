@@ -51,23 +51,25 @@
             svg{
                 overflow: visible;
             }
-        }
-        .list-check{
-            .transition();
-            transform-origin: center;
-            transform: scale(0);
-           &.checked {
-               transform: scale(1);
-           }
-       }
-        .check-box{
-            .transition();
-            transform-origin: center;
-            transform: scale(0);
-            &.unchecked{
+
+            &.list-check{
+                .transition();
+                transform-origin: center;
+                transform: scale(0);
+               &.checked {
+                   transform: scale(1);
+               }
+            }
+            &.check-box{
+                .transition();
+                transform-origin: center;
                 transform: scale(1);
+                &.checked{
+                    transform: scale(0);
+                }
             }
         }
+       
     }
 
 }

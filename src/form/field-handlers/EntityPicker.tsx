@@ -145,7 +145,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         const checkBoxBoxClassName =toClass( {
             "list-option-icon":true,
             "check-box":true,
-            "unchecked":!parsedValue.list,
+            "checked":parsedValue.list,
         })
 
         let options:{[key:string]:string} ={
