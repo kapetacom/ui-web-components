@@ -48,31 +48,6 @@
     }
 
     &.proceed-button {
-        fill: @btn-friendly-bg;
-
-        text {
-            fill: @btn-text-w;
-        }
-
-        &:active {
-            path {
-                fill: @btn-friendly-bg-active;
-            }
-
-            text {
-                fill: @btn-text-w;
-            }
-        }
-
-        &.button-disabled {
-            path {
-                fill: @btn-disabled-light;
-            }
-        }
-    }
-
-    &.proceed-button-cyan {
-
         fill: @cyan-dark;
 
         text {
@@ -98,30 +73,6 @@
     }
 
     &.cancel-button {
-        fill: @btn-cancel-bg;
-
-        text {
-            fill: @btn-text-w;
-        }
-
-        &:active {
-            path {
-                fill: @btn-cancel-bg-active;
-            }
-
-            text {
-                fill: @btn-text-w;
-            }
-        }
-        &.button-disabled {
-            path {
-                fill: @btn-disabled-light;
-            }
-            filter: none;
-        }
-    }
-
-    &.cancel-button-transparent {
         fill: transparent;
         stroke-width: 1;
         stroke: @gray-xdark;
@@ -150,6 +101,7 @@
                 fill: @btn-text-w;
             }
         }
+        
         &.button-disabled {
             path {
                 fill: @btn-disabled-light;
@@ -159,8 +111,6 @@
     }
 
     &.proceed-button,
-    &.proceed-button-cyan,
-    &.cancel-button-transparent,
     &.cancel-button {
         &:hover {
             filter: url("#hover-shadow");
