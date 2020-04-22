@@ -4,8 +4,8 @@
 
 .textarea-wrapper {
     display: block;
-    max-width: 400px;
-    min-width: 350px;
+    max-width: 800px;
+    min-width: 200px;
     width:100%;
     background-color: transparent;
     border:none;
@@ -18,21 +18,22 @@
         position: relative;
         border: none;
         height: 100%;
-        min-height:40px;
+        min-height: 30px;
         width:100%;
         padding:0;
         opacity: 0.7;
         box-shadow: none;
         box-sizing: border-box;
-        padding: 10px 15px 8px 15px;
+        padding: 5px 15px 4px 15px;
         outline: none;
         background-color: transparent;
         font-size:inherit;
+        font-family: inherit;
         color: @gray-xdark;
         resize: none;
         overflow: auto;
         margin-right: 10px;
-        line-height: 22px;
+        line-height: 21px;
         font-weight: normal;
 
         /* width */
@@ -50,7 +51,7 @@
         /* Handle */
         ::-webkit-scrollbar-thumb {
             background: @gray-dark;
-            height:50px;
+            height:40px;
         }
         
         /* Handle on hover */
@@ -65,7 +66,7 @@
         max-height: auto;
         height:auto;
         overflow: visible;
-        padding: 10px 15px 8px 15px;
+        padding: 5px 15px 4px 15px;
         position: absolute;
         top:0;
         left:-99999px;
