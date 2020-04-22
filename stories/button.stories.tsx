@@ -6,13 +6,15 @@ storiesOf('Buttons', module)
     .add("Simple hexagon button", () => (
         <div style={{ width: window.innerWidth, height: window.innerHeight}}>
            <Button buttonType={ButtonType.PROCEED} disabled width={80}  text="Yes" />
-           <div style={{ padding: 10}}></div>
+           <br></br>
            <Button buttonType={ButtonType.PROCEED} width={80}  text="Yes" />
-           <div style={{ padding: 10}}></div>
+           <br></br>
            <Button buttonType={ButtonType.CANCEL} text="Cancel" width={80} />
-           <div style={{ padding: 10}}></div>
+           <br></br>
            <Button buttonType={ButtonType.CANCEL} text="Text defined width that can be infinitely long " />
+           <br></br>
            <Button text="Text defined width but with even more text with 0 radius" onClick={()=>{alert("action mate")}} />
+           <br></br>
            <Button text="Width defined size but with even more text" onClick={()=>{alert("action mate")}} disabled width={300} />
         </div>
     ));
