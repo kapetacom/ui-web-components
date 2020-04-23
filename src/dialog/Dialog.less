@@ -6,9 +6,112 @@
     .transition(opacity 200ms);
     position: fixed;
     filter: url("#dialog-shadow");
-    animation: scale-down-center 400ms  cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
     opacity: 0;
     pointer-events: none;
+
+    .delete {
+    animation: scale-down-center 400ms  cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    }
+
+    &.confirmation, &.prompt {
+        .border-radius(5px);
+        .drop-shadow(0 0 20px rgba(0, 0, 0, 0.15));  
+        background-color: white;
+        display: block;
+        overflow:auto;
+        max-height: ~'calc(100% - 100px)';
+
+        .panel-header {
+            display: none;
+        }
+
+        .panel-content {
+            .close {
+                position: absolute;
+                right: 15px;
+                top: 11px;
+            }
+        }
+
+        .content-wrapper {
+            margin: 30px 20px 0px 30px;
+            display: flex;
+            flex-direction: column;
+            
+            .dialog-title {
+                font-size: 18px;
+                font-weight: 500;
+                padding-bottom: 15px;
+            }
+            .dialog-message {
+                text-align: center;
+                font-size: 13px;
+                padding-bottom: 25px;
+            }
+        }
+        
+    }
+
+    &.confirmation{
+        .checked-icon {
+            position: absolute;
+            top: 35%;
+            left: 10%;
+            max-width: 60px;
+            max-height: 60px;
+        }
+
+        .content-wrapper {
+            padding-left: 15%;
+            justify-content: start;
+            align-items: normal;
+
+            .dialog-message {
+                text-align: start;
+                padding-bottom: 5px;
+                height: 55px;
+            }
+
+            .form-container {
+                width: fit-content;
+                margin-left: -10px;
+                
+                .form-buttons {
+                    margin: 0 auto;
+                }
+            }
+        }
+
+    }
+
+    &.prompt {
+        .content-wrapper {
+            justify-content:center;
+            align-items: center;
+
+            .dialog-message {
+                height: 50px;
+            }
+        }
+
+        .form-container {
+            width: 100%;
+
+            .form-element-container {
+                margin-bottom: 5px;
+                
+                .message {
+                    display: none;
+                }
+            }
+            
+            .form-buttons {
+                .blockware-button {
+                    right: 6px;
+                }                
+            }
+        }        
+    }
 
     .dialog-shape {
         overflow: visible;
@@ -26,7 +129,9 @@
     &.open {
         pointer-events: all;
         opacity: 1;
-        animation: scale-up-center 400ms  cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        &.delete {
+            animation: scale-up-center 400ms  cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        }
     }
 
     ~.dialog-holder {
