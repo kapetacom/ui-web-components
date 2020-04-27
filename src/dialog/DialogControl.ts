@@ -1,9 +1,17 @@
 import {observable, action, computed} from 'mobx';
+import { DialogTypes} from "./Dialog";
+import {Type as PromptDialogInputType} from '../form/inputs/SingleLineInput';
 
-
+export {PromptDialogInputType as PromptInputType};
 export class DialogControlImpl {
 
   private static instance: DialogControlImpl;
+
+  @observable
+  type: DialogTypes | null;
+
+  @observable
+  promptInputType : PromptDialogInputType;
 
   @observable
   text: string;
@@ -17,7 +25,12 @@ export class DialogControlImpl {
   @observable
   private _open: boolean;
 
+  @observable
+  promptInputValue: string | null =null;
+
   constructor() {
+    this.type = null;
+    this.promptInputType= PromptDialogInputType.TEXT;
     this.title = "";
 
     this.ok = () => { console.log("no Accept functionality was given") };
@@ -39,13 +52,25 @@ export class DialogControlImpl {
   };
 
   @action
-  setAcceptAction = (success: () => void) => {
+  setAcceptAction = (success: (promptInputValue?: any ) => void) => {
     this.ok = () => {
-      success();
+      if(DialogControl.type && DialogControl.type === DialogTypes.PROMPT){
+        success(this.promptInputValue)
+      } else {
+        success();
+      }
       this.hide();
     };
   };
 
+  @action
+  setPromptInputValue = ( newValue: any) =>{
+    this.promptInputValue = newValue;
+  }
+  @action
+  setType = (newType: DialogTypes | null)=> {
+    this.type = newType;
+  }
   @action
   setTitle = (newTitle: string) => {
     this.title = newTitle;
@@ -58,7 +83,13 @@ export class DialogControlImpl {
 
 
   @action
-  show = (title?: string, text?: string, callback?: () => void) => {
+  show = ( title?: string, text?: string, callback?: (promptInputValue?: string | null) => void, type?: DialogTypes, promptInputType?: PromptDialogInputType) => {
+    if(type){
+      this.type= type;
+    }
+    if(promptInputType){
+      this.promptInputType = promptInputType;
+    }
     if (title) {
       this.title = title;
     }
@@ -73,6 +104,8 @@ export class DialogControlImpl {
 
   @action
   hide = () => {// clean the dialog on close
+    this.setType(null);
+    this.setPromptInputValue(null);
     this.setText("");
     this.setTitle("");
     this.setAcceptAction(()=>{});
