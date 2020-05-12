@@ -23,6 +23,8 @@ interface EntityPickerProps {
     allowObject?: boolean
     entities?: string[]
     onEntityCreated?: (entity: SchemaEntity) => void
+    label?: string
+    help?: string
 }
 
 interface ParsedValue {
@@ -175,7 +177,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         return (
             <>
                 <div className={"entity-picker"}>
-                    <DropdownInput value={parsedValue.type} validation={["required"]} label="" name="" 
+                    <DropdownInput value={parsedValue.type} validation={["required"]} label={this.props.label ? this.props.label : ""} name={""} help={this.props.help ? this.props.help : ""}
                         onChange={(_,value)=>{
                             
                             this.onSelectHandler(value)
