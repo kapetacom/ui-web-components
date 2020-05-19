@@ -1,21 +1,25 @@
+import React, {Component} from 'react';
+import {observer} from 'mobx-react';
 
-import React, { Component } from 'react';
-import { observer } from 'mobx-react';
-
-import { toClass, createHexagonPath, Orientation } from '@blockware/ui-web-utils';
+import {createHexagonPath, Orientation, toClass} from '@blockware/ui-web-utils';
 
 import {DialogControl} from './DialogControl';
-import { Button, ButtonType } from '../button/Button';
-import {OverlayComponent, OverlayContextType} from "../overlay/OverlayContext";
-import {OverlayContext} from "../overlay/OverlayContext";
-import {RenderInBody} from "../overlay/RenderInBody";
-import {Draggable} from "../dnd/Draggable";
+import {OverlayComponent, OverlayContext, OverlayContextType} from "../overlay/OverlayContext";
+import {PanelStructure} from '../helpers/PanelStructure';
+
+import {
+    Button,
+    ButtonSize,
+    ButtonStyle,
+    ButtonType,
+    Draggable,
+    FormButtons,
+    FormContainer,
+    RenderInBody,
+    SingleLineInput
+} from "..";
 
 import './Dialog.less';
-import { PanelStructure } from '../helpers/PanelStructure';
-import { FormContainer } from '../form/FormContainer';
-import { SingleLineInput } from '../form/inputs/SingleLineInput';
-import { FormButtons } from '../form/FormButtons';
 
 export enum DialogTypes {
     CONFIRMATION = "confirmation",
@@ -61,7 +65,7 @@ const CheckedIcon: React.FC = () => {
 }
 
 @observer
-export class Dialog extends Component<DialogProps> implements OverlayComponent {
+export class Dialog extends Component<DialogProps ,any> implements OverlayComponent {
 
     static contextType = OverlayContext;
     context!: React.ContextType<OverlayContextType>;
@@ -165,12 +169,12 @@ export class Dialog extends Component<DialogProps> implements OverlayComponent {
                     {DialogControl.text}
                 </text>
 
-                <foreignObject x={initialSize.width / 2 - 140} y={initialSize.height - 100} overflow="visible" >
-                    <Button onClick={DialogControl.ok} width={88} buttonType={ButtonType.PROCEED} text={"Yes"} style={{}} />
+                <foreignObject x={initialSize.width / 2 - 100} y={initialSize.height - 100} overflow="visible" >
+                    <Button onClick={DialogControl.ok} width={ButtonSize.SMALL} style={ButtonStyle.PRIMARY} text={"Yes"} />
                 </foreignObject>
 
-                <foreignObject x={initialSize.width / 2 + 30} y={initialSize.height - 100} overflow="visible" >
-                    <Button onClick={() => { DialogControl.hide() }} width={88} buttonType={ButtonType.CANCEL} text={"No"} style={{}} />
+                <foreignObject x={initialSize.width / 2 + 10} y={initialSize.height - 100} overflow="visible" >
+                    <Button onClick={() => { DialogControl.hide() }} width={ButtonSize.SMALL} style={ButtonStyle.DANGER} text={"No"} />
                 </foreignObject>
 
             </svg>
@@ -208,14 +212,14 @@ export class Dialog extends Component<DialogProps> implements OverlayComponent {
                         />}
 
                         <FormButtons>
-                            <Button height={35} radius={2} width={70} type="button" buttonType={ButtonType.CANCEL} onClick={() => this.close()} text="Cancel" />
-                            <Button height={35} radius={2} width={70} type="submit" buttonType={ButtonType.PROCEED} text={"Ok"} />
+                            <Button width={ButtonSize.SMALL} style={ButtonStyle.DANGER} onClick={() => this.close()} text="Cancel" />
+                            <Button width={ButtonSize.SMALL} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} text={"Ok"} />
                         </FormButtons>
                     </FormContainer>
                 </div>
             </PanelStructure>
         );
-    }
+    };
     
 
     render() {

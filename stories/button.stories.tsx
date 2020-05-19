@@ -1,21 +1,36 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { Button, ButtonType } from '../src';
+import {Button, ButtonSize, ButtonStyle, ButtonType, LogoButton} from '../src';
 
 storiesOf('Buttons', module)
-    .add("Simple hexagon button", () => (
-        <div style={{ width: window.innerWidth, height: window.innerHeight}}>
-           <Button buttonType={ButtonType.PROCEED} disabled width={80}  text="Yes" />
-           <br></br>
-           <Button buttonType={ButtonType.PROCEED} width={80}  text="Yes" />
-           <br></br>
-           <Button buttonType={ButtonType.CANCEL} text="Cancel" width={80} />
-           <br></br>
-           <Button buttonType={ButtonType.CANCEL} text="Text defined width that can be infinitely long " />
-           <br></br>
-           <Button text="Text defined width but with even more text with 0 radius" onClick={()=>{alert("action mate")}} />
-           <br></br>
-           <Button text="Width defined size but with even more text" onClick={()=>{alert("action mate")}} disabled width={300} />
+    .add("Buttons", () => (
+        <div style={{ padding: '20px'}}>
+
+            <Button style={ButtonStyle.PRIMARY_SHINE} width={ButtonSize.MEDIUM} text={'Sign up'}/>
+
+            <Button style={ButtonStyle.PRIMARY} width={ButtonSize.LARGE} text={'Sign up'}/>
+
+            <Button style={ButtonStyle.SECONDARY} width={ButtonSize.SMALL} text={'Log in'}/>
+
+            <br/><br/>
+
+            <Button style={ButtonStyle.DEFAULT} width={ButtonSize.HUGE} text={'Huge big button with lots of text'}/>
+
+            <Button text={'Default'}/>
+
+            <br/><br/>
+
+            <Button style={ButtonStyle.DANGER} width={ButtonSize.MEDIUM} text={'Dont do this!'} />
+
+            <Button style={ButtonStyle.DANGER} disabled={true} width={ButtonSize.MEDIUM} text={'Disabled!'} />
+
+            <br/><br/>
+
+            <LogoButton logo={"/google.svg"} width={ButtonSize.MEDIUM} text={'Google'} href={'#'} />
+
+            <LogoButton logo={"/github.svg"} width={ButtonSize.MEDIUM} text={'Github'} href={'#'} />
+
+            <LogoButton logo={"/microsoft.svg"} width={ButtonSize.MEDIUM} text={'Microsoft'} href={'#'} />
         </div>
     ));
 

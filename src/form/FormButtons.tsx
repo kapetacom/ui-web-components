@@ -1,8 +1,8 @@
 import React from "react";
 import {FormContext, FormContextType} from './FormContext';
+import { Button } from "..";
 
 import "./FormButtons.less";
-import { Button } from "../button/Button";
 
 interface FormButtonsProps {
     children: any

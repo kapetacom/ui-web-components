@@ -1,5 +1,5 @@
 import React from "react";
-import {action, observable, toJS} from "mobx";
+import {action, observable} from "mobx";
 import {observer} from "mobx-react";
 
 import {SchemaEntryType, typeName} from "@blockware/ui-web-types";
@@ -9,19 +9,26 @@ import {EntityPicker} from "../form/field-handlers/EntityPicker";
 import _ from "lodash";
 
 import {Guid} from "guid-typescript";
-import {SortableItem} from "../dnd/SortableItem";
-import {SortableContainer} from "../dnd/SortableContainer";
 import {EntityFormModel, SchemaEntryEdit} from "./EntityFormModel";
 
-import './EntityForm.less';
-
 import PlusHexagon from "../svg/SVGAddEntityButton";
-import { SingleLineInput, Type } from "../form/inputs/SingleLineInput";
+
 import SVGGrabber from "../svg/SVGGrabber";
 import SVGDeleteHexagon from "../svg/SVGDeleteHexagon";
-import { FormContainer } from "../form/FormContainer";
-import { FormButtons } from "../form/FormButtons";
-import { Button, ButtonType } from "../button/Button";
+import {
+    Button,
+    ButtonSize,
+    ButtonStyle,
+    ButtonType,
+    FormButtons,
+    FormContainer,
+    SingleLineInput,
+    SortableContainer,
+    SortableItem,
+    Type
+} from "..";
+
+import './EntityForm.less';
 
 
 function toTypeName(entry:SchemaEntryEdit):string {
@@ -301,8 +308,8 @@ export class EntityForm extends React.Component<EntityFormProps> {
                             this.renderAddFirst(this.props.entity.properties, 0, 0)}
 
                     <FormButtons>
-                        <Button height={35} radius={2} width={70} text="Cancel" type="button"  buttonType={ButtonType.CANCEL}  onClick={() => {}}/>
-                        <Button height={35} radius={2} width={70} text="Create" type="submit" buttonType={ButtonType.PROCEED} />
+                        <Button width={ButtonSize.SMALL} text="Cancel" style={ButtonStyle.DANGER} onClick={() => {}}/>
+                        <Button width={ButtonSize.SMALL} text="Create" type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
                     </FormButtons>
                 </FormContainer>
             </div>

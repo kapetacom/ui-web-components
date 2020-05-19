@@ -13,7 +13,7 @@
     ],
     "license": "MIT",
     "scripts": {
-        "storybook": "start-storybook",
+        "storybook": "start-storybook -s stories/assets",
         "prepublishOnly": "npm run build",
         "start": "nodemon -e js,jsx,less,ts,tsx,json --ignore dist/ --ignore node_modules/ --exec 'npm run build'",
         "build": "npm run build:types && npm run build:js && npm run build:less",

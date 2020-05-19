@@ -8,12 +8,12 @@ import { FormRow } from "../FormRow";
 
 interface MultiLineInputProps {
     name: string,
-    value: any,
     label: string,
-    validation: any[],
+    value?: any,
+    validation?: any[],
     help?: string,
     disabled?: boolean,
-    onChange: (inputName: string, userInput: any) => void
+    onChange?: (inputName: string, userInput: any) => void
 }
 
 const MIN_HEIGHT: number = 22;
@@ -60,7 +60,10 @@ export class MultiLineInput extends React.Component<MultiLineInputProps> {
     private setUserInput = (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         let val = evt.target.value;
         this.userInput = val;
-        this.props.onChange(this.props.name, this.userInput);
+        if (this.props.onChange) {
+            this.props.onChange(this.props.name, this.userInput);
+        }
+
     }
 
     render() {

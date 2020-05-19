@@ -1,4 +1,4 @@
-export * from './button/Button';
+export * from './button/buttons';
 
 export * from './dialog/Dialog';
 export * from './dialog/DialogControl';

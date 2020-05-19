@@ -124,8 +124,12 @@ export class FormContainer extends React.Component<FormContainerProps, any> {
     }
 
     private handleButtonClick(evt: MouseEvent): void {
-        evt.stopPropagation();
-        evt.preventDefault();
+        if (this.props.onSubmit ||
+            !this.state.valid) {
+            //Otherwise let the native form handle this
+            evt.stopPropagation();
+            evt.preventDefault();
+        }
 
         this.submit();
     }
