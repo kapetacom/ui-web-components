@@ -8,7 +8,7 @@ import {toClass} from "@blockware/ui-web-utils";
 const BUTTON_HEIGHT = 40;
 const BUTTON_POINT_SIZE = 10;
 
-const cssMasks = {};
+const cssMasks:{[key:number]:string} = {};
 
 const createCSSMask = (width:number) => {
     if (!cssMasks[width]) {
@@ -70,7 +70,7 @@ export const Button = (props:ButtonProps) =>  {
         <button onClick={props.onClick}
                 disabled={props.disabled}
                 className={toClass({button:true,[style]:true})} type={type} >
-            <div className={'inner'} style={{WebkitMaskImage:cssMask,MaskImage:cssMask, width}}>
+            <div className={'inner'} style={{WebkitMaskImage:cssMask, maskImage:cssMask, width}}>
                 {props.text}
             </div>
         </button>
@@ -96,8 +96,8 @@ export const LogoButton = (props:LogoProps) =>  {
 
     return (
         <a className={'button logo'} href={props.href} >
-            <div className={'inner'} style={{WebkitMaskImage:cssMask,MaskImage:cssMask, width}}>
-                <div className={'logo'} style={{WebkitMaskImage:logoMask,MaskImage:logoMask, width: logoWidth}}>
+            <div className={'inner'} style={{WebkitMaskImage:cssMask, maskImage:cssMask, width}}>
+                <div className={'logo'} style={{WebkitMaskImage:logoMask, maskImage:logoMask, width: logoWidth}}>
                     <img src={props.logo} alt={props.text} />
                 </div>
                 <div className={'name'}>

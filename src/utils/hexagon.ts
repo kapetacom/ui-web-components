@@ -1,5 +1,5 @@
 
-export function createHexagon(width, height, pointSize) {
+export function createHexagon(width:number, height:number, pointSize:number) {
     const points = [];
 
     if (width < (pointSize*2)) {
@@ -38,6 +38,8 @@ export function createHexagon(width, height, pointSize) {
 
     const first = points.shift();
 
+
+    //@ts-ignore
     return `M ${first.x} ${first.y} ` + points.map((p) => {
         return `L ${Math.round(p.x)} ${Math.round(p.y)}`
     }).join(' ') + ' Z';
