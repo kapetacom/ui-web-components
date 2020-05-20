@@ -15,14 +15,16 @@ export enum Type {
     RADIO = "radio"
 }
 
+const NON_TEXT_TYPES = [Type.RADIO, Type.CHECKBOX, Type.DATE];
+
 interface SingleLineInputProps {
     name: string,
-    value: any,
     label: string,
-    validation: any[],
+    value?: any,
+    validation?: any[],
     help?: string,
     disabled?: boolean,
-    onChange: (inputName: string, userInput: any) => void,
+    onChange?: (inputName: string, userInput: any) => void,
     type?: Type
 }
 @observer
@@ -51,7 +53,9 @@ export class SingleLineInput extends React.Component<SingleLineInputProps> {
     private setUserInput = (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         let val = evt.target.value;
         this.userInput = val;
-        this.props.onChange(this.props.name, this.userInput);
+        if (this.props.onChange) {
+            this.props.onChange(this.props.name, this.userInput);
+        }
     }
 
     private upperArrowHandler = () => {
@@ -107,7 +111,9 @@ export class SingleLineInput extends React.Component<SingleLineInputProps> {
 
         let classNameSinglelineWrapper = toClass({
             "singleline-input": true
-        })
+        });
+
+        const nonTextType = this.props.type && NON_TEXT_TYPES.indexOf(this.props.type) > -1;
 
         return (
 
@@ -117,11 +123,13 @@ export class SingleLineInput extends React.Component<SingleLineInputProps> {
                     help={this.props.help}
                     validation={this.props.validation}
                     type= {this.props.type}
+                    disableZoom={nonTextType}
                     focused={this.inputFocused}
                 >
                     <div className={classNameSinglelineWrapper} data-name={this.props.name} data-value={this.userInput}>
                         <input 
                             type={this.props.type ? this.props.type : Type.TEXT}
+                            name={this.props.name}
                             onChange={(event) => { this.setUserInput(event) }}
                             onFocus={this.inputOnFocus}
                             onBlur={this.inputOnBlur}

@@ -13,6 +13,7 @@ interface FormRowProps {
     children:any,
     type?: string,
     focused: boolean,
+    disableZoom?: boolean
     $onReadyStateChanged?: (fieldName:string, ready:boolean) => void //Internal callback
 }
 
@@ -219,6 +220,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
                 label={this.props.label}
                 type={this.props.type}
                 focused={this.props.focused}
+                disableZoom={this.props.disableZoom}
                 status={ errorMessage && errorMessage.length > 0 ? StatusType.ERROR: StatusType.OK}
                 infoBox={''}                
             >

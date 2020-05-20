@@ -20,7 +20,8 @@ interface FormElementContainerProps {
     type?: string,
     focused: boolean,
     status?: string,
-    infoBox?: string
+    infoBox?: string,
+    disableZoom?: boolean
 }
 
 @observer
@@ -52,7 +53,7 @@ export class FormElementContainer extends React.Component<FormElementContainerPr
 
         let classNameLabel = toClass({
             "label": true,
-            "zoom-out": this.props.hasValue || this.props.focused,
+            "zoom-out": this.props.hasValue || this.props.focused || this.props.disableZoom
         });
 
         let classNameMessage = toClass({

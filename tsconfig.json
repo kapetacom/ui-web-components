@@ -5,7 +5,7 @@
         "jsx": "react",
         "declaration": true,
         "outDir": "dist",
-        "strict": true,
+        "strict": false,
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "experimentalDecorators": true,

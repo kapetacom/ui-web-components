@@ -18,7 +18,13 @@
         font-size:inherit;
         color: @gray-xdark;
         z-index: 1;
-        text-transform: capitalize;
+        margin:0;
+
+        &[type=checkbox],&[type=radio] {
+            margin: 1px 15px;
+            vertical-align: middle;
+            width: ~"calc(100% - 30px)";
+        }
     }
 
     /* Chrome, Safari, Edge, Opera  to remove the arrows on input[type=number]*/
@@ -39,6 +45,7 @@
     .lower-arrow {
         top: 15px;
     }
+
     .arrows{
         position:absolute;
         right: 7px;

@@ -1,21 +1,21 @@
-import React, { ChangeEvent } from "react";
+import React, {ChangeEvent} from "react";
 import "./DropdownInput.less";
-import { observable, action } from "mobx";
-import { toClass } from "@blockware/ui-web-utils";
+import {action, observable} from "mobx";
+import {toClass} from "@blockware/ui-web-utils";
 import * as _ from "lodash";
-import { observer } from "mobx-react";
-import { FormRow } from "../FormRow";
+import {observer} from "mobx-react";
+import {FormRow} from "../FormRow";
 
 interface DropdownInputProps {
     name: string,
-    value: any,
+    options: string[] | { [key: string]: string },
     label: string,
-    validation: any[],
+    value?: any,
+    validation?: any[],
     help?: string,
     disabled?: boolean,
     multi?: boolean,
-    options: string[] | {[key:string]:string},
-    onChange: (inputName: string, userInput: any) => void
+    onChange?: (inputName: string, userInput: any) => void
 }
 
 @observer
@@ -26,7 +26,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
     private inputFocus: boolean = false;
 
     @observable
-    private userInputDisplay: string ='';
+    private userInputDisplay: string = '';
 
     @observable
     private inputSuggestion: string = '';
@@ -34,26 +34,26 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
     @observable
     private inputElement = React.createRef<HTMLInputElement>();
 
-    private userSelection=(): string[]=> {
+    private userSelection = (): string[] => {
         let keys = this.props.value;
-        if(!Array.isArray(keys)) {
+        if (!Array.isArray(keys)) {
             keys = keys ? [keys] : [];
         }
         return [].concat(keys);
-    }
+    };
 
     @action
     private onInputFocus = () => {
         this.inputFocus = true;
-        this.userInputDisplay='';
+        this.userInputDisplay = '';
     };
 
     @action
     private onInputBlur = () => {
         // Select value if it is equal to suggestion
-        if(this.userInputDisplay && this.inputSuggestion && this.inputSuggestion.toUpperCase() === this.userInputDisplay.toUpperCase()) {
+        if (this.userInputDisplay && this.inputSuggestion && this.inputSuggestion.toUpperCase() === this.userInputDisplay.toUpperCase()) {
             this.props.onChange(this.props.name, _.invert(this.optionListFiltered())[this.inputSuggestion]);
-        }        
+        }
         this.inputFocus = false;
         if (this.inputElement.current) {
             this.userInputDisplay = "";
@@ -63,33 +63,32 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
 
     private renderKeysAsValues = (keys: string | string[]) => {
         const options = this.getOptions();
-        if(!Array.isArray(keys)) {
+        if (!Array.isArray(keys)) {
             keys = keys ? [keys] : [];
         }
-        return keys.map((key)=>options[key]).join(', ');
-    }
+        return keys.map((key) => options[key]).join(', ');
+    };
 
     @action
     private onInputToggle = () => {
-        if(!this.props.disabled){
-            if(this.inputFocus) {
+        if (!this.props.disabled) {
+            if (this.inputFocus) {
                 this.onInputBlur();
-            }
-            else {
+            } else {
                 this.onInputFocus();
-            }  
+            }
         }
-    }
+    };
 
     @action
     private setInputSuggestion() {
-        if (this.userInputDisplay && this.userInputDisplay.length > 0 ) {
+        if (this.userInputDisplay && this.userInputDisplay.length > 0) {
             const filteredOptions = this.optionListFiltered();
-            if(_.isObject(filteredOptions)){
+            if (_.isObject(filteredOptions)) {
                 this.inputSuggestion = Object.values(filteredOptions)[0];
-            }else if(_.isString(filteredOptions)){
+            } else if (_.isString(filteredOptions)) {
                 this.inputSuggestion = filteredOptions;
-            }                
+            }
         } else {
             this.inputSuggestion = "";
         }
@@ -108,7 +107,10 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
 
             if (isSelected > -1) {
                 tempUserSelection.splice(isSelected, 1);
-                this.props.onChange(this.props.name, this.props.multi ? tempUserSelection: tempUserSelection[0]);               
+                if (this.props.onChange) {
+                    this.props.onChange(this.props.name, this.props.multi ? tempUserSelection : tempUserSelection[0]);
+                }
+
                 return;
             }
         }
@@ -119,19 +121,22 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
 
         tempUserSelection.push(selection);
         this.userInputDisplay = "";
-        this.setInputSuggestion();      
-        
-        this.props.onChange(this.props.name, this.props.multi ? tempUserSelection: tempUserSelection[0]);
-        if(!this.props.multi){
+        this.setInputSuggestion();
+
+        if (this.props.onChange) {
+            this.props.onChange(this.props.name, this.props.multi ? tempUserSelection : tempUserSelection[0]);
+        }
+
+        if (!this.props.multi) {
             this.onInputBlur();
         }
     };
 
-    private optionListFiltered = ()=> {
-            return _.pickBy(this.getOptions(), (value)=> {
-                return value.toUpperCase().startsWith(this.userInputDisplay.toUpperCase());                        
-            });
-    }
+    private optionListFiltered = () => {
+        return _.pickBy(this.getOptions(), (value) => {
+            return value.toUpperCase().startsWith(this.userInputDisplay.toUpperCase());
+        });
+    };
 
     private getOptions = (): { [key: string]: string } => {
 
@@ -149,44 +154,44 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             return this.props.options;
         }
         return options;
-    }
+    };
 
     private renderOptions = () => {
-        let filteredList = this.optionListFiltered();        
+        let filteredList = this.optionListFiltered();
 
-        return _.map(filteredList, (value, key ) => {
-            
-            let row = (
+        return _.map(filteredList, (value, key) => {
+
+            return (
                 <li key={key} className={`option ${(this.userSelection().indexOf(key) > -1 ? " selected" : "")}`}
                     onMouseDown={(evt: React.MouseEvent) => {
                         evt.nativeEvent.stopImmediatePropagation();
                         evt.preventDefault();
 
-                            this.selectHandler(key)
-                        }}>
-                        {this.boldQuery(value, this.userInputDisplay)}
+                        this.selectHandler(key)
+                    }}>
+                    {this.boldQuery(value, this.userInputDisplay)}
 
-                        {
-                            this.userSelection().indexOf(key) < 0 ? null :
-                                <span className={"selected-icon"} >
-                                    <svg width="14" height="10" fill="none" >
-                                        <path fillRule="evenodd" clipRule="evenodd" d="M5 9.61957L0 4.99477L1.4 3.69983L5 7.02968L12.6 0L14 1.29494L5 9.61957Z" fill="#686868" />
+                    {
+                        this.userSelection().indexOf(key) < 0 ? null :
+                            <span className={"selected-icon"}>
+                                    <svg width="14" height="10" fill="none">
+                                        <path fillRule="evenodd" clipRule="evenodd"
+                                              d="M5 9.61957L0 4.99477L1.4 3.69983L5 7.02968L12.6 0L14 1.29494L5 9.61957Z"
+                                              fill="#686868"/>
                                     </svg>
                                 </span>
-                        }
-                    </li>
-                );
-                return row;
-            });
-        }
-    
+                    }
+                </li>
+            );
+        });
+    };
+
 
     @action
     private setUserInputDisplay = (evt: ChangeEvent<HTMLInputElement>) => {
-        let val = evt.target.value;
-        this.userInputDisplay = val;
+        this.userInputDisplay = evt.target.value;
         this.setInputSuggestion();
-    }
+    };
 
     private boldQuery = (str: string, query: string) => {
         let optionString = str.toUpperCase();
@@ -215,7 +220,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             "focus-icon": !!this.inputFocus
         });
 
-        let inputValue= (this.userInputDisplay || this.inputFocus )? this.userInputDisplay : this.renderKeysAsValues(this.props.value);
+        let inputValue = (this.userInputDisplay || this.inputFocus) ? this.userInputDisplay : this.renderKeysAsValues(this.props.value);
 
         return (
             <FormRow
@@ -225,23 +230,27 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
                 focused={this.inputFocus}
             >
                 <div className={"dropdown-input"} data-name={this.props.name} data-value={inputValue}>
-                    {this.inputFocus && this.userInputDisplay.length > 0 && <span className={"user-suggestion"}>{this.inputSuggestion}</span>}
+                    {this.inputFocus && this.userInputDisplay.length > 0 &&
+                    <span className={"user-suggestion"}>{this.inputSuggestion}</span>}
 
                     <input name={this.props.name}
-                        type={"text"}
-                        onChange={(event) => { this.setUserInputDisplay(event) }}
-                        onFocus={this.onInputFocus}
-                        onBlur={this.onInputBlur}
-                        ref={this.inputElement}
-                        value={inputValue}
-                        autoComplete="off"
-                        disabled={this.props.disabled} />
+                           type={"text"}
+                           onChange={(event) => {
+                               this.setUserInputDisplay(event)
+                           }}
+                           onFocus={this.onInputFocus}
+                           onBlur={this.onInputBlur}
+                           ref={this.inputElement}
+                           value={inputValue}
+                           autoComplete="off"
+                           disabled={this.props.disabled}/>
                     <div className={classNameArrowIcon}>
                         <svg width="13" height="5" fill="none" onClick={this.onInputToggle}>
-                            <path d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z" fill="#908988" />
+                            <path d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z" fill="#908988"/>
                         </svg>
                     </div>
-                    {this.props.value ? this.props.value.length > 0  && this.props.multi && <span className="selected-number">({this.props.value.length})</span> : null}
+                    {this.props.value ? this.props.value.length > 0 && this.props.multi &&
+                        <span className="selected-number">({this.props.value.length})</span> : null}
                     <ul id="datalist-input" className={classNameList}>
                         {this.renderOptions()}
                     </ul>
