@@ -41,7 +41,8 @@ export enum ButtonStyle {
 
 export enum ButtonType {
     BUTTON = 'button',
-    SUBMIT = 'submit'
+    SUBMIT = 'submit',
+    RESET = 'reset'
 }
 
 export enum ButtonSize {

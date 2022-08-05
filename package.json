@@ -70,6 +70,7 @@
         "style-loader": "^1.0.0",
         "typescript": "^3.4.5",
         "yaml": "^1.6.0",
-        "yaml-loader": "^0.5.0"
+        "yaml-loader": "^0.5.0",
+        "react-toastify": "latest"
     }
 }

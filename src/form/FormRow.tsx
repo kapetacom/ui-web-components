@@ -24,6 +24,7 @@ enum StatusType {
 }
 interface FormRowState {
     touched:boolean
+    forceError?:string
 }
 
 export class FormRow extends React.Component<FormRowProps, FormRowState> {
@@ -128,6 +129,10 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
     applyValidation() {
         const childProps = this.getChildProperties();
 
+        if (this.state.forceError) {
+            return [this.state.forceError]
+        }
+
         return this.getValidators().map((validator: any) => {
             if (typeof validator === 'string') {
                 if (!Validators[validator]) {
@@ -177,6 +182,10 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
         }));
     }
 
+    public setError(errorMessage?:string) {
+        this.setState({forceError: errorMessage, touched: this.state.touched});
+    }
+
     componentWillUnmount() {
         if (this.disposer) {
             this.disposer();
@@ -186,18 +195,17 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
         this.setReadyState(true); //Tell the form to not worry about this
     }
 
-    render() {
+    componentDidUpdate() {
 
-        let errorMessage = null;
+    }
 
+    private updateReadyState() {
 
         const errors = this.applyValidation();
 
         if (this.isTouched()) {
 
-
             if (errors.length > 0) {
-                errorMessage = errors[0];
                 this.setReadyState(false);
             } else {
                 this.setReadyState(true);
@@ -205,10 +213,20 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
         } else {
             this.setReadyState(errors.length === 0);
         }
+    }
+
+    render() {
+
+        let errorMessage = null;
+
+        if (this.isTouched()) {
+            const errors = this.applyValidation();
+            if (errors.length > 0) {
+                errorMessage = errors[0];
+            }
+        }
 
         const required = this.isRequired();
-
-
 
         return (
             <FormElementContainer

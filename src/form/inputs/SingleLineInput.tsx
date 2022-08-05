@@ -34,42 +34,45 @@ export class SingleLineInput extends React.Component<SingleLineInputProps> {
     @observable
     private inputFocused: boolean = false;
 
-    @observable
-    private userInput: string = this.props.value ? this.props.value :"";
 
     private inputRef: React.RefObject<HTMLInputElement> = React.createRef();
+
+    private formRowRef: React.RefObject<FormRow> = React.createRef();
 
     @action
     private inputOnBlur = () => {
         this.inputFocused = false;
-    }
+    };
 
     @action
     private inputOnFocus = () => {
         this.inputFocused = true;
-    }
+    };
 
     @action
-    private setUserInput = (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        let val = evt.target.value;
-        this.userInput = val;
+    private onChange = (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        this.emitChange(evt.target.value);
+    };
+
+    private emitChange(value:string) {
         if (this.props.onChange) {
-            this.props.onChange(this.props.name, this.userInput);
+            this.props.onChange(this.props.name, value);
         }
     }
 
     private upperArrowHandler = () => {
         if (this.inputRef.current) {
             this.inputRef.current.stepUp();
-            this.userInput = this.inputRef.current.value;
+            this.emitChange(this.inputRef.current.value);
         }
-    }
+    };
+
     private lowerArrowHandler = () => {
         if (this.inputRef.current) {
             this.inputRef.current.stepDown();
-            this.userInput = this.inputRef.current.value;
+            this.emitChange(this.inputRef.current.value);
         }
-    }
+    };
 
     private eventPreventDefault(evt: React.MouseEvent) {
         evt.nativeEvent.stopImmediatePropagation();
@@ -105,9 +108,13 @@ export class SingleLineInput extends React.Component<SingleLineInputProps> {
         );
     }
 
+    public setError(errorMessage?:string) {
+        if (this.formRowRef.current) {
+            this.formRowRef.current.setError(errorMessage);
+        }
+    }
+
     render() {
-
-
 
         let classNameSinglelineWrapper = toClass({
             "singleline-input": true
@@ -117,8 +124,8 @@ export class SingleLineInput extends React.Component<SingleLineInputProps> {
 
         return (
 
-            
                 <FormRow
+                    ref={this.formRowRef}
                     label={this.props.label}
                     help={this.props.help}
                     validation={this.props.validation}
@@ -126,14 +133,14 @@ export class SingleLineInput extends React.Component<SingleLineInputProps> {
                     disableZoom={nonTextType}
                     focused={this.inputFocused}
                 >
-                    <div className={classNameSinglelineWrapper} data-name={this.props.name} data-value={this.userInput}>
+                    <div className={classNameSinglelineWrapper} data-name={this.props.name} data-value={this.props.value}>
                         <input 
                             type={this.props.type ? this.props.type : Type.TEXT}
                             name={this.props.name}
-                            onChange={(event) => { this.setUserInput(event) }}
+                            onChange={this.onChange}
                             onFocus={this.inputOnFocus}
                             onBlur={this.inputOnBlur}
-                            value={this.userInput}
+                            value={this.props.value}
                             disabled={this.props.disabled}                            
                             ref={this.inputRef} />
 

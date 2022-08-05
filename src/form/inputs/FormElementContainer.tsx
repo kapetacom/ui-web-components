@@ -58,7 +58,9 @@ export class FormElementContainer extends React.Component<FormElementContainerPr
 
         let classNameMessage = toClass({
             "message": true,
-        })
+        });
+
+        const helpMessage = this.props.errorMessage && this.props.touched ? this.props.errorMessage : this.props.help;
 
         return (
             <div className={classFormElemContainer} >
@@ -68,10 +70,11 @@ export class FormElementContainer extends React.Component<FormElementContainerPr
                     {this.props.children}
                 </div>
 
-                {this.props.required && this.props.errorMessage && this.props.touched && !this.props.hasValue ?
-                    <span className={classNameMessage}><sup>*</sup>{ this.props.errorMessage }</span> : 
-                    <span className={classNameMessage} >
-                           {this.props.required?<sup>*</sup>:null} {this.props.help}</span>
+                {helpMessage &&
+                    <span className={classNameMessage}>
+                        {this.props.required ? <sup>*</sup> : null}
+                        { helpMessage }
+                    </span>
                 }
 
                 { !this.props.focused && showStatusIcon && this.renderStatusIcon()}

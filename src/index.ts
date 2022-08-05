@@ -28,7 +28,6 @@ export * from './form/inputs/FormElementContainer';
 export * from './form/inputs/MultiLineInput';
 export * from './form/inputs/SingleLineInput';
 
-
 export * from './modal/Modal';
 
 export * from './helpers/Loader';
@@ -52,3 +51,5 @@ export * from './svg/SVGButtonEdit';
 export * from './svg/SVGButtonWarning';
 export * from './svg/SVGButtonInspect';
 export * from './svg/SVGText';
+
+export * from './toast/ToastComponent';
