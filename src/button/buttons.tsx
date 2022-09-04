@@ -10,7 +10,7 @@ const BUTTON_POINT_SIZE = 10;
 
 const cssMasks:{[key:number]:string} = {};
 
-const createCSSMask = (width:number) => {
+const createCSSMask = (width:number) => {
     if (!cssMasks[width]) {
         //We store these ad-hoc SVG images as blob urls and reuse them to speed things up
         const path = createHexagon(width, BUTTON_HEIGHT, BUTTON_POINT_SIZE);

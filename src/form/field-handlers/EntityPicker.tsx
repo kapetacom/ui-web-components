@@ -94,7 +94,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
     };
 
     @action
-    private closeModal = () => {
+    private closeModal = () => {
         if (this.createEntityModal) {
             this.createEntityModal.close();
         }

@@ -80,12 +80,12 @@ export class Dialog extends Component<DialogProps ,any> implements OverlayCompon
         return true;
     }
 
-    public close() {
+    public close() {
         DialogControl.close();
         this.context.onClosing(this);
     }
 
-    public open() {
+    public open() {
         DialogControl.show();
         this.context.onChanged(this);
     }

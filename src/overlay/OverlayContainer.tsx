@@ -23,7 +23,7 @@ export class OverlayContainer extends React.Component<OverlayContainerProps,Over
     @observable
     private components:OverlayComponent[] = [];
 
-    private toZIndex(level:number) {
+    private toZIndex(level:number) {
         return level + 10;
     }
 

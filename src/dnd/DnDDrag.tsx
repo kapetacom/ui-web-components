@@ -35,7 +35,7 @@ export class DnDDrag extends React.Component<DnDDragProps> {
             return;
         }
         let container:Element|undefined;
-        if (this.props.container) {
+        if (this.props.container) {
             if (typeof this.props.container === 'string') {
                 let selector:string = this.props.container;
                 let closestParent = this.elm.closest(selector);
@@ -69,7 +69,7 @@ export class DnDDrag extends React.Component<DnDDragProps> {
             return;
         }
         let container:Element|undefined;
-        if (this.props.container) {
+        if (this.props.container) {
             if (typeof this.props.container === 'string') {
                 let selector:string = this.props.container;
                 let closestParent = this.elm.closest(selector);

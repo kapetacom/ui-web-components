@@ -54,7 +54,7 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
         return true;
     }
 
-    public close() {
+    public close() {
         this.setState({
             open:false
         });
@@ -62,7 +62,7 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
         this.context.onClosing(this);
     }
 
-    public open() {
+    public open() {
         this.setState({
             open:true
         }, () => {

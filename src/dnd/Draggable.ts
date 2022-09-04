@@ -100,7 +100,7 @@ export class Draggable<T> {
             return this.options.container;
         }
 
-        if (!this.options.context) {
+        if (!this.options.context) {
             return document.documentElement;
         }
 
@@ -205,7 +205,7 @@ export class Draggable<T> {
         if (!container ||
             !this.elm ||
             !body ||
-            !window ||
+            !window ||
             this.dragging) {
             return;
         }
@@ -297,7 +297,7 @@ export class Draggable<T> {
     private handleMouseUp = (evt: MouseEvent) => {
         const body = this.getDocumentBody();
         const window = this.getWindow();
-        if (!body || !window) {
+        if (!body || !window) {
             return;
         }
 

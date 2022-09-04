@@ -99,7 +99,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
     }
 
     getDefaultValue() {
-        return this.getChildProperties().defaultValue || '';
+        return this.getChildProperties().defaultValue || '';
     }
 
     getChildName() {

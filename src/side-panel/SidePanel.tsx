@@ -62,7 +62,7 @@ export class SidePanel extends React.Component<SidePanelProps, SidePanelState> i
         return !!this.props.modal;
     }
 
-    public close() {
+    public close() {
 
         this.setState({
             open:false
@@ -73,7 +73,7 @@ export class SidePanel extends React.Component<SidePanelProps, SidePanelState> i
         }
     }
 
-    public open() {
+    public open() {
         this.setState({
             open:true
         }, () => {
