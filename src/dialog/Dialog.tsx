@@ -198,7 +198,6 @@ export class Dialog extends Component<DialogProps ,any> implements OverlayCompon
                     <div className="dialog-title">{DialogControl.title}</div>
                     <div className="dialog-message">{DialogControl.text}</div>
                     <FormContainer onSubmit={() => {
-                        console.log("prompt dialog Ok");
                         DialogControl.ok();
                     }}>
                         {DialogControl.type === DialogTypes.PROMPT && <SingleLineInput
@@ -223,6 +222,7 @@ export class Dialog extends Component<DialogProps ,any> implements OverlayCompon
     
 
     render() {
+
         let classNames = toClass({
             "dialog-container": true,
             'open': DialogControl.open,
@@ -248,7 +248,8 @@ export class Dialog extends Component<DialogProps ,any> implements OverlayCompon
                     onTransitionEnd={this.onTransitionEnd} >
 
                     {DialogControl.type === DialogTypes.DELETE ?
-                        this.renderDeleteDialog(initialSize) : (DialogControl.type === DialogTypes.CONFIRMATION || DialogControl.type === DialogTypes.PROMPT) ?
+                        this.renderDeleteDialog(initialSize) :
+                        (DialogControl.type === DialogTypes.CONFIRMATION || DialogControl.type === DialogTypes.PROMPT) ?
                             this.renderPromptOrConfirmationDialog() : null}
                 </div>
             </RenderInBody>
