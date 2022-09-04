@@ -1,7 +1,7 @@
 import React from 'react';
 import {observable} from "mobx";
 import { storiesOf } from '@storybook/react';
-import { Store, StateDecorator, State } from "@sambego/storybook-state";
+import { Store, withState, State } from "@sambego/storybook-state";
 import {EntityMapper, EntityPicker, EntityForm, EntityFormModel} from "../src";
 import { EntityList } from "../src/entities/EntityList";
 import { SchemaEntryType } from '@blockware/ui-web-types';
@@ -76,7 +76,8 @@ let entityFormState = new Store({
 storiesOf('Entity Forms', module)
 
     // @ts-ignore
-    .addDecorator(StateDecorator(pickerState))
+    .addDecorator(withState(pickerState))
+    .addDecorator(withState(entityFormState))
 
     .add("Entity Mapper", () => (
         <div style={{ width: "700px", padding: '10px', backgroundColor: '#e0ecff' }}>
@@ -108,7 +109,7 @@ storiesOf('Entity Forms', module)
             </State>
         )
     })
-    .addDecorator(StateDecorator(entityFormState))
+
     .add("Entity Form ", () => {
         return (
             <div style={{ width: "700px", padding: '10px', backgroundColor: '#e0ecff'}}>

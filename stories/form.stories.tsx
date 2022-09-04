@@ -1,6 +1,6 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
-import { Store, StateDecorator, State } from "@sambego/storybook-state";
+import { Store, withState, State } from "@sambego/storybook-state";
 
 import {
     Button, ButtonSize, ButtonStyle,
@@ -24,6 +24,7 @@ let dropdownState = new Store({
 
 
 storiesOf('Forms', module)
+    .addDecorator(withState(dropdownState))
     .add("Single Line Inputs", () => {
 
         const helpText = 'This is some help text';
@@ -148,7 +149,7 @@ storiesOf('Forms', module)
         )
 
     })
-    .addDecorator(StateDecorator(dropdownState))
+
     .add("Dropdown Input ", () => {
         const countryList = [
             "Algeria",

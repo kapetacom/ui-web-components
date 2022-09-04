@@ -42,10 +42,13 @@ export class Draggable<T> {
 
     private startPosition:Point = {x:0,y:0};
 
+    private lastMouseMoveEvent:MouseEvent = null;
+
+    private lastScrollPoint:Point = null;
+
     private initialSize:Size = {width:-1, height:-1};
 
     private mouseElementOffset:Point = {x:0,y:0};
-
     private containerDimensions:Dimensions = {top:0,left:0,width:0,height:0};
 
     private svgContainer?:boolean;
@@ -150,8 +153,8 @@ export class Draggable<T> {
         };
     }
 
-    private getZoomLevel(){
-        if(this.options.zoom){
+    private getZoomLevel() {
+        if(this.options.zoom) {
             return this.options.zoom;
         }
         return 1;
@@ -165,14 +168,31 @@ export class Draggable<T> {
         }
         
         const containerRect = container.getBoundingClientRect();
-        
-        this.containerDimensions = {
+
+        const dimensions = {
             left: containerRect.left,
             top: containerRect.top,
             width: containerRect.width,//trim decimal points and parse to number
             height: containerRect.height
         };
-        
+
+        this.containerDimensions = dimensions;
+
+    }
+
+    private getGlobalScroll() {
+        return {
+            y: document.documentElement.scrollTop,
+            x: document.documentElement.scrollLeft
+        };
+    }
+
+    private getGlobalScrollDelta() {
+        const globalScroll = this.getGlobalScroll();
+        return {
+            y: (globalScroll.y - this.lastScrollPoint.y),
+            x: (globalScroll.x - this.lastScrollPoint.x)
+        };
     }
     
     /**
@@ -182,6 +202,7 @@ export class Draggable<T> {
     private getTranslatedMousePosition(evt:MouseEvent):Point {   
         this.updateContainerDimensions();     
         const container = this.getContainerElement();
+        const globalScroll = this.getGlobalScroll();
         let scrolling = {left:0,top:0};
 
         if (container) {
@@ -189,9 +210,26 @@ export class Draggable<T> {
             scrolling.left = container.scrollLeft;
         }
 
+        //Normal relative offsets - subtract global scroll if container is not document
+        let y = evt.pageY - globalScroll.y;
+        let x = evt.pageX - globalScroll.x;
+
+
+        //Handle zoom - only global coordinates from mouse and document is affected by zoom
+        x /= this.getZoomLevel();
+        y /= this.getZoomLevel();
+
+        //Get offset relative to container
+        x -= this.containerDimensions.left;
+        y -= this.containerDimensions.top;
+
+        //Handle in-container scroll
+        x -= scrolling.left;
+        y -= scrolling.top;
+
         return {
-            x : Math.round((evt.pageX - this.containerDimensions.left)*(this.getZoomLevel()) + scrolling.left),
-            y : Math.round((evt.pageY +  this.containerDimensions.top)*(this.getZoomLevel()) + scrolling.top*(1/this.getZoomLevel()) )
+            x: Math.round(x),
+            y: Math.round(y)
         };
     }
 
@@ -210,18 +248,23 @@ export class Draggable<T> {
             return;
         }
 
+        this.lastScrollPoint = this.getGlobalScroll();
+
         const mousePosition = this.getTranslatedMousePosition(evt);
 
         this.startPosition = {... mousePosition};
 
         window.addEventListener('mousemove', this.handleMouseMove);
         window.addEventListener('mouseup', this.handleMouseUp);
+        window.addEventListener('scroll', this.handleScroll);
 
         let elmRect = this.elm.getBoundingClientRect();
 
+        const globalScroll = this.getGlobalScroll();
+
         this.mouseElementOffset = {
-            x: evt.pageX - elmRect.left,
-            y: evt.pageY - elmRect.top
+            x: ((evt.pageX - globalScroll.x)/this.getZoomLevel()) - elmRect.left,
+            y: ((evt.pageY - globalScroll.y)/this.getZoomLevel()) - elmRect.top
         };
 
         this.initialSize = {
@@ -230,6 +273,25 @@ export class Draggable<T> {
         };
     };
 
+    private handleScroll = () => {
+
+        const container = this.getContainerElement();
+        if (!this.startPosition ||
+            !this.elm ||
+            !this.lastMouseMoveEvent ||
+            !this.draggingTarget ||
+            !container) {
+            return;
+        }
+        const scrollDelta = this.getGlobalScrollDelta();
+        const mousePosition = this.getTranslatedMousePosition(this.lastMouseMoveEvent);
+
+        mousePosition.y += Math.round(scrollDelta.y/this.getZoomLevel());
+        mousePosition.x += Math.round(scrollDelta.x/this.getZoomLevel());
+
+        this.updateFromMousePosition(mousePosition);
+    }
+
     private handleMouseMove = (evt: any) => {
         const container = this.getContainerElement();
         if (!this.startPosition ||
@@ -237,6 +299,9 @@ export class Draggable<T> {
             !container) {
             return;
         }
+
+        this.lastMouseMoveEvent = evt;
+        this.lastScrollPoint = this.getGlobalScroll();
 
         const mousePosition = this.getTranslatedMousePosition(evt);
 
@@ -275,6 +340,14 @@ export class Draggable<T> {
             }
         }
 
+        this.updateFromMousePosition(mousePosition);
+    };
+
+    private updateFromMousePosition(mousePosition:Point) {
+        if (!this.draggingTarget) {
+            return;
+        }
+
         const dimensions = this.calculateDimensions(mousePosition);
 
         if (this.options.onDragMove) {
@@ -290,9 +363,7 @@ export class Draggable<T> {
         if (this.options.context) {
             this.options.context.onDragMove(dimensions, clientRect, this.item);
         }
-
-
-    };
+    }
 
     private handleMouseUp = (evt: MouseEvent) => {
         const body = this.getDocumentBody();
@@ -303,6 +374,7 @@ export class Draggable<T> {
 
         window.removeEventListener('mousemove', this.handleMouseMove);
         window.removeEventListener('mouseup', this.handleMouseUp);
+        window.removeEventListener('scroll', this.handleScroll);
 
         if (!this.dragging ||
             !this.draggingTarget) {
@@ -320,6 +392,9 @@ export class Draggable<T> {
         }
 
         this.dragging = false;
+        this.lastScrollPoint = null;
+        this.lastMouseMoveEvent = null;
+        this.containerDimensions = null;
 
         if (!(this.options.onDragEnd &&
                 this.options.onDragEnd(dimensions))) {

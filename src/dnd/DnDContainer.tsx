@@ -34,7 +34,7 @@ export class DnDContainer extends React.Component<DnDContainerProps, DnDContaine
         this.state = {
             scrollLeft:0,
             scrollTop:0,
-            zoom:this.props.zoom
+            zoom: this.props.zoom
         };
     }
 
