@@ -11,7 +11,7 @@ storiesOf('Drag and Drop', module)
     .add("HTML: Can drag and drop into different zones", () => (
         <div className={'container'}>
             <div className={'dnd-container'} >
-                <DnDContainer overflowX={true} overflowY={true} zoom={parseFloat(window.getComputedStyle(document.body).zoom)}>
+                <DnDContainer overflowX={true} overflowY={true}>
                     <div>
                         <DnDDrag type={'test'} value={true}>
                             <div className={'draggable test'} style={{left: 20, top: 10}}>
@@ -58,7 +58,7 @@ storiesOf('Drag and Drop', module)
     .add("HTML: Can drag and drop into scrollable big zone", () => (
         <div className={'container'}>
             <div className={'dnd-container'} >
-                <DnDContainer overflowX={true} overflowY={true} zoom={parseFloat(window.getComputedStyle(document.body).zoom)}>
+                <DnDContainer overflowX={true} overflowY={true}>
 
                     <div>
                         <DnDDrag type={'test'} value={true}>
@@ -90,7 +90,7 @@ storiesOf('Drag and Drop', module)
 
         return (<div className={'container'}>
             <div className={'dnd-container'} >
-                <DnDContainer overflowX={true} overflowY={true} zoom={parseFloat(window.getComputedStyle(document.body).zoom)}>
+                <DnDContainer overflowX={true} overflowY={true}>
                     <div>
                         <DnDDrop type={'test'} onDrop={dropHandler}>
                             <div className={'drag-container dnd-scrolling droppable big'}>
@@ -116,7 +116,7 @@ storiesOf('Drag and Drop', module)
     .add("SVG: Can drag and drop into different zones", () => (
         <div className={'container'}>
             <div className={'dnd-container'} >
-                <DnDContainer overflowX={true} overflowY={true} zoom={parseFloat(window.getComputedStyle(document.body).zoom)}>
+                <DnDContainer overflowX={true} overflowY={true}>
                     <div>
 
                         <DnDDrag type={'test'} value={true}>
@@ -169,11 +169,11 @@ storiesOf('Drag and Drop', module)
             </div>
         </div>
     ))
-    .add("SVG: Can move draggable within droppable zone", () => (
+    .add("SVG: Can move draggable within droppable zone (Zoom 0.5)", () => (
         <div className={'container'}>
             <div className={'dnd-container'} >
-                <DnDContainer overflowX={true} overflowY={true} zoom={parseFloat(window.getComputedStyle(document.body).zoom)}>
-                    <div>
+                <DnDContainer overflowX={true} overflowY={true} zoom={0.5}>
+                    <div className={'dnd-container-inner'} style={{transform: 'scale(.5)', transformOrigin:'0 0'}}>
                         <DnDDrop type={'test'} onDrop={dropHandler}>
                             <div className={'dnd-scrolling droppable big'}>
                                 <svg width={750} height={600} className={'drag-container'}>
@@ -199,11 +199,11 @@ storiesOf('Drag and Drop', module)
             </div>
         </div>
     ))
-    .add("SVG: Can move draggable SVG group", () => (
+    .add("SVG: Can move draggable SVG group (Zoom 2)", () => (
         <div className={'container'}>
             <div className={'dnd-container'} >
-                <DnDContainer overflowX={true} overflowY={true} zoom={parseFloat(window.getComputedStyle(document.body).zoom)}>
-                    <div>
+                <DnDContainer overflowX={true} overflowY={true} zoom={2}>
+                    <div className={'dnd-container-inner'} style={{zoom:2}}>
                         <DnDDrop type={'test'} onDrop={dropHandler}>
                             <div className={'dnd-scrolling droppable big'}>
                                 <svg width={750} height={600} className={'drag-container'}>

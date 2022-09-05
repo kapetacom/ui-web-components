@@ -131,10 +131,11 @@ export class DnDContainer extends React.Component<DnDContainerProps, DnDContaine
     render() {
 
         const child = React.Children.only(this.props.children);
-
         const clone = React.cloneElement(child, {
-            ref: (ref:HTMLElement) => {this.elm = asHTMLElement(ref)},
-            style: this.calculateStyle(child.style)
+            ref: (ref:HTMLElement) => {
+                this.elm = asHTMLElement(ref)
+            },
+            style: this.calculateStyle(child.props.style)
         });
 
         return (

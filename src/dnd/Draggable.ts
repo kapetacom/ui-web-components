@@ -211,21 +211,25 @@ export class Draggable<T> {
         }
 
         //Normal relative offsets - subtract global scroll if container is not document
-        let y = evt.pageY - globalScroll.y;
-        let x = evt.pageX - globalScroll.x;
+        let y = evt.pageY;
+        let x = evt.pageX;
 
-
-        //Handle zoom - only global coordinates from mouse and document is affected by zoom
-        x /= this.getZoomLevel();
-        y /= this.getZoomLevel();
+        if (container !== document.documentElement) {
+            x -= globalScroll.x;
+            y -= globalScroll.y;
+        }
 
         //Get offset relative to container
         x -= this.containerDimensions.left;
         y -= this.containerDimensions.top;
 
         //Handle in-container scroll
-        x -= scrolling.left;
-        y -= scrolling.top;
+        x += scrolling.left;
+        y += scrolling.top;
+
+        //Translate page level coordinates to container zoom levels
+        x /= this.getZoomLevel();
+        y /= this.getZoomLevel();
 
         return {
             x: Math.round(x),
@@ -248,11 +252,12 @@ export class Draggable<T> {
             return;
         }
 
-        this.lastScrollPoint = this.getGlobalScroll();
-
         const mousePosition = this.getTranslatedMousePosition(evt);
 
+        this.lastScrollPoint = this.getGlobalScroll();
+
         this.startPosition = {... mousePosition};
+
 
         window.addEventListener('mousemove', this.handleMouseMove);
         window.addEventListener('mouseup', this.handleMouseUp);
@@ -263,8 +268,8 @@ export class Draggable<T> {
         const globalScroll = this.getGlobalScroll();
 
         this.mouseElementOffset = {
-            x: ((evt.pageX - globalScroll.x)/this.getZoomLevel()) - elmRect.left,
-            y: ((evt.pageY - globalScroll.y)/this.getZoomLevel()) - elmRect.top
+            x: ((evt.pageX - globalScroll.x - elmRect.left)/this.getZoomLevel()),
+            y: ((evt.pageY - globalScroll.y - elmRect.top)/this.getZoomLevel())
         };
 
         this.initialSize = {
