@@ -441,12 +441,24 @@ export class Draggable<T> {
             }
 
             if (this.isSVG()) {
-                if (this.enabledAxis.vertical) {
-                    this.draggingTarget.setAttribute('y', top + 'px');
-                }
 
-                if (this.enabledAxis.horizontal) {
-                    this.draggingTarget.setAttribute('x', left + 'px');
+                if (!this.elm.matches('svg')) {
+                    if (this.enabledAxis.vertical &&
+                        this.enabledAxis.horizontal) {
+                        this.draggingTarget.setAttribute('transform', `translate(${left},${top})`);
+                    } else if (this.enabledAxis.vertical) {
+                        this.draggingTarget.setAttribute('transform', `translate(0,${top})`);
+                    } else if (this.enabledAxis.horizontal) {
+                        this.draggingTarget.setAttribute('transform', `translate(${left},0)`);
+                    }
+                } else {
+                    if (this.enabledAxis.vertical) {
+                        this.draggingTarget.setAttribute('y', top + 'px');
+                    }
+
+                    if (this.enabledAxis.horizontal) {
+                        this.draggingTarget.setAttribute('x', left + 'px');
+                    }
                 }
 
                 this.draggingTarget.setAttribute('width', dimensions.width + 'px');

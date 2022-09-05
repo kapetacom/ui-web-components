@@ -198,5 +198,35 @@ storiesOf('Drag and Drop', module)
                 </DnDContainer>
             </div>
         </div>
+    ))
+    .add("SVG: Can move draggable SVG group", () => (
+        <div className={'container'}>
+            <div className={'dnd-container'} >
+                <DnDContainer overflowX={true} overflowY={true} zoom={parseFloat(window.getComputedStyle(document.body).zoom)}>
+                    <div>
+                        <DnDDrop type={'test'} onDrop={dropHandler}>
+                            <div className={'dnd-scrolling droppable big'}>
+                                <svg width={750} height={600} className={'drag-container'}>
+                                    <DnDDrag type={'test'} value={true} dragCopy={false}  container={'.drag-container'}>
+                                        <g className={'draggable test'}  transform='translate(20,10)' >
+                                            <rect width={50} height={50} />
+                                            <text y={25} x={0}>TEST</text>
+                                        </g>
+                                    </DnDDrag>
+
+                                    <DnDDrag type={'other'} value={true}  dragCopy={false}  container={'.drag-container'}>
+                                        <g className={'draggable other'} transform='translate(20,100)'>
+                                            <rect width={50} height={50} />
+                                            <text y={25} x={0}>OTHER</text>
+                                        </g>
+                                    </DnDDrag>
+                                </svg>
+                            </div>
+                        </DnDDrop>
+
+                    </div>
+                </DnDContainer>
+            </div>
+        </div>
     ));
 
