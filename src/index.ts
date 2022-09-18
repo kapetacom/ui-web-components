@@ -1,6 +1,7 @@
 export * from './button/buttons';
 
 export * from './dialog/Dialog';
+export * from './dialog/DialogTypes';
 export * from './dialog/DialogControl';
 
 export * from './dnd/DnDContainer';
