@@ -15,20 +15,15 @@ import PlusHexagon from "../svg/SVGAddEntityButton";
 
 import SVGGrabber from "../svg/SVGGrabber";
 import SVGDeleteHexagon from "../svg/SVGDeleteHexagon";
-import {
-    Button,
-    ButtonSize,
-    ButtonStyle,
-    ButtonType,
-    FormButtons,
-    FormContainer,
-    SingleLineInput,
-    SortableContainer,
-    SortableItem,
-    Type
-} from "..";
+
 
 import './EntityForm.less';
+import { SortableContainer } from "../dnd/SortableContainer";
+import { SortableItem } from "../dnd/SortableItem";
+import { SingleLineInput, Type } from "../form/inputs/SingleLineInput";
+import { FormContainer } from "../form/FormContainer";
+import { FormButtons } from "../form/FormButtons";
+import { Button, ButtonSize, ButtonStyle, ButtonType } from "../button/buttons";
 
 
 function toTypeName(entry:SchemaEntryEdit):string {
@@ -283,8 +278,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
                             value={this.props.entity.name}
                             label={"Entity name"}
                             validation={['required']}
-                            onChange={(inputName, userInput)=>{this.props.entity.name = userInput.trim(); this.handleChange(); }} >
-                        </SingleLineInput>
+                            onChange={(inputName, userInput)=>{this.props.entity.name = userInput.trim(); this.handleChange(); }} />
                     </div>
 
                     <div className={'field-row header'}>

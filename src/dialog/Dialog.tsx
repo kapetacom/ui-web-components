@@ -6,26 +6,15 @@ import {createHexagonPath, Orientation, toClass} from '@blockware/ui-web-utils';
 import {DialogControl} from './DialogControl';
 import {OverlayComponent, OverlayContext, OverlayContextType} from "../overlay/OverlayContext";
 import {PanelStructure} from '../helpers/PanelStructure';
-
-import {
-    Button,
-    ButtonSize,
-    ButtonStyle,
-    ButtonType,
-    Draggable,
-    FormButtons,
-    FormContainer,
-    RenderInBody,
-    SingleLineInput
-} from "..";
+import { DialogTypes } from './DialogTypes';
+import { Draggable } from '../dnd/Draggable';
+import {Button, ButtonSize, ButtonStyle, ButtonType } from '../button/buttons';
+import { FormContainer } from '../form/FormContainer';
+import { SingleLineInput } from '../form/inputs/SingleLineInput';
+import { FormButtons } from '../form/FormButtons';
+import { RenderInBody } from '../overlay/RenderInBody';
 
 import './Dialog.less';
-
-export enum DialogTypes {
-    CONFIRMATION = "confirmation",
-    PROMPT = "prompt",
-    DELETE = "delete"
-  }
 
 const DEFAULT_HEXAGONAL = {
     height: 350,

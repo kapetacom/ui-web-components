@@ -22,6 +22,7 @@ interface FormElementContainerProps {
     status?: string,
     infoBox?: string,
     disableZoom?: boolean
+    children: any
 }
 
 @observer

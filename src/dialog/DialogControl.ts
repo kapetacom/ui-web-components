@@ -1,5 +1,5 @@
 import {observable, action, computed} from 'mobx';
-import { DialogTypes} from "./Dialog";
+import {DialogTypes} from "./DialogTypes";
 import {Type as PromptDialogInputType} from '../form/inputs/SingleLineInput';
 
 export {PromptDialogInputType as PromptInputType};

@@ -4,6 +4,7 @@ import {FormContext, FormContextType} from './FormContext';
 interface FormReadyHandlerProps {
     name:string
     ready:boolean
+    children: any
 }
 
 /**
