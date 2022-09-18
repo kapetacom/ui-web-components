@@ -7,7 +7,9 @@
     "files": [
         "dist",
         "package.json",
-        "README.md"
+        "README.md",
+        "styles",
+        "src"
     ],
     "description": "Provides shared ReactJS components for implementing Blockware UI",
     "private": false,
