@@ -14,6 +14,7 @@ interface DraggableOptions<T> {
     dragCopy?:boolean
     horizontal?:boolean
     vertical?:boolean
+    disabled?:boolean
     handle?:string
     target?:DOMElement
     container?:Element
@@ -238,6 +239,10 @@ export class Draggable<T> {
     }
 
     private handleMouseDown = (evt: any) => {
+        if (this.options.disabled) {
+            return;
+        }
+
         if (evt.button !== 0) {
             return; //Only drag on left click
         }

@@ -10,6 +10,7 @@ interface DnDDragProps {
     value: any
     horizontal?: boolean
     vertical?: boolean
+    disabled?: boolean
     zoom?:number
     copyElm?: () => JSX.Element
     onDragStart?: () => void
@@ -47,8 +48,6 @@ export class DnDDrag extends React.Component<DnDDragProps> {
             }
         }
 
-        
-        
         this.draggable = new Draggable<DnDDrag>(this, {
             ...this.props,
             elm: this.elm,
@@ -82,6 +81,11 @@ export class DnDDrag extends React.Component<DnDDragProps> {
         }
 
         this.draggable?.stop()
+
+        if (this.props.disabled) {
+            return;
+        }
+
         this.draggable = new Draggable<DnDDrag>(this, {
             ...props,
             elm: this.elm,
