@@ -1,6 +1,6 @@
 {
     "name": "@blockware/ui-web-components",
-    "version": "0.0.36",
+    "version": "0.0.37",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
     "types": "dist/index.d.ts",
@@ -40,36 +40,29 @@
         "@blockware/ui-web-context": "<2",
         "@blockware/ui-web-types": "<2",
         "@blockware/ui-web-utils": "<2",
-
         "@sambego/storybook-state": "^2.0.1",
         "@storybook/builder-webpack5": "^6.5.10",
         "@storybook/manager-webpack5": "^6.5.0-rc.1",
         "@storybook/react": "^6.5.12",
-
         "@types/lodash": "^4.14.185",
         "@types/node": "^18.7.18",
-
         "@types/react": ">=18",
         "@types/react-dom": ">=18",
         "react": ">=18",
         "react-dom": ">=18",
-
         "react-toastify": "9.0.0",
         "guid-typescript": "^1.0.9",
         "lodash": "^4.17.15",
         "socket.io-client": "^4.5.2",
-
         "less": "^4.1.3",
         "typescript": "^4.8.3",
         "yaml": "^2.1.1",
-
         "css-loader": "^6.7.1",
         "json-loader": "^0.5.7",
         "less-loader": "^11.0.0",
         "style-loader": "^3.3.1",
         "yaml-loader": "^0.8.0",
         "react-docgen-typescript-loader": "^3.1.0",
-
         "@rollup/plugin-commonjs": "^21.0.1",
         "@rollup/plugin-node-resolve": "^13.1.3",
         "@rollup/plugin-typescript": "^8.3.0",
