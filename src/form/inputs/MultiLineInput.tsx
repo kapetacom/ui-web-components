@@ -1,6 +1,6 @@
 import React, { RefObject } from "react";
 import "./MultiLineInput.less";
-import { observable, action } from "mobx";
+import {observable, action, makeObservable} from "mobx";
 import { toClass } from "@blockware/ui-web-utils";
 import { observer } from "mobx-react";
 import { FormRow } from "../FormRow";
@@ -28,6 +28,11 @@ export class MultiLineInput extends React.Component<MultiLineInputProps> {
 
     @observable
     private userInput: string =  this.props.value ? this.props.value :"";
+
+    constructor(props:MultiLineInputProps) {
+        super(props);
+        makeObservable(this);
+    }
 
     @action
     private inputOnBlur = () => {

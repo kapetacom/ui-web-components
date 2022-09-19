@@ -1,5 +1,5 @@
 import React from "react";
-import {action, observable } from "mobx";
+import {action, makeObservable, observable} from "mobx";
 import {observer} from "mobx-react";
 
 import {toClass} from '@blockware/ui-web-utils';
@@ -39,6 +39,11 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
     private newEntity:EntityFormModel = new EntityFormModel();
 
     private createEntityModal: Modal | null = null;
+
+    constructor(props:EntityPickerProps) {
+        super(props);
+        makeObservable(this);
+    }
 
     private asValue = (): ParsedValue => {
         const value = this.props.value;

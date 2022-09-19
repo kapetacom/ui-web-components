@@ -1,6 +1,6 @@
 import React from "react";
 import {observer} from "mobx-react";
-import {action, observable} from "mobx";
+import {action, makeObservable, observable} from "mobx";
 import _ from 'lodash';
 import {toClass} from "@blockware/ui-web-utils";
 
@@ -23,12 +23,14 @@ export class OverlayContainer extends React.Component<OverlayContainerProps,Over
     @observable
     private components:OverlayComponent[] = [];
 
+
     private toZIndex(level:number) {
         return level + 10;
     }
 
     constructor(props:OverlayContainerProps){
         super(props);
+        makeObservable(this);
         this.state={container:null}
     }
 

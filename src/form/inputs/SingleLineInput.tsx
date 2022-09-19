@@ -1,6 +1,6 @@
 import React from "react";
 import "./SingleLineInput.less";
-import { observable, action } from "mobx";
+import {observable, action, makeObservable} from "mobx";
 import { toClass } from "@blockware/ui-web-utils";
 import { observer } from "mobx-react";
 import { FormRow } from "../FormRow";
@@ -38,6 +38,11 @@ export class SingleLineInput extends React.Component<SingleLineInputProps> {
     private inputRef: React.RefObject<HTMLInputElement> = React.createRef();
 
     private formRowRef: React.RefObject<FormRow> = React.createRef();
+
+    constructor(props:SingleLineInputProps) {
+        super(props);
+        makeObservable(this);
+    }
 
     @action
     private inputOnBlur = () => {

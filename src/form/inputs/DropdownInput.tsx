@@ -1,6 +1,6 @@
 import React, {ChangeEvent} from "react";
 import "./DropdownInput.less";
-import {action, observable} from "mobx";
+import {action, makeObservable, observable} from "mobx";
 import {toClass} from "@blockware/ui-web-utils";
 import * as _ from "lodash";
 import {observer} from "mobx-react";
@@ -33,6 +33,11 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
 
     @observable
     private inputElement = React.createRef<HTMLInputElement>();
+
+    constructor(props:DropdownInputProps) {
+        super(props);
+        makeObservable(this);
+    }
 
     private userSelection = (): string[] => {
         let keys = this.props.value;

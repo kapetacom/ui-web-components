@@ -3,6 +3,7 @@ import "./FormElementContainer.less";
 import { toClass } from "@blockware/ui-web-utils";
 import * as _ from "lodash";
 import { observer } from "mobx-react";
+import {makeObservable} from "mobx";
 
 
 enum StatusType {
@@ -27,7 +28,13 @@ interface FormElementContainerProps {
 
 @observer
 export class FormElementContainer extends React.Component<FormElementContainerProps> {
-    
+
+
+    constructor(props:FormElementContainerProps) {
+        super(props);
+        makeObservable(this);
+    }
+
     private renderStatusIcon() {
         return (
             <svg className={'status-icon'} width="22" height="19" viewBox="0 0 22 19" fill="none" >

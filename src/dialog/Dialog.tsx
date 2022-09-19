@@ -15,6 +15,7 @@ import { FormButtons } from '../form/FormButtons';
 import { RenderInBody } from '../overlay/RenderInBody';
 
 import './Dialog.less';
+import {makeObservable} from "mobx";
 
 const DEFAULT_HEXAGONAL = {
     height: 350,
@@ -60,6 +61,11 @@ export class Dialog extends Component<DialogProps ,any> implements OverlayCompon
     context!: React.ContextType<OverlayContextType>;
 
     private container: HTMLDivElement | null = null;
+
+    constructor(props:DialogProps) {
+        super(props);
+        makeObservable(this);
+    }
 
     public isOpen():boolean {
         return DialogControl.open;

@@ -1,5 +1,5 @@
 import React from "react";
-import {action, observable} from "mobx";
+import {action, makeObservable, observable} from "mobx";
 import {observer} from "mobx-react";
 
 import {SchemaEntryType, typeName} from "@blockware/ui-web-types";
@@ -75,6 +75,11 @@ export class EntityForm extends React.Component<EntityFormProps> {
 
     @observable
     private hoveredItemId = "";
+
+    constructor(props:EntityFormProps) {
+        super(props);
+        makeObservable(this);
+    }
 
     @action
     private removeEntry(properties:SchemaEntryEdit[], field: SchemaEntryEdit) {
