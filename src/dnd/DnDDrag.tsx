@@ -1,6 +1,6 @@
 import React from "react";
 import DnDContext, {DnDContextType} from './DnDContext';
-import { asHTMLElement, DOMElement } from "@blockware/ui-web-utils";
+import {asHTMLElement, DOMElement} from "@blockware/ui-web-utils";
 import {Draggable} from "./Draggable";
 import {Dimensions} from "@blockware/ui-web-types";
 
@@ -11,13 +11,13 @@ interface DnDDragProps {
     horizontal?: boolean
     vertical?: boolean
     disabled?: boolean
-    zoom?:number
+    zoom?: number
     copyElm?: () => JSX.Element
     onDragStart?: () => void
     onDragMove?: (dimensions: Dimensions) => boolean
     onDragEnd?: (dimensions: Dimensions) => boolean
-    dragCopy?:boolean
-    container?:DOMElement|string
+    dragCopy?: boolean
+    container?: DOMElement | string
 }
 
 
@@ -35,10 +35,10 @@ export class DnDDrag extends React.Component<DnDDragProps> {
         if (!this.elm || !this.target) {
             return;
         }
-        let container:Element|undefined;
+        let container: Element | undefined;
         if (this.props.container) {
             if (typeof this.props.container === 'string') {
-                let selector:string = this.props.container;
+                let selector: string = this.props.container;
                 let closestParent = this.elm.closest(selector);
                 if (closestParent) {
                     container = closestParent;
@@ -55,22 +55,22 @@ export class DnDDrag extends React.Component<DnDDragProps> {
             container: container,
             dragCopy: this.props.dragCopy !== undefined ? this.props.dragCopy : true,
             context: this.context,
-            zoom: this.props.zoom?this.props.zoom:this.context.zoom,
+            zoom: this.props.zoom ? this.props.zoom : this.context.zoom,
             overflowX: this.context ? this.context.overflowX : false,
             overflowY: this.context ? this.context.overflowY : false
         });
 
         this.draggable.start();
     }
-    
-    componentWillReceiveProps(props:DnDDragProps){
+
+    componentDidUpdate() {
         if (!this.elm || !this.target) {
             return;
         }
-        let container:Element|undefined;
+        let container: Element | undefined;
         if (this.props.container) {
             if (typeof this.props.container === 'string') {
-                let selector:string = this.props.container;
+                let selector: string = this.props.container;
                 let closestParent = this.elm.closest(selector);
                 if (closestParent) {
                     container = closestParent;
@@ -87,13 +87,13 @@ export class DnDDrag extends React.Component<DnDDragProps> {
         }
 
         this.draggable = new Draggable<DnDDrag>(this, {
-            ...props,
+            ...this.props,
             elm: this.elm,
             target: this.target,
             container: container,
-            dragCopy: props.dragCopy !== undefined ? props.dragCopy : true,
+            dragCopy: this.props.dragCopy !== undefined ? this.props.dragCopy : true,
             context: this.context,
-            zoom: props.zoom?props.zoom:this.context.zoom,
+            zoom: this.props.zoom ? this.props.zoom : this.context.zoom,
             overflowX: this.context ? this.context.overflowX : false,
             overflowY: this.context ? this.context.overflowY : false
         });
@@ -106,23 +106,27 @@ export class DnDDrag extends React.Component<DnDDragProps> {
         const child = React.Children.only(this.props.children);
 
         const clone = React.cloneElement(child, {
-            ref: (ref: HTMLElement) => { this.elm = this.target = asHTMLElement(ref) }
+            ref: (ref: HTMLElement) => {
+                this.elm = this.target = asHTMLElement(ref)
+            }
         });
 
         if (this.props.copyElm) {
             const copyElm = React.cloneElement(this.props.copyElm(), {
-                ref: (ref: HTMLElement) => { this.target = asHTMLElement(ref) }
+                ref: (ref: HTMLElement) => {
+                    this.target = asHTMLElement(ref)
+                }
             });
 
             return <>
                 {clone}
-                <div style={{ position: 'absolute', left:'-99999px' }}>
+                <div style={{position: 'absolute', left: '-99999px'}}>
                     {copyElm}
                 </div>
             </>;
         }
 
-        
+
         return <>
             {clone}
         </>;
