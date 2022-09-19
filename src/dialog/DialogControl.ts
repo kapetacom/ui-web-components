@@ -1,4 +1,4 @@
-import {observable, action, computed} from 'mobx';
+import {observable, action, computed, makeObservable} from 'mobx';
 import {DialogTypes} from "./DialogTypes";
 import {Type as PromptDialogInputType} from '../form/inputs/SingleLineInput';
 
@@ -36,6 +36,7 @@ export class DialogControlImpl {
     this.ok = () => { console.log("no Accept functionality was given") };
     this.text = "";
     this._open = false;
+    makeObservable(this);
   }
 
   public static fetchInstance(): DialogControlImpl {

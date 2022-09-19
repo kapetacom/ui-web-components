@@ -26,13 +26,10 @@ interface FormElementContainerProps {
     children: any
 }
 
-@observer
 export class FormElementContainer extends React.Component<FormElementContainerProps> {
-
 
     constructor(props:FormElementContainerProps) {
         super(props);
-        makeObservable(this);
     }
 
     private renderStatusIcon() {

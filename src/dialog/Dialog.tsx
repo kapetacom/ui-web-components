@@ -64,7 +64,6 @@ export class Dialog extends Component<DialogProps ,any> implements OverlayCompon
 
     constructor(props:DialogProps) {
         super(props);
-        makeObservable(this);
     }
 
     public isOpen():boolean {
