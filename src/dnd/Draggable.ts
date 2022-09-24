@@ -263,7 +263,7 @@ export class Draggable<T> {
 
         this.startPosition = {... mousePosition};
 
-
+        container.addEventListener('mousemove', this.handleMouseMove);
         window.addEventListener('mousemove', this.handleMouseMove);
         window.addEventListener('mouseup', this.handleMouseUp);
         window.addEventListener('scroll', this.handleScroll);
@@ -304,6 +304,10 @@ export class Draggable<T> {
 
     private handleMouseMove = (evt: any) => {
         const container = this.getContainerElement();
+        if (evt['$draggable_handled']) {
+            return;
+        }
+        evt['$draggable_handled'] = true;
         if (!this.startPosition ||
             !this.elm ||
             !container) {
@@ -378,11 +382,13 @@ export class Draggable<T> {
     private handleMouseUp = (evt: MouseEvent) => {
         const body = this.getDocumentBody();
         const window = this.getWindow();
-        if (!body || !window) {
+        const container = this.getContainerElement();
+        if (!body || !window || !container) {
             return;
         }
 
         window.removeEventListener('mousemove', this.handleMouseMove);
+        container.removeEventListener('mousemove', this.handleMouseMove);
         window.removeEventListener('mouseup', this.handleMouseUp);
         window.removeEventListener('scroll', this.handleScroll);
 

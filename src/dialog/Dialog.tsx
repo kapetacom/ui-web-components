@@ -103,7 +103,7 @@ export class Dialog extends Component<DialogProps ,any> implements OverlayCompon
         this.context.onRemoved(this);
     }
 
-    componentWillUpdate() {
+    componentDidUpdate() {
         this.context.onChanged(this);
     }
 

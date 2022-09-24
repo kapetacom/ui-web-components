@@ -118,7 +118,6 @@ storiesOf('Entity Forms', module)
                         name={'test'}
                         entity={entityFormState.state.entity}
                         onChange={(entity) => {
-                            console.log('Entity changed', entity);
                             entityFormState.set({entity});
                         }}
                     />

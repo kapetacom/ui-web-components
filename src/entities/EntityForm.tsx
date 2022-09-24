@@ -76,9 +76,15 @@ export class EntityForm extends React.Component<EntityFormProps> {
     @observable
     private hoveredItemId = "";
 
+
     constructor(props:EntityFormProps) {
         super(props);
         makeObservable(this);
+    }
+
+    @action
+    private setHoveredItem(id) {
+        this.hoveredItemId = id;
     }
 
     @action
@@ -118,7 +124,11 @@ export class EntityForm extends React.Component<EntityFormProps> {
             properties.splice(index, 0, field);
         }else{
             field.id= 'field_0';
-            properties[index].properties = [field];
+            if (properties.length < 1) {
+                properties.push(field);
+            } else {
+                properties[index].properties = [field];
+            }
         }
 
 
@@ -217,8 +227,8 @@ export class EntityForm extends React.Component<EntityFormProps> {
     
                         return (
                             <div className="row" key={field.uid}
-                                onMouseMove={(evt)=>{this.hoveredItemId = field.uid; evt.stopPropagation() }}
-                                onMouseLeave={(evt)=>{this.hoveredItemId = ""; evt.stopPropagation() }}>
+                                onMouseMove={(evt)=>{this.setHoveredItem(field.uid); evt.stopPropagation() }}
+                                onMouseLeave={(evt)=>{this.setHoveredItem(''); evt.stopPropagation() }}>
 
                                 <SortableItem item={field} handle={'.mover'}>
                                     <div className={'field-row data'} style={{marginLeft: depth * 24}}>
@@ -306,10 +316,6 @@ export class EntityForm extends React.Component<EntityFormProps> {
                             :
                             this.renderAddFirst(this.props.entity.properties, 0, 0)}
 
-                    <FormButtons>
-                        <Button width={ButtonSize.SMALL} text="Cancel" style={ButtonStyle.DANGER} onClick={() => {}}/>
-                        <Button width={ButtonSize.SMALL} text="Create" type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
-                    </FormButtons>
                 </FormContainer>
             </div>
         );

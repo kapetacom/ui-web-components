@@ -1,4 +1,4 @@
-import {observable} from "mobx";
+import {makeObservable, observable} from "mobx";
 import {Guid} from "guid-typescript";
 
 import {SchemaEntity, SchemaEntry, SchemaEntryType, SchemaProperties} from "@blockware/ui-web-types";
@@ -63,11 +63,15 @@ export class EntityFormModel {
     private original: SchemaEntity;
 
     constructor(entry?: SchemaEntity) {
+        makeObservable(this);
         if (!entry) {
             entry = {name:'', properties: {}};
         }
         this.name = entry.name;
         this.properties = toEditProperties(entry.properties);
+        if (!this.properties) {
+            this.properties = [];
+        }
         this.original = entry;
     }
 

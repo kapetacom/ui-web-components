@@ -3,8 +3,6 @@ import { SchemaEntity } from "@blockware/ui-web-types";
 import {  toClass } from "@blockware/ui-web-utils";
 import "./EntityList.less"
 
-
-
 interface EntityListProps {
     entities: SchemaEntity[],
     handleCreateEntity: ()=>void,
