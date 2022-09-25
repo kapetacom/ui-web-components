@@ -34,7 +34,7 @@ export enum PanelAlignment {
 export enum PanelSize {
     small = "small",
     medium = "medium",
-    large = "big",
+    large = "large",
     full = "all"
 }
 

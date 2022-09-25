@@ -12,6 +12,7 @@ import {
     SingleLineInput,
     Type
 } from '../src';
+import {Checkbox} from "../src/form/Checkbox";
 
 
 let dropdownState = new Store({
@@ -25,6 +26,18 @@ let dropdownState = new Store({
 
 storiesOf('Forms', module)
     .addDecorator(withState(dropdownState))
+
+    .add('Checkbox', () => (
+        <div>
+            <div style={{padding:'10px'}}>
+                <Checkbox onChange={() => {}} value={true}/>
+            </div>
+            <div style={{padding:'10px'}}>
+                <Checkbox onChange={() => {}} value={false}/>
+            </div>
+        </div>
+    ))
+
     .add("Single Line Inputs", () => {
 
         const helpText = 'This is some help text';

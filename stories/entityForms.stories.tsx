@@ -1,10 +1,12 @@
 import React from 'react';
 import {observable} from "mobx";
-import { storiesOf } from '@storybook/react';
-import { Store, withState, State } from "@sambego/storybook-state";
+import {storiesOf} from '@storybook/react';
+import {Store, withState, State} from "@sambego/storybook-state";
 import {EntityMapper, EntityPicker, EntityForm, EntityFormModel} from "../src";
-import { EntityList } from "../src/entities/EntityList";
-import { SchemaEntryType } from '@blockware/ui-web-types';
+import {EntityList} from "../src/entities/EntityList";
+import {SchemaEntryType} from '@blockware/ui-web-types';
+import {add} from "lodash";
+import {Checkbox} from "../src/form/Checkbox";
 
 const EntityFrom = {
     name: {
@@ -57,20 +59,19 @@ const EntityTo = {
     }
 };
 
-const entityList:string[] = observable(["User", "Ingredients", "Student", "PizzaTopping"]);
+const entityList: string[] = observable(["User", "Ingredients", "Student", "PizzaTopping"]);
 let pickerState = new Store({
     entities: entityList,
     value: "",
-    handleValueUpdate: (valueIn:string) => {
-        pickerState.set({ value: valueIn });
+    handleValueUpdate: (valueIn: string) => {
+        pickerState.set({value: valueIn});
     }
 });
 
-const entity = {name:'MyType', properties:EntityFrom};
+const entity = {name: 'MyType', properties: EntityFrom};
 let entityFormState = new Store({
     entity: new EntityFormModel(entity)
 });
-
 
 
 storiesOf('Entity Forms', module)
@@ -79,25 +80,27 @@ storiesOf('Entity Forms', module)
     .addDecorator(withState(pickerState))
     .addDecorator(withState(entityFormState))
 
+
     .add("Entity Mapper", () => (
-        <div style={{ width: "700px", padding: '10px', backgroundColor: '#e0ecff' }}>
-            <EntityMapper fromEntities={[]} toEntities={[]} from={EntityFrom} to={EntityTo} onChange={(mapping) => console.log('mapping', mapping)} />
+        <div style={{width: "700px", padding: '10px', backgroundColor: '#e0ecff'}}>
+            <EntityMapper fromEntities={[]} toEntities={[]} from={EntityFrom} to={EntityTo}
+                          onChange={(mapping) => console.log('mapping', mapping)}/>
         </div>
     ))
 
 
-    .add("Entity Picker ", (props:any) => {
+    .add("Entity Picker ", (props: any) => {
         return (
-            <State store={pickerState} >
+            <State store={pickerState}>
                 <EntityPicker
                     name={'test'}
                     value={props.value}
-                    onChange={(eventValue:SchemaEntryType) => {
+                    onChange={(eventValue: SchemaEntryType) => {
                         pickerState.state.handleValueUpdate(eventValue.toString());
                     }}
 
                     onEntityCreated={(newEntity) => {
-                        let entities:string[] = [...pickerState.state.entities, newEntity.name];
+                        let entities: string[] = [...pickerState.state.entities, newEntity.name];
 
                         pickerState.set({
                             entities
@@ -112,8 +115,8 @@ storiesOf('Entity Forms', module)
 
     .add("Entity Form ", () => {
         return (
-            <div style={{ width: "700px", padding: '10px', backgroundColor: '#e0ecff'}}>
-                <State store={entityFormState} >
+            <div style={{width: "700px", padding: '10px', backgroundColor: '#e0ecff'}}>
+                <State store={entityFormState}>
                     <EntityForm
                         name={'test'}
                         entity={entityFormState.state.entity}
@@ -121,50 +124,49 @@ storiesOf('Entity Forms', module)
                             entityFormState.set({entity});
                         }}
                     />
-              
+
                 </State>
             </div>
         )
     })
     .add("Entity List", () => {
-        const demoEntities: any[] = [
-            {
-                name: "Entity 1",
-                properties: {},
-                status: true
-            },
-            {
-                name: "Entity 2",
-                properties: {},
-                status: true
-            },
-            {
-                name: "Entity 3",
-                properties: {},
-                status: false
-            },
-            {
-                name: "Entity 4",
-                properties: {},
-                status: false
-            },
-            {
-                name: "Entity 5",
-                properties: {},
-                status: true
-            },
-            {
-                name: "Entity 6",
-                properties: {},
-                status: false
-            }
-        ];
+            const demoEntities: any[] = [
+                {
+                    name: "Entity 1",
+                    properties: {},
+                    status: true
+                },
+                {
+                    name: "Entity 2",
+                    properties: {},
+                    status: true
+                },
+                {
+                    name: "Entity 3",
+                    properties: {},
+                    status: false
+                },
+                {
+                    name: "Entity 4",
+                    properties: {},
+                    status: false
+                },
+                {
+                    name: "Entity 5",
+                    properties: {},
+                    status: true
+                },
+                {
+                    name: "Entity 6",
+                    properties: {},
+                    status: false
+                }
+            ];
 
-        return (
-            <div style={{ width: "400px", height:"600px" }}>       
-                <EntityList  entities={demoEntities} />
-            </div>
-        )
-    }
-
+            return (
+                <div style={{width: "400px", height: "600px"}}>
+                    <EntityList entities={demoEntities}/>
+                </div>
+            )
+        }
     )

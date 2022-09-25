@@ -12,6 +12,7 @@ import {EntityFormModel} from "../../entities/EntityFormModel";
 
 import './EntityPicker.less';
 import { DropdownInput } from "../inputs/DropdownInput";
+import {Checkbox} from "../Checkbox";
 
 const CREATE_VALUE = '__create__';
 
@@ -144,17 +145,6 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
             currentType = '$ref:' + currentType;
         }
 
-        const checkBoxCheckClassName =toClass( {
-            "list-option-icon":true,
-            "list-check":true,
-            "checked":parsedValue.list,
-        })
-        const checkBoxBoxClassName =toClass( {
-            "list-option-icon":true,
-            "check-box":true,
-            "checked":parsedValue.list,
-        })
-
         let options:{[key:string]:string} ={
             "string":"string",
             "integer":"integer",
@@ -189,22 +179,10 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
                         }} 
                         options={options}  />
                     {!isVoid() &&
-                        <div className={"picker-list-section"} onClick={this.toggleList} >
-                            <input className={"picker-list-checkbox"} type="checkbox"
-                                defaultChecked={parsedValue.list}
-                                disabled={this.props.value === ""} />
+                        <Checkbox onClick={this.toggleList}
+                                  value={parsedValue.list}
+                                  disabled={this.props.value === ""} />
 
-                            <div className={checkBoxCheckClassName}>
-                                <svg width="20" height="20" viewBox="0 -2 14 12" fill="none" >
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M5 10L0 5.19231L1.4 3.84615L5 7.30769L12.6 0L14 1.34615L5 10Z" fill="#009AA9"/>
-                                </svg>
-                            </div>    
-                            <div className={checkBoxBoxClassName}>
-                                <svg width="20" height="20" viewBox="0 -2 20 20" fill="none" >
-                                    <path d="M1 3C1 1.89543 1.89543 1 3 1H17C18.1046 1 19 1.89543 19 3V17C19 18.1046 18.1046 19 17 19H3C1.89543 19 1 18.1046 1 17V3Z" stroke="#908988" strokeWidth="2" strokeLinejoin="round"/>
-                                </svg>
-                            </div>                 
-                        </div>
                     }
 
                     <Modal ref={(ref) => this.createEntityModal = ref}

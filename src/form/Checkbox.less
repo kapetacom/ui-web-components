@@ -1,0 +1,47 @@
+@import "../../styles/values";
+@import "../../styles/functions";
+
+.checkbox-container {
+  cursor: pointer;
+  overflow: visible;
+  vertical-align: middle;
+  height: 26px;
+  width: 20px;
+  display: inline-block;
+  position: relative;
+
+  input {
+    display: none;
+    margin: auto;
+  }
+
+  .checkbox-icon {
+    vertical-align: middle;
+    position: absolute;
+
+    svg {
+      overflow: visible;
+    }
+
+    &.check {
+      .transition();
+      transform-origin: center;
+      transform: scale(0);
+
+      &.checked {
+        transform: scale(1);
+      }
+    }
+
+    &.box {
+      .transition();
+      transform-origin: center;
+      transform: scale(1);
+
+      &.checked {
+        transform: scale(0);
+      }
+    }
+  }
+
+}
