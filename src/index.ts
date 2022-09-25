@@ -54,3 +54,6 @@ export * from './svg/SVGButtonInspect';
 export * from './svg/SVGText';
 
 export * from './toast/ToastComponent';
+
+export * from './definitions/MethodEditor';
+export * from './definitions/DataTypeEditor';
