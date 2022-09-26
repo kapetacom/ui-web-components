@@ -5,7 +5,7 @@ import {MethodParser} from "./MethodParser";
 
 export interface MethodEditorProps {
     value?: string
-    restMethods?:boolean
+    restMethods?: boolean
 }
 
 export const MethodEditor = (props: MethodEditorProps) => {
@@ -26,13 +26,11 @@ export const MethodEditor = (props: MethodEditorProps) => {
 
     return (
         <div className={'rest-method-editor'}>
-            <textarea className={'definition'} value={current} name={'definition'} onChange={(evt) => {
-                let value = evt.target.value;
-                setCurrent(value);
-
-            }}/>
-            {parsed.methods.map((method,ix) => {
-
+            <textarea className={'definition'}
+                      value={current}
+                      name={'definition'}
+                      onChange={(evt) => setCurrent(evt.target.value)} />
+            {parsed.methods.map((method, ix) => {
                 return (
                     <div className={'method'} key={`method_${ix}`}>
                         <div className={'code'}>
@@ -40,7 +38,6 @@ export const MethodEditor = (props: MethodEditorProps) => {
                             <span className={'argument-start'}>(</span>
 
                             {method.arguments.map((arg, ix) => {
-
                                 return (
                                     <span className={'argument'} key={`arg_${ix}`}>
                                         {props.restMethods && <>
@@ -67,7 +64,7 @@ export const MethodEditor = (props: MethodEditorProps) => {
                             <span className={'return-type type'}>{method.returnType}</span>
                         </div>
                         {props.restMethods &&
-                                <div className={'http'}>
+                            <div className={'http'}>
                                 <span className={'rest-method type'}>{method.restMethod}</span>
                                 <span className={'rest-path variable-name'}>{method.restPath}</span>
                             </div>}
