@@ -1,15 +1,18 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
-import {DataTypeEditor, MethodEditor} from "../src";
+import {MethodEditor, DataTypeEditor} from "../src";
 
-const REST_METHODS = `someMethod(@Path id:string, @Header[X-Request-ID] requestId:string):void
-GET /some/method/{id}
+const REST_METHODS = `
+#Do something with the token
+#and describe on multiple lines
+@GET('/some/{token_path}')
+@More
+@Annotations ( "TEST" )
+test(@Path("test") @More(castle) @third(123.321) token_id:string,@Path('token_id') other:number ):void
 
-otherMethod(@Query[full_name] fullName:string, @Cookie[myCookie] cookieId:string):void
-GET /some/method/{id}
-
-thirdOne():void
-GET /some/method/{id}`;
+//More things related to token
+@POST('/some/{else}')
+test2(@Path token_id:string, @Path(more) other:number ):void`;
 
 const METHODS = `someMethod(id:string, requestId:string):void
 

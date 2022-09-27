@@ -5,6 +5,7 @@ import { terser } from "rollup-plugin-terser"
 import external from "rollup-plugin-peer-deps-external"
 import postcss from "rollup-plugin-postcss"
 import dts from "rollup-plugin-dts"
+import { string } from "rollup-plugin-string";
 
 const packageJson = require("./package.json")
 
@@ -25,6 +26,9 @@ export default [
             }
         ],
         plugins: [
+            string({
+                include: "**/*.pegjs" //Add support for PEG grammars
+            }),
             external(),
             resolve(),
             commonjs(),
