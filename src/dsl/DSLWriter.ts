@@ -44,13 +44,13 @@ function toParametersCode(parameters?: DSLParameter[]) {
 function toRichEntityCode(data: DSLRichEntity) {
     const out = [];
     if (data.description) {
-        out.push('//' + data.description.split(/\n/).join('\n//').trim())
+        out.push('//' + data.description.split(/\n/).join('\n//'))
     }
 
-    if (data.annotations) {
-        out.push(toAnnotationsCode(data.annotations));
+    if (data.annotations && data.annotations.length > 0) {
+        out.push(toAnnotationsCode(data.annotations).trim());
     }
-    return out.join('\n');
+    return out.join('\n').trim();
 }
 
 function toPropertyCode(data: DSLDataTypeProperty, indent = 0) {
@@ -61,7 +61,6 @@ function toPropertyCode(data: DSLDataTypeProperty, indent = 0) {
         if (data.list) {
             type = `[${type}]`;
         }
-        type = type;
     } else {
         type = data.type + (data.list ? '[]' : '');
     }
@@ -90,11 +89,11 @@ function toDataTypeCode(data: DSLDataType) {
 
     out.push(`${data.name} ${toPropertiesCode(data.properties)}`)
 
-    return out.join('');
+    return out.join('\n');
 }
 
 function toMethodCode(data: DSLMethod) {
-    const out = [toRichEntityCode(data)];
+    const out = [toRichEntityCode(data).trim()];
 
     out.push(`${data.name}(${toParametersCode(data.parameters)}):${data.returnType}`)
 
