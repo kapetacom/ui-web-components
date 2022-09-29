@@ -1,17 +1,16 @@
 import React from "react"
 
-
-import {GrammarEditor} from "./GrammarEditor";
-import {MethodParser} from "./grammars/MethodParser";
+import {DSLEditor} from "./DSLEditor";
 
 export interface MethodEditorProps {
     value?: string
     restMethods?: boolean
+    validTypes?: string[]
 }
 
 export const MethodEditor = (props: MethodEditorProps) => {
 
     return (
-        <GrammarEditor parser={MethodParser} value={props.value} />
+        <DSLEditor rest={props.restMethods} validTypes={props.validTypes} methods={true} types={false} value={props.value} />
     )
 }

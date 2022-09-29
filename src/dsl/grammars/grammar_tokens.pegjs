@@ -73,7 +73,7 @@ comma
     = ',' { return {type: 'special_comma', value: text()} }
 
 number
-	= [0-9]+ ( '.' [0-9]+ )?   { return {type: 'number', value: parseFloat(text())} }
+	= [0-9]+ ( '.' [0-9]+ )?   { return {type: 'number', value: text()} }
 
 char
 	= [<{\[] { return {type: 'special_start', value: text()} }
@@ -118,9 +118,9 @@ variable_definition
     	const out = [
         	{type: 'variable', value: name.value}
         ];
-        appendWS(out,ws1);
+        out.push(ws1);
         out.push(colon);
-        appendWS(out,ws2);
+        out.push(ws2);
         out.push({type: 'type', value: type.value})
 		return out;
 	}

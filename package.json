@@ -42,6 +42,7 @@
         "@blockware/ui-web-context": "<2",
         "@blockware/ui-web-types": "<2",
         "@blockware/ui-web-utils": "<2",
+        "@monaco-editor/react": "^4.4.6",
         "@rollup/plugin-commonjs": "^21.0.1",
         "@rollup/plugin-node-resolve": "^13.1.3",
         "@rollup/plugin-typescript": "^8.3.0",

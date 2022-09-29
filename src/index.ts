@@ -55,5 +55,5 @@ export * from './svg/SVGText';
 
 export * from './toast/ToastComponent';
 
-export * from './definitions/MethodEditor';
-export * from './definitions/DataTypeEditor';
+export * from './dsl/MethodEditor';
+export * from './dsl/DataTypeEditor';

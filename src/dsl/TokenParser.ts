@@ -1,6 +1,6 @@
 import Peggy from 'peggy';
 
 // @ts-ignore
-import GRAMMAR from './grammar_tokens.pegjs';
+import GRAMMAR from './grammars/grammar_tokens.pegjs';
 
 export const TokenParser = Peggy.generate(GRAMMAR);
