@@ -112,7 +112,6 @@ export const DSLWriter = {
                 case DSLEntityType.METHOD:
                     const method = entity as DSLMethod;
                     return toMethodCode(method);
-
             }
         }).join('\n\n');
     }

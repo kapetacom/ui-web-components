@@ -1,7 +1,6 @@
-
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import {DSLParser} from "./DSLParser";
-import {BUILT_IN_TYPES, DSLLanguageOptions, LANGUAGE_ID, METHOD_ANNOTATIONS, PARAMETER_ANNOTATIONS} from "./types";
+import {DSLLanguageOptions, LANGUAGE_ID} from "./types";
 
 type ITextModel = monaco.editor.ITextModel;
 type Editor = typeof monaco.editor;
