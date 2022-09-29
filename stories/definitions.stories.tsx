@@ -45,29 +45,42 @@ storiesOf('Definition Editors', module)
 
     .add("DSL Editor", () => (
         <div>
-            <DSLEditor types={true} methods={true}  value={'## Types\n' + DATA_TYPES + '\n\n## Methods\n' + METHODS} />
+            <DSLEditor types={true}
+                       methods={true}
+                       onChange={result => console.log('result', result)}
+                       value={'## Types\n' + DATA_TYPES + '\n\n## Methods\n' + METHODS} />
         </div>
     ))
 
     .add("DSL Editor (REST)", () => (
         <div>
-            <DSLEditor types={true} methods={true} rest={true} value={'## Types\n' + DATA_TYPES + '\n\n## REST methods\n' + REST_METHODS} />
+            <DSLEditor types={true}
+                       methods={true}
+                       rest={true}
+                       onChange={result => console.log('result', result)}
+                       value={'## Types\n' + DATA_TYPES + '\n\n## REST methods\n' + REST_METHODS} />
         </div>
     ))
 
     .add("REST Method Editor", () => (
         <div>
-            <MethodEditor value={REST_METHODS} validTypes={['Todo']} restMethods={true} />
+            <MethodEditor value={REST_METHODS}
+                          validTypes={['Todo']}
+                          onChange={result => console.log('result', result)}
+                          restMethods={true} />
         </div>
     ))
     .add("Method Editor", () => (
         <div>
-            <MethodEditor value={METHODS} validTypes={['TreeNode']}  />
+            <MethodEditor value={METHODS}
+                          onChange={result => console.log('result', result)}
+                          validTypes={['TreeNode']}  />
         </div>
     ))
     .add("Data Type Editor", () => (
         <div>
-            <DataTypeEditor value={DATA_TYPES} />
+            <DataTypeEditor value={DATA_TYPES}
+                            onChange={result => console.log('result', result)}/>
         </div>
     ))
 

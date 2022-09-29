@@ -2,7 +2,7 @@ import Peggy, {ParserOptions, ParserTracer} from 'peggy';
 
 // @ts-ignore
 import GRAMMAR from './grammars/grammar_dsl.pegjs';
-import {BUILT_IN_TYPES, DSLLanguageOptions} from "./types";
+import {BUILT_IN_TYPES, DSLLanguageOptions, DSLResult, METHOD_ANNOTATIONS, PARAMETER_ANNOTATIONS} from "./types";
 
 const parser = Peggy.generate(GRAMMAR);
 
@@ -12,17 +12,17 @@ interface Options extends DSLLanguageOptions {
 }
 
 export const DSLParser = {
-    parse(code:string, options?:Options) {
+    parse(code:string, options?:Options):DSLResult {
         if (!options) {
             options = {};
         }
 
         if (!options.parameterAnnotations) {
-            options.parameterAnnotations = [];
+            options.parameterAnnotations = PARAMETER_ANNOTATIONS;
         }
 
         if (!options.methodAnnotations) {
-            options.methodAnnotations = [];
+            options.methodAnnotations = METHOD_ANNOTATIONS;
         }
 
         if (!options.typeAnnotations) {
@@ -41,6 +41,11 @@ export const DSLParser = {
 
         options.validTypes.push(...BUILT_IN_TYPES);
 
-        return parser.parse(code, {...options, grammarSource: GRAMMAR});
+        const entities = parser.parse(code, {...options, grammarSource: GRAMMAR});
+
+        return {
+            code,
+            entities
+        };
     }
 };

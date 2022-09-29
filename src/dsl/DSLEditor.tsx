@@ -4,19 +4,31 @@ import './DSLEditor.less';
 
 import Monaco from "@monaco-editor/react";
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import {DSLOptions, LANGUAGE_ID} from "./types";
+import {DSLOptions, DSLResult, LANGUAGE_ID} from "./types";
 
 import './DSLLanguage';
 import {DSLValidator} from "./DSLValidator";
+import {DSLParser} from "./DSLParser";
 
 export interface DSLEditorProps extends DSLOptions {
-    value?: string
+    value?: DSLResult|string
     readOnly?:boolean
+    onChange?: (structure:DSLResult) => any
 }
 
 export const DSLEditor = (props: DSLEditorProps) => {
 
-    const [current, setCurrent] = useState(props.value);
+    const [current, setCurrent] = useState(() => {
+        let value:string;
+        const result = props.value as DSLResult;
+        if (result && result.code) {
+            value = result.code;
+        } else {
+            value = props.value as string;
+        }
+
+        return value;
+    });
 
     const options:monaco.editor.IStandaloneEditorConstructionOptions = {
         lineNumbersMinChars: 3,
@@ -35,22 +47,33 @@ export const DSLEditor = (props: DSLEditorProps) => {
         readOnly: props.readOnly
     };
 
+    const parsingOptions = {
+        methods: props.methods,
+        rest: props.rest,
+        types: props.types,
+        validTypes: props.validTypes
+    };
+
     return (
         <div className={'dsl-editor'}>
             <Monaco
                 options={options}
                 value={current}
-                onChange={(value) => setCurrent(value)}
+                onChange={(code) => {
+                    setCurrent(code);
+                    if (props.onChange) {
+                        try {
+                            props.onChange(DSLParser.parse(code, parsingOptions));
+                        } catch (e) {
+                            console.warn('Failed to parse', e);
+                        }
+                    }
+                }}
                 language={LANGUAGE_ID}
 
                 onMount={(editor, m) => {
                     //Syntax and semantic validation
-                    const validator = new DSLValidator(m.editor, {
-                        methods: props.methods,
-                        rest: props.rest,
-                        types: props.types,
-                        validTypes: props.validTypes
-                    });
+                    const validator = new DSLValidator(m.editor, parsingOptions);
 
                     validator.bind(editor.getModel());
                 }}

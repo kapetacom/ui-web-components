@@ -20,10 +20,7 @@ export class DSLValidator {
         let errors = [];
         try {
             DSLParser.parse(code, {
-                ...this.options,
-                parameterAnnotations: PARAMETER_ANNOTATIONS,
-                methodAnnotations: METHOD_ANNOTATIONS,
-                builtInTypes: BUILT_IN_TYPES
+                ...this.options
             });
         } catch (ex) {
             if (!ex.location) {

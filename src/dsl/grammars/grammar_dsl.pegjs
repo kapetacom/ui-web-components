@@ -94,7 +94,7 @@ datatype
     	type:'datatype',
         name,
         description: description,
-        annotations: annotations.map(a => { return {name:a.name, type:a.type} }),
+        annotations: annotations.map(a => { return {type:a.type, arguments:a.arguments} }),
         ...body
 	}
 }
@@ -162,7 +162,7 @@ method "method"
         description: description,
         parameters:args,
         returnType,
-        annotations: annotations.map(a => { return {name:a.name, type:a.type} })
+        annotations: annotations.map(a => { return {type:a.type, arguments:a.arguments} })
 	}
 }
 
@@ -233,7 +233,7 @@ method_annotation
             _error(`Invalid path specified. Must start with "/" and be well formed: "${usedName}"`);
         }
 
-        return { type, name:usedName, location: location() };
+        return { type, arguments:[usedName], location: location() };
     }
 
 type_annotation
@@ -244,7 +244,7 @@ type_annotation
             _error(`Invalid type annotation - must be one of ${options.typeAnnotations.join(', ')}`);
         }
 
-        return { type, name:usedName, location: location() };
+        return { type, arguments:[usedName], location: location() };
     }
 
 
@@ -259,7 +259,7 @@ field_annotation
             _error(`Invalid field annotation - must be one of ${options.fieldAnnotations.join(', ')}`);
         }
 
-        return { type, name:usedName };
+        return { type, arguments:[usedName] };
     }
 
 parameter_annotation
@@ -276,7 +276,7 @@ parameter_annotation
             !/^[a-z_][a-z0-9_-]*$/i.test(usedName)) {
             _error(`Invalid variable name. Must start with an alpha character ([a-z]) and only contain alphanumeric characters, dash and underscore. ([a-z0-9_-]) "`);
         }
-        return { type, name: usedName };
+        return { type, arguments:[usedName] };
     }
 
 
