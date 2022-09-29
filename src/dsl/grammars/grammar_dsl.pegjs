@@ -25,12 +25,20 @@ test2(@Path id:string, @Path(more) other:number ):void
     const GLOBAL_IDS = {};
 
     function checkUnique(name) {
+        if (options.ignoreSemantics) {
+            return;
+        }
+
         if (GLOBAL_IDS[name]) {
             error(`An ${GLOBAL_IDS[name]} with the name "${name}" already exists`);
         }
     }
 
     function checkType(type, isReturn) {
+        if (options.ignoreSemantics) {
+            return;
+        }
+
         if (!isReturn && type === 'void') {
             error(`Void not allowed here`);
         }
@@ -79,12 +87,14 @@ datatype
       name:datatype_name _
       body:dataTypeBody {
 
-    if (!options.types) {
-        error(`Data type definitions not allowed`);
-    }
+    if (!options.ignoreSemantics) {
+        if (!options.types) {
+            error(`Data type definitions not allowed`);
+        }
 
-    if (options.typeAnnotations.length === 0 && annotations.length > 0) {
-        _error(`Annotations not allowed on data types`, annotations[0].location);
+        if (options.typeAnnotations.length === 0 && annotations.length > 0) {
+            _error(`Annotations not allowed on data types`, annotations[0].location);
+        }
     }
 
     checkUnique(name);
@@ -137,23 +147,25 @@ method "method"
     	annotations:method_annotation*
     	name:method_name _ parenthesis_start _ args:parameters? parenthesis_end _ colon _ returnType:method_returnType {
 
-    if (!options.methods) {
-        error(`Method definitions not allowed`);
-    }
-
-    if (options.rest &&
-        annotations.length !== 1) {
-        const msg = `REST Methods should have exactly one of these annotations: ${options.methodAnnotations.join(', ')}`;
-        const last = annotations.length > 0 ? annotations[annotations.length -1] : null;
-        if (last) {
-            _error(msg, last.location);
-        } else {
-            error(msg, name.location);
+    if (!options.ignoreSemantics) {
+        if (!options.methods) {
+            error(`Method definitions not allowed`);
         }
-    }
 
-    if (!options.rest && annotations.length > 0) {
-        _error(`Annotations not allowed on methods`, annotations[0].location);
+        if (options.rest &&
+            annotations.length !== 1) {
+            const msg = `REST Methods should have exactly one of these annotations: ${options.methodAnnotations.join(', ')}`;
+            const last = annotations.length > 0 ? annotations[annotations.length -1] : null;
+            if (last) {
+                _error(msg, last.location);
+            } else {
+                error(msg, name.location);
+            }
+        }
+
+        if (!options.rest && annotations.length > 0) {
+            _error(`Annotations not allowed on methods`, annotations[0].location);
+        }
     }
 
 	return {
@@ -219,18 +231,20 @@ annotationType
 method_annotation
   = type:annotationType _ name:argument? _ {
         let usedName = name ? name[3] : null;
-        if (options.methodAnnotations.length > 0 &&
-            options.methodAnnotations.indexOf(type) === -1) {
-            _error(`Invalid method annotation - must be one of ${options.methodAnnotations.join(', ')}`);
-        }
+        if (!options.ignoreSemantics) {
+            if (options.methodAnnotations.length > 0 &&
+                options.methodAnnotations.indexOf(type) === -1) {
+                _error(`Invalid method annotation - must be one of ${options.methodAnnotations.join(', ')}`);
+            }
 
-        if (!usedName) {
-            _error(`Annotation ${type} requires 1 argument: path`);
-        }
+            if (!usedName) {
+                _error(`Annotation ${type} requires 1 argument: path`);
+            }
 
-        if (usedName &&
-            !/^\/([a-z_{}][a-z0-9_-{}]*(\/[a-z_{}][a-z0-9_-{}]*)*)?$/i.test(usedName)) {
-            _error(`Invalid path specified. Must start with "/" and be well formed: "${usedName}"`);
+            if (usedName &&
+                !/^\/([a-z_{}][a-z0-9_-{}]*(\/[a-z_{}][a-z0-9_-{}]*)*)?$/i.test(usedName)) {
+                _error(`Invalid path specified. Must start with "/" and be well formed: "${usedName}"`);
+            }
         }
 
         return { type, arguments:[usedName], location: location() };
@@ -239,9 +253,11 @@ method_annotation
 type_annotation
   = type:annotationType _ name:argument? _ {
         let usedName = name ? name[3] : null;
-        if (options.typeAnnotations.length > 0 &&
-            options.typeAnnotations.indexOf(type) === -1) {
-            _error(`Invalid type annotation - must be one of ${options.typeAnnotations.join(', ')}`);
+        if (!options.ignoreSemantics) {
+            if (options.typeAnnotations.length > 0 &&
+                options.typeAnnotations.indexOf(type) === -1) {
+                _error(`Invalid type annotation - must be one of ${options.typeAnnotations.join(', ')}`);
+            }
         }
 
         return { type, arguments:[usedName], location: location() };
@@ -250,13 +266,15 @@ type_annotation
 
 field_annotation
   = type:annotationType _ name:argument? _ {
-        if (options.fieldAnnotations.length === 0) {
-            _error(`Annotations not allowed on field`);
-        }
         let usedName = name ? name[3] : null;
-        if (options.fieldAnnotations.length > 0 &&
-            options.fieldAnnotations.indexOf(type) === -1) {
-            _error(`Invalid field annotation - must be one of ${options.fieldAnnotations.join(', ')}`);
+        if (!options.ignoreSemantics) {
+            if (options.fieldAnnotations.length === 0) {
+                _error(`Annotations not allowed on field`);
+            }
+            if (options.fieldAnnotations.length > 0 &&
+                options.fieldAnnotations.indexOf(type) === -1) {
+                _error(`Invalid field annotation - must be one of ${options.fieldAnnotations.join(', ')}`);
+            }
         }
 
         return { type, arguments:[usedName] };
@@ -264,17 +282,19 @@ field_annotation
 
 parameter_annotation
   = type:annotationType _ name:argument? _ {
-        if (!options.rest) {
-            _error(`Annotations not allowed on parameters`);
-        }
         let usedName = name ? name[3] : null;
-        if (options.parameterAnnotations.indexOf(type) === -1) {
-            _error(`Invalid parameter annotation - must be one of ${options.parameterAnnotations.join(', ')}`);
-        }
+        if (!options.ignoreSemantics) {
+            if (!options.rest) {
+                _error(`Annotations not allowed on parameters`);
+            }
+            if (options.parameterAnnotations.indexOf(type) === -1) {
+                _error(`Invalid parameter annotation - must be one of ${options.parameterAnnotations.join(', ')}`);
+            }
 
-        if (usedName &&
-            !/^[a-z_][a-z0-9_-]*$/i.test(usedName)) {
-            _error(`Invalid variable name. Must start with an alpha character ([a-z]) and only contain alphanumeric characters, dash and underscore. ([a-z0-9_-]) "`);
+            if (usedName &&
+                !/^[a-z_][a-z0-9_-]*$/i.test(usedName)) {
+                _error(`Invalid variable name. Must start with an alpha character ([a-z]) and only contain alphanumeric characters, dash and underscore. ([a-z0-9_-]) "`);
+            }
         }
         return { type, arguments:[usedName] };
     }
@@ -296,12 +316,14 @@ argument
 colon = ':'
 
 parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:type _ {
-    if (options.rest &&
-        annotations.length > 1) {
-        error(`REST method parameters should have at most 1 annotation`);
-    }
+    if (!options.ignoreSemantics) {
+        if (options.rest &&
+            annotations.length > 1) {
+            error(`REST method parameters should have at most 1 annotation`);
+        }
 
-    checkType(type);
+        checkType(type);
+    }
 
     return {name, type, annotations}
 }

@@ -54,29 +54,34 @@ export interface DSLParameter {
     type:string
 }
 
-export interface DSLDataType {
-    type:string,
-    description:string
-    name:string
+export enum DSLEntityType {
+    DATATYPE = 'datatype',
+    METHOD = 'method',
+    COMMENT = 'comment',
+}
+
+export interface DSLEntity {
+    type:DSLEntityType
+}
+
+export interface DSLRichEntity extends DSLEntity {
     annotations:DSLAnnotation[]
+    name:string
+    description:string
+}
+
+export interface DSLDataType extends DSLRichEntity {
     properties:DSLDataTypeProperty[]
 }
 
-export interface DSLMethod {
-    type:string,
-    description:string
-    name:string
+export interface DSLMethod extends DSLRichEntity {
     returnType:string
-    annotations:DSLAnnotation[]
     parameters:DSLParameter[]
 }
 
-export interface DSLComment {
-    type:string,
+export interface DSLComment extends DSLEntity {
     text:string
 }
-
-export type DSLEntity = DSLDataType|DSLMethod|DSLComment;
 
 export interface DSLResult {
     code:string
@@ -84,15 +89,16 @@ export interface DSLResult {
 }
 
 export interface DSLOptions {
-    rest?:boolean,
-    types?: boolean,
-    methods?: boolean,
+    rest?:boolean
+    types?: boolean
+    methods?: boolean
     validTypes?: string[]
+    ignoreSemantics?: boolean
 }
 
 export interface DSLLanguageOptions extends DSLOptions {
-    parameterAnnotations?: string[],
-    methodAnnotations?: string[],
-    typeAnnotations?: string[],
+    parameterAnnotations?: string[]
+    methodAnnotations?: string[]
+    typeAnnotations?: string[]
     fieldAnnotations?: string[]
 }

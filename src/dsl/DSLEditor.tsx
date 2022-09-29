@@ -9,6 +9,7 @@ import {DSLOptions, DSLResult, LANGUAGE_ID} from "./types";
 import './DSLLanguage';
 import {DSLValidator} from "./DSLValidator";
 import {DSLParser} from "./DSLParser";
+import {DSLWriter} from "./DSLWriter";
 
 export interface DSLEditorProps extends DSLOptions {
     value?: DSLResult|string
@@ -22,7 +23,7 @@ export const DSLEditor = (props: DSLEditorProps) => {
         let value:string;
         const result = props.value as DSLResult;
         if (result && result.code) {
-            value = result.code;
+            value = result.code ? result.code : DSLWriter.write(result.entities);
         } else {
             value = props.value as string;
         }
@@ -65,7 +66,7 @@ export const DSLEditor = (props: DSLEditorProps) => {
                         try {
                             props.onChange(DSLParser.parse(code, parsingOptions));
                         } catch (e) {
-                            console.warn('Failed to parse', e);
+                            //Ignore
                         }
                     }
                 }}

@@ -1,8 +1,17 @@
-import Peggy, {ParserOptions, ParserTracer} from 'peggy';
+import Peggy, {ParserTracer} from 'peggy';
 
 // @ts-ignore
 import GRAMMAR from './grammars/grammar_dsl.pegjs';
-import {BUILT_IN_TYPES, DSLLanguageOptions, DSLResult, METHOD_ANNOTATIONS, PARAMETER_ANNOTATIONS} from "./types";
+import {
+    BUILT_IN_TYPES, DSLAnnotation,
+    DSLComment, DSLDataType, DSLDataTypeProperty,
+    DSLEntity,
+    DSLEntityType,
+    DSLLanguageOptions, DSLMethod, DSLParameter,
+    DSLResult, DSLRichEntity,
+    METHOD_ANNOTATIONS,
+    PARAMETER_ANNOTATIONS
+} from "./types";
 
 const parser = Peggy.generate(GRAMMAR);
 
@@ -11,7 +20,9 @@ interface Options extends DSLLanguageOptions {
     tracer?: ParserTracer;
 }
 
+
 export const DSLParser = {
+
     parse(code:string, options?:Options):DSLResult {
         if (!options) {
             options = {};
