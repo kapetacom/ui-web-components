@@ -1,6 +1,6 @@
 
 export interface DSLAnnotation {
-    arguments:string[]
+    arguments?:string[]
     type:string
 }
 

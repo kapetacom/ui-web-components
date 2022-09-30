@@ -22,7 +22,7 @@ export const DSLEditor = (props: DSLEditorProps) => {
     const [current, setCurrent] = useState(() => {
         let value:string;
         const result = props.value as DSLResult;
-        if (result && result.code) {
+        if (typeof result === 'object') {
             value = result.code ? result.code : DSLWriter.write(result.entities);
         } else {
             value = props.value as string;

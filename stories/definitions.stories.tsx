@@ -1,6 +1,6 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
-import {MethodEditor, DataTypeEditor} from "../src";
+import {DataTypeEditor, DSLDataType, DSLEntityType, DSLMethod, MethodEditor} from "../src";
 import {DSLEditor} from "../src/dsl/DSLEditor";
 
 const REST_METHODS = `
@@ -41,6 +41,168 @@ Todo {
     status:string
 }`;
 
+const DATA_TYPE_ENTITIES:DSLDataType[] = [
+    {
+        type: DSLEntityType.DATATYPE,
+        name: 'MyDataType',
+        description: 'Some info about my data type\nWith multiple lines',
+        properties: [
+            {
+                name: 'id',
+                type:'string'
+            },
+            {
+                name: 'tags',
+                type:'string',
+                list: true
+            },
+            {
+                name: 'children',
+                type: 'object',
+                properties: [
+                    {
+                        name:'childId',
+                        type:'integer'
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        type: DSLEntityType.DATATYPE,
+        name: 'MyDataType2',
+        description: 'Some info about my data type\nWith multiple lines',
+        properties: [
+            {
+                name: 'id',
+                type:'string'
+            },
+            {
+                name: 'tags',
+                type:'string',
+                list: true
+            },
+            {
+                name: 'children',
+                type: 'object',
+                properties: [
+                    {
+                        name:'childId',
+                        type:'integer'
+                    }
+                ]
+            }
+        ]
+    }
+]
+
+const REST_METHOD_ENTITIES:DSLMethod[] = [
+    {
+        type: DSLEntityType.METHOD,
+        name: 'myMethod',
+        description: 'Some info about my method\nWith multiple lines',
+        returnType: 'void',
+        annotations: [
+            {
+                type:'@GET',
+                arguments: ['/some/{id}']
+            }
+        ],
+        parameters: [
+            {
+                name: 'id',
+                type:'string',
+                annotations: [
+                    {
+                        type: '@Path'
+                    }
+                ]
+
+            },
+            {
+                name: 'tags',
+                type:'string',
+                annotations: [
+                    {
+                        type: '@Query',
+                        arguments: ['_tags']
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        type: DSLEntityType.METHOD,
+        name: 'myMethod2',
+        description: 'Some info about my method\nWith multiple lines',
+        returnType: 'void',
+        annotations: [
+            {
+                type:'@GET',
+                arguments: ['/some/{id}']
+            }
+        ],
+        parameters: [
+            {
+                name: 'id',
+                type:'string',
+                annotations: [
+                    {
+                        type: '@Path'
+                    }
+                ]
+
+            },
+            {
+                name: 'tags',
+                type:'string',
+                annotations: [
+                    {
+                        type: '@Query',
+                        arguments: ['_tags']
+                    }
+                ]
+            }
+        ]
+    }
+]
+
+
+const METHOD_ENTITIES:DSLMethod[] = [
+    {
+        type: DSLEntityType.METHOD,
+        name: 'myMethod',
+        description: 'Some info about my method\nWith multiple lines',
+        returnType: 'void',
+        parameters: [
+            {
+                name: 'id',
+                type:'string'
+            },
+            {
+                name: 'tags',
+                type:'string'
+            }
+        ]
+    },
+    {
+        type: DSLEntityType.METHOD,
+        name: 'myMethod2',
+        description: 'Some info about my method\nWith multiple lines',
+        returnType: 'void',
+        parameters: [
+            {
+                name: 'id',
+                type:'string'
+            },
+            {
+                name: 'tags',
+                type:'string'
+            }
+        ]
+    }
+]
+
 storiesOf('Definition Editors', module)
 
     .add("DSL Editor", () => (
@@ -49,6 +211,15 @@ storiesOf('Definition Editors', module)
                        methods={true}
                        onChange={result => console.log('result', result)}
                        value={'## Types\n' + DATA_TYPES + '\n\n## Methods\n' + METHODS} />
+        </div>
+    ))
+
+    .add("DSL Editor (Object)", () => (
+        <div>
+            <DSLEditor types={true}
+                       methods={true}
+                       onChange={result => console.log('result', result)}
+                       value={{code:'', entities: [...DATA_TYPE_ENTITIES, ...METHOD_ENTITIES]}} />
         </div>
     ))
 
@@ -62,9 +233,28 @@ storiesOf('Definition Editors', module)
         </div>
     ))
 
+    .add("DSL Editor (REST - Object)", () => (
+        <div>
+            <DSLEditor types={true}
+                       methods={true}
+                       rest={true}
+                       onChange={result => console.log('result', result)}
+                       value={{code:'', entities: [...DATA_TYPE_ENTITIES, ...REST_METHOD_ENTITIES]}} />
+        </div>
+    ))
+
     .add("REST Method Editor", () => (
         <div>
             <MethodEditor value={REST_METHODS}
+                          validTypes={['Todo']}
+                          onChange={result => console.log('result', result)}
+                          restMethods={true} />
+        </div>
+    ))
+
+    .add("REST Method Editor (Object)", () => (
+        <div>
+            <MethodEditor value={{code: '', entities: REST_METHOD_ENTITIES}}
                           validTypes={['Todo']}
                           onChange={result => console.log('result', result)}
                           restMethods={true} />
@@ -77,9 +267,22 @@ storiesOf('Definition Editors', module)
                           validTypes={['TreeNode']}  />
         </div>
     ))
+    .add("Method Editor (Object)", () => (
+        <div>
+            <MethodEditor value={{code: '', entities: METHOD_ENTITIES}}
+                          onChange={result => console.log('result', result)}
+                          validTypes={['TreeNode']}  />
+        </div>
+    ))
     .add("Data Type Editor", () => (
         <div>
             <DataTypeEditor value={DATA_TYPES}
+                            onChange={result => console.log('result', result)}/>
+        </div>
+    ))
+    .add("Data Type Editor (Object)", () => (
+        <div>
+            <DataTypeEditor value={{entities:DATA_TYPE_ENTITIES, code:''}}
                             onChange={result => console.log('result', result)}/>
         </div>
     ))

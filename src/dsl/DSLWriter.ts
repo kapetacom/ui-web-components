@@ -32,7 +32,7 @@ function toAnnotationsCode(data: DSLAnnotation[]) {
 
 function toParameterCode(data: DSLParameter) {
     return [
-        data.annotations.map(toAnnotationCode).join(' '),
+        data.annotations ? data.annotations.map(toAnnotationCode).join(' ') : '',
         data.name + ':' + data.type
     ].join(' ').trim();
 }
@@ -56,7 +56,8 @@ function toRichEntityCode(data: DSLRichEntity) {
 function toPropertyCode(data: DSLDataTypeProperty, indent = 0) {
     let prefix = '\t'.repeat(1 + indent);
     let type;
-    if (data.type === 'object') {
+    if (data.type === 'object' &&
+        data.properties) {
         type = toPropertiesCode(data.properties, indent + 1);
         if (data.list) {
             type = `[${type}]`;
@@ -66,7 +67,7 @@ function toPropertyCode(data: DSLDataTypeProperty, indent = 0) {
     }
 
     return prefix + [
-        data.annotations.map(toAnnotationCode).join('\n'),
+        data.annotations ? data.annotations.map(toAnnotationCode).join('\n') : '',
         data.name + ': ' + type
     ].join('\n' + prefix);
 }
@@ -113,6 +114,6 @@ export const DSLWriter = {
                     const method = entity as DSLMethod;
                     return toMethodCode(method);
             }
-        }).join('\n\n');
+        }).join('\n\n').trim();
     }
 }
