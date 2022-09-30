@@ -55,5 +55,7 @@ export * from './svg/SVGText';
 
 export * from './toast/ToastComponent';
 
+export * from './dsl/interfaces';
+export * from './dsl/DSLEditor';
 export * from './dsl/MethodEditor';
 export * from './dsl/DataTypeEditor';
