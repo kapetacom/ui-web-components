@@ -21,7 +21,6 @@ export class DSLValidator {
             DSLParser.parse(code, {
                 ...this.options,
                 softErrorHandler: error => {
-                    console.log('got warning' , error);
                     let severity:monaco.MarkerSeverity = monaco.MarkerSeverity.Error;
                     switch (error.type) {
                         case 'warning':

@@ -19,16 +19,17 @@ interface SoftError {
     message: string,
 }
 
-interface Options extends DSLLanguageOptions {
+export interface DSLParserOptions extends DSLLanguageOptions {
     startRule?: string;
     tracer?: ParserTracer;
     softErrorHandler?: (error: SoftError) => void;
+    validator?: (object:any) => void
 }
 
 
 export const DSLParser = {
 
-    parse(code:string, options?:Options):DSLResult {
+    parse(code:string, options?:DSLParserOptions):DSLResult {
         if (!options) {
             options = {};
         }

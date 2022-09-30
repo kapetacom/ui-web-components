@@ -39,8 +39,6 @@ export class DSLCompletionItemProvider implements monaco.languages.CompletionIte
 
         const additionalTypes = this._additionalTypes[model.id] || [];
 
-        console.log('additionalTypes', additionalTypes);
-
         try {
             tokens = TokenParser.parse(code);
         } catch (ex) {

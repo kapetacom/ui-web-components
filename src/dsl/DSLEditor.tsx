@@ -4,13 +4,21 @@ import './DSLEditor.less';
 
 import Monaco from "@monaco-editor/react";
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import {DSLOptions, DSLResult, LANGUAGE_ID} from "./types";
+import {
+    BUILT_IN_ANNOTATIONS, BUILT_IN_TYPES, DSLMethod,
+    DSLOptions,
+    DSLResult,
+    LANGUAGE_ID,
+    METHOD_ANNOTATIONS,
+    REST_METHOD_ANNOTATIONS, STRINGABLE_TYPES
+} from "./types";
 
 import './DSLLanguage';
 import {DSLValidator} from "./DSLValidator";
-import {DSLParser} from "./DSLParser";
+import {DSLParser, DSLParserOptions} from "./DSLParser";
 import {DSLWriter} from "./DSLWriter";
 import {withAdditionalTypes} from "./DSLLanguage";
+import {restPathVariableValidator} from "./helpers/restPathVariableValidator";
 
 export interface DSLEditorProps extends DSLOptions {
     value?: DSLResult|string
@@ -49,11 +57,12 @@ export const DSLEditor = (props: DSLEditorProps) => {
         readOnly: props.readOnly
     };
 
-    const parsingOptions = {
+    const parsingOptions:DSLParserOptions = {
         methods: props.methods,
         rest: props.rest,
         types: props.types,
-        validTypes: props.validTypes
+        validTypes: props.validTypes,
+        validator: props.rest ? restPathVariableValidator : null
     };
 
     return (

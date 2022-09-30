@@ -94,6 +94,18 @@ test2(@Path id:string, @Path(more) other:number ):void
     }
 
 
+    function validate(entry) {
+        if (!options.validator) {
+            return;
+        }
+        try {
+            options.validator(entry);
+        } catch(e) {
+            softError(e.message, e.location);
+        }
+    }
+
+
 }
 
 program = _ expressions:expression* _ { return expressions }
@@ -197,13 +209,26 @@ method "method"
         }
     }
 
+    validate({
+         type:'method',
+         location: location(),
+         name: name.value,
+         description: description,
+         parameters: args,
+         returnType,
+         annotations: annotations
+    });
+
+    args && args.forEach(data => delete data.location);
+    annotations && annotations.forEach(data => delete data.location);
+
 	return {
     	type:'method',
         name: name.value,
         description: description,
-        parameters:args,
+        parameters: args,
         returnType,
-        annotations: annotations.map(a => { return {type:a.type, arguments:a.arguments} })
+        annotations
 	}
 }
 
@@ -346,7 +371,7 @@ parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:type _ 
         checkType(type);
     }
 
-    return {name, type, annotations}
+    return {name, type, location: location(), annotations}
 }
 
 parameters
