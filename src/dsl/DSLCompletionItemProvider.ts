@@ -1,6 +1,7 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import {BUILT_IN_ANNOTATIONS, BUILT_IN_TYPES, METHOD_ANNOTATIONS, PARAMETER_ANNOTATIONS} from "./types";
+import {BUILT_IN_TYPES, METHOD_ANNOTATIONS, PARAMETER_ANNOTATIONS} from "./types";
 import {TokenParser} from "./TokenParser";
+import {IDisposable} from "monaco-editor";
 
 type CancellationToken = monaco.CancellationToken;
 type Position = monaco.Position;
@@ -9,10 +10,36 @@ type ITextModel = monaco.editor.ITextModel;
 
 export class DSLCompletionItemProvider implements monaco.languages.CompletionItemProvider {
 
+    private _additionalTypes:{[key:string]:string[]} = {};
+
+    private _listenerDisposables:{[key:string]:IDisposable} = {};
+
+    setAdditionalTypes(model: ITextModel, types:string[]) {
+
+        if (this._listenerDisposables[model.id]) {
+            this._listenerDisposables[model.id].dispose();
+            delete this._listenerDisposables[model.id];
+        }
+
+        if (types.length < 1) {
+            delete this._additionalTypes[model.id];
+            return;
+        }
+
+        this._additionalTypes[model.id] = types;
+        this._listenerDisposables[model.id] = model.onWillDispose(() => {
+            delete this._additionalTypes[model.id];
+        });
+    }
+
     provideCompletionItems(model: ITextModel, position: Position, context: CompletionContext, token: CancellationToken) {
 
         let tokens = [];
         const code = model.getValue();
+
+        const additionalTypes = this._additionalTypes[model.id] || [];
+
+        console.log('additionalTypes', additionalTypes);
 
         try {
             tokens = TokenParser.parse(code);
@@ -25,7 +52,8 @@ export class DSLCompletionItemProvider implements monaco.languages.CompletionIte
 
         const TYPES = [
             ...BUILT_IN_TYPES,
-            ...dataTypeNames
+            ...dataTypeNames,
+            ...additionalTypes
         ]
 
         const typeChoice = TYPES.join(',');

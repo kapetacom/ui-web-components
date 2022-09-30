@@ -10,6 +10,7 @@ import './DSLLanguage';
 import {DSLValidator} from "./DSLValidator";
 import {DSLParser} from "./DSLParser";
 import {DSLWriter} from "./DSLWriter";
+import {withAdditionalTypes} from "./DSLLanguage";
 
 export interface DSLEditorProps extends DSLOptions {
     value?: DSLResult|string
@@ -75,8 +76,13 @@ export const DSLEditor = (props: DSLEditorProps) => {
                 onMount={(editor, m) => {
                     //Syntax and semantic validation
                     const validator = new DSLValidator(m.editor, parsingOptions);
-
                     validator.bind(editor.getModel());
+
+                    if (props.validTypes && props.validTypes.length > 0) {
+                        withAdditionalTypes(editor.getModel(), props.validTypes);
+                    } else {
+                        withAdditionalTypes(editor.getModel(), []);
+                    }
                 }}
 
             />

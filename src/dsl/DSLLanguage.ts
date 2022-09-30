@@ -5,7 +5,6 @@ import IRichLanguageConfiguration = monaco.languages.LanguageConfiguration;
 import ILanguage = monaco.languages.IMonarchLanguage;
 import {BUILT_IN_TYPES, LANGUAGE_ID} from "./types";
 import {DSLCompletionItemProvider} from "./DSLCompletionItemProvider";
-import {DSLValidator} from "./DSLValidator";
 import {DSLDocumentFormattingEditProvider} from "./DSLDocumentFormattingEditProvider";
 
 const configuration: IRichLanguageConfiguration = {
@@ -35,7 +34,7 @@ const configuration: IRichLanguageConfiguration = {
     ],
 };
 
-const monarch: ILanguage = {
+const language: ILanguage = {
     // Set defaultToken to invalid to see what you do not tokenize yet
     defaultToken: 'invalid',
 
@@ -150,23 +149,27 @@ const monarch: ILanguage = {
     },
 }
 
+const completionItemProvider = new DSLCompletionItemProvider();
+const documentFormattingEditProvider = new DSLDocumentFormattingEditProvider();
+
+export const withAdditionalTypes = (model:monaco.editor.ITextModel, types:string[]) => {
+    completionItemProvider.setAdditionalTypes(model, types);
+};
+
 loader.init().then((monaco) => {
     const languages = monaco.languages;
     languages.register({id: LANGUAGE_ID});
-        languages.onLanguage(LANGUAGE_ID, () => {
+
+    languages.onLanguage(LANGUAGE_ID, () => {
 
         //Tokens and language configuration
-        languages.setMonarchTokensProvider(LANGUAGE_ID, monarch);
+        languages.setMonarchTokensProvider(LANGUAGE_ID, language);
         languages.setLanguageConfiguration(LANGUAGE_ID, configuration);
 
         //Auto-formatting:
-        languages.registerDocumentFormattingEditProvider(LANGUAGE_ID, new DSLDocumentFormattingEditProvider());
+        languages.registerDocumentFormattingEditProvider(LANGUAGE_ID, documentFormattingEditProvider);
 
         //Auto-complete:
-        languages.registerCompletionItemProvider(LANGUAGE_ID, new DSLCompletionItemProvider());
-
-
+        languages.registerCompletionItemProvider(LANGUAGE_ID, completionItemProvider);
     });
 })
-
-export const DSL_LANGUAGE_ID = LANGUAGE_ID;
