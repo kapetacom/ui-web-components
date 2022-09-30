@@ -19,7 +19,29 @@ export class DSLValidator {
         let errors = [];
         try {
             DSLParser.parse(code, {
-                ...this.options
+                ...this.options,
+                softErrorHandler: error => {
+                    console.log('got warning' , error);
+                    let severity:monaco.MarkerSeverity = monaco.MarkerSeverity.Error;
+                    switch (error.type) {
+                        case 'warning':
+                            severity = monaco.MarkerSeverity.Warning;
+                            break;
+                        case 'hint':
+                            severity = monaco.MarkerSeverity.Hint;
+                            break;
+                        case 'info':
+                            severity = monaco.MarkerSeverity.Info;
+                            break;
+                    }
+
+                    delete error.type;
+                    errors.push({
+                        code: '2',
+                        severity,
+                        ...error
+                    })
+                }
             });
         } catch (ex) {
             if (!ex.location) {

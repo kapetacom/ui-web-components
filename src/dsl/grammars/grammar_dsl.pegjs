@@ -30,8 +30,36 @@ test2(@Path id:string, @Path(more) other:number ):void
         }
 
         if (GLOBAL_IDS[name]) {
-            error(`An ${GLOBAL_IDS[name]} with the name "${name}" already exists`);
+            softError(`An ${GLOBAL_IDS[name]} with the name "${name}" already exists`);
         }
+    }
+
+    function _softError(type, message, loc) {
+        if (!options.softErrorHandler) {
+            error(message);
+            return;
+        }
+
+        if (!loc) {
+            loc = location();
+        }
+
+        options.softErrorHandler({
+            message,
+            type,
+            startColumn: loc.start.column,
+            startLineNumber: loc.start.line,
+            endColumn: loc.end.column,
+            endLineNumber: loc.end.line
+        });
+    }
+
+    function warning(message, loc) {
+        _softError('warning', message, loc);
+    }
+
+    function softError(message, loc) {
+        _softError('error', message, loc);
     }
 
     function checkType(type, isReturn) {
@@ -40,11 +68,11 @@ test2(@Path id:string, @Path(more) other:number ):void
         }
 
         if (!isReturn && type === 'void') {
-            error(`Void not allowed here`);
+            softError(`Void not allowed here`);
         }
 
         if (options.validTypes.indexOf(type) === -1) {
-            error(`Type not found: "${type}"`);
+            warning(`Type not found: "${type}"`);
         }
     }
 
@@ -62,8 +90,9 @@ test2(@Path id:string, @Path(more) other:number ):void
             loc.end.column = loc.start.column + length;
             loc.end.offset = loc.end.offset + length;
         }
-        error(message, loc);
+        softError(message, loc);
     }
+
 
 }
 
@@ -89,7 +118,7 @@ datatype
 
     if (!options.ignoreSemantics) {
         if (!options.types) {
-            error(`Data type definitions not allowed`);
+            softError(`Data type definitions not allowed`);
         }
 
         if (options.typeAnnotations.length === 0 && annotations.length > 0) {
@@ -149,7 +178,7 @@ method "method"
 
     if (!options.ignoreSemantics) {
         if (!options.methods) {
-            error(`Method definitions not allowed`);
+            softError(`Method definitions not allowed`);
         }
 
         if (options.rest &&
@@ -159,7 +188,7 @@ method "method"
             if (last) {
                 _error(msg, last.location);
             } else {
-                error(msg, name.location);
+                softError(msg, name.location);
             }
         }
 
@@ -235,13 +264,9 @@ method_annotation
             if (options.methodAnnotations.length > 0 &&
                 options.methodAnnotations.indexOf(type) === -1) {
                 _error(`Invalid method annotation - must be one of ${options.methodAnnotations.join(', ')}`);
-            }
-
-            if (!usedName) {
+            } else if (options.rest && !usedName) {
                 _error(`Annotation ${type} requires 1 argument: path`);
-            }
-
-            if (usedName &&
+            } else if (options.rest && usedName &&
                 !/^\/([a-z_{}][a-z0-9_-{}]*(\/[a-z_{}][a-z0-9_-{}]*)*)?$/i.test(usedName)) {
                 _error(`Invalid path specified. Must start with "/" and be well formed: "${usedName}"`);
             }
@@ -270,8 +295,7 @@ field_annotation
         if (!options.ignoreSemantics) {
             if (options.fieldAnnotations.length === 0) {
                 _error(`Annotations not allowed on field`);
-            }
-            if (options.fieldAnnotations.length > 0 &&
+            } else if (options.fieldAnnotations.length > 0 &&
                 options.fieldAnnotations.indexOf(type) === -1) {
                 _error(`Invalid field annotation - must be one of ${options.fieldAnnotations.join(', ')}`);
             }
@@ -286,12 +310,9 @@ parameter_annotation
         if (!options.ignoreSemantics) {
             if (!options.rest) {
                 _error(`Annotations not allowed on parameters`);
-            }
-            if (options.parameterAnnotations.indexOf(type) === -1) {
+            } else if (options.parameterAnnotations.indexOf(type) === -1) {
                 _error(`Invalid parameter annotation - must be one of ${options.parameterAnnotations.join(', ')}`);
-            }
-
-            if (usedName &&
+            } else if (usedName &&
                 !/^[a-z_][a-z0-9_-]*$/i.test(usedName)) {
                 _error(`Invalid variable name. Must start with an alpha character ([a-z]) and only contain alphanumeric characters, dash and underscore. ([a-z0-9_-]) "`);
             }
@@ -319,7 +340,7 @@ parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:type _ 
     if (!options.ignoreSemantics) {
         if (options.rest &&
             annotations.length > 1) {
-            error(`REST method parameters should have at most 1 annotation`);
+            softError(`REST method parameters should have at most 1 annotation`);
         }
 
         checkType(type);

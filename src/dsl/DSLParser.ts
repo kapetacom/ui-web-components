@@ -10,9 +10,19 @@ import {
     PARAMETER_ANNOTATIONS
 } from "./types";
 
+interface SoftError {
+    type: string
+    endColumn: number;
+    endLineNumber: number;
+    startColumn: number;
+    startLineNumber: number;
+    message: string,
+}
+
 interface Options extends DSLLanguageOptions {
     startRule?: string;
     tracer?: ParserTracer;
+    softErrorHandler?: (error: SoftError) => void;
 }
 
 

@@ -50,6 +50,7 @@ export interface DSLComment extends DSLEntity {
 
 export interface DSLResult {
     code:string
+    errors?: [],
     entities?: DSLEntity[]
 }
 
