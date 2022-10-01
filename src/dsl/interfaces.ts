@@ -1,3 +1,6 @@
+import {LANGUAGE_ID} from "./types";
+
+export const DSL_LANGUAGE_ID = LANGUAGE_ID
 
 export interface DSLAnnotation {
     arguments?:string[]
