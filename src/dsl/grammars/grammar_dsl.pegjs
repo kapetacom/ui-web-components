@@ -67,8 +67,19 @@ test2(@Path id:string, @Path(more) other:number ):void
             return;
         }
 
+        let isList = false;
+        console.log('type', type);
+        if (typeof type !== 'string') {
+            isList = type.list;
+            type = type.name;
+        }
+
         if (!isReturn && type === 'void') {
             softError(`Void not allowed here`);
+        }
+
+        if (isList && type === 'void') {
+            softError(`Void can not be list`);
         }
 
         if (options.validTypes.indexOf(type) === -1) {
@@ -104,7 +115,6 @@ test2(@Path id:string, @Path(more) other:number ):void
             softError(e.message, e.location);
         }
     }
-
 
 }
 
@@ -162,9 +172,9 @@ field = description:comment* annotations:field_annotation* name:id _ ':' _ type:
 }
 
 fieldType
-	= type:id list:(_ '[' _ ']')? { checkType(type); return {type, list: !!list} }
-    / body:dataTypeBody { return {type:'object', list: false,...body} }
-    / body:dataTypeBodyList { return {type:'object', list: true,...body} }
+	= type:id list:(_ '[' _ ']')? { const out = !!list ? {name:type, list: !!list} : type; checkType(out); return out  }
+    / body:dataTypeBody { return {name:'object' ,...body} }
+    / body:dataTypeBodyList { return {name:{name:'object', list: true},...body} }
 
 bracket_start = '{'
 
@@ -177,10 +187,12 @@ method_name
         return {value:name, location: location()};
     }
 
+
 method_returnType
-    = type:id {
-        checkType(type, true);
-        return type;
+    = type:id list:(_ '[' _ ']')? {
+        const out = !!list ? {name:type, list: !!list} : type;
+        checkType(out, true);
+        return out;
     }
 
 method "method"
@@ -361,7 +373,14 @@ argument
 
 colon = ':'
 
-parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:type _ {
+parameter_type
+    = type:id list:(_ '[' _ ']')? {
+        const out = !!list ? {name:type, list: !!list} : type;
+        checkType(out, true);
+        return out;
+    }
+
+parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:parameter_type _ {
     if (!options.ignoreSemantics) {
         if (options.rest &&
             annotations.length > 1) {

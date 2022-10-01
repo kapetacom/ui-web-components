@@ -1,4 +1,5 @@
 import {LANGUAGE_ID} from "./types";
+import exp from "constants";
 
 export const DSL_LANGUAGE_ID = LANGUAGE_ID
 
@@ -7,18 +8,24 @@ export interface DSLAnnotation {
     type:string
 }
 
+interface DSLTypeComplex {
+    name:string,
+    list?:boolean
+}
+
+export type DSLType = DSLTypeComplex|string
+
 export interface DSLDataTypeProperty {
-    type:string,
+    type:DSLType,
     name:string
     properties?:DSLDataTypeProperty[]
     annotations?:DSLAnnotation[]
     description?:string
-    list?:boolean
 }
 
 export interface DSLParameter {
     name:string
-    type:string
+    type:DSLType
     annotations?:DSLAnnotation[]
 }
 
@@ -43,7 +50,7 @@ export interface DSLDataType extends DSLRichEntity {
 }
 
 export interface DSLMethod extends DSLRichEntity {
-    returnType:string
+    returnType:DSLType
     parameters:DSLParameter[]
 }
 

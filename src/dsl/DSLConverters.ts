@@ -1,4 +1,4 @@
-import {DSLDataType, DSLDataTypeProperty, DSLEntityType, DSLMethod} from "./interfaces";
+import {DSLDataType, DSLDataTypeProperty, DSLEntityType, DSLMethod, DSLType} from "./interfaces";
 import {
     HTTPMethod,
     HTTPTransport,
@@ -7,10 +7,37 @@ import {
     SchemaEntryType,
     SchemaProperties
 } from "@blockware/ui-web-types";
+import {BUILT_IN_TYPES} from "./types";
 
 type SchemaMethods = { [p: string]: RESTMethod };
 
 export namespace DSLConverters {
+
+    export function asDSLType(type:string):DSLType {
+        if (!type) {
+            return 'void'
+        }
+        if (type.endsWith('[]')) {
+            return {
+                name: type.substring(0, type.length - 2),
+                list: true
+            }
+        }
+
+        return type;
+    }
+
+    export function fromDSLType(type:DSLType):string {
+        if (!type) {
+            return 'void';
+        }
+
+        if (typeof type === 'string') {
+            return type;
+        }
+
+        return type.name + (type.list ? '[]' : '');
+    }
 
     export function fromSchemaType(type:any):string {
         if (!type) {
@@ -19,12 +46,13 @@ export namespace DSLConverters {
         return type && type.$ref ? type.$ref : type;
     }
 
-    export function toSchemaType(type:string):SchemaEntryType {
+    export function toSchemaType(dslType:DSLType):SchemaEntryType {
+        const type = fromDSLType(dslType);
         if (!type) {
             return ''
         }
 
-        if (type[0].toUpperCase() === type[0]) {
+        if (BUILT_IN_TYPES.indexOf(type) === -1) {
             return {$ref: type};
         }
 
@@ -56,16 +84,17 @@ export namespace DSLConverters {
             if (stringType === 'array') {
                 return {
                     name,
-                    type: fromSchemaType(value.items?.type),
-                    list: true,
+                    type: {
+                        name: fromSchemaType(value.items?.type),
+                        list: true
+                    },
                     properties: value.items?.properties ? fromSchemaProperties(value.items?.properties) : undefined
                 }
             }
 
             return {
                 name,
-                type: stringType,
-                list: stringType.endsWith('[]'),
+                type: asDSLType(stringType),
                 properties: value.properties ? fromSchemaProperties(value.properties) : undefined
             }
         });
@@ -75,21 +104,21 @@ export namespace DSLConverters {
         const out = {};
 
         properties.forEach(property => {
-
             const type = toSchemaType(property.type);
 
-            if (property.list) {
+            if (typeof property.type === 'string' ||
+                !property.type.list) {
+                out[property.name] = {
+                    type,
+                    properties: property.properties ? toSchemaProperties(property.properties) : null
+                }
+            } else {
                 out[property.name] = {
                     type: 'array',
                     items: {
                         type,
                         properties: property.properties ? toSchemaProperties(property.properties) : null
                     }
-                }
-            } else {
-                out[property.name] = {
-                    type,
-                    properties: property.properties ? toSchemaProperties(property.properties) : null
                 }
             }
 
