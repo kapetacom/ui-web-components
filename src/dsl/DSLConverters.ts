@@ -113,6 +113,21 @@ export namespace DSLConverters {
         throw new Error('Unknown schema transport: ' + transport);
     }
 
+    export function toSchemaTransport(transport:string):HTTPTransport {
+        switch (transport.toLowerCase()) {
+            case '@path':
+                return HTTPTransport.PATH;
+            case '@header':
+                return HTTPTransport.HEADER;
+            case '@query':
+                return HTTPTransport.QUERY;
+            case '@body':
+                return HTTPTransport.BODY;
+        }
+
+        return HTTPTransport.QUERY;
+    }
+
     export function fromSchemaMethods(methods: SchemaMethods):DSLMethod[] {
         return Object.entries(methods).map(([name, method]) => {
 
@@ -151,7 +166,7 @@ export namespace DSLConverters {
             method.parameters.forEach((arg) => {
                 args[arg.name] = {
                     type: toSchemaType(arg.type),
-                    transport: arg.annotations && arg.annotations.length > 0 ? arg.annotations[0].type : HTTPTransport.QUERY
+                    transport: toSchemaTransport(arg.annotations && arg.annotations.length > 0 ? arg.annotations[0].type : '@Query')
                 };
             })
 
