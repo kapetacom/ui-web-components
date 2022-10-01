@@ -109,8 +109,8 @@ export namespace DSLConverters {
             case 'body':
                 return '@Body';
         }
-
-        throw new Error('Unknown schema transport: ' + transport);
+        //We default to query if the type is invalid
+        return '@Query';
     }
 
     export function toSchemaTransport(transport:string):HTTPTransport {
