@@ -109,12 +109,14 @@ export namespace DSLConverters {
             if (typeof property.type === 'string' ||
                 !property.type.list) {
                 out[property.name] = {
+                    description: property.description,
                     type,
                     properties: property.properties ? toSchemaProperties(property.properties) : null
                 }
             } else {
                 out[property.name] = {
                     type: 'array',
+                    description: property.description,
                     items: {
                         type,
                         properties: property.properties ? toSchemaProperties(property.properties) : null
@@ -203,7 +205,7 @@ export namespace DSLConverters {
                 responseType: toSchemaType(method.returnType),
                 method: (method.annotations ? method?.annotations[0].type?.substring(1).toUpperCase() : 'GET') as HTTPMethod,
                 path: (method.annotations && method.annotations[0].arguments ? method?.annotations[0].arguments[0] : '/'),
-                description: method.description || '',
+                description: method.description,
                 arguments: args
             }
         });

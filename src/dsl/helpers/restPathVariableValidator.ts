@@ -1,5 +1,6 @@
 import {DSLMethod, DSLParameter, toStandardType} from "../interfaces";
 import {REST_METHOD_ANNOTATIONS, STRINGABLE_TYPES} from "../types";
+import {isStringableType} from "@blockware/ui-web-types";
 
 /**
  * Validates that REST methods contain valid path variables both in the path definition
@@ -89,7 +90,7 @@ export const restPathVariableValidator = (entity:DSLMethod) => {
 
         const stdType = toStandardType(parameter.type);
 
-        if (STRINGABLE_TYPES.indexOf(stdType.name) === -1) {
+        if (!isStringableType(stdType.name)) {
             reportError(
                 `Parameter type can not be used in paths for parameter ${parameter.name}. Supported types are ${STRINGABLE_TYPES.join(', ')}`,
                 getLocation(parameter)

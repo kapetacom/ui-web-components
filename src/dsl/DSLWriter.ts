@@ -74,8 +74,8 @@ function toPropertyCode(data: DSLDataTypeProperty, indent = 0) {
         type = dataType.name + (dataType.list ? '[]' : '');
     }
 
-    return prefix + [
-        data.annotations ? data.annotations.map(toAnnotationCode).join('\n') : '',
+    return [
+        data.annotations ? data.annotations.map(toAnnotationCode).join('\n' + prefix) : '',
         data.name + ': ' + type
     ].join('\n' + prefix);
 }
