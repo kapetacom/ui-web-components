@@ -68,7 +68,6 @@ test2(@Path id:string, @Path(more) other:number ):void
         }
 
         let isList = false;
-        console.log('type', type);
         if (typeof type !== 'string') {
             isList = type.list;
             type = type.name;

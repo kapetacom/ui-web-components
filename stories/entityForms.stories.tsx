@@ -5,8 +5,6 @@ import {Store, withState, State} from "@sambego/storybook-state";
 import {EntityMapper, EntityPicker, EntityForm, EntityFormModel} from "../src";
 import {EntityList} from "../src/entities/EntityList";
 import {SchemaEntryType} from '@blockware/ui-web-types';
-import {add} from "lodash";
-import {Checkbox} from "../src/form/Checkbox";
 
 const EntityFrom = {
     name: {
@@ -165,7 +163,10 @@ storiesOf('Entity Forms', module)
 
             return (
                 <div style={{width: "400px", height: "600px"}}>
-                    <EntityList entities={demoEntities}/>
+                    <EntityList entities={demoEntities}
+                                handleEditEntity={() => {}}
+                                handleRemoveEntity={() => {}}
+                                handleCreateEntity={() => {}} />
                 </div>
             )
         }

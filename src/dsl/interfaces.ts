@@ -1,5 +1,4 @@
 import {LANGUAGE_ID} from "./types";
-import exp from "constants";
 
 export const DSL_LANGUAGE_ID = LANGUAGE_ID
 
@@ -8,7 +7,7 @@ export interface DSLAnnotation {
     type:string
 }
 
-interface DSLTypeComplex {
+export interface DSLTypeComplex {
     name:string,
     list?:boolean
 }
@@ -77,4 +76,16 @@ export interface DSLLanguageOptions extends DSLOptions {
     methodAnnotations?: string[]
     typeAnnotations?: string[]
     fieldAnnotations?: string[]
+}
+
+
+export function toStandardType(type:DSLType) {
+    if (typeof type === 'string') {
+        return {
+            name: type,
+            list: false
+        }
+    } else {
+        return type;
+    }
 }

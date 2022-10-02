@@ -1,4 +1,4 @@
-import {DSLMethod, DSLParameter} from "../interfaces";
+import {DSLMethod, DSLParameter, toStandardType} from "../interfaces";
 import {REST_METHOD_ANNOTATIONS, STRINGABLE_TYPES} from "../types";
 
 /**
@@ -87,7 +87,9 @@ export const restPathVariableValidator = (entity:DSLMethod) => {
             return;
         }
 
-        if (STRINGABLE_TYPES.indexOf(parameter.type) === -1) {
+        const stdType = toStandardType(parameter.type);
+
+        if (STRINGABLE_TYPES.indexOf(stdType.name) === -1) {
             reportError(
                 `Parameter type can not be used in paths for parameter ${parameter.name}. Supported types are ${STRINGABLE_TYPES.join(', ')}`,
                 getLocation(parameter)

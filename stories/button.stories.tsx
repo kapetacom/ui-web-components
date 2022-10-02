@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import {Button, ButtonSize, ButtonStyle, ButtonType, LogoButton} from '../src';
+import {Button, ButtonSize, ButtonStyle, LogoButton} from '../src';
 
 storiesOf('Buttons', module)
     .add("Buttons", () => (

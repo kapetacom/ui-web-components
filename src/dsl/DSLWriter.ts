@@ -5,7 +5,7 @@ import {
     DSLEntity, DSLEntityType,
     DSLMethod,
     DSLParameter,
-    DSLRichEntity
+    DSLRichEntity, DSLType, DSLTypeComplex, toStandardType
 } from "./types";
 
 function toAnnotationCode(data: DSLAnnotation) {
@@ -31,9 +31,10 @@ function toAnnotationsCode(data: DSLAnnotation[]) {
 
 
 function toParameterCode(data: DSLParameter) {
+    const typeString = toTypeString(data.type);
     return [
         data.annotations ? data.annotations.map(toAnnotationCode).join(' ') : '',
-        data.name + ':' + data.type
+        data.name + ':' + typeString
     ].join(' ').trim();
 }
 
@@ -53,17 +54,24 @@ function toRichEntityCode(data: DSLRichEntity) {
     return out.join('\n').trim();
 }
 
+
+function toTypeString(type:DSLType) {
+    const dataType = toStandardType(type);
+    return dataType.name + (dataType.list ? '[]' : '')
+}
+
 function toPropertyCode(data: DSLDataTypeProperty, indent = 0) {
     let prefix = '\t'.repeat(1 + indent);
     let type;
-    if (data.type === 'object' &&
+    let dataType = toStandardType(data.type)
+    if (dataType.name === 'object' &&
         data.properties) {
         type = toPropertiesCode(data.properties, indent + 1);
-        if (data.list) {
+        if (dataType.list) {
             type = `[${type}]`;
         }
     } else {
-        type = data.type + (data.list ? '[]' : '');
+        type = dataType.name + (dataType.list ? '[]' : '');
     }
 
     return prefix + [
@@ -96,7 +104,7 @@ function toDataTypeCode(data: DSLDataType) {
 function toMethodCode(data: DSLMethod) {
     const out = [toRichEntityCode(data).trim()];
 
-    out.push(`${data.name}(${toParametersCode(data.parameters)}):${data.returnType}`)
+    out.push(`${data.name}(${toParametersCode(data.parameters)}):${toTypeString(data.returnType)}`)
 
     return out.join('\n');
 }

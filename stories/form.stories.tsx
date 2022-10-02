@@ -1,9 +1,11 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
-import { Store, withState, State } from "@sambego/storybook-state";
+import {State, Store, withState} from "@sambego/storybook-state";
 
 import {
-    Button, ButtonSize, ButtonStyle,
+    Button,
+    ButtonSize,
+    ButtonStyle,
     ButtonType,
     DropdownInput,
     FormButtons,
@@ -112,8 +114,7 @@ storiesOf('Forms', module)
                         label={"Single line input"}
                         validation={['required']}
                         help={"Specify the name of your block."}
-                        onChange={inputReturnCallback}>
-                    </SingleLineInput>
+                        onChange={inputReturnCallback} />
 
                     <SingleLineInput
                         name={"SingleInput2"}
@@ -121,8 +122,7 @@ storiesOf('Forms', module)
                         label={"Single line input"}
                         validation={['required']}
                         help={"Specify the name of your block."}
-                        onChange={inputReturnCallback}>
-                    </SingleLineInput>
+                        onChange={inputReturnCallback} />
 
                     <SingleLineInput
                         name={"SingleInput3"}
@@ -131,8 +131,7 @@ storiesOf('Forms', module)
                         validation={['required']}
                         help={"Specify the ID of your block."}
                         type={Type.NUMBER}
-                        onChange={inputReturnCallback}>
-                    </SingleLineInput>
+                        onChange={inputReturnCallback} />
 
 
                     <MultiLineInput
@@ -142,18 +141,14 @@ storiesOf('Forms', module)
                         validation={['required']}
                         help={"Specify the description of your block."}
                         onChange={inputReturnCallback}
-                        disabled={true}>
-                    </MultiLineInput>
+                        disabled={true} />
                     <MultiLineInput
                         name={"MultiLineInput2"}
                         value={''}
                         label={"Multiline line input"}
                         validation={['required']}
                         help={"Specify the description of your block."}
-                        onChange={inputReturnCallback}>
-                    </MultiLineInput>
-
-
+                        onChange={inputReturnCallback} />
                     <input type="submit" value="Submit" />
                 </form>
             </div>
@@ -288,7 +283,7 @@ storiesOf('Forms', module)
                                 }}
                                 text="Test" />
 
-                        <Button type="submit"
+                        <Button type={ButtonType.SUBMIT}
                                 width={ButtonSize.MEDIUM}
                                 style={ButtonStyle.PRIMARY}
                                 text="Test" />
