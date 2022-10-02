@@ -166,14 +166,14 @@ dataTypeBodyList = '[' _ body:dataTypeBody _ ']' { return body }
 fields =
 	head:field tail:(_ field)* { return buildList(head, tail, 1) }
 
-field = description:comment* annotations:field_annotation* name:id _ ':' _ type:fieldType {
+field = description:comments? annotations:field_annotation* name:id _ ':' _ type:fieldType {
     return {name,annotations,description, ...type}
 }
 
 fieldType
-	= type:id list:(_ '[' _ ']')? { const out = !!list ? {name:type, list: !!list} : type; checkType(out); return out  }
-    / body:dataTypeBody { return {name:'object' ,...body} }
-    / body:dataTypeBodyList { return {name:{name:'object', list: true},...body} }
+	= type:id list:(_ '[' _ ']')? { const out = !!list ? {name:type, list: !!list} : type; checkType(out); return {type:out}  }
+    / body:dataTypeBody { return {type:'object' ,...body} }
+    / body:dataTypeBodyList { return {type:{name:'object', list: true},...body} }
 
 bracket_start = '{'
 
@@ -308,7 +308,7 @@ method_annotation
             }
         }
 
-        return { type, arguments:[usedName], location: location() };
+        return { type, arguments: usedName ? [usedName] : [], location: location() };
     }
 
 type_annotation
@@ -321,7 +321,7 @@ type_annotation
             }
         }
 
-        return { type, arguments:[usedName], location: location() };
+        return { type, arguments: usedName ? [usedName] : [], location: location() };
     }
 
 
@@ -337,7 +337,7 @@ field_annotation
             }
         }
 
-        return { type, arguments:[usedName] };
+        return { type, arguments: usedName ? [usedName] : [] };
     }
 
 parameter_annotation
@@ -353,7 +353,7 @@ parameter_annotation
                 _error(`Invalid variable name. Must start with an alpha character ([a-z]) and only contain alphanumeric characters, dash and underscore. ([a-z0-9_-]) "`);
             }
         }
-        return { type, arguments:[usedName] };
+        return { type, arguments: usedName ? [usedName] : [] };
     }
 
 
