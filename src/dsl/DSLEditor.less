@@ -5,4 +5,13 @@
   height: 100%;
   padding: 5px;
   border: 1px solid #DDD;
+  box-sizing: border-box;
+  position: relative;
+
+  .monaco-editor {
+    // To avoid the editor having an impact on the container size we make it absolute.
+    position: absolute;
+    top:0;
+    left:0;
+  }
 }

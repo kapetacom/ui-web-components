@@ -44,6 +44,7 @@ export const DSLEditor = (props: DSLEditorProps) => {
         lineNumbersMinChars: 3,
         folding: true,
         roundedSelection: false,
+        automaticLayout: true,
         lineDecorationsWidth: 5,
         wordWrap: 'off',
         wordWrapColumn: 120,
