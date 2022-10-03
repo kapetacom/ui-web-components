@@ -1,21 +1,11 @@
-import {
-    DSLDataType,
-    DSLDataTypeProperty,
-    DSLEntityType,
-    DSLEnum,
-    DSLMethod,
-    DSLRichEntity,
-    DSLType
-} from "./interfaces";
+import {DSLDataType, DSLDataTypeProperty, DSLEntity, DSLEntityType, DSLMethod, DSLType} from "./interfaces";
 import {
     HTTPMethod,
     HTTPTransport,
     RESTMethod,
-    SchemaDTO,
     SchemaEntity,
     SchemaEntityType,
     SchemaEntryType,
-    SchemaEnum,
     SchemaProperties
 } from "@blockware/ui-web-types";
 import {BUILT_IN_TYPES} from "./types";
@@ -24,7 +14,7 @@ type SchemaMethods = { [p: string]: RESTMethod };
 
 export namespace DSLConverters {
 
-    export function asDSLType(type:string):DSLType {
+    export function asDSLType(type: string): DSLType {
         if (!type) {
             return 'void'
         }
@@ -38,7 +28,7 @@ export namespace DSLConverters {
         return type;
     }
 
-    export function fromDSLType(type:DSLType):string {
+    export function fromDSLType(type: DSLType): string {
         if (!type) {
             return 'void';
         }
@@ -50,14 +40,14 @@ export namespace DSLConverters {
         return type.name + (type.list ? '[]' : '');
     }
 
-    export function fromSchemaType(type:any):string {
+    export function fromSchemaType(type: any): string {
         if (!type) {
             return 'void'
         }
         return type && type.$ref ? type.$ref : type;
     }
 
-    export function toSchemaType(dslType:DSLType):SchemaEntryType {
+    export function toSchemaType(dslType: DSLType): SchemaEntryType {
         const type = fromDSLType(dslType);
         if (!type) {
             return ''
@@ -70,36 +60,39 @@ export namespace DSLConverters {
         return type;
     }
 
-    export function toSchemaEntity(richEntity:DSLRichEntity):SchemaEntity {
-        const base = {
-            name: richEntity.name,
-            description: richEntity.description
-        };
-
-        switch (richEntity.type) {
+    export function toSchemaEntity(entity: DSLEntity): SchemaEntity {
+        switch (entity.type) {
             case DSLEntityType.ENUM:
                 return {
-                    ...base,
+                    type: SchemaEntityType.ENUM,
+                    name: entity.name,
+                    description: entity.description,
                     values: []
-                } as SchemaEnum;
-            default:
+                };
             case DSLEntityType.DATATYPE:
                 return {
-                    ...base,
-                    properties: toSchemaProperties((richEntity as DSLDataType).properties)
-                } as SchemaDTO;
+                    type: SchemaEntityType.DTO,
+                    name: entity.name,
+                    description: entity.description,
+                    properties: toSchemaProperties(entity.properties)
+                };
+            case DSLEntityType.COMMENT:
+                //Ignore
+                break;
+            default:
+                throw new Error('Unknown dsl type: ' + entity.type);
         }
     }
 
-    export function fromSchemaEntity(entity:SchemaEntity):DSLRichEntity {
+    export function fromSchemaEntity(entity: SchemaEntity): DSLEntity {
         switch (entity.type) {
             case SchemaEntityType.ENUM:
                 return {
                     type: DSLEntityType.ENUM,
                     name: entity.name,
                     description: entity.description,
-                    values: (entity as SchemaEnum).values
-                } as DSLEnum;
+                    values: entity.values
+                };
 
             default:
             case SchemaEntityType.DTO:
@@ -107,15 +100,15 @@ export namespace DSLConverters {
                     type: DSLEntityType.DATATYPE,
                     name: entity.name,
                     description: entity.description,
-                    properties: fromSchemaProperties((entity as SchemaDTO).properties)
-                } as DSLDataType;
+                    properties: entity.properties ? fromSchemaProperties(entity.properties) : []
+                };
 
         }
 
     }
 
-    export function fromSchemaProperties(properties:SchemaProperties):DSLDataTypeProperty[] {
-        return Object.entries(properties).map(([name, value]):DSLDataTypeProperty => {
+    export function fromSchemaProperties(properties: SchemaProperties): DSLDataTypeProperty[] {
+        return Object.entries(properties).map(([name, value]): DSLDataTypeProperty => {
             // @ts-ignore
             const stringType = fromSchemaType(value.type);
 
@@ -138,7 +131,7 @@ export namespace DSLConverters {
         });
     }
 
-    export function toSchemaProperties(properties:DSLDataTypeProperty[]):SchemaProperties {
+    export function toSchemaProperties(properties: DSLDataTypeProperty[]): SchemaProperties {
         const out = {};
 
         properties.forEach(property => {
@@ -167,7 +160,7 @@ export namespace DSLConverters {
         return out;
     }
 
-    export function fromSchemaTransport(transport:string) {
+    export function fromSchemaTransport(transport: string) {
         switch (transport.toLowerCase()) {
             case 'path':
                 return '@Path';
@@ -182,7 +175,7 @@ export namespace DSLConverters {
         return '@Query';
     }
 
-    export function toSchemaTransport(transport:string):HTTPTransport {
+    export function toSchemaTransport(transport: string): HTTPTransport {
         switch (transport.toLowerCase()) {
             case '@path':
                 return HTTPTransport.PATH;
@@ -197,7 +190,7 @@ export namespace DSLConverters {
         return HTTPTransport.QUERY;
     }
 
-    export function fromSchemaMethods(methods: SchemaMethods):DSLMethod[] {
+    export function fromSchemaMethods(methods: SchemaMethods): DSLMethod[] {
         return Object.entries(methods).map(([name, method]) => {
 
             return {
@@ -219,15 +212,15 @@ export namespace DSLConverters {
                 annotations: [
                     {
                         type: `@${method.method}`,
-                        arguments: [ method.path ]
+                        arguments: [method.path]
                     }
                 ]
             }
         });
     }
 
-    export function toSchemaMethods(methods:DSLMethod[]):SchemaMethods {
-        const out:SchemaMethods = {}
+    export function toSchemaMethods(methods: DSLMethod[]): SchemaMethods {
+        const out: SchemaMethods = {}
 
         methods.forEach(method => {
 
