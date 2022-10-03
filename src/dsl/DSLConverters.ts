@@ -67,14 +67,14 @@ export namespace DSLConverters {
                     type: SchemaEntityType.ENUM,
                     name: entity.name,
                     description: entity.description,
-                    values: []
+                    values: entity.values
                 };
             case DSLEntityType.DATATYPE:
                 return {
                     type: SchemaEntityType.DTO,
                     name: entity.name,
                     description: entity.description,
-                    properties: toSchemaProperties(entity.properties)
+                    properties: entity.properties ? toSchemaProperties(entity.properties) : {}
                 };
             case DSLEntityType.COMMENT:
                 //Ignore
