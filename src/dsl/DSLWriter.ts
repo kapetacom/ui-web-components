@@ -2,7 +2,7 @@ import {
     DSLAnnotation, DSLComment,
     DSLDataType,
     DSLDataTypeProperty,
-    DSLEntity, DSLEntityType,
+    DSLEntity, DSLEntityType, DSLEnum,
     DSLMethod,
     DSLParameter,
     DSLRichEntity, DSLType, DSLTypeComplex, toStandardType
@@ -109,18 +109,26 @@ function toMethodCode(data: DSLMethod) {
     return out.join('\n');
 }
 
+function toEnumCode(data: DSLEnum) {
+    const out = [toRichEntityCode(data)];
+
+    out.push(`enum ${data.name} {\n\t${data.values.join(',\n\t')}\n}`)
+
+    return out.join('\n');
+}
+
 export const DSLWriter = {
     write(entities: DSLEntity[]): string {
         return entities.map(entity => {
             switch (entity.type) {
                 case DSLEntityType.COMMENT:
-                    return '#' + (entity as DSLComment).text
+                    return '#' + entity.text
                 case DSLEntityType.DATATYPE:
-                    const dataType = entity as DSLDataType;
-                    return toDataTypeCode(dataType);
+                    return toDataTypeCode(entity);
+                case DSLEntityType.ENUM:
+                    return toEnumCode(entity);
                 case DSLEntityType.METHOD:
-                    const method = entity as DSLMethod;
-                    return toMethodCode(method);
+                    return toMethodCode(entity);
             }
         }).join('\n\n').trim();
     }

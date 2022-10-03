@@ -1,7 +1,7 @@
 import {makeObservable, observable} from "mobx";
 import {Guid} from "guid-typescript";
 
-import {SchemaEntity, SchemaEntry, SchemaEntryType, SchemaProperties} from "@blockware/ui-web-types";
+import {SchemaDTO, SchemaEntityType, SchemaEntry, SchemaEntryType, SchemaProperties} from "@blockware/ui-web-types";
 
 export interface SchemaEntryEdit {
     uid: string
@@ -60,12 +60,12 @@ export class EntityFormModel {
     properties: SchemaEntryEdit[];
 
     @observable
-    private original: SchemaEntity;
+    private original: SchemaDTO;
 
-    constructor(entry?: SchemaEntity) {
+    constructor(entry?: SchemaDTO) {
         makeObservable(this);
         if (!entry) {
-            entry = {name:'', properties: {}};
+            entry = {type: SchemaEntityType.DTO, name:'', properties: {}};
         }
         this.name = entry.name;
         this.properties = toEditProperties(entry.properties);
@@ -75,8 +75,9 @@ export class EntityFormModel {
         this.original = entry;
     }
 
-    public getData() {
+    public getData():SchemaDTO {
         return {
+            type: SchemaEntityType.DTO,
             name: this.name,
             properties: fromEditProperties(this.properties)
         };

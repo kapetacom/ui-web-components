@@ -30,32 +30,43 @@ export interface DSLParameter {
 
 export enum DSLEntityType {
     DATATYPE = 'datatype',
+    ENUM = 'enum',
     METHOD = 'method',
     COMMENT = 'comment',
 }
 
-export interface DSLEntity {
+export interface DSLEntityBase {
     type:DSLEntityType
 }
 
-export interface DSLRichEntity extends DSLEntity {
+export interface DSLRichEntity extends DSLEntityBase {
     name:string
     annotations?:DSLAnnotation[]
     description?:string
 }
 
+export interface DSLEnum extends DSLRichEntity {
+    type: DSLEntityType.ENUM
+    values:string[]
+}
+
 export interface DSLDataType extends DSLRichEntity {
+    type: DSLEntityType.DATATYPE
     properties:DSLDataTypeProperty[]
 }
 
 export interface DSLMethod extends DSLRichEntity {
+    type: DSLEntityType.METHOD
     returnType:DSLType
     parameters:DSLParameter[]
 }
 
-export interface DSLComment extends DSLEntity {
+export interface DSLComment extends DSLEntityBase {
+    type: DSLEntityType.COMMENT
     text:string
 }
+
+export type DSLEntity = DSLEnum|DSLDataType|DSLMethod|DSLComment;
 
 export interface DSLResult {
     code:string

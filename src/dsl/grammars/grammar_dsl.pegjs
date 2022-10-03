@@ -120,11 +120,12 @@ test2(@Path id:string, @Path(more) other:number ):void
 program = _ expressions:expression* _ { return expressions }
 
 expression
-	= type:datatype _ { return type }
+	= enum_type:enum_type _ { return enum_type }
+	/ type:datatype _ { return type }
     / method:method _ { return method }
     / comment:comments { return {type:'comment', text:comment} }
 
-datatype_name
+type_name
     = name:id {
     //Need this to add data type as its being defined
     options.validTypes.push(name);
@@ -134,7 +135,7 @@ datatype_name
 datatype
 	= description:comments?
 	  annotations:type_annotation*
-      name:datatype_name _
+      name:type_name _
       body:dataTypeBody {
 
     if (!options.ignoreSemantics) {
@@ -174,6 +175,39 @@ fieldType
 	= type:id list:(_ '[' _ ']')? { const out = !!list ? {name:type, list: !!list} : type; checkType(out); return {type:out}  }
     / body:dataTypeBody { return {type:'object' ,...body} }
     / body:dataTypeBodyList { return {type:{name:'object', list: true},...body} }
+
+enum_type
+	= description:comments?
+	  annotations:type_annotation*
+      'enum' _ name:type_name _
+      body:enumBody {
+
+    if (!options.ignoreSemantics) {
+        if (!options.types) {
+            softError(`Enum definitions not allowed`);
+        }
+
+        if (options.typeAnnotations.length === 0 && annotations.length > 0) {
+            _error(`Annotations not allowed on enum types`, annotations[0].location);
+        }
+    }
+
+    checkUnique(name);
+    GLOBAL_IDS[name] = 'enum'
+
+	return {
+    	type:'enum',
+        name,
+        description: description,
+        annotations: annotations.map(a => { return {type:a.type, arguments:a.arguments} }),
+        ...body
+	}
+}
+
+enumValues = head:id tail:(_ comma _ id)* { return buildList(head, tail, 3) }
+enumBody = bracket_start _ values:enumValues? _ bracket_end { return {values} }
+
+comma = ','
 
 bracket_start = '{'
 
@@ -393,7 +427,7 @@ parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:paramet
 }
 
 parameters
-    = head:parameter tail:(_ ',' _ parameter)* { return buildList(head, tail, 3) }
+    = head:parameter tail:(_ comma _ parameter)* { return buildList(head, tail, 3) }
 
 __ "space"
   = " "

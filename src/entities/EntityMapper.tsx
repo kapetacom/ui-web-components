@@ -1,7 +1,7 @@
 import React from "react";
 import {
     isCompatibleTypes,
-    SchemaEntity,
+    SchemaDTO,
     SchemaEntry,
     SchemaEntryType,
     SchemaProperties,
@@ -21,9 +21,9 @@ type EntityMap = { [from: string]: MappedEntity };
 
 interface EntityMapperProps {
     from: SchemaProperties
-    fromEntities: SchemaEntity[]
+    fromEntities: SchemaDTO[]
     to: SchemaProperties
-    toEntities: SchemaEntity[]
+    toEntities: SchemaDTO[]
     onChange: (entityMap: EntityMap) => void
 }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { SchemaEntity } from "@blockware/ui-web-types";
+import {SchemaDTO, SchemaEntity} from "@blockware/ui-web-types";
 import {  toClass } from "@blockware/ui-web-utils";
 import "./EntityList.less"
 
@@ -28,7 +28,7 @@ export const EntityList = (props: EntityListProps) => {
 
     const entityList: SchemaEntity[] = props.entities ;
 
-    const listItems = entityList.map((entity: SchemaEntity) => {
+    const listItems = entityList.map((entity: SchemaDTO) => {
 
         let entityStatusClass = toClass({
             'entity-status': true,

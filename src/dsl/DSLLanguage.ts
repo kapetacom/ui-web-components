@@ -39,7 +39,7 @@ const language: ILanguage = {
     defaultToken: 'invalid',
 
 
-    keywords: [],
+    keywords: ['enum'],
     operators: [],
     typeKeywords: BUILT_IN_TYPES,
 
@@ -64,6 +64,9 @@ const language: ILanguage = {
                     }
                 }]
             ],
+
+            //Enum name
+            [/(enum)(\s*)([a-zA-Z_][\w$]*)(?=\s*\{)/, ['keyword','', 'entity']],
 
             //Method name
             [/([a-zA-Z_][\w$]*)(?=\s*\()/, 'entity'],

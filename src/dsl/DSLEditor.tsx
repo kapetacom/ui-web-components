@@ -5,12 +5,9 @@ import './DSLEditor.less';
 import Monaco from "@monaco-editor/react";
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import {
-    BUILT_IN_ANNOTATIONS, BUILT_IN_TYPES, DSLMethod,
     DSLOptions,
     DSLResult,
-    LANGUAGE_ID,
-    METHOD_ANNOTATIONS,
-    REST_METHOD_ANNOTATIONS, STRINGABLE_TYPES
+    LANGUAGE_ID
 } from "./types";
 
 import './DSLLanguage';

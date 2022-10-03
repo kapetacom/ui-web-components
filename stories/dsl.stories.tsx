@@ -1,6 +1,6 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
-import {DataTypeEditor, DSLDataType, DSLEntityType, DSLMethod, MethodEditor} from "../src";
+import {DataTypeEditor, DSLDataType, DSLEntity, DSLEntityType, DSLMethod, DSLRichEntity, MethodEditor} from "../src";
 import {DSLEditor} from "../src/dsl/DSLEditor";
 
 const REST_METHODS = `
@@ -24,11 +24,18 @@ otherMethod(fullName:string, cookieId:string, tags:string[]):void
 thirdOne():TreeNode[]`;
 
 const DATA_TYPES = `
+//Enum values for status
+enum Status {
+    ENABLED,
+    DISABLED,
+    UNKNOWN
+}
 //Tree structure data entity
 TreeNode {
     id:string
     parent:TreeNode
     children:TreeNode[]
+    status: Status
     attributes: [{
         id:string
         value: string
@@ -41,7 +48,13 @@ Todo {
     status:string
 }`;
 
-const DATA_TYPE_ENTITIES:DSLDataType[] = [
+const DATA_TYPE_ENTITIES:DSLEntity[] = [
+    {
+        type: DSLEntityType.ENUM,
+        name: 'Status',
+        description: 'Enum values for status',
+        values: ['ENABLED','DISABLED','UNKNOWN']
+    },
     {
         type: DSLEntityType.DATATYPE,
         name: 'MyDataType',
@@ -94,7 +107,7 @@ const DATA_TYPE_ENTITIES:DSLDataType[] = [
     }
 ]
 
-const REST_METHOD_ENTITIES:DSLMethod[] = [
+const REST_METHOD_ENTITIES:DSLEntity[] = [
     {
         type: DSLEntityType.METHOD,
         name: 'myMethod',

@@ -1,10 +1,21 @@
-import {DSLDataType, DSLDataTypeProperty, DSLEntityType, DSLMethod, DSLType} from "./interfaces";
+import {
+    DSLDataType,
+    DSLDataTypeProperty,
+    DSLEntityType,
+    DSLEnum,
+    DSLMethod,
+    DSLRichEntity,
+    DSLType
+} from "./interfaces";
 import {
     HTTPMethod,
     HTTPTransport,
     RESTMethod,
+    SchemaDTO,
     SchemaEntity,
+    SchemaEntityType,
     SchemaEntryType,
+    SchemaEnum,
     SchemaProperties
 } from "@blockware/ui-web-types";
 import {BUILT_IN_TYPES} from "./types";
@@ -59,21 +70,48 @@ export namespace DSLConverters {
         return type;
     }
 
-    export function toSchemaEntity(datatype:DSLDataType):SchemaEntity {
-        return {
-            name: datatype.name,
-            description: datatype.description,
-            properties: toSchemaProperties(datatype.properties)
+    export function toSchemaEntity(richEntity:DSLRichEntity):SchemaEntity {
+        const base = {
+            name: richEntity.name,
+            description: richEntity.description
         };
+
+        switch (richEntity.type) {
+            case DSLEntityType.ENUM:
+                return {
+                    ...base,
+                    values: []
+                } as SchemaEnum;
+            default:
+            case DSLEntityType.DATATYPE:
+                return {
+                    ...base,
+                    properties: toSchemaProperties((richEntity as DSLDataType).properties)
+                } as SchemaDTO;
+        }
     }
 
-    export function fromSchemaEntity(entity:SchemaEntity):DSLDataType {
-        return {
-            type: DSLEntityType.DATATYPE,
-            name: entity.name,
-            description: entity.description,
-            properties: fromSchemaProperties(entity.properties)
-        };
+    export function fromSchemaEntity(entity:SchemaEntity):DSLRichEntity {
+        switch (entity.type) {
+            case SchemaEntityType.ENUM:
+                return {
+                    type: DSLEntityType.ENUM,
+                    name: entity.name,
+                    description: entity.description,
+                    values: (entity as SchemaEnum).values
+                } as DSLEnum;
+
+            default:
+            case SchemaEntityType.DTO:
+                return {
+                    type: DSLEntityType.DATATYPE,
+                    name: entity.name,
+                    description: entity.description,
+                    properties: fromSchemaProperties((entity as SchemaDTO).properties)
+                } as DSLDataType;
+
+        }
+
     }
 
     export function fromSchemaProperties(properties:SchemaProperties):DSLDataTypeProperty[] {

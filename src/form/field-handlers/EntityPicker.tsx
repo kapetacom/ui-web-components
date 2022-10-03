@@ -2,8 +2,7 @@ import React from "react";
 import {action, makeObservable, observable} from "mobx";
 import {observer} from "mobx-react";
 
-import {toClass} from '@blockware/ui-web-utils';
-import {SchemaEntity, SchemaEntryType} from "@blockware/ui-web-types";
+import {SchemaEntity, SchemaEntityType, SchemaEntryType} from "@blockware/ui-web-types";
 import {Modal, ModalSize} from "../../modal/Modal";
 import {EntityForm} from "../../entities/EntityForm";
 import {FormContainer} from "../FormContainer";
@@ -11,7 +10,7 @@ import {FormButtons} from "../FormButtons";
 import {EntityFormModel} from "../../entities/EntityFormModel";
 
 import './EntityPicker.less';
-import { DropdownInput } from "../inputs/DropdownInput";
+import {DropdownInput} from "../inputs/DropdownInput";
 import {Checkbox} from "../Checkbox";
 
 const CREATE_VALUE = '__create__';
@@ -113,7 +112,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         }
 
         this.createEntityModal.open();
-        this.newEntity = new EntityFormModel({name:'NewEntity', properties:{}});
+        this.newEntity = new EntityFormModel({type: SchemaEntityType.DTO, name:'NewEntity', properties:{}});
     };
 
     @action
