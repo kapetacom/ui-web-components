@@ -46,6 +46,8 @@ export class DSLCompletionItemProvider implements monaco.languages.CompletionIte
         }
         const dataTypeNames:string[] = tokens.filter(t => 'datatype_name' === t.type).map(t => t.value);
 
+        const enumNames:string[] = tokens.filter(t => 'enum_name' === t.type).map(t => t.value);
+
         let suggestions:monaco.languages.CompletionItem[] = [];
 
         const TYPES = [
@@ -67,6 +69,15 @@ export class DSLCompletionItemProvider implements monaco.languages.CompletionIte
                 range: null
             };
         });
+
+        suggestions.push(...enumNames.map(type => {
+            return {
+                label: type,
+                insertText: type,
+                kind: monaco.languages.CompletionItemKind.Enum,
+                range: null
+            };
+        }));
 
         suggestions.push(...METHOD_ANNOTATIONS.map(type => {
             return {
@@ -109,8 +120,14 @@ export class DSLCompletionItemProvider implements monaco.languages.CompletionIte
             {
                 label: "type",
                 kind: monaco.languages.CompletionItemKind.Struct,
-                insertText: "${1:name} { \n$0\n}",
-                commitCharacters: ['\n', '\t'],
+                insertText: "${1:name} {\n\t$0\n}",
+                insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                range: null
+            },
+            {
+                label: "enum",
+                kind: monaco.languages.CompletionItemKind.Enum,
+                insertText: "enum ${1:name} {\n\t$0\n}",
                 insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
                 range: null
             },

@@ -205,7 +205,21 @@ enum_type
 }
 
 enumValues = head:id tail:(_ comma _ id)* { return buildList(head, tail, 3) }
-enumBody = bracket_start _ values:enumValues? _ bracket_end { return {values} }
+enumBody = bracket_start _ values:enumValues? _ bracket_end {
+    const enumValues = values ? values : [];
+    if (!options.ignoreSemantics) {
+        const duplicateValue = enumValues.find((element, index) => {
+            return enumValues.indexOf(element) !== index;
+        });
+
+        if (duplicateValue) {
+            softError(`Found duplicate value in enum definition: ${duplicateValue}`);
+        }
+    }
+    return {
+        values: enumValues
+    }
+}
 
 comma = ','
 
@@ -216,7 +230,6 @@ bracket_end = '}'
 method_name
     = name:id {
         checkUnique(name);
-        GLOBAL_IDS[name] = 'method'
         return {value:name, location: location()};
     }
 
@@ -232,6 +245,8 @@ method "method"
     = 	description:comments?
     	annotations:method_annotation*
     	name:method_name _ parenthesis_start _ args:parameters? parenthesis_end _ colon _ returnType:method_returnType {
+
+    GLOBAL_IDS[name] = 'method'
 
     if (!options.ignoreSemantics) {
         if (!options.methods) {

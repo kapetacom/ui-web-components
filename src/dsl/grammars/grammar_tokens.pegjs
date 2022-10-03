@@ -35,6 +35,7 @@ program = expr:expression* {
 expression
 	= comment
     / annotation
+    / enum_type
     / datatype
     / variable_definition
     / field_definition
@@ -152,6 +153,23 @@ method = name:id ws1:_*
 		return out;
 	}
 
+enum_values
+    = head:id tail:(_? comma _? id)*
+
+enum_body
+    = brackets_start _? enum_values? _? brackets_end;
+
+enum_type
+    = 'enum' ws1:_ name:id ws2:_?  body:enum_body {
+   return [
+      {type: 'keyword', value: 'enum'},
+      ws1,
+      {type: 'enum_name', value: name.value},
+      ws2,
+      body
+   ]
+}
+
 datatype
 	= name:id ws:_* body:datatype_body {
        return [
@@ -162,10 +180,10 @@ datatype
     }
 
 datatype_body
-	= brackets_start _* (field_definition _)* brackets_end
+	= brackets_start _? (field_definition _)* brackets_end
 
 datatype_body_list
-	= square_brackets_start _* datatype_body _* square_brackets_end
+	= square_brackets_start _? datatype_body _? square_brackets_end
 
 field_definition
 	= variable_definition
