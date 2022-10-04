@@ -3,9 +3,10 @@ import loader from '@monaco-editor/loader';
 
 import IRichLanguageConfiguration = monaco.languages.LanguageConfiguration;
 import ILanguage = monaco.languages.IMonarchLanguage;
-import {BUILT_IN_TYPES, LANGUAGE_ID} from "./types";
+import {BUILT_IN_TYPES} from "./types";
 import {DSLCompletionItemProvider} from "./DSLCompletionItemProvider";
 import {DSLDocumentFormattingEditProvider} from "./DSLDocumentFormattingEditProvider";
+import {DSL_LANGUAGE_ID} from "./interfaces";
 
 const configuration: IRichLanguageConfiguration = {
     comments: {
@@ -161,18 +162,18 @@ export const withAdditionalTypes = (model:monaco.editor.ITextModel, types:string
 
 loader.init().then((monaco) => {
     const languages = monaco.languages;
-    languages.register({id: LANGUAGE_ID});
+    languages.register({id: DSL_LANGUAGE_ID});
 
-    languages.onLanguage(LANGUAGE_ID, () => {
+    languages.onLanguage(DSL_LANGUAGE_ID, () => {
 
         //Tokens and language configuration
-        languages.setMonarchTokensProvider(LANGUAGE_ID, language);
-        languages.setLanguageConfiguration(LANGUAGE_ID, configuration);
+        languages.setMonarchTokensProvider(DSL_LANGUAGE_ID, language);
+        languages.setLanguageConfiguration(DSL_LANGUAGE_ID, configuration);
 
         //Auto-formatting:
-        languages.registerDocumentFormattingEditProvider(LANGUAGE_ID, documentFormattingEditProvider);
+        languages.registerDocumentFormattingEditProvider(DSL_LANGUAGE_ID, documentFormattingEditProvider);
 
         //Auto-complete:
-        languages.registerCompletionItemProvider(LANGUAGE_ID, completionItemProvider);
+        languages.registerCompletionItemProvider(DSL_LANGUAGE_ID, completionItemProvider);
     });
 })

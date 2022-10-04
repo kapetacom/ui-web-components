@@ -1,6 +1,6 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import {DSLParser} from "./DSLParser";
-import {DSLLanguageOptions, LANGUAGE_ID} from "./types";
+import {DSL_LANGUAGE_ID, DSLLanguageOptions} from "./types";
 
 type ITextModel = monaco.editor.ITextModel;
 type Editor = typeof monaco.editor;
@@ -57,7 +57,7 @@ export class DSLValidator {
             })
         }
 
-        this.editor.setModelMarkers(model, LANGUAGE_ID, errors);
+        this.editor.setModelMarkers(model, DSL_LANGUAGE_ID, errors);
     }
 
     bind(model) {

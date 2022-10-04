@@ -135,7 +135,7 @@ export namespace DSLConverters {
         const out = {};
 
         properties.forEach(property => {
-            const type = toSchemaType(property.type);
+            let type = toSchemaType(property.type);
 
             if (typeof property.type === 'string' ||
                 !property.type.list) {
@@ -145,6 +145,17 @@ export namespace DSLConverters {
                     properties: property.properties ? toSchemaProperties(property.properties) : null
                 }
             } else {
+                //Normally this includes [] if its a list - we want to strip that off for properties
+                //To not create a "List of Lists"
+                if (typeof type === 'string') {
+                    if (type.endsWith('[]')) {
+                        type = type.substring(0, type.length - 2);
+                    }
+                } else {
+                    if (type.$ref.endsWith('[]')) {
+                        type.$ref = type.$ref.substring(0, type.$ref.length - 2);
+                    }
+                }
                 out[property.name] = {
                     type: 'array',
                     description: property.description,

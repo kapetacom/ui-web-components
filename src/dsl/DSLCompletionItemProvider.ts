@@ -1,14 +1,11 @@
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import {IDisposable, Position, CancellationToken, languages, editor} from 'monaco-editor';
 import {BUILT_IN_TYPES, METHOD_ANNOTATIONS, PARAMETER_ANNOTATIONS} from "./types";
 import {TokenParser} from "./TokenParser";
-import {IDisposable} from "monaco-editor";
 
-type CancellationToken = monaco.CancellationToken;
-type Position = monaco.Position;
-type CompletionContext = monaco.languages.CompletionContext;
-type ITextModel = monaco.editor.ITextModel;
+type CompletionContext = languages.CompletionContext;
+type ITextModel = editor.ITextModel;
 
-export class DSLCompletionItemProvider implements monaco.languages.CompletionItemProvider {
+export class DSLCompletionItemProvider implements languages.CompletionItemProvider {
 
     private _additionalTypes:{[key:string]:string[]} = {};
 
@@ -48,7 +45,7 @@ export class DSLCompletionItemProvider implements monaco.languages.CompletionIte
 
         const enumNames:string[] = tokens.filter(t => 'enum_name' === t.type).map(t => t.value);
 
-        let suggestions:monaco.languages.CompletionItem[] = [];
+        let suggestions:languages.CompletionItem[] = [];
 
         const TYPES = [
             ...BUILT_IN_TYPES,
@@ -65,7 +62,7 @@ export class DSLCompletionItemProvider implements monaco.languages.CompletionIte
             return {
                 label: type,
                 insertText: type,
-                kind: monaco.languages.CompletionItemKind.TypeParameter,
+                kind: languages.CompletionItemKind.TypeParameter,
                 range: null
             };
         });
@@ -74,7 +71,7 @@ export class DSLCompletionItemProvider implements monaco.languages.CompletionIte
             return {
                 label: type,
                 insertText: type,
-                kind: monaco.languages.CompletionItemKind.Enum,
+                kind: languages.CompletionItemKind.Enum,
                 range: null
             };
         }));
@@ -83,8 +80,8 @@ export class DSLCompletionItemProvider implements monaco.languages.CompletionIte
             return {
                 label: 'Annotate: ' + type,
                 insertText: type + '("/$0")',
-                kind: monaco.languages.CompletionItemKind.TypeParameter,
-                insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                kind: languages.CompletionItemKind.TypeParameter,
+                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
                 range: null
             };
         }));
@@ -93,8 +90,8 @@ export class DSLCompletionItemProvider implements monaco.languages.CompletionIte
             return {
                 label: 'Annotate: ' + type,
                 insertText: type,
-                kind: monaco.languages.CompletionItemKind.TypeParameter,
-                insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                kind: languages.CompletionItemKind.TypeParameter,
+                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
                 range: null
             };
         }));
@@ -102,41 +99,41 @@ export class DSLCompletionItemProvider implements monaco.languages.CompletionIte
         suggestions.push(
             {
                 label: "method",
-                kind: monaco.languages.CompletionItemKind.Function,
+                kind: languages.CompletionItemKind.Function,
                 insertText: "${1:name}( $0 ):${2|" + typeChoice + "|}",
-                insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
                 range: null,
 
             },
 
             {
                 label: "REST method",
-                kind: monaco.languages.CompletionItemKind.Function,
+                kind: languages.CompletionItemKind.Function,
                 insertText: "@${1|" + methodAnnotationChoice + "|}('/${2:path}')\n${3:name}( $0 ):${4|" + typeChoice + "|}",
-                insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
                 range: null,
 
             },
             {
                 label: "type",
-                kind: monaco.languages.CompletionItemKind.Struct,
+                kind: languages.CompletionItemKind.Struct,
                 insertText: "${1:name} {\n\t$0\n}",
-                insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
                 range: null
             },
             {
                 label: "enum",
-                kind: monaco.languages.CompletionItemKind.Enum,
+                kind: languages.CompletionItemKind.Enum,
                 insertText: "enum ${1:name} {\n\t$0\n}",
-                insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
                 range: null
             },
             {
                 label: "variable",
-                kind: monaco.languages.CompletionItemKind.Variable,
+                kind: languages.CompletionItemKind.Variable,
                 insertText: "${1:name}:${2|" + typeChoice + "|}",
                 documentation: 'Insert variable with type',
-                insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
                 range: null
             }
         );

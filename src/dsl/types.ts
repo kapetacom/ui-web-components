@@ -1,7 +1,7 @@
 
 export * from './interfaces';
 
-export const LANGUAGE_ID = 'blockware-dsl';
+
 
 /**
  * Types that can easily be converted to or from strings (E.g. in paths and similar)

@@ -5,9 +5,9 @@ import './DSLEditor.less';
 import Monaco from "@monaco-editor/react";
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import {
+    DSL_LANGUAGE_ID,
     DSLOptions,
-    DSLResult,
-    LANGUAGE_ID
+    DSLResult
 } from "./types";
 
 import './DSLLanguage';
@@ -78,7 +78,7 @@ export const DSLEditor = (props: DSLEditorProps) => {
                         }
                     }
                 }}
-                language={LANGUAGE_ID}
+                language={DSL_LANGUAGE_ID}
 
                 onMount={(editor, m) => {
                     //Syntax and semantic validation

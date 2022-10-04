@@ -1,6 +1,4 @@
-import {LANGUAGE_ID} from "./types";
-
-export const DSL_LANGUAGE_ID = LANGUAGE_ID
+export const DSL_LANGUAGE_ID = 'blockware-dsl'
 
 export interface DSLAnnotation {
     arguments?:string[]
