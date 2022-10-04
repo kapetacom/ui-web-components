@@ -1,4 +1,4 @@
-import {DSLDataType, DSLDataTypeProperty, DSLEntity, DSLEntityType, DSLMethod, DSLType} from "./interfaces";
+import {DSLDataTypeProperty, DSLEntity, DSLEntityType, DSLMethod, DSLType} from "./interfaces";
 import {
     HTTPMethod,
     HTTPTransport,

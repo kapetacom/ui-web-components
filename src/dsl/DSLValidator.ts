@@ -1,9 +1,9 @@
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import {editor, MarkerSeverity} from "monaco-editor";
 import {DSLParser} from "./DSLParser";
 import {DSL_LANGUAGE_ID, DSLLanguageOptions} from "./types";
 
-type ITextModel = monaco.editor.ITextModel;
-type Editor = typeof monaco.editor;
+type ITextModel = editor.ITextModel;
+type Editor = typeof editor;
 
 export class DSLValidator {
     private readonly editor: Editor;
@@ -14,23 +14,22 @@ export class DSLValidator {
         this.options = options;
     }
 
-    validate(model:ITextModel) {
-        const code = model.getValue();
+    static validateCode(options:DSLLanguageOptions, code:string) {
         let errors = [];
         try {
             DSLParser.parse(code, {
-                ...this.options,
+                ...options,
                 softErrorHandler: error => {
-                    let severity:monaco.MarkerSeverity = monaco.MarkerSeverity.Error;
+                    let severity:MarkerSeverity = MarkerSeverity.Error;
                     switch (error.type) {
                         case 'warning':
-                            severity = monaco.MarkerSeverity.Warning;
+                            severity = MarkerSeverity.Warning;
                             break;
                         case 'hint':
-                            severity = monaco.MarkerSeverity.Hint;
+                            severity = MarkerSeverity.Hint;
                             break;
                         case 'info':
-                            severity = monaco.MarkerSeverity.Info;
+                            severity = MarkerSeverity.Info;
                             break;
                     }
 
@@ -48,7 +47,7 @@ export class DSLValidator {
             }
             errors.push({
                 code: '2',
-                severity: monaco.MarkerSeverity.Error,
+                severity: MarkerSeverity.Error,
                 endColumn: ex.location.end.column,
                 endLineNumber: ex.location.end.line,
                 message: ex.message,
@@ -56,6 +55,14 @@ export class DSLValidator {
                 startLineNumber: ex.location.start.line
             })
         }
+
+        return errors;
+    }
+
+    validate(model:ITextModel) {
+        const code = model.getValue();
+
+        const errors = DSLValidator.validateCode(this.options, code);
 
         this.editor.setModelMarkers(model, DSL_LANGUAGE_ID, errors);
     }

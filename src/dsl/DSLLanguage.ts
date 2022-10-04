@@ -1,8 +1,8 @@
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import {languages,editor} from "monaco-editor";
 import loader from '@monaco-editor/loader';
 
-import IRichLanguageConfiguration = monaco.languages.LanguageConfiguration;
-import ILanguage = monaco.languages.IMonarchLanguage;
+import IRichLanguageConfiguration = languages.LanguageConfiguration;
+import ILanguage = languages.IMonarchLanguage;
 import {BUILT_IN_TYPES} from "./types";
 import {DSLCompletionItemProvider} from "./DSLCompletionItemProvider";
 import {DSLDocumentFormattingEditProvider} from "./DSLDocumentFormattingEditProvider";
@@ -156,7 +156,7 @@ const language: ILanguage = {
 const completionItemProvider = new DSLCompletionItemProvider();
 const documentFormattingEditProvider = new DSLDocumentFormattingEditProvider();
 
-export const withAdditionalTypes = (model:monaco.editor.ITextModel, types:string[]) => {
+export const withAdditionalTypes = (model:editor.ITextModel, types:string[]) => {
     completionItemProvider.setAdditionalTypes(model, types);
 };
 

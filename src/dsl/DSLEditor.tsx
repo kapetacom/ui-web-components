@@ -3,7 +3,7 @@ import React, {useState} from "react"
 import './DSLEditor.less';
 
 import Monaco from "@monaco-editor/react";
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import {editor} from 'monaco-editor';
 import {
     DSL_LANGUAGE_ID,
     DSLOptions,
@@ -37,7 +37,7 @@ export const DSLEditor = (props: DSLEditorProps) => {
         return value;
     });
 
-    const options:monaco.editor.IStandaloneEditorConstructionOptions = {
+    const options:editor.IStandaloneEditorConstructionOptions = {
         lineNumbersMinChars: 3,
         folding: true,
         roundedSelection: false,

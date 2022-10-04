@@ -1,13 +1,12 @@
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import {languages, CancellationToken, editor} from "monaco-editor";
 import {DSLParser} from "./DSLParser";
 import {DSLWriter} from "./DSLWriter";
 
-type DocumentFormattingEditProvider = monaco.languages.DocumentFormattingEditProvider;
-type CancellationToken = monaco.CancellationToken;
-type FormattingOptions = monaco.languages.FormattingOptions;
-type ITextModel = monaco.editor.ITextModel;
-type TextEdit = monaco.languages.TextEdit;
-type ProviderResult<T> = monaco.languages.ProviderResult<T>;
+type DocumentFormattingEditProvider = languages.DocumentFormattingEditProvider;
+type FormattingOptions = languages.FormattingOptions;
+type ITextModel = editor.ITextModel;
+type TextEdit = languages.TextEdit;
+type ProviderResult<T> = languages.ProviderResult<T>;
 
 export class DSLDocumentFormattingEditProvider implements DocumentFormattingEditProvider {
     provideDocumentFormattingEdits(
