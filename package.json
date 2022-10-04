@@ -25,7 +25,8 @@
         "storybook": "start-storybook -s stories/assets",
         "prepublishOnly": "npm run build",
         "start": "rollup -c -w",
-        "build": "npm run prebuild && rollup -c"
+        "build": "npm run prebuild && rollup -c",
+        "test": "jest"
     },
     "peerDependencies": {
         "@blockware/ui-web-context": "<2",
@@ -42,6 +43,7 @@
         "@blockware/ui-web-context": "<2",
         "@blockware/ui-web-types": "<2",
         "@blockware/ui-web-utils": "<2",
+        "@jest/globals": "^29.1.2",
         "@monaco-editor/react": "^4.4.6",
         "@rollup/plugin-commonjs": "^21.0.1",
         "@rollup/plugin-node-resolve": "^13.1.3",
@@ -58,6 +60,7 @@
         "css-loader": "^6.7.1",
         "guid-typescript": "^1.0.9",
         "html-webpack-plugin": "^5.5.0",
+        "jest": "^29.1.2",
         "json-loader": "^0.5.7",
         "less": "^4.1.3",
         "less-loader": "^11.0.0",
@@ -79,6 +82,7 @@
         "socket.io-client": "^4.5.2",
         "style-loader": "^3.3.1",
         "tokenizr": "^1.6.7",
+        "ts-jest": "^29.0.3",
         "typescript": "^4.8.3",
         "webpack": "^5.74.0",
         "webpack-cli": "^4.10.0",
