@@ -48,12 +48,24 @@ export namespace DSLConverters {
     }
 
     export function toSchemaType(dslType: DSLType): SchemaEntryType {
+
         const type = fromDSLType(dslType);
-        if (!type) {
+        let onlyType = type;
+
+        if (onlyType.endsWith('[]')) {
+            //We need the type without array indicators to check for built-in
+            onlyType = onlyType.substring(0, type.length - 2);
+        }
+
+        if (!onlyType) {
             return ''
         }
 
-        if (BUILT_IN_TYPES.indexOf(type) === -1) {
+        if (onlyType === 'object') {
+            return type;
+        }
+
+        if (BUILT_IN_TYPES.indexOf(onlyType) === -1) {
             return {$ref: type};
         }
 
@@ -115,6 +127,7 @@ export namespace DSLConverters {
             if (stringType === 'array') {
                 return {
                     name,
+                    description: value.description,
                     type: {
                         name: fromSchemaType(value.items?.type),
                         list: true
@@ -126,6 +139,7 @@ export namespace DSLConverters {
             return {
                 name,
                 type: asDSLType(stringType),
+                description: value.description,
                 properties: value.properties ? fromSchemaProperties(value.properties) : undefined
             }
         });
@@ -206,13 +220,13 @@ export namespace DSLConverters {
 
             return {
                 name,
-                returnType: fromSchemaType(method.responseType),
+                returnType: asDSLType(fromSchemaType(method.responseType)),
                 type: DSLEntityType.METHOD,
                 description: method.description,
                 parameters: method.arguments ? Object.entries(method.arguments).map(([name, arg]) => {
                     return {
                         name,
-                        type: fromSchemaType(arg.type),
+                        type: asDSLType(fromSchemaType(arg.type)),
                         annotations: arg.transport ? [
                             {
                                 type: fromSchemaTransport(arg.transport)

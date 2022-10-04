@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "module": "esnext",
         "jsx": "react",
         "sourceMap": true,
@@ -16,9 +16,8 @@
         "emitDecoratorMetadata": true,
         "forceConsistentCasingInFileNames": true
     },
-    "exclude": [
-        "node_modules",
-        "stories",
-        "dist"
+    "include": [
+        "src",
+        "styles"
     ]
 }
