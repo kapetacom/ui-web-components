@@ -3,7 +3,6 @@ import {DSLConverters} from "../../src/dsl/DSLConverters";
 import {DSLDataType, DSLEntityType, DSLEnum, DSLMethod} from "../../src/dsl/types";
 import {HTTPMethod, RESTMethod, SchemaDTO, SchemaEntityType, SchemaEnum} from "@blockware/ui-web-types";
 
-
 describe('DSLConverters', () => {
 
     describe('types', () => {

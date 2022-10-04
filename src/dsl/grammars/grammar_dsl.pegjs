@@ -434,8 +434,6 @@ parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:paramet
             annotations.length > 1) {
             softError(`REST method parameters should have at most 1 annotation`);
         }
-
-        checkType(type);
     }
 
     return {name, type, location: location(), annotations}

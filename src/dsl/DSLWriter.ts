@@ -1,11 +1,10 @@
 import {
-    DSLAnnotation, DSLComment,
-    DSLDataType,
+    DSLAnnotation, DSLDataType,
     DSLDataTypeProperty,
     DSLEntity, DSLEntityType, DSLEnum,
     DSLMethod,
     DSLParameter,
-    DSLRichEntity, DSLType, DSLTypeComplex, toStandardType
+    DSLRichEntity, DSLType, toStandardType
 } from "./types";
 
 function toAnnotationCode(data: DSLAnnotation) {
@@ -42,16 +41,19 @@ function toParametersCode(parameters?: DSLParameter[]) {
     return parameters ? parameters.map(toParameterCode).join(', ').trim() : '';
 }
 
-function toRichEntityCode(data: DSLRichEntity) {
+function generateMetaCode(data: DSLRichEntity|DSLDataTypeProperty, prefix?:string) {
+    if (!prefix) {
+        prefix = '';
+    }
     const out = [];
     if (data.description) {
-        out.push('//' + data.description.split(/\n/).join('\n//'))
+        out.push(prefix + '//' + data.description.split(/\n/).join('\n' + prefix + '//'))
     }
 
     if (data.annotations && data.annotations.length > 0) {
-        out.push(toAnnotationsCode(data.annotations).trim());
+        out.push(prefix + toAnnotationsCode(data.annotations).trim());
     }
-    return out.join('\n').trim();
+    return out.join('\n').trimEnd();
 }
 
 
@@ -74,27 +76,32 @@ function toPropertyCode(data: DSLDataTypeProperty, indent = 0) {
         type = dataType.name + (dataType.list ? '[]' : '');
     }
 
-    return [
-        data.annotations ? data.annotations.map(toAnnotationCode).join('\n' + prefix) : '',
-        data.name + ': ' + type
-    ].join('\n' + prefix);
+    const metaCode = generateMetaCode(data, prefix);
+
+    const out = [];
+    if (metaCode) {
+        out.push(metaCode)
+    }
+
+    out.push(prefix + data.name + ': ' + type);
+    return out.join('\n');
 }
 
 function toPropertiesCode(properties: DSLDataTypeProperty[], indent = 0) {
     let prefix = '\t'.repeat(indent);
-    const out = ['{']
+    const out = ['{\n']
 
     if (properties) {
-        out.push(properties.map(property => toPropertyCode(property, indent)).join(''))
+        out.push(properties.map(property => toPropertyCode(property, indent)).join('\n') + '\n')
     }
 
-    out.push('\n' + prefix + '}');
+    out.push(prefix + '}');
 
     return out.join('');
 }
 
 function toDataTypeCode(data: DSLDataType) {
-    const out = [toRichEntityCode(data)];
+    const out = [generateMetaCode(data)];
 
     out.push(`${data.name} ${toPropertiesCode(data.properties)}`)
 
@@ -102,7 +109,7 @@ function toDataTypeCode(data: DSLDataType) {
 }
 
 function toMethodCode(data: DSLMethod) {
-    const out = [toRichEntityCode(data).trim()];
+    const out = [generateMetaCode(data).trim()];
 
     out.push(`${data.name}(${toParametersCode(data.parameters)}):${toTypeString(data.returnType)}`)
 
@@ -110,7 +117,7 @@ function toMethodCode(data: DSLMethod) {
 }
 
 function toEnumCode(data: DSLEnum) {
-    const out = [toRichEntityCode(data)];
+    const out = [generateMetaCode(data)];
 
     out.push(`enum ${data.name} {\n\t${data.values.join(',\n\t')}\n}`)
 
