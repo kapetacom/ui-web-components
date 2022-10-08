@@ -6,6 +6,8 @@ import external from "rollup-plugin-peer-deps-external"
 import postcss from "rollup-plugin-postcss"
 import dts from "rollup-plugin-dts"
 import pegjs from "rollup-plugin-pegjs";
+import sourcemaps from 'rollup-plugin-sourcemaps';
+
 
 const packageJson = require("./package.json")
 
@@ -17,22 +19,23 @@ export default [
             {
                 file: packageJson.main,
                 format: "cjs",
-                sourcemap: true,
+                sourcemap: 'inline',
                 name: packageJson.name,
             },
             {
                 file: packageJson.module,
                 format: "esm",
-                sourcemap: true
+                sourcemap: 'inline',
             }
         ],
         plugins: [
+            //sourcemaps(),
             pegjs(),
             external(),
             resolve(),
             commonjs(),
             typescript({
-                tsconfig: "./tsconfig.build.json",
+                tsconfig: "./tsconfig.build.json"
             }),
             postcss(),
             terser(),
