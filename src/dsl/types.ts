@@ -1,7 +1,4 @@
-
 export * from './interfaces';
-
-
 
 /**
  * Types that can easily be converted to or from strings (E.g. in paths and similar)

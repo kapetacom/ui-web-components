@@ -1,6 +1,5 @@
 import {languages,editor} from "monaco-editor";
 import loader from '@monaco-editor/loader';
-
 import IRichLanguageConfiguration = languages.LanguageConfiguration;
 import ILanguage = languages.IMonarchLanguage;
 import {BUILT_IN_TYPES} from "./types";

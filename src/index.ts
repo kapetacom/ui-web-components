@@ -55,10 +55,12 @@ export * from './svg/SVGText';
 
 export * from './toast/ToastComponent';
 
+export * from './dsl/types';
 export * from './dsl/DSLConverters';
-export * from './dsl/interfaces';
+export * from './dsl/DSLWriter';
+export * from './dsl/DSLParser';
+
+//Requires browser environment due to monaco editor
 export * from './dsl/DSLEditor';
 export * from './dsl/MethodEditor';
 export * from './dsl/DataTypeEditor';
-export * from './dsl/DSLWriter';
-export * from './dsl/DSLParser';
