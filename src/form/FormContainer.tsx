@@ -20,7 +20,7 @@ interface Props {
     initialValue?: FormData,
     onSubmitData?: (data: FormData) => void
     onChange?: (data: FormData) => void
-    children: any[]
+    children: any
 }
 
 interface State {

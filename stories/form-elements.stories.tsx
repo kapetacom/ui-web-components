@@ -11,7 +11,7 @@ import {
     FormContainer,
     FormTextarea,
     FormInput,
-    Type
+    Type, ModalSize, Modal, Dialog
 } from '../src';
 import {Checkbox} from "../src/form/Checkbox";
 
@@ -34,7 +34,7 @@ export const SimpleCheckbox = () => {
 
     return (
         <div>
-            <div style={{padding:'10px'}}>
+            <div style={{padding: '10px'}}>
                 <Checkbox onChange={(value) => setValue(value)} value={value}/>
             </div>
         </div>
@@ -42,19 +42,57 @@ export const SimpleCheckbox = () => {
 }
 
 
+export const SelectInModal = () => {
+    const helpText = 'This is some help text';
+
+    const [input1, setInput1] = useState('');
+    const [input2, setInput2] = useState('');
+
+    return (
+        <div style={{padding: '15px'}}>
+            <Modal open={true} title={'Test'} size={ModalSize.small}>
+                <FormContainer>
+                    <FormSelect help={helpText} name={'text'} label={'Text Value'}
+                                value={input1}
+                                onChange={(inputName, userInput) => setInput1(userInput)}
+                                options={[
+                                    'ONE',
+                                    'TWO',
+                                    'THREE',
+                                    'FOUR',
+                                    'FIVE',
+                                    'SIX'
+                                ]}/>
+
+                    <div style={{width: '80%'}}>
+                        <FormSelect help={helpText} name={'text'} label={'Text Value'}
+                                    value={input2}
+                                    onChange={(inputName, userInput) => setInput2(userInput)}
+                                    options={[
+                                        'ONE',
+                                        'TWO',
+                                        'THREE'
+                                    ]}/>
+                    </div>
+                </FormContainer>
+            </Modal>
+        </div>
+    );
+}
+
+
 export const FormInputs = () => {
     const helpText = 'This is some help text';
 
     return (
-        <div style={{padding:'15px'}}>
+        <div style={{padding: '15px'}}>
             <FormContainer>
-                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT}  />
-                <FormInput help={helpText} name={'email'} label={'Email Value'} type={Type.EMAIL}  />
-                <FormInput help={helpText} name={'num'} label={'Number Value'} type={Type.NUMBER}  />
-                <FormInput help={helpText} name={'pw'} label={'Password Value'} type={Type.PASSWORD}  />
-                <FormInput help={helpText} name={'date'} label={'Date Value'} type={Type.DATE}  />
-                <FormInput help={helpText} name={'checker'} label={'Boolean Value'} type={Type.CHECKBOX}  />
-                <FormInput help={helpText} name={'radio'} label={'Radio Value'} type={Type.RADIO}  />
+                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT}/>
+                <FormInput help={helpText} name={'email'} label={'Email Value'} type={Type.EMAIL}/>
+                <FormInput help={helpText} name={'num'} label={'Number Value'} type={Type.NUMBER}/>
+                <FormInput help={helpText} name={'pw'} label={'Password Value'} type={Type.PASSWORD}/>
+                <FormInput help={helpText} name={'date'} label={'Date Value'} type={Type.DATE}/>
+                <FormInput help={helpText} name={'checker'} label={'Boolean Value'} type={Type.CHECKBOX}/>
             </FormContainer>
 
         </div>
@@ -66,11 +104,11 @@ export const FormTextareas = () => {
     const helpText = 'This is some help text';
 
     return (
-        <div style={{padding:'15px'}}>
+        <div style={{padding: '15px'}}>
             <FormContainer>
-                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT}  />
-                <FormTextarea help={helpText} name={'multi'} label={'Multi line'} />
-                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT}  />
+                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT}/>
+                <FormTextarea help={helpText} name={'multi'} label={'Multi line'}/>
+                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT}/>
             </FormContainer>
 
         </div>
@@ -89,11 +127,11 @@ export const FormSelects = () => {
     };
 
     return (
-        <div style={{padding:'15px'}}>
+        <div style={{padding: '15px'}}>
             <FormContainer>
-                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT}  />
-                <FormSelect help={helpText} name={'multi'} label={'Multi line'} options={options} />
-                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT}  />
+                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT}/>
+                <FormSelect help={helpText} name={'multi'} label={'Multi line'} options={options}/>
+                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT}/>
             </FormContainer>
 
         </div>
@@ -102,12 +140,15 @@ export const FormSelects = () => {
 
 export const MixedInputs = () => {
 
-    let inputReturnCallback = (inputReturn) => {  }
+    let inputReturnCallback = (inputReturn) => {
+    }
 
-    let handleSubmit = (event) => { event.preventDefault() }
+    let handleSubmit = (event) => {
+        event.preventDefault()
+    }
     return (
 
-        <div style={{ width: "1200px", padding: '10px', backgroundColor: '#e0ecff' }}>
+        <div style={{width: "1200px", padding: '10px', backgroundColor: '#e0ecff'}}>
             <form onSubmit={handleSubmit}>
 
                 <FormInput
@@ -116,7 +157,7 @@ export const MixedInputs = () => {
                     label={"Single line input"}
                     validation={['required']}
                     help={"Specify the name of your block."}
-                    onChange={inputReturnCallback} />
+                    onChange={inputReturnCallback}/>
 
                 <FormInput
                     name={"SingleInput2"}
@@ -124,7 +165,7 @@ export const MixedInputs = () => {
                     label={"Single line input"}
                     validation={['required']}
                     help={"Specify the name of your block."}
-                    onChange={inputReturnCallback} />
+                    onChange={inputReturnCallback}/>
 
                 <FormInput
                     name={"SingleInput3"}
@@ -133,7 +174,7 @@ export const MixedInputs = () => {
                     validation={['required']}
                     help={"Specify the ID of your block."}
                     type={Type.NUMBER}
-                    onChange={inputReturnCallback} />
+                    onChange={inputReturnCallback}/>
 
 
                 <FormTextarea
@@ -143,15 +184,15 @@ export const MixedInputs = () => {
                     validation={['required']}
                     help={"Specify the description of your block."}
                     onChange={inputReturnCallback}
-                    disabled={true} />
+                    disabled={true}/>
                 <FormTextarea
                     name={"MultiLineInput2"}
                     value={''}
                     label={"Multiline line input"}
                     validation={['required']}
                     help={"Specify the description of your block."}
-                    onChange={inputReturnCallback} />
-                <input type="submit" value="Submit" />
+                    onChange={inputReturnCallback}/>
+                <input type="submit" value="Submit"/>
             </form>
         </div>
 
@@ -182,7 +223,7 @@ export const CountrySelects = () => {
         "Belgium"
     ];
 
-    let countryCodeList2 ={
+    let countryCodeList2 = {
         "DK": "Denmark",
         "RO": "Romania",
         "GR": "Greece"
@@ -192,9 +233,10 @@ export const CountrySelects = () => {
     return (
 
 
-        <div style={{ width: "600px", padding: '10px', backgroundColor: '#e0ecff' }}>
-            <form onSubmit={() => {}} >
-                <State store={dropdownState} >
+        <div style={{width: "600px", padding: '10px', backgroundColor: '#e0ecff'}}>
+            <form onSubmit={() => {
+            }}>
+                <State store={dropdownState}>
                     {state => [
                         <FormSelect
                             name="test1"
@@ -203,7 +245,7 @@ export const CountrySelects = () => {
                             validation={["required"]}
                             help={"this is another message"}
                             options={countryList}
-                            onChange={(name: string ,valueIn:string | string[])=>dropdownState.set({[name] : valueIn})}/>,
+                            onChange={(name: string, valueIn: string | string[]) => dropdownState.set({[name]: valueIn})}/>,
 
                         <br></br>,
 
@@ -215,7 +257,7 @@ export const CountrySelects = () => {
                             help={"this is another message"}
                             options={countryList}
                             onChange={
-                                (name: string ,valueIn:string | string[])=>dropdownState.set({[name] : valueIn})
+                                (name: string, valueIn: string | string[]) => dropdownState.set({[name]: valueIn})
                             }
                             multi={true}/>,
 
@@ -228,7 +270,7 @@ export const CountrySelects = () => {
                             validation={["required"]}
                             help={"this is another message"}
                             options={countryCodeList2}
-                            onChange={(name: string ,valueIn:string | string[])=>dropdownState.set({[name]: valueIn})}
+                            onChange={(name: string, valueIn: string | string[]) => dropdownState.set({[name]: valueIn})}
                             multi={true}/>,
 
                         <br></br>,
@@ -240,7 +282,7 @@ export const CountrySelects = () => {
                             validation={["required"]}
                             help={"this is another message"}
                             options={countryCodeList2}
-                            onChange={(name: string ,valueIn:string | string[])=>dropdownState.set({[name]: valueIn})}/>,
+                            onChange={(name: string, valueIn: string | string[]) => dropdownState.set({[name]: valueIn})}/>,
 
                         <br></br>,
 
@@ -252,13 +294,14 @@ export const CountrySelects = () => {
                             help={"this is another message"}
                             disabled={true}
                             options={countryList}
-                            onChange={(name, input)=>{}}/>,
+                            onChange={(name, input) => {
+                            }}/>,
                         <br></br>,
                         <br></br>
                     ]}
                 </State>
 
-                <input type="submit" value="Submit" />
+                <input type="submit" value="Submit"/>
             </form>
         </div>
 
@@ -266,29 +309,31 @@ export const CountrySelects = () => {
     )
 }
 
-export const FormButton = ()=> {
+export const FormButton = () => {
 
     return (
-        <div style={{width:500}}>
-            <FormContainer onSubmit={()=>{
+        <div style={{width: 500}}>
+            <FormContainer onSubmit={() => {
                 console.log("Submitted the form");
             }}>
                 <FormInput
-                    onChange={()=>{console.log("lalalala")}}
+                    onChange={() => {
+                        console.log("lalalala")
+                    }}
                     label="Test" name="" value="" validation={["required"]} type={Type.TEXT}/>
 
                 <FormButtons>
                     <Button width={ButtonSize.MEDIUM}
                             style={ButtonStyle.DANGER}
-                            onClick={()=>{
+                            onClick={() => {
                                 console.log("Clicked cancel!");
                             }}
-                            text="Test" />
+                            text="Test"/>
 
                     <Button type={ButtonType.SUBMIT}
                             width={ButtonSize.MEDIUM}
                             style={ButtonStyle.PRIMARY}
-                            text="Test" />
+                            text="Test"/>
 
                 </FormButtons>
             </FormContainer>

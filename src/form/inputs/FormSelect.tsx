@@ -5,6 +5,7 @@ import {toClass} from "@blockware/ui-web-utils";
 import * as _ from "lodash";
 import {observer} from "mobx-react";
 import {FormRow} from "../FormRow";
+import {RenderInBody} from "../../overlay/RenderInBody";
 
 interface Props {
     name: string,
@@ -32,6 +33,8 @@ export class FormSelect extends React.Component<Props> {
 
     @observable
     private inputElement = React.createRef<HTMLInputElement>();
+
+    private dropDownList = React.createRef<HTMLUListElement>();
 
     private formRowRef: React.RefObject<FormRow> = React.createRef();
 
@@ -216,12 +219,28 @@ export class FormSelect extends React.Component<Props> {
         </span>
     }
 
+    componentDidUpdate() {
+        if (!this.dropDownList.current ||
+            !this.inputElement.current) {
+            return;
+        }
+
+        const position = this.inputElement.current.getBoundingClientRect();
+
+        if (this.inputFocus) {
+            this.dropDownList.current.style.top = position.bottom + 'px';
+            this.dropDownList.current.style.left = position.left + 'px';
+            this.dropDownList.current.style.width = position.width + 'px';
+        }
+    }
+
     render() {
+        const showList = this.inputFocus;
 
         let classNameList = toClass({
-            "list": true,
-            "show-list": this.inputFocus
-        })
+            'form-select-list': true,
+            'visible': showList
+        });
 
         let classNameArrowIcon = toClass({
             "arrow-icon": true,
@@ -239,7 +258,7 @@ export class FormSelect extends React.Component<Props> {
                 focused={this.inputFocus}
                 disabled={this.props.disabled}
             >
-                <div className={"dropdown-input"} data-name={this.props.name} data-value={inputValue}>
+                <div className={"form-select"} data-name={this.props.name} data-value={inputValue}>
                     {this.inputFocus && this.userInputDisplay.length > 0 &&
                     <span className={"user-suggestion"}>{this.inputSuggestion}</span>}
 
@@ -253,7 +272,7 @@ export class FormSelect extends React.Component<Props> {
                            ref={this.inputElement}
                            value={inputValue}
                            autoComplete="off"
-                           disabled={this.props.disabled}/>
+                           disabled={this.props.disabled} />
                     <div className={classNameArrowIcon}>
                         <svg width="13" height="5" fill="none" onClick={this.onInputToggle}>
                             <path d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z" fill="#908988"/>
@@ -261,9 +280,11 @@ export class FormSelect extends React.Component<Props> {
                     </div>
                     {this.props.value ? this.props.value.length > 0 && this.props.multi &&
                         <span className="selected-number">({this.props.value.length})</span> : null}
-                    <ul id="datalist-input" className={classNameList}>
-                        {this.renderOptions()}
-                    </ul>
+                    <RenderInBody>
+                        <ul ref={this.dropDownList} className={classNameList}>
+                            {this.renderOptions()}
+                        </ul>
+                    </RenderInBody>
                 </div>
             </FormRow>
         )
