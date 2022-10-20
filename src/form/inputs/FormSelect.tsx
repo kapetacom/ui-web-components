@@ -1,12 +1,12 @@
 import React, {ChangeEvent} from "react";
-import "./DropdownInput.less";
+import "./FormSelect.less";
 import {action, makeObservable, observable} from "mobx";
 import {toClass} from "@blockware/ui-web-utils";
 import * as _ from "lodash";
 import {observer} from "mobx-react";
 import {FormRow} from "../FormRow";
 
-interface DropdownInputProps {
+interface Props {
     name: string,
     options: string[] | { [key: string]: string },
     label: string,
@@ -19,8 +19,7 @@ interface DropdownInputProps {
 }
 
 @observer
-export class DropdownInput extends React.Component<DropdownInputProps> {
-
+export class FormSelect extends React.Component<Props> {
 
     @observable
     private inputFocus: boolean = false;
@@ -34,7 +33,9 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
     @observable
     private inputElement = React.createRef<HTMLInputElement>();
 
-    constructor(props:DropdownInputProps) {
+    private formRowRef: React.RefObject<FormRow> = React.createRef();
+
+    constructor(props:Props) {
         super(props);
         makeObservable(this);
     }
@@ -57,7 +58,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
     private onInputBlur = () => {
         // Select value if it is equal to suggestion
         if (this.userInputDisplay && this.inputSuggestion && this.inputSuggestion.toUpperCase() === this.userInputDisplay.toUpperCase()) {
-            this.props.onChange(this.props.name, _.invert(this.optionListFiltered())[this.inputSuggestion]);
+            this.emitChange(_.invert(this.optionListFiltered())[this.inputSuggestion]);
         }
         this.inputFocus = false;
         if (this.inputElement.current) {
@@ -65,6 +66,13 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
             this.inputElement.current.blur();
         }
     };
+
+    private emitChange(value) {
+        if (this.props.onChange) {
+            this.props.onChange(this.props.name, value);
+        }
+        this.formRowRef.current?.updateReadyState(value);
+    }
 
     private renderKeysAsValues = (keys: string | string[]) => {
         const options = this.getOptions();
@@ -112,10 +120,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
 
             if (isSelected > -1) {
                 tempUserSelection.splice(isSelected, 1);
-                if (this.props.onChange) {
-                    this.props.onChange(this.props.name, this.props.multi ? tempUserSelection : tempUserSelection[0]);
-                }
-
+                this.emitChange(this.props.multi ? tempUserSelection : tempUserSelection[0]);
                 return;
             }
         }
@@ -128,9 +133,7 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
         this.userInputDisplay = "";
         this.setInputSuggestion();
 
-        if (this.props.onChange) {
-            this.props.onChange(this.props.name, this.props.multi ? tempUserSelection : tempUserSelection[0]);
-        }
+        this.emitChange(this.props.multi ? tempUserSelection : tempUserSelection[0]);
 
         if (!this.props.multi) {
             this.onInputBlur();
@@ -229,10 +232,12 @@ export class DropdownInput extends React.Component<DropdownInputProps> {
 
         return (
             <FormRow
+                ref={this.formRowRef}
                 label={this.props.label}
                 help={this.props.help}
                 validation={this.props.validation}
                 focused={this.inputFocus}
+                disabled={this.props.disabled}
             >
                 <div className={"dropdown-input"} data-name={this.props.name} data-value={inputValue}>
                     {this.inputFocus && this.userInputDisplay.length > 0 &&

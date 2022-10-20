@@ -211,9 +211,27 @@
         .message {
             color : @btn-cancel-bg;
         }
-        
+
         input {
             padding-right: 55px;
+        }
+    }
+
+    &.disabled {
+        color: @gray-dark;
+        cursor: not-allowed;
+        .no-select();
+
+        .input-container {
+            border: 1px solid @gray-light;
+        }
+
+        .label.zoom-out {
+
+        }
+        input,textarea {
+            cursor: not-allowed;
+            color : inherit;
         }
     }
 

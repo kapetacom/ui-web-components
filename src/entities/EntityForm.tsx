@@ -20,7 +20,7 @@ import SVGDeleteHexagon from "../svg/SVGDeleteHexagon";
 import './EntityForm.less';
 import { SortableContainer } from "../dnd/SortableContainer";
 import { SortableItem } from "../dnd/SortableItem";
-import { SingleLineInput, Type } from "../form/inputs/SingleLineInput";
+import { FormInput, Type } from "../form/inputs/FormInput";
 import { FormContainer } from "../form/FormContainer";
 import { FormButtons } from "../form/FormButtons";
 import { Button, ButtonSize, ButtonStyle, ButtonType } from "../button/buttons";
@@ -243,8 +243,8 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                             }
                                         </div>
                                         <div className={fieldNameClass}>
-                                            <SingleLineInput validation={["required"]} name="" label=""  type={Type.TEXT} value={field.id}
-                                                onChange={(_,value) => {this.updateFieldId(properties, field, value)}} />
+                                            <FormInput validation={["required"]} name="" label="" type={Type.TEXT} value={field.id}
+                                                       onChange={(_,value) => {this.updateFieldId(properties, field, value)}} />
                                         </div>
                                         <div className={'field-type'} onClick={(evt) => evt.stopPropagation()}>
                                             <EntityPicker name={'fieldType'}
@@ -288,7 +288,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
             <div className={'entity-form'}>
                 <FormContainer onSubmit={()=>{this.handleChange()}}>
                     <div className={"entity-name-field"}>
-                        <SingleLineInput
+                        <FormInput
                             name={"name"}
                             value={this.props.entity.name}
                             label={"Entity name"}

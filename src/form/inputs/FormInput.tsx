@@ -1,5 +1,5 @@
 import React from "react";
-import "./SingleLineInput.less";
+import "./FormInput.less";
 import {observable, action, makeObservable} from "mobx";
 import { toClass } from "@blockware/ui-web-utils";
 import { observer } from "mobx-react";
@@ -11,13 +11,12 @@ export enum Type {
     NUMBER = "number",
     PASSWORD = "password",
     TEXT = "text",
-    CHECKBOX = "checkbox",
-    RADIO = "radio"
+    CHECKBOX = "checkbox"
 }
 
-const NON_TEXT_TYPES = [Type.RADIO, Type.CHECKBOX, Type.DATE];
+const NON_TEXT_TYPES = [Type.DATE, Type.CHECKBOX];
 
-interface SingleLineInputProps {
+interface Props {
     name: string,
     label: string,
     value?: any,
@@ -28,18 +27,17 @@ interface SingleLineInputProps {
     type?: Type
 }
 @observer
-export class SingleLineInput extends React.Component<SingleLineInputProps> {
+export class FormInput extends React.Component<Props> {
 
 
     @observable
     private inputFocused: boolean = false;
 
-
     private inputRef: React.RefObject<HTMLInputElement> = React.createRef();
 
     private formRowRef: React.RefObject<FormRow> = React.createRef();
 
-    constructor(props:SingleLineInputProps) {
+    constructor(props:Props) {
         super(props);
         makeObservable(this);
     }
@@ -55,14 +53,41 @@ export class SingleLineInput extends React.Component<SingleLineInputProps> {
     };
 
     @action
-    private onChange = (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    private onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+        if (this.props.type === Type.CHECKBOX) {
+            this.emitChange(evt.target.checked);
+            return;
+        }
         this.emitChange(evt.target.value);
     };
 
-    private emitChange(value:string) {
-        if (this.props.onChange) {
-            this.props.onChange(this.props.name, value);
+    private toValueType(value:any) {
+        if (!value) {
+            return value
         }
+
+        if (typeof value !== 'string') {
+            return value;
+        }
+
+        switch (this.props.type) {
+            case Type.NUMBER:
+                return parseFloat(value);
+            case Type.CHECKBOX:
+                return value.toLowerCase() === 'true';
+        }
+
+        return value;
+    }
+
+
+    private emitChange(value:any) {
+        const typedValue = this.toValueType(value);
+        if (this.props.onChange) {
+            this.props.onChange(this.props.name, typedValue);
+        }
+
+        this.formRowRef.current?.updateReadyState(typedValue);
     }
 
     private upperArrowHandler = () => {
@@ -113,19 +138,24 @@ export class SingleLineInput extends React.Component<SingleLineInputProps> {
         );
     }
 
-    public setError(errorMessage?:string) {
-        if (this.formRowRef.current) {
-            this.formRowRef.current.setError(errorMessage);
-        }
+    componentDidMount() {
+        this.formRowRef.current?.updateReadyState();
     }
 
     render() {
 
-        let classNameSinglelineWrapper = toClass({
-            "singleline-input": true
+        let className = toClass({
+            "form-input": true
         });
 
         const nonTextType = this.props.type && NON_TEXT_TYPES.indexOf(this.props.type) > -1;
+
+        let value = this.props.value;
+        let checked;
+
+        if (this.props.type === Type.CHECKBOX) {
+            checked = (value === true);
+        }
 
         return (
 
@@ -137,15 +167,17 @@ export class SingleLineInput extends React.Component<SingleLineInputProps> {
                     type= {this.props.type}
                     disableZoom={nonTextType}
                     focused={this.inputFocused}
+                    disabled={this.props.disabled}
                 >
-                    <div className={classNameSinglelineWrapper} data-name={this.props.name} data-value={this.props.value}>
+                    <div className={className} data-name={this.props.name} data-value={this.props.value}>
                         <input 
                             type={this.props.type ? this.props.type : Type.TEXT}
                             name={this.props.name}
                             onChange={this.onChange}
                             onFocus={this.inputOnFocus}
                             onBlur={this.inputOnBlur}
-                            value={this.props.value}
+                            value={value}
+                            checked={checked}
                             disabled={this.props.disabled}                            
                             ref={this.inputRef} />
 

@@ -38,6 +38,7 @@ export class FormButtons extends React.Component<FormButtonsProps, any> {
         return false;
     }
 
+
     render() {
         let children = this.props.children;
         if (!Array.isArray(children)) {
@@ -45,14 +46,29 @@ export class FormButtons extends React.Component<FormButtonsProps, any> {
         }
 
         const newChildren = children.map((child:any, ix:number) => {
-            if (!this.isSubmitButton(child) ||
-                this.context.valid) {
+
+            if (!this.isSubmitButton(child)) {
+                if (this.context.processing) {
+                    //Disable all buttons when form is processing
+                    return React.cloneElement(child, {
+                        disabled: true,
+                        key: ix
+                    });
+                }
+
                 return child;
             }
 
-            //Disable submit buttons when form is invalid
+            if (this.context.valid &&
+                !this.context.processing) {
+                return child;
+            }
+
+            //Disable submit buttons when form is invalid or processing
             return React.cloneElement(child, {
                 disabled: true,
+                text: this.context.processing ? 'Submitting...' : child.props.text,
+                width: this.context.processing ? 120 : child.props.width,
                 key: ix
             });
         });

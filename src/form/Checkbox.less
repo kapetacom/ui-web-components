@@ -23,6 +23,16 @@
       overflow: visible;
     }
 
+    .border {
+      stroke: @gray-xxdark;
+      strokeWidth: 2;
+      strokeLinejoin: round
+    }
+
+    .checker {
+      fill: #009AA9
+    }
+
     &.check {
       .transition();
       transform-origin: center;
@@ -40,6 +50,16 @@
 
       &.checked {
         transform: scale(0);
+      }
+    }
+
+    &.disabled {
+      .border {
+        stroke: @gray;
+      }
+
+      .checker {
+        fill: @gray;
       }
     }
   }

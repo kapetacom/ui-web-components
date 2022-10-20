@@ -4,17 +4,17 @@ import {FormContext, FormContextType} from './FormContext';
 
 import "./FormRow.less";
 import {FormStateChangeEvent} from "./FormContainer";
-import { FormElementContainer } from "./inputs/FormElementContainer";
+import {FormElementContainer} from "./inputs/FormElementContainer";
 
 interface FormRowProps {
     label: string
     help?: string
     validation?: any | any[],
-    children:any,
+    children: any,
     type?: string,
     focused: boolean,
+    disabled?: boolean,
     disableZoom?: boolean
-    $onReadyStateChanged?: (fieldName:string, ready:boolean) => void //Internal callback
 }
 
 enum StatusType {
@@ -22,9 +22,10 @@ enum StatusType {
     ERROR = "error",
     OK = "ok"
 }
+
 interface FormRowState {
-    touched:boolean
-    forceError?:string
+    touched: boolean
+    forceError?: string
 }
 
 export class FormRow extends React.Component<FormRowProps, FormRowState> {
@@ -33,16 +34,16 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
     static contextType = FormContext;
     context!: React.ContextType<FormContextType>;
 
-    private readyState?:boolean;
+    private readyState?: boolean;
 
-    private disposer?:Function;
+    private disposer?: Function;
     private touched: boolean = false;
 
-    constructor(props:FormRowProps) {
+    constructor(props: FormRowProps) {
         super(props);
 
         this.state = {
-            touched:false
+            touched: false
         };
     }
 
@@ -57,7 +58,8 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
         }
         return validators;
     }
-    setReadyState(ready:boolean) {
+
+    setReadyState(ready: boolean) {
         if (this.readyState !== ready) {
             this.readyState = ready;
             this.context.onReadyStateChanged(this.getChildName(), ready);
@@ -80,7 +82,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
 
         let value = this.getChildProperties()['data-value'];
 
-        if (value === undefined) {          
+        if (value === undefined) {
             return this.getDefaultValue();
         }
 
@@ -93,8 +95,8 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
             return false;
         }
         if (typeof value === 'string') {
-             return value.length > 0;
-        }        
+            return value.length > 0;
+        }
         return true;
     }
 
@@ -112,12 +114,12 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
         }
 
         if (!this.props.children.props.hasOwnProperty('data-value')) {
-            throw new Error('Form row requires a single child with a "data-value" property to work properly');            
+            throw new Error('Form row requires a single child with a "data-value" property to work properly');
         }
 
         if (!this.props.children.props.hasOwnProperty('data-name')) {
             throw new Error('Form row requires a single child with a "data-name" property to work properly');
-            }
+        }
 
         return this.props.children.props;
     }
@@ -126,8 +128,12 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
         return this.getValidators().indexOf('required') > -1;
     }
 
-    applyValidation() {
-        const childProps = this.getChildProperties();
+    applyValidation(value?:any) {
+        if (value === undefined) {
+            value = this.getChildValue();
+        }
+
+        const name = this.getChildName();
 
         if (this.state.forceError) {
             return [this.state.forceError]
@@ -143,7 +149,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
             }
 
             try {
-                validator.call(Validators, this.props.label, childProps['data-value']);
+                validator.call(Validators, name, value);
                 return null;
             } catch (err) {
                 if (typeof err === 'string') {
@@ -156,7 +162,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
         }).filter((error: string) => !!error);
     }
 
-    private setTouched(touched:boolean) {
+    private setTouched(touched: boolean) {
         this.setState({touched});
         this.touched = touched;
     }
@@ -166,7 +172,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
             return;
         }
 
-        this.disposer = this.context.container.onFormStateChanged(((evt:FormStateChangeEvent) => {
+        this.disposer = this.context.container.onFormStateChanged(((evt: FormStateChangeEvent) => {
             switch (evt.type) {
                 case 'submit':
                     if (evt.value) {
@@ -182,7 +188,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
         }));
     }
 
-    public setError(errorMessage?:string) {
+    public setError(errorMessage?: string) {
         this.setState({forceError: errorMessage, touched: this.state.touched});
     }
 
@@ -195,24 +201,14 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
         this.setReadyState(true); //Tell the form to not worry about this
     }
 
-    componentDidUpdate() {
-
-    }
-
-    private updateReadyState() {
-
-        const errors = this.applyValidation();
-
-        if (this.isTouched()) {
-
-            if (errors.length > 0) {
-                this.setReadyState(false);
-            } else {
-                this.setReadyState(true);
-            }
-        } else {
-            this.setReadyState(errors.length === 0);
+    public updateReadyState(value?:any) {
+        if (value === undefined) {
+            value = this.getChildValue()
         }
+
+        const errors = this.applyValidation(value);
+
+        this.setReadyState(errors.length === 0);
     }
 
     render() {
@@ -238,9 +234,10 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
                 label={this.props.label}
                 type={this.props.type}
                 focused={this.props.focused}
+                disabled={this.props.disabled}
                 disableZoom={this.props.disableZoom}
-                status={ errorMessage && errorMessage.length > 0 ? StatusType.ERROR: StatusType.OK}
-                infoBox={''}                
+                status={errorMessage && errorMessage.length > 0 ? StatusType.ERROR : StatusType.OK}
+                infoBox={''}
             >
                 {this.props.children}
             </FormElementContainer>

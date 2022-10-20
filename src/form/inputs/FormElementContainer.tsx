@@ -11,10 +11,11 @@ enum StatusType {
     ERROR = "error",
     OK = "ok"
 }
-interface FormElementContainerProps {
+interface Props {
     required?: boolean,
     hasValue: boolean,
     touched: boolean,
+    disabled?: boolean,
     help?: string,
     errorMessage: string,
     label?: string,
@@ -26,9 +27,9 @@ interface FormElementContainerProps {
     children: any
 }
 
-export class FormElementContainer extends React.Component<FormElementContainerProps> {
+export class FormElementContainer extends React.Component<Props> {
 
-    constructor(props:FormElementContainerProps) {
+    constructor(props:Props) {
         super(props);
     }
 
@@ -43,13 +44,14 @@ export class FormElementContainer extends React.Component<FormElementContainerPr
     
     render() {
 
-        const showStatusIcon = this.props.touched && (this.props.status !== StatusType.OK ? true : false );
+        const showStatusIcon = this.props.touched && (this.props.status !== StatusType.OK );
 
         const inputType = this.props.type || 'text';
 
         let classFormElemContainer = toClass({
             "form-element-container": true,
             "focused": this.props.focused,
+            "disabled": this.props.disabled,
             "required": !!this.props.required && !this.props.hasValue && this.props.touched ,
             "warning-status": !this.props.focused && this.props.status === StatusType.WARNING,
             "error-status": !this.props.focused && this.props.status === StatusType.ERROR,

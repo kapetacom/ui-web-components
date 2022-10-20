@@ -5,7 +5,11 @@ let validators:any = {};
 validators.required = (fieldName:string, value:any) => {
     if (value === '' ||
         value === undefined ||
-        value === null ||
+        value === null) {
+        throw new Error(`This value is required`);
+    }
+
+    if (typeof value === 'object' &&
         _.isEmpty(value)) {
         throw new Error(`This value is required`);
     }

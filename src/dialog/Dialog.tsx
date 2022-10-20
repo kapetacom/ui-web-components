@@ -10,7 +10,7 @@ import { DialogTypes } from './DialogTypes';
 import { Draggable } from '../dnd/Draggable';
 import {Button, ButtonSize, ButtonStyle, ButtonType } from '../button/buttons';
 import { FormContainer } from '../form/FormContainer';
-import { SingleLineInput } from '../form/inputs/SingleLineInput';
+import { FormInput } from '../form/inputs/FormInput';
 import { FormButtons } from '../form/FormButtons';
 import { RenderInBody } from '../overlay/RenderInBody';
 
@@ -194,7 +194,7 @@ export class Dialog extends Component<DialogProps ,any> implements OverlayCompon
                     <FormContainer onSubmit={() => {
                         DialogControl.ok();
                     }}>
-                        {DialogControl.type === DialogTypes.PROMPT && <SingleLineInput
+                        {DialogControl.type === DialogTypes.PROMPT && <FormInput
                             name={"dialog-prompt"}
                             value={DialogControl.promptInputValue}
                             label={""}

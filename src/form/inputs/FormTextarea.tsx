@@ -1,12 +1,11 @@
 import React, { RefObject } from "react";
-import "./MultiLineInput.less";
+import "./FormTextarea.less";
 import {observable, action, makeObservable} from "mobx";
-import { toClass } from "@blockware/ui-web-utils";
 import { observer } from "mobx-react";
 import { FormRow } from "../FormRow";
 
 
-interface MultiLineInputProps {
+interface Props {
     name: string,
     label: string,
     value?: any,
@@ -19,17 +18,19 @@ interface MultiLineInputProps {
 const MIN_HEIGHT: number = 22;
 const MAX_HEIGHT: number = 200;
 @observer
-export class MultiLineInput extends React.Component<MultiLineInputProps> {
+export class FormTextarea extends React.Component<Props> {
 
     @observable
     private inputFocused: boolean = false;
 
     private textHeightElementRef: RefObject<HTMLDivElement> = React.createRef();
 
+    private formRowRef: React.RefObject<FormRow> = React.createRef();
+
     @observable
     private userInput: string =  this.props.value ? this.props.value :"";
 
-    constructor(props:MultiLineInputProps) {
+    constructor(props:Props) {
         super(props);
         makeObservable(this);
     }
@@ -68,7 +69,7 @@ export class MultiLineInput extends React.Component<MultiLineInputProps> {
         if (this.props.onChange) {
             this.props.onChange(this.props.name, this.userInput);
         }
-
+        this.formRowRef.current?.updateReadyState(this.userInput);
     }
 
     render() {
@@ -78,10 +79,12 @@ export class MultiLineInput extends React.Component<MultiLineInputProps> {
         return (
 
             <FormRow
+                ref={this.formRowRef}
                 label={this.props.label}
                 help={this.props.help}
                 validation={this.props.validation}
                 focused={this.inputFocused}
+                disabled={this.props.disabled}
             >
                 <div
                     className={"textarea-wrapper"} data-name={this.props.name} data-value={this.userInput}

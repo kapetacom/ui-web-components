@@ -8,7 +8,7 @@ import {
     typeName
 } from "@blockware/ui-web-types";
 
-import { DropdownInput} from "../form/inputs/DropdownInput";
+import { FormSelect} from "../form/inputs/FormSelect";
 
 interface IDEntry {
     id: string
@@ -132,7 +132,7 @@ export class EntityMapper extends React.Component<EntityMapperProps, EntityMappe
         let targetFieldsList: string[] = targetFields.map(target=> `${target.id}:${typeName(target.type)}`);
         return (
 
-            <DropdownInput
+            <FormSelect
             name ={id}
             label={`${id}:${entry.type}`}
             value={this.getMapping(id)}

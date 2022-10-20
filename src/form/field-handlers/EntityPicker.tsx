@@ -10,7 +10,7 @@ import {FormButtons} from "../FormButtons";
 import {EntityFormModel} from "../../entities/EntityFormModel";
 
 import './EntityPicker.less';
-import {DropdownInput} from "../inputs/DropdownInput";
+import {FormSelect} from "../inputs/FormSelect";
 import {Checkbox} from "../Checkbox";
 
 const CREATE_VALUE = '__create__';
@@ -171,12 +171,12 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         return (
             <>
                 <div className={"entity-picker"}>
-                    <DropdownInput value={parsedValue.type} validation={["required"]} label={this.props.label ? this.props.label : ""} name={""} help={this.props.help ? this.props.help : ""}
-                        onChange={(_,value)=>{
+                    <FormSelect value={parsedValue.type} validation={["required"]} label={this.props.label ? this.props.label : ""} name={""} help={this.props.help ? this.props.help : ""}
+                                onChange={(_,value)=>{
                             
                             this.onSelectHandler(value)
-                        }} 
-                        options={options}  />
+                        }}
+                                options={options}  />
                     {!isVoid() &&
                         <Checkbox onClick={this.toggleList}
                                   value={parsedValue.list}
