@@ -17,8 +17,8 @@ export enum Type {
 const NON_TEXT_TYPES = [Type.DATE, Type.CHECKBOX];
 
 interface Props {
-    name: string,
-    label: string,
+    name?: string,
+    label?: string,
     value?: any,
     validation?: any[],
     help?: string,

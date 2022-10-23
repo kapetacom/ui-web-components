@@ -4,13 +4,11 @@ import {observable, action, makeObservable} from "mobx";
 import {toClass} from "@blockware/ui-web-utils";
 import {observer} from "mobx-react";
 import {FormRow} from "../FormRow";
-import _ from "lodash";
-import {Type} from "./FormInput";
 import {Checkbox} from "../Checkbox";
 
 interface Props {
     name: string,
-    label: string,
+    label?: string,
     value?: any,
     validation?: any[],
     help?: string,

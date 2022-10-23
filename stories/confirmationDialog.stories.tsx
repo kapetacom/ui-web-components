@@ -1,6 +1,6 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
-import {Dialog, DialogControl, DialogTypes, PromptInputType} from '../src';
+import {Dialog, DialogControl, DialogTypes, Type} from '../src';
 
 DialogControl.setTitle("test title");
 
@@ -11,10 +11,12 @@ storiesOf('Dialogs', module)
                 if (DialogControl.open) {
                     DialogControl.hide();
                 } else {
-                    DialogControl.setAcceptAction(() => {});
-                    DialogControl.show(null,null,null,DialogTypes.DELETE);
+                    DialogControl.setCallback(() => {
+                    });
+                    DialogControl.show(null, null, null, DialogTypes.DELETE);
                 }
-            }}>Open dialog</button>
+            }}>Open dialog
+            </button>
             <button type="button" onClick={() => {
                 DialogControl.setTitle("Some title!");
                 DialogControl.setText("Some text!");
@@ -36,13 +38,15 @@ storiesOf('Dialogs', module)
                     DialogControl.hide();
                 } else {
                     DialogControl.show("Test confirmation title!",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    ()=>{},
-                    DialogTypes.CONFIRMATION,
-                    PromptInputType.TEXT
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        () => {
+                        },
+                        DialogTypes.CONFIRMATION,
+                        Type.TEXT
                     );
                 }
-            }}>Open dialog</button>
+            }}>Open dialog
+            </button>
             <button type="button" onClick={() => {
                 DialogControl.setTitle("Some title!");
                 DialogControl.setText("Some text!");
@@ -64,25 +68,27 @@ storiesOf('Dialogs', module)
                     DialogControl.hide();
                 } else {
                     DialogControl.show("Test prompt title!",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    (value)=> console.log("Value from prompt callback:", value),
-                    DialogTypes.PROMPT,
-                    PromptInputType.TEXT
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        (value) => console.log("Value from prompt callback:", value),
+                        DialogTypes.PROMPT,
+                        Type.TEXT
                     );
                 }
-            }}>Open propmpt dialog with input type text </button>
-                        <button onClick={() => {
+            }}>Open propmpt dialog with input type text
+            </button>
+            <button onClick={() => {
                 if (DialogControl.open) {
                     DialogControl.hide();
                 } else {
                     DialogControl.show("Test prompt title!",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
-                    (value)=> console.log("Value from prompt callback:", value),
-                    DialogTypes.PROMPT,
-                    PromptInputType.NUMBER
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+                        (value) => console.log("Value from prompt callback:", value),
+                        DialogTypes.PROMPT,
+                        Type.NUMBER
                     );
                 }
-            }}>Open propmpt dialog with input type number </button>
+            }}>Open propmpt dialog with input type number
+            </button>
             <button type="button" onClick={() => {
                 DialogControl.setTitle("Some title!");
                 DialogControl.setText("Some Text ");

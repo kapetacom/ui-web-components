@@ -164,11 +164,11 @@ export class Dialog extends Component<DialogProps ,any> implements OverlayCompon
                 </text>
 
                 <foreignObject x={initialSize.width / 2 - 100} y={initialSize.height - 100} overflow="visible" >
-                    <Button onClick={DialogControl.ok} width={ButtonSize.SMALL} style={ButtonStyle.PRIMARY} text={"Yes"} />
+                    <Button onClick={DialogControl.accept} width={ButtonSize.SMALL} style={ButtonStyle.PRIMARY} text={"Yes"} />
                 </foreignObject>
 
                 <foreignObject x={initialSize.width / 2 + 10} y={initialSize.height - 100} overflow="visible" >
-                    <Button onClick={() => { DialogControl.hide() }} width={ButtonSize.SMALL} style={ButtonStyle.DANGER} text={"No"} />
+                    <Button onClick={() => this.close()} width={ButtonSize.SMALL} style={ButtonStyle.DANGER} text={"No"} />
                 </foreignObject>
 
             </svg>
@@ -192,7 +192,7 @@ export class Dialog extends Component<DialogProps ,any> implements OverlayCompon
                     <div className="dialog-title">{DialogControl.title}</div>
                     <div className="dialog-message">{DialogControl.text}</div>
                     <FormContainer onSubmit={() => {
-                        DialogControl.ok();
+                        DialogControl.accept();
                     }}>
                         {DialogControl.type === DialogTypes.PROMPT && <FormInput
                             name={"dialog-prompt"}

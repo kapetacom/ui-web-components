@@ -8,9 +8,9 @@ import {FormRow} from "../FormRow";
 import {RenderInBody} from "../../overlay/RenderInBody";
 
 interface Props {
-    name: string,
     options: string[] | { [key: string]: string },
-    label: string,
+    name?: string,
+    label?: string,
     value?: any,
     validation?: any[],
     help?: string,

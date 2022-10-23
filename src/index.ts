@@ -22,7 +22,7 @@ export * from './form/FormButtons';
 export * from './form/FormContainer';
 export * from './form/FormRow';
 export * from './form/FormReadyHandler';
-export * from './form/FormValidators';
+export * from './validation/Validators';
 
 export * from './form/inputs/FormSelect';
 export * from './form/inputs/FormElementContainer';
@@ -57,6 +57,11 @@ export * from './svg/SVGButtonInspect';
 export * from './svg/SVGText';
 
 export * from './toast/ToastComponent';
+
+export * from './detail/Detail';
+
+export * from './list/ListElement';
+export * from './list/List';
 
 export * from './dsl/types';
 export * from './dsl/DSLConverters';

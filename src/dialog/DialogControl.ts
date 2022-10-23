@@ -1,122 +1,164 @@
-import {observable, action, computed, makeObservable} from 'mobx';
+import {action, computed, makeObservable, observable} from 'mobx';
 import {DialogTypes} from "./DialogTypes";
-import {Type as PromptDialogInputType} from '../form/inputs/FormInput';
+import {Type} from '../form/inputs/FormInput';
 
-export {PromptDialogInputType as PromptInputType};
 export class DialogControlImpl {
 
-  private static instance: DialogControlImpl;
+    private static instance: DialogControlImpl;
 
-  @observable
-  type: DialogTypes | null;
+    @observable
+    type: DialogTypes | null;
 
-  @observable
-  promptInputType : PromptDialogInputType;
+    @observable
+    promptInputType: Type;
 
-  @observable
-  text: string;
+    @observable
+    promptInputValue: string | null = null;
 
-  @observable
-  title: string;
+    @observable
+    text: string;
 
-  @observable
-  ok: () => void;
+    @observable
+    title: string;
 
-  @observable
-  private _open: boolean;
+    @observable
+    accept: () => void;
 
-  @observable
-  promptInputValue: string | null =null;
+    @observable
+    private reject: () => void;
 
-  constructor() {
-    this.type = null;
-    this.promptInputType= PromptDialogInputType.TEXT;
-    this.title = "";
+    @observable
+    private _open: boolean;
 
-    this.ok = () => { console.log("no Accept functionality was given") };
-    this.text = "";
-    this._open = false;
-    makeObservable(this);
-  }
+    constructor() {
+        this.type = null;
+        this.promptInputType = Type.TEXT;
+        this.title = "";
 
-  public static fetchInstance(): DialogControlImpl {
-    if (!DialogControlImpl.instance) {
-      DialogControlImpl.instance = new DialogControlImpl();
+        this.accept = () => {
+            console.log("no accept functionality was given")
+        };
+        this.reject = () => {
+            this.close();
+        };
+        this.text = "";
+        this._open = false;
+        makeObservable(this);
     }
-    return DialogControlImpl.instance;
-  }
+
+    public static fetchInstance(): DialogControlImpl {
+        if (!DialogControlImpl.instance) {
+            DialogControlImpl.instance = new DialogControlImpl();
+        }
+        return DialogControlImpl.instance;
+    }
 
 
-  @action
-  close = () => {
-    this.hide()
-  };
-
-  @action
-  setAcceptAction = (success: (promptInputValue?: any ) => void) => {
-    this.ok = () => {
-      if(DialogControl.type && DialogControl.type === DialogTypes.PROMPT){
-        success(this.promptInputValue)
-      } else {
-        success();
-      }
-      this.hide();
+    @action
+    close = () => {
+        this.reject();
+        this.hide()
     };
-  };
 
-  @action
-  setPromptInputValue = ( newValue: any) =>{
-    this.promptInputValue = newValue;
-  }
-  @action
-  setType = (newType: DialogTypes | null)=> {
-    this.type = newType;
-  }
-  @action
-  setTitle = (newTitle: string) => {
-    this.title = newTitle;
-  };
+    @action
+    setCallback = (callback: (result?: any) => void) => {
+        this.accept = () => {
+            if (DialogControl.type &&
+                DialogControl.type === DialogTypes.PROMPT) {
+                callback(this.promptInputValue)
+            } else if (DialogControl.type &&
+                DialogControl.type === DialogTypes.DELETE) {
+                callback(true)
+            } else if (DialogControl.type &&
+                DialogControl.type === DialogTypes.CONFIRMATION) {
+                callback(true)
+            } else {
+                callback();
+            }
+            this.hide();
+        };
 
-  @action
-  setText = (newText: string) => {
-    this.text = newText;
-  };
+        this.reject = () => {
+            if (DialogControl.type &&
+                DialogControl.type === DialogTypes.CONFIRMATION) {
+                callback(false)
+            } else if (DialogControl.type &&
+                DialogControl.type === DialogTypes.DELETE) {
+                callback(false)
+            }
 
+        }
+    };
 
-  @action
-  show = ( title?: string, text?: string, callback?: (promptInputValue?: string | null) => void, type?: DialogTypes, promptInputType?: PromptDialogInputType) => {
-    if(type){
-      this.type= type;
+    @action
+    setPromptInputValue = (newValue: any) => {
+        this.promptInputValue = newValue;
     }
-    if(promptInputType){
-      this.promptInputType = promptInputType;
+    @action
+    setType = (newType: DialogTypes | null) => {
+        this.type = newType;
     }
-    if (title) {
-      this.title = title;
-    }
-    if (text) {
-      this.text = text;
-    }
-    if (callback) {
-      this.setAcceptAction(callback);
-    }
-    this._open = true;
-  };
+    @action
+    setTitle = (newTitle: string) => {
+        this.title = newTitle;
+    };
 
-  @action
-  hide = () => {// clean the dialog on close
-    this.setType(null);
-    this.setPromptInputValue(null);
-    this.setText("");
-    this.setTitle("");
-    this.setAcceptAction(()=>{});
-      this._open = false;
-  };
+    @action
+    setText = (newText: string) => {
+        this.text = newText;
+    };
 
-  @computed
-  get open() {
-    return this._open;
-  }
+
+    @action
+    show = (title?: string, text?: string, callback?: (result?: string | boolean | null) => void, type?: DialogTypes, promptInputType?: Type) => {
+        if (type) {
+            this.type = type;
+        }
+        if (promptInputType) {
+            this.promptInputType = promptInputType;
+        }
+        if (title) {
+            this.title = title;
+        }
+        if (text) {
+            this.text = text;
+        }
+        if (callback) {
+            this.setCallback(callback);
+        }
+        this._open = true;
+    };
+
+    @action
+    confirm(title:string, text:string, callback: (result: boolean) => void) {
+        this.show(title, text, callback, DialogTypes.CONFIRMATION)
+    }
+
+    @action
+    delete(title:string, text:string, callback: (result: boolean) => void) {
+        this.show(title, text, callback, DialogTypes.DELETE)
+    }
+
+    @action
+    prompt(title:string, text:string, callback: (result: boolean) => void, fieldType:Type = Type.TEXT) {
+        this.show(title, text, callback, DialogTypes.PROMPT, fieldType);
+    }
+
+    @action
+    private hide = () => {// clean the dialog on close
+        this.setType(null);
+        this.setPromptInputValue(null);
+        this.setText("");
+        this.setTitle("");
+        this.setCallback(() => {
+        });
+        this._open = false;
+    };
+
+    @computed
+    get open() {
+        return this._open;
+    }
 }
 
 export const DialogControl = DialogControlImpl.fetchInstance();

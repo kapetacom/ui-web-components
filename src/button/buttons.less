@@ -131,8 +131,6 @@ button.button {
         }
     }
 
-
-
     &.primary_shine,
     &.logo {
         filter: @button-blue-shadow-default;
@@ -225,6 +223,18 @@ button.button {
         }
     }
 
+    &.square {
+        .inner {
+            border-radius: 5px;
+        }
+    }
+
+    &.icon {
+        .inner {
+            border-radius: 100%;
+        }
+    }
+
     &[disabled] {
         filter: none;
         cursor: not-allowed;
@@ -258,4 +268,18 @@ button.button {
         }
     }
 
+}
+
+.actions {
+    vertical-align: middle;
+    display: inline-block;
+    float: right;
+
+    button {
+        margin-right: 4px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
 }

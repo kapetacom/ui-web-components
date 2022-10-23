@@ -1,0 +1,245 @@
+@import "../../styles/values";
+@import "../../styles/functions";
+
+
+.detail {
+  padding: 0 0;
+  background-color: inherit;
+  box-sizing: border-box;
+
+  .detail-row {
+    .transition();
+    display: flex;
+    flex-direction: row;
+    padding: 15px 10px;
+    line-height: 26px;
+
+    &:nth-child(2n) {
+      background-color: @gray-xlight;
+    }
+
+    & > .name {
+      font-weight: 500;
+      font-size: 14px;
+      width: 120px;
+      border-right: 1px solid @gray-light;
+      padding-right: 5px;
+    }
+
+    & > .name,
+    & > .value {
+      vertical-align: top;
+    }
+
+    & > .value {
+      .container();
+      padding-left: 5px;
+      width: 100%;
+      flex: 1;
+      position: relative;
+
+      & > button,
+      & > .spinner {
+        float: right;
+      }
+
+      .spinner {
+        line-height: 25px;
+        margin-right: 15px;
+
+        .inner {
+          font-size: 12px;
+          margin-left: 3px;
+        }
+      }
+
+      button {
+        opacity: 0;
+      }
+
+      input, select {
+        border: 0;
+        padding: 0;
+        margin: 0;
+        width: ~'calc(100% - 80px)';
+        font-family: inherit;
+        font-size: inherit;
+        color: inherit;
+        border-bottom: 1px solid @gray;
+        background-color: inherit;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+
+    &.editing,
+    &:hover {
+      .value button {
+        opacity: 1;
+      }
+    }
+
+    .error {
+      color: @red-dark;
+      font-size: 10px;
+      width: 80%;
+      position: absolute;
+      bottom: -20px;
+      left: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &.processing {
+      .transition(all 5000ms);
+      background-color: @blue-xxlight;
+      color: @blue-dark;
+
+      .value {
+        .transition(all 5000ms);
+        border-color: @blue-dark !important;
+      }
+    }
+
+    &.list {
+      .spinner {
+        position: absolute;
+        right: -5px;
+        top: 0px
+      }
+      &.processing {
+        a,button {
+          opacity: 0 !important;
+        }
+      }
+    }
+
+    ul.detail-list-value {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      li {
+        .container();
+        position: relative;
+        vertical-align: top;
+        line-height: 36px;
+        font-size: 12px;
+        margin: 0 0 7px;
+        padding-bottom: 3px;
+        border-bottom: 1px solid @gray-light;
+
+        .name {
+          vertical-align: top;
+          padding-bottom: 25px;
+        }
+
+        .error {
+          bottom: -13px;
+        }
+
+        &:last-child {
+          border: 0;
+        }
+
+        &.adder {
+          a {
+            cursor: pointer;
+            text-decoration: none;
+            color: @button-primary-hover;
+            font-weight: 500;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+
+        .actions {
+          float: none;
+          margin-left: 5px;
+          vertical-align: top;
+        }
+      }
+    }
+  }
+
+  .detail-buttons {
+    padding: 10px 10px 25px;
+    margin-top: 20px;
+    border-top: 1px solid @gray-light;
+
+    button {
+      margin-top: 10px;
+    }
+  }
+
+  &.small {
+    background-color: inherit;
+
+    .detail-row {
+      background-color: inherit;
+      display: block;
+      border: 0;
+      margin: 0;
+      position: relative;
+      padding-top: 16px;
+
+      & > .name {
+        width: auto;
+        border: 0;
+        background-color: inherit;
+        position: absolute;
+        left: 15px;
+        top: 2px;
+        font-size: 12px;
+        padding: 0 5px;
+        color: @gray-xdark;
+        max-width: ~'calc(100% - 40px)';
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        z-index: 1;
+
+        &:after {
+          content: '';
+        }
+      }
+
+      & > .value {
+        padding: 8px 5px;
+        border-radius: 5px;
+        border: 1px solid @gray-light;
+        background-color: inherit;
+      }
+    }
+
+    .detail-buttons {
+      button {
+        display: block;
+        width: 100% !important;
+
+        .inner {
+          width: 100% !important;
+        }
+      }
+    }
+  }
+
+  &.processing {
+    cursor: progress;
+
+    input, select {
+      cursor: progress;
+    }
+
+    .detail-row {
+      button, a {
+        pointer-events: none;
+      }
+    }
+  }
+}

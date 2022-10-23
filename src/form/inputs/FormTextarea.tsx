@@ -7,7 +7,7 @@ import { FormRow } from "../FormRow";
 
 interface Props {
     name: string,
-    label: string,
+    label?: string,
     value?: any,
     validation?: any[],
     help?: string,

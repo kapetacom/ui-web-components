@@ -1,5 +1,5 @@
 import React from "react";
-import {Validators} from './FormValidators';
+import {applyValidation, normaliseValidators, Validators} from '../validation/Validators';
 import {FormContext, FormContextType} from './FormContext';
 
 import "./FormRow.less";
@@ -9,7 +9,7 @@ import {FormElementContainer} from "./inputs/FormElementContainer";
 interface FormRowProps {
     label: string
     help?: string
-    validation?: any | any[],
+    validation?: any,
     children: any,
     type?: string,
     focused: boolean,
@@ -48,15 +48,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
     }
 
     getValidators() {
-        let validators = [];
-        if (this.props.validation) {
-            if (Array.isArray(this.props.validation)) {
-                validators = this.props.validation;
-            } else {
-                validators = [this.props.validation];
-            }
-        }
-        return validators;
+        return normaliseValidators(this.props.validation);
     }
 
     setReadyState(ready: boolean) {
@@ -139,27 +131,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
             return [this.state.forceError]
         }
 
-        return this.getValidators().map((validator: any) => {
-            if (typeof validator === 'string') {
-                if (!Validators[validator]) {
-                    throw new Error(`Unknown validator: ${validator}`);
-                }
-
-                validator = Validators[validator];
-            }
-
-            try {
-                validator.call(Validators, name, value);
-                return null;
-            } catch (err) {
-                if (typeof err === 'string') {
-                    return err;
-                }
-
-                return err.message;
-            }
-
-        }).filter((error: string) => !!error);
+        return applyValidation(this.getValidators(), name, value);
     }
 
     private setTouched(touched: boolean) {

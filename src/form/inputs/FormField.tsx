@@ -21,7 +21,7 @@ export enum FormFieldType {
 
 interface SharedProps {
     name: string
-    label: string
+    label?: string
     validation?: any[]
     help?: string
     options?: string[] | { [key: string]: string }
