@@ -42,6 +42,14 @@ export class FormInput extends React.Component<Props> {
         makeObservable(this);
     }
 
+    public setError(errorMessage?:string) {
+        if (!this.formRowRef.current) {
+            return;
+        }
+
+        this.formRowRef.current.setError(errorMessage);
+    }
+
     @action
     private inputOnBlur = () => {
         this.inputFocused = false;
