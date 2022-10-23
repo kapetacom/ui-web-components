@@ -84,9 +84,10 @@
     .error {
       color: @red-dark;
       font-size: 10px;
+      line-height: 10px;
       width: 80%;
       position: absolute;
-      bottom: -20px;
+      bottom: -12px;
       left: 5px;
       white-space: nowrap;
       overflow: hidden;
@@ -110,8 +111,10 @@
         right: -5px;
         top: 0px
       }
+
+
       &.processing {
-        a,button {
+        a, button {
           opacity: 0 !important;
         }
       }
@@ -138,7 +141,8 @@
         }
 
         .error {
-          bottom: -13px;
+          bottom: 0;
+          left: 0;
         }
 
         &:last-child {
@@ -180,6 +184,10 @@
   &.small {
     background-color: inherit;
 
+    .error {
+      bottom: 0;
+    }
+
     .detail-row {
       background-color: inherit;
       display: block;
@@ -210,10 +218,11 @@
       }
 
       & > .value {
-        padding: 8px 5px;
+        padding: 12px 5px;
         border-radius: 5px;
         border: 1px solid @gray-light;
         background-color: inherit;
+
       }
     }
 
