@@ -25,6 +25,7 @@ export * from './form/FormRow';
 export * from './form/FormReadyHandler';
 export * from './validation/Validators';
 
+export * from './form/inputs/FormFieldHandler';
 export * from './form/inputs/FormSelect';
 export * from './form/inputs/FormElementContainer';
 export * from './form/inputs/FormTextarea';
