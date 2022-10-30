@@ -14,6 +14,7 @@ interface Props {
     value?: any,
     validation?: any[],
     help?: string,
+    readOnly?: boolean,
     disabled?: boolean,
     multi?: boolean,
     onChange?: (inputName: string, userInput: any) => void
@@ -51,14 +52,25 @@ export class FormSelect extends React.Component<Props> {
         return [].concat(keys);
     };
 
+    private isEnabled() {
+        return !this.props.disabled && !this.props.readOnly;
+    }
+
     @action
     private onInputFocus = () => {
+        if (!this.isEnabled()) {
+            return;
+        }
         this.inputFocus = true;
         this.userInputDisplay = '';
     };
 
     @action
     private onInputBlur = () => {
+        if (!this.isEnabled()) {
+            return;
+        }
+
         // Select value if it is equal to suggestion
         if (this.userInputDisplay && this.inputSuggestion && this.inputSuggestion.toUpperCase() === this.userInputDisplay.toUpperCase()) {
             this.emitChange(_.invert(this.optionListFiltered())[this.inputSuggestion]);
@@ -87,7 +99,7 @@ export class FormSelect extends React.Component<Props> {
 
     @action
     private onInputToggle = () => {
-        if (!this.props.disabled) {
+        if (this.isEnabled()) {
             if (this.inputFocus) {
                 this.onInputBlur();
             } else {
@@ -257,6 +269,7 @@ export class FormSelect extends React.Component<Props> {
                 validation={this.props.validation}
                 focused={this.inputFocus}
                 disabled={this.props.disabled}
+                readOnly={this.props.readOnly}
             >
                 <div className={"form-select"} data-name={this.props.name} data-value={inputValue}>
                     {this.inputFocus && this.userInputDisplay.length > 0 &&
@@ -272,6 +285,7 @@ export class FormSelect extends React.Component<Props> {
                            ref={this.inputElement}
                            value={inputValue}
                            autoComplete="off"
+                           readOnly={this.props.readOnly}
                            disabled={this.props.disabled} />
                     <div className={classNameArrowIcon}>
                         <svg width="13" height="5" fill="none" onClick={this.onInputToggle}>

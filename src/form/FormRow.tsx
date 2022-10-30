@@ -14,6 +14,7 @@ interface FormRowProps {
     type?: string,
     focused: boolean,
     disabled?: boolean,
+    readOnly?: boolean,
     disableZoom?: boolean
 }
 
@@ -207,6 +208,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
                 type={this.props.type}
                 focused={this.props.focused}
                 disabled={this.props.disabled}
+                readOnly={this.props.readOnly}
                 disableZoom={this.props.disableZoom}
                 status={errorMessage && errorMessage.length > 0 ? StatusType.ERROR : StatusType.OK}
                 infoBox={''}

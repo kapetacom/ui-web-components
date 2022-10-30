@@ -19,75 +19,85 @@ export enum FormFieldType {
     ENUM_MULTI = "enum_multi"
 }
 
-interface SharedProps extends FieldProps {
+interface SharedProps {
     label?: string
     validation?: any[]
     help?: string
     options?: string[] | { [key: string]: string }
+    disabled?: boolean
+    readOnly?: boolean
 }
 
 
 interface Props extends SharedProps {
+    name:string
     type?: FormFieldType
+}
+
+interface NoTypeProps extends SharedProps, FieldProps {
+
+}
+
+interface InnerElementProps extends NoTypeProps {
+    type?: FormFieldType
+}
+
+const InnerElement = (props:InnerElementProps) => {
+
+    const type = props.type ? props.type : FormFieldType.STRING;
+
+    const innerProps:NoTypeProps = {
+        ...props
+    }
+    delete innerProps['type'];
+
+    switch (type) {
+        case FormFieldType.ENUM:
+        case FormFieldType.ENUM_MULTI:
+            if (!props.options) {
+                throw new Error('Missing attribute: options');
+            }
+            return <FormSelect multi={type === FormFieldType.ENUM_MULTI}
+                               options={props.options}
+                               {...innerProps} />
+
+        case FormFieldType.STRING:
+            return <FormInput type={Type.TEXT} {...innerProps} />
+        case FormFieldType.TEXT:
+            return <FormTextarea {...innerProps} />
+        case FormFieldType.DATE:
+            return <FormInput type={Type.DATE} {...innerProps} />
+        case FormFieldType.NUMBER:
+            return <FormInput type={Type.NUMBER} {...innerProps} />
+        case FormFieldType.EMAIL:
+            return <FormInput type={Type.EMAIL} {...innerProps} />
+        case FormFieldType.PASSWORD:
+            return <FormInput type={Type.PASSWORD} {...innerProps} />
+        case FormFieldType.CHECKBOX:
+            return <FormCheckbox {...innerProps} />
+        case FormFieldType.RADIO:
+            if (!props.options) {
+                throw new Error('Missing attribute: options');
+            }
+            return <FormRadioGroup options={props.options} {...innerProps} />
+    }
+
+    throw new Error('Invalid form field type: ' + type);
 }
 
 export const FormField = (props: Props) => {
 
-    const propClone = {...props};
-    delete propClone.type;
-    const sharedProps:SharedProps = {
-        ...propClone,
-        disabled: propClone.disabled
-    };
-
-
-    const InnerElement = (fieldProps:FieldProps) => {
-
-        const type = props.type ? props.type : FormFieldType.STRING;
-
-        const innerProps:SharedProps = {
-            ...sharedProps,
-            ...fieldProps
-        }
-
-        switch (type) {
-            case FormFieldType.ENUM:
-            case FormFieldType.ENUM_MULTI:
-                if (!props.options) {
-                    throw new Error('Missing attribute: options');
-                }
-                return <FormSelect multi={type === FormFieldType.ENUM_MULTI}
-                                   options={props.options}
-                                   {...innerProps} />
-
-            case FormFieldType.STRING:
-                return <FormInput type={Type.TEXT} {...innerProps} />
-            case FormFieldType.TEXT:
-                return <FormTextarea {...innerProps} />
-            case FormFieldType.DATE:
-                return <FormInput type={Type.DATE} {...innerProps} />
-            case FormFieldType.NUMBER:
-                return <FormInput type={Type.NUMBER} {...innerProps} />
-            case FormFieldType.EMAIL:
-                return <FormInput type={Type.EMAIL} {...innerProps} />
-            case FormFieldType.PASSWORD:
-                return <FormInput type={Type.PASSWORD} {...innerProps} />
-            case FormFieldType.CHECKBOX:
-                return <FormCheckbox {...innerProps} />
-            case FormFieldType.RADIO:
-                if (!props.options) {
-                    throw new Error('Missing attribute: options');
-                }
-                return <FormRadioGroup options={props.options} {...innerProps} />
-        }
-
-        throw new Error('Invalid form field type: ' + type);
-    }
+    const parentProps = props;
 
     return (
         <FormFieldHandler
             name={props.name}
-            component={(props) => <InnerElement {...props} />}
+            key={`$FormField${props.name}Handler`}
+            component={(props) => <InnerElement
+                {...props}
+                {...parentProps}
+                key={`$FormField${props.name}Inner`}
+            />}
         />
     )
 }

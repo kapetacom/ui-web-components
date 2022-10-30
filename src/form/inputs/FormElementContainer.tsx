@@ -16,6 +16,7 @@ interface Props {
     hasValue: boolean,
     touched: boolean,
     disabled?: boolean,
+    readOnly?: boolean
     help?: string,
     errorMessage: string,
     label?: string,
@@ -52,6 +53,7 @@ export class FormElementContainer extends React.Component<Props> {
             "form-element-container": true,
             "focused": this.props.focused,
             "disabled": this.props.disabled,
+            "read-only": this.props.readOnly,
             "required": !!this.props.required && !this.props.hasValue && this.props.touched ,
             "warning-status": !this.props.focused && this.props.status === StatusType.WARNING,
             "error-status": !this.props.focused && this.props.status === StatusType.ERROR,

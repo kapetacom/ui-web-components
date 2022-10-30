@@ -23,6 +23,7 @@ interface Props {
     validation?: any[],
     help?: string,
     disabled?: boolean,
+    readOnly?: boolean,
     onChange?: (inputName: string, userInput: any) => void,
     type?: Type
 }
@@ -176,6 +177,7 @@ export class FormInput extends React.Component<Props> {
                     disableZoom={nonTextType}
                     focused={this.inputFocused}
                     disabled={this.props.disabled}
+                    readOnly={this.props.readOnly}
                 >
                     <div className={className} data-name={this.props.name} data-value={this.props.value}>
                         <input 
@@ -186,6 +188,7 @@ export class FormInput extends React.Component<Props> {
                             onBlur={this.inputOnBlur}
                             value={value}
                             checked={checked}
+                            readOnly={this.props.readOnly}
                             disabled={this.props.disabled}                            
                             ref={this.inputRef} />
 
