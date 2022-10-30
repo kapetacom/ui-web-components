@@ -17,6 +17,7 @@ export * from './entities/EntityFormModel';
 export * from './entities/EntityMapper';
 export * from './entities/EntityList';
 
+export * from './form/Checkbox';
 export * from './form/field-handlers/EntityPicker';
 export * from './form/FormButtons';
 export * from './form/FormContainer';
@@ -31,6 +32,7 @@ export * from './form/inputs/FormInput';
 export * from './form/inputs/FormField';
 export * from './form/inputs/FormCheckbox';
 export * from './form/inputs/FormRadioGroup';
+
 
 export * from './modal/Modal';
 
