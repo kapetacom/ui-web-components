@@ -1,0 +1,25 @@
+@import "../../../styles/values";
+@import "../../../styles/functions";
+
+.otp-code {
+  .otp-code-container {
+    display: inline-flex !important;
+
+    input {
+      .border-radius(10px);
+      border: 1px solid #ccc;
+      font-size: 42px;
+      line-height: 42px;
+      height: 65px;
+      width: 42px;
+      text-align: center;
+      margin-right: 5px;
+    }
+
+    .number:last-child {
+      input {
+        margin-right: 0;
+      }
+    }
+  }
+}

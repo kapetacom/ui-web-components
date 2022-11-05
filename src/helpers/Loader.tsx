@@ -32,7 +32,6 @@ export const Loader = (props:LoaderProps) => {
                 error:false
             });
         }).catch((err) => {
-            console.log('FAILED LOADING', err);
             setState({loading:false, error:true});
         });
     });
@@ -48,7 +47,7 @@ export const Loader = (props:LoaderProps) => {
                 state.content
             }
 
-            {!state.loading && state.error&&
+            {!state.loading && state.error &&
                 <>FAILED TO LOAD</>
             }
         </div>
