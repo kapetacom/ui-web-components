@@ -12,10 +12,16 @@ import {RenderInBody} from "../overlay/RenderInBody";
 interface ModalProps {
     title: string
     size: ModalSize
+    closable?: boolean
+
+    //Controlled properties
+    open?: boolean
     onClose?: () => void
     onOpen?: () => void
-    closable?: boolean
-    open?: boolean
+
+    //Uncontrolled properties
+    openInitially?: boolean
+
     className?:string
     children: any
 }
@@ -43,12 +49,16 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
         super(props);
 
         this.state = {
-            open: !!props.open
+            open: !!props.openInitially
         };
     }
 
+    private isControlled():boolean {
+        return 'open' in this.props;
+    }
+
     public isOpen():boolean {
-        return this.state.open;
+        return this.isControlled() ? this.props.open : this.state.open;
     }
 
     public isModal():boolean {
@@ -60,7 +70,11 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
     }
 
     public close() {
-
+        if (this.isControlled()) {
+            this.context.onClosing(this);
+            this.props.onClose && this.props.onClose();
+            return;
+        }
 
         this.setState({
             open:false
@@ -69,11 +83,22 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
         this.context.onClosing(this);
     }
 
+
     public open() {
+        if (this.isControlled()) {
+            this.props.onOpen && this.props.onOpen();
+            if (this.isClosable()) {
+                this.context.onChanged(this);
+            }
+            return;
+        }
+
         this.setState({
             open:true
         }, () => {
-            this.context.onChanged(this);
+            if (this.isClosable()) {
+                this.context.onChanged(this);
+            }
         });
     }
 
@@ -94,13 +119,6 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
 
     componentWillUnmount() {
         this.context.onRemoved(this);
-    }
-
-    componentDidUpdate(prevProps: Readonly<ModalProps>) {
-        if (prevProps.open !== this.props.open) {
-            //If props don't match - flip state
-            this.setState({open: !this.state.open});
-        }
     }
 
     private onTransitionEnd = (evt:React.TransitionEvent) => {
@@ -125,7 +143,7 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
         let classNames = {
             'modal-container':true,
             [this.props.size]: true,
-            'open': this.state.open
+            'open': this.isControlled() ? this.props.open : this.state.open
         };
 
         const zIndex = this.context.getIndex(this);

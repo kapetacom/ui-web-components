@@ -11,11 +11,17 @@ interface SidePanelProps {
     size?: PanelSize
     side?: PanelAlignment
     closable?:boolean
+    children: any
+    title?: string
+
+    //Controlled properties
+    open?: boolean
     onClose?: () => void
     onOpen?: () => void
-    children: any
-    title?: string 
-    open?: boolean
+
+    //Uncontrolled properties
+    openInitially?: boolean
+
     index?: number
     modal?: boolean
     className?:string
@@ -47,8 +53,12 @@ export class SidePanel extends React.Component<SidePanelProps, SidePanelState> i
         super(props);
 
         this.state = {
-            open: !!props.open
+            open: !!props.openInitially
         };
+    }
+
+    private isControlled():boolean {
+        return 'open' in this.props;
     }
 
     public isClosable() {
@@ -56,7 +66,7 @@ export class SidePanel extends React.Component<SidePanelProps, SidePanelState> i
     }
 
     public isOpen():boolean {
-        return this.state.open;
+        return this.isControlled() ? this.props.open : this.state.open;
     }
 
     public isModal():boolean {
@@ -64,17 +74,28 @@ export class SidePanel extends React.Component<SidePanelProps, SidePanelState> i
     }
 
     public close() {
+        if (this.isControlled()) {
+            this.context.onClosing(this);
+            this.props.onClose && this.props.onClose();
+            return;
+        }
 
         this.setState({
             open:false
         });
 
-        if (this.isClosable()) {
-            this.context.onClosing(this);
-        }
+        this.context.onClosing(this);
     }
 
     public open() {
+        if (this.isControlled()) {
+            this.props.onOpen && this.props.onOpen();
+            if (this.isClosable()) {
+                this.context.onChanged(this);
+            }
+            return;
+        }
+
         this.setState({
             open:true
         }, () => {
@@ -126,7 +147,7 @@ export class SidePanel extends React.Component<SidePanelProps, SidePanelState> i
             'side-panel-container': true,
             [size]:true,
             [side]:true,
-            'open': this.state.open,
+            'open': this.isControlled() ? this.props.open : this.state.open,
             'current': this.isClosable() ? this.context.isCurrent(this) : true
         };
 
