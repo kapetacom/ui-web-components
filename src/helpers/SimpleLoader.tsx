@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import {toClass} from "@blockware/ui-web-utils";
 
 import './SimpleLoader.less';
+import {Simulate} from "react-dom/test-utils";
+import load = Simulate.load;
 
 export enum LoaderType {
     CIRCLE = 'circle',
@@ -34,25 +36,31 @@ const DIV_COUNTS = {
 }
 
 interface Props {
-    loader: () => Promise<any>,
+    loader?: () => Promise<any>,
+    loading?: boolean
     type?: LoaderType
     children: any
 }
 
 export const SimpleLoader = (props: Props) => {
 
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        setLoading(true);
-        props.loader()
-            .then(() => {
-                setLoading(false);
-            })
-            .catch(() => {
-                setLoading(false);
-            });
-    }, []);
+    let loading = !!props.loading;
+
+    if (props.loader) {
+        const [uncontrolledLoading, setUncontrolledLoading] = useState(true);
+        loading = uncontrolledLoading;
+        useEffect(() => {
+            setUncontrolledLoading(true);
+            props.loader()
+                .then(() => {
+                    setUncontrolledLoading(false);
+                })
+                .catch(() => {
+                    setUncontrolledLoading(false);
+                });
+        }, []);
+    }
 
     const type:LoaderType = props.type || LoaderType.RIPPLE;
 
