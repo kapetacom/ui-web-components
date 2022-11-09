@@ -140,7 +140,7 @@ export class DialogControlImpl {
     }
 
     @action
-    prompt(title:string, text:string, callback: (result: boolean) => void, fieldType:Type = Type.TEXT) {
+    prompt(title:string, text:string, callback: (result: any) => void, fieldType:Type = Type.TEXT) {
         this.show(title, text, callback, DialogTypes.PROMPT, fieldType);
     }
 
@@ -162,3 +162,21 @@ export class DialogControlImpl {
 }
 
 export const DialogControl = DialogControlImpl.fetchInstance();
+
+export const showPrompt = (title:string, text:string, fieldType:Type = Type.TEXT):Promise<any> => {
+    return new Promise((resolve) => {
+        DialogControl.prompt(title, text, resolve, fieldType)
+    })
+};
+
+export const showConfirm = (title:string, text:string):Promise<boolean> => {
+    return new Promise((resolve) => {
+        DialogControl.confirm(title, text, resolve)
+    })
+};
+
+export const showDelete = (title:string, text:string):Promise<boolean> => {
+    return new Promise((resolve) => {
+        DialogControl.delete(title, text, resolve)
+    })
+};
