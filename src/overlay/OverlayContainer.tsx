@@ -43,6 +43,9 @@ export class OverlayContainer extends React.Component<OverlayContainerProps,Over
 
         //Close all modals above this
         for(let i = (ix+1); i < this.components.length; i++) {
+            if (!this.components[i].isClosable()) {
+                return;
+            }
             this.components[i].close();
         }
     }
@@ -90,7 +93,7 @@ export class OverlayContainer extends React.Component<OverlayContainerProps,Over
         }
 
         const component = this.components[this.components.length - 1];
-        if (component) {
+        if (component && component.isClosable()) {
             component.close();
         }
     };
@@ -103,7 +106,7 @@ export class OverlayContainer extends React.Component<OverlayContainerProps,Over
         }
 
         const modal = modals[modals.length - 1];
-        if (modal) {
+        if (modal && modal.isClosable()) {
             modal.close();
         }
     };

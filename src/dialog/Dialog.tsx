@@ -74,6 +74,10 @@ export class Dialog extends Component<DialogProps ,any> implements OverlayCompon
         return true;
     }
 
+    public isClosable():boolean {
+        return true;
+    }
+
     public close() {
         DialogControl.close();
         this.context.onClosing(this);

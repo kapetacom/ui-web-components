@@ -14,6 +14,7 @@ interface ModalProps {
     size: ModalSize
     onClose?: () => void
     onOpen?: () => void
+    closable?: boolean
     open?: boolean
     className?:string
     children: any
@@ -54,7 +55,13 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
         return true;
     }
 
+    public isClosable():boolean {
+        return this.props.closable !== false;
+    }
+
     public close() {
+
+
         this.setState({
             open:false
         });
@@ -87,6 +94,13 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
 
     componentWillUnmount() {
         this.context.onRemoved(this);
+    }
+
+    componentDidUpdate(prevProps: Readonly<ModalProps>) {
+        if (prevProps.open !== this.props.open) {
+            //If props don't match - flip state
+            this.setState({open: !this.state.open});
+        }
     }
 
     private onTransitionEnd = (evt:React.TransitionEvent) => {
@@ -125,6 +139,7 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
 
                     <PanelStructure
                         title={this.props.title}
+                        closable={this.props.closable}
                         onClose={() => {
                             this.close()
                         }}>

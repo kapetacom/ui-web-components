@@ -4,6 +4,7 @@ import exp from "constants";
 export interface OverlayComponent {
     isOpen: () => boolean
     isModal: () => boolean
+    isClosable: () => boolean
     open:() => void
     close:() => void
 }
