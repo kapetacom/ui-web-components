@@ -38,6 +38,7 @@ const DIV_COUNTS = {
 interface Props {
     loader?: () => Promise<any>,
     loading?: boolean
+    text?: string
     type?: LoaderType
     children: any
 }
@@ -76,6 +77,8 @@ export const SimpleLoader = (props: Props) => {
         divs.push(i);
     }
 
+    const text = props.text || 'Loading... please wait';
+
     return (
         <>
             {loading &&
@@ -83,7 +86,7 @@ export const SimpleLoader = (props: Props) => {
                     <div className={className}>
                         {divs.map((ix) => <div key={'div_' + ix}></div>)}
                     </div>
-                    Loading... please wait
+                    {text}
                 </div>
             }
 
