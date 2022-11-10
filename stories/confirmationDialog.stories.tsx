@@ -1,104 +1,52 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
-import {Dialog, DialogControl, DialogTypes, Type} from '../src';
+import {Dialog, DialogControl, OverlayContainer, showConfirm, showDelete, showPrompt, Type} from '../src';
 
 DialogControl.setTitle("test title");
 
 storiesOf('Dialogs', module)
     .add(" Delete Dialog", () => (
         <div style={{width: '390px', padding: '10px'}}>
-            <button onClick={() => {
-                if (DialogControl.open) {
-                    DialogControl.hide();
-                } else {
-                    DialogControl.setCallback(() => {
-                    });
-                    DialogControl.show(null, null, null, DialogTypes.DELETE);
-                }
-            }}>Open dialog
-            </button>
-            <button type="button" onClick={() => {
-                DialogControl.setTitle("Some title!");
-                DialogControl.setText("Some text!");
-            }}>set title to : Random string
-            </button>
-            <button type="button" onClick={() => {
-                DialogControl.setTitle("Random string")
-
-            }}>set title to : Random string
-            </button>
-            <Dialog/>
+            <OverlayContainer>
+                <button onClick={async () => {
+                    const ok = await showDelete('Delete this?', 'Are you sure?')
+                    ok && alert('Deleted!')
+                }}>
+                    Open dialog
+                </button>
+                <Dialog/>
+            </OverlayContainer>
         </div>
     ))
 
     .add(" Confirmation Dialog", () => (
         <div style={{width: '390px', padding: '10px'}}>
-            <button onClick={() => {
-                if (DialogControl.open) {
-                    DialogControl.hide();
-                } else {
-                    DialogControl.show("Test confirmation title!",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                        () => {
-                        },
-                        DialogTypes.CONFIRMATION,
-                        Type.TEXT
-                    );
-                }
-            }}>Open dialog
-            </button>
-            <button type="button" onClick={() => {
-                DialogControl.setTitle("Some title!");
-                DialogControl.setText("Some text!");
-            }}>set title to : Random string
-            </button>
-            <button type="button" onClick={() => {
-                DialogControl.setTitle("Random string")
-
-            }}>set title to : Random string
-            </button>
-            <Dialog/>
+            <OverlayContainer>
+                <button onClick={async () => {
+                    const ok = await showConfirm('Proceed?', 'Are you sure?')
+                    ok && alert('Proceeding!')
+                }}>Open dialog
+                </button>
+                <Dialog/>
+            </OverlayContainer>
         </div>
     ))
 
     .add(" Prompt Dialog", () => (
         <div style={{width: '390px', padding: '10px'}}>
-            <button onClick={() => {
-                if (DialogControl.open) {
-                    DialogControl.hide();
-                } else {
-                    DialogControl.show("Test prompt title!",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                        (value) => console.log("Value from prompt callback:", value),
-                        DialogTypes.PROMPT,
-                        Type.TEXT
-                    );
-                }
-            }}>Open propmpt dialog with input type text
-            </button>
-            <button onClick={() => {
-                if (DialogControl.open) {
-                    DialogControl.hide();
-                } else {
-                    DialogControl.show("Test prompt title!",
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
-                        (value) => console.log("Value from prompt callback:", value),
-                        DialogTypes.PROMPT,
-                        Type.NUMBER
-                    );
-                }
-            }}>Open propmpt dialog with input type number
-            </button>
-            <button type="button" onClick={() => {
-                DialogControl.setTitle("Some title!");
-                DialogControl.setText("Some Text ");
-            }}>set title to : Random string
-            </button>
-            <button type="button" onClick={() => {
-                DialogControl.setTitle("Random string")
+            <OverlayContainer>
+                <button onClick={async () => {
+                    const name = await showPrompt('Your name please?', 'Input your name');
+                    alert(`Your name is: ${name}`)
 
-            }}>set title to : Random string
-            </button>
-            <Dialog/>
+                }}>Open prompt dialog with input type text
+                </button>
+                <button onClick={async () => {
+                    const age = await showPrompt('Your name please?', 'Input your name', Type.NUMBER);
+                    alert(`Your age is: ${age}`)
+                }}>Open prompt dialog with input type number
+                </button>
+                <Dialog/>
+            </OverlayContainer>
         </div>
     ))

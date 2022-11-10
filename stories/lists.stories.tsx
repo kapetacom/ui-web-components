@@ -17,7 +17,7 @@ export const SimpleList = () => {
     ]);
 
     return (
-        <div style={{width: '550px'}}>
+        <div>
             <List
                 title={'name'}
                 properties={{
