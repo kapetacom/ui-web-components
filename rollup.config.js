@@ -3,7 +3,7 @@ import commonjs from "@rollup/plugin-commonjs"
 import typescript from "@rollup/plugin-typescript"
 import { terser } from "rollup-plugin-terser"
 import external from "rollup-plugin-peer-deps-external"
-import postcss from "rollup-plugin-postcss"
+import styles from "rollup-plugin-styles"
 import dts from "rollup-plugin-dts"
 import pegjs from "rollup-plugin-pegjs";
 
@@ -36,7 +36,7 @@ export default [
             typescript({
                 tsconfig: "./tsconfig.build.json"
             }),
-            postcss(),
+            styles(),
             terser(),
         ],
     },

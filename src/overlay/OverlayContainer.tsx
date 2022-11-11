@@ -170,7 +170,7 @@ export class OverlayContainer extends React.Component<OverlayContainerProps,Over
         const zIndex = this.toZIndex(this.getLevel());
 
         return (
-            <div ref={(ref)=>{this.modalContainer=ref} }>
+            <div className={'overlay-modal-container'} ref={(ref)=>{this.modalContainer=ref} }>
                 <OverlayContext.Provider value={{
                     onAdded: this.onAdded,
                     onRemoved: this.onRemoved,

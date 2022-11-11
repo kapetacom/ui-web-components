@@ -40,7 +40,8 @@ interface Props {
     loading?: boolean
     text?: string
     type?: LoaderType
-    children: any
+    children?: any
+
 }
 
 export const SimpleLoader = (props: Props) => {
