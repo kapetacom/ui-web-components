@@ -23,6 +23,12 @@ export const FullDetail = () => {
         name: 'John Doe',
         handle: 'myUsername',
         age: 39,
+        embedded: {
+            value: 'i am embedded',
+            list: [
+                '1'
+            ]
+        },
         emails: ['myfirst@email.com', 'my-other@email.com'],
         phones: ['+1 (123) 12312-123', '+45 2123321']
     });
@@ -50,8 +56,11 @@ export const FullDetail = () => {
                 <DetailRowValue fixed={true} label={'Full Name'} name={'name'} validation={['required']} />
                 <DetailRowValue label={'Handle'} name={'handle'} validation={['required']} />
                 <DetailRowValue label={'Age'} name={'age'} validation={['required', minMaxAgeCheck]} />
+                <DetailRowValue label={'Embedded'} name={'embedded.value'} />
                 <DetailRowListValue label={'E-mails'} typeName={'E-mail'} validation={['required','email']} name={'emails'} />
                 <DetailRowListValue fixed={true} label={'Phone numbers'} typeName={'Phone number'} validation={['required']} name={'phones'} />
+
+                <DetailRowListValue label={'Embedded list'} typeName={'Embedded entry'} validation={['required']} name={'embedded.list'} />
                 <DetailRow label={'Very long name that doesnt fit the normal size'} >
                     Very long value that doesnt fit the normal size
                 </DetailRow>

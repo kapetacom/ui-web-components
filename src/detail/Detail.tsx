@@ -1,12 +1,11 @@
 import React, {Context, createContext, useContext, useState} from 'react';
-
+import _ from 'lodash';
 import './Detail.less';
 import {toClass} from "@blockware/ui-web-utils";
 import {Button, ButtonShape, ButtonStyle, StandardIcons} from '../button/buttons';
 import {applyValidation} from "../validation/Validators";
 import {showToasty, ToastType} from "../toast/ToastComponent";
 import {DialogControl} from "../dialog/DialogControl";
-import {boolTag} from "yaml/dist/schema/core/bool";
 
 
 interface DetailContextData {
@@ -55,7 +54,9 @@ export const Detail = (props: DetailProps) => {
     const [editingFieldId, setEditingFieldId] = useState('');
 
     const onValueChanged = async (name: string, value: any) => {
-        const newData = {...props.data, [name]: value};
+        const newData = _.cloneDeep(props.data);
+        _.set(newData, name, value);
+
         if (props.onChange) {
             try {
                 setProcessingFieldId(name);
@@ -168,7 +169,7 @@ export const DetailRowValue = (props: DetailRowValueProps) => {
 
     let context = useContext(DetailContext);
 
-    const originalValue = context.data[props.name];
+    const originalValue = _.get(context.data, props.name);
 
     const [value, setValue] = useState(originalValue);
 
@@ -248,7 +249,7 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
 
     let context = useContext(DetailContext);
 
-    const originalValue: any[] = context.data[props.name] ? context.data[props.name] : [];
+    const originalValue: any[] = _.has(context.data,props.name) ? _.get(context.data, props.name) : [];
 
     const isAdding = context.isEditing(props.name);
     const isProcessing = context.isProcessing(props.name);
