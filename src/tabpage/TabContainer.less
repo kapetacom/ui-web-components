@@ -2,7 +2,16 @@
 @import '../../styles/functions.less';
 
 .tab-container {
-    .tab-buttons, .tab-buttons > li {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    .tab-buttons {
+        flex:0;
+    }
+    .tab-buttons,
+    .tab-buttons > li {
         list-style: none;
         padding:0;
         margin:0;
@@ -10,33 +19,30 @@
 
     .tab-buttons > li {
         display: inline-block;
+
         button {
             .border-radius(0);
-            border-color: @gray-light;
+            background-color: transparent;
+            border:0;
             font-size: 14px;
             line-height: 26px;
-            border-bottom:0;
-            border-right-width: 0;
             padding:0 15px;
+            cursor: pointer;
 
-        }
-
-        &:last-child {
-            button {
-                border-right-width: 1px;
-            }
         }
 
 
         &.current {
             button {
-                background-color: @gray-light;
+                border-bottom:3px solid @gray-xdark;
             }
         }
 
     }
 
     .tab-pages {
-        border:1px solid @gray-light;
+        flex:1;
+        border-top:1px solid @gray-light;
+        overflow: auto;
     }
 }

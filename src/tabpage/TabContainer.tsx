@@ -9,6 +9,8 @@ import './TabContainer.less';
 
 interface TabContainerProps {
     defaultTab?:string
+    onTabChange?:(tabId) => void
+    currentTabId?:string
     children:any
 }
 
@@ -36,9 +38,22 @@ export class TabContainer extends React.Component<TabContainerProps, TabContaine
         };
     }
 
+    private isControlled() {
+        return 'currentTabId' in this.props;
+    }
+
+    private getCurrentPageId() {
+        if (this.isControlled()) {
+            return this.props.currentTabId || this.props.defaultTab;
+        }
+        return this.state.currentPageId;
+    }
+
     private setCurrentPage(id:string) {
         this.setState({
             currentPageId: id
+        }, () => {
+            this.props.onTabChange && this.props.onTabChange(id);
         });
     }
 
@@ -95,7 +110,7 @@ export class TabContainer extends React.Component<TabContainerProps, TabContaine
                             this.state.pages.map((page) => {
                                 const className = toClass({
                                     'tab-button':true,
-                                    'current': page.id === this.state.currentPageId
+                                    'current': page.id === this.getCurrentPageId()
                                 });
 
                                 return (
