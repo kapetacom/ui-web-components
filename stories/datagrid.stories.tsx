@@ -7,10 +7,10 @@ const RAW_DATA = [
     {
         ownerId: '1234-124-124123',
         asset: {
-            kind: 'blocks.blockware.com/v1/frontend',
+            kind: 'blockware/block-type-frontend',
             metadata: {
                 name: 'Service Block Type',
-                id: 'blocks.blockware.com/v1/Service',
+                id: 'blockware/block-type-service',
                 version: '1.2.3'
             },
             spec: {}
@@ -19,10 +19,10 @@ const RAW_DATA = [
     {
         ownerId: '1234-124-124123',
         asset: {
-            kind: 'blocks.blockware.com/v1/frontend',
+            kind: 'blockware/block-type-frontend',
             metadata: {
                 name: 'Core Block Type',
-                id: 'core.blockware.com/v1/BlockType',
+                id: 'core/block-type',
                 version: '1.2.2'
             },
             spec: {}
@@ -31,10 +31,10 @@ const RAW_DATA = [
     {
         ownerId: '1234-124-124123',
         asset: {
-            kind: 'blocks.blockware.com/v1/frontend',
+            kind: 'blockware/block-type-frontend',
             metadata: {
                 name: 'Java8 Target',
-                id: 'targets.blockware.com/v1/Java8-SpringBoot2',
+                id: 'blockware/language-target-java-spring-boot',
                 version: '1.2.1'
             },
             spec: {}
@@ -53,7 +53,7 @@ export const SimpleDataGrid = () => {
             theme={DataGridTheme.MATERIAL}
             rowData={RAW_DATA.map(row => {
                 return {
-                    id: row.asset.metadata.id,
+                    name: row.asset.metadata.name,
                     kind: row.asset.kind,
                     version: row.asset.metadata.version,
                     ownerName: 'Blockware'
@@ -96,7 +96,7 @@ export const SimpleDataList = () => {
             }}
             rowData={RAW_DATA.map(row => {
                 return {
-                    id: row.asset.metadata.id,
+                    name: row.asset.metadata.name,
                     kind: row.asset.kind,
                     version: row.asset.metadata.version,
                     ownerName: 'Blockware'
@@ -137,7 +137,7 @@ export const DataListWithDetails = () => {
                 theme={DataGridTheme.MATERIAL}
                 rowData={RAW_DATA.map(row => {
                     return {
-                        id: row.asset.metadata.id,
+                        name: row.asset.metadata.name,
                         kind: row.asset.kind,
                         version: row.asset.metadata.version,
                         ownerName: 'Blockware'
@@ -181,7 +181,7 @@ export const AsyncDataGrid = () => {
             setTimeout(() => {
                 resolve(RAW_DATA.map(row => {
                     return {
-                        id: row.asset.metadata.id,
+                        name: row.asset.metadata.name,
                         kind: row.asset.kind,
                         version: row.asset.metadata.version,
                         ownerName: 'Blockware'
