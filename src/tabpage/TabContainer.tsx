@@ -99,7 +99,7 @@ export class TabContainer extends React.Component<TabContainerProps, TabContaine
 
         return (
             <TabContext.Provider value={{
-                currentTabId: this.state.currentPageId,
+                currentTabId: this.getCurrentPageId(),
                 onTabAdded: this.handlePageAdded,
                 onTabRemoved: this.handlePageRemoved,
                 onTabUpdated: this.handlePageUpdated
