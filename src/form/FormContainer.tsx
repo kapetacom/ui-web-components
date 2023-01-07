@@ -72,14 +72,14 @@ export class FormContainer extends React.Component<Props, State> {
     }
 
     public getValue(name: string): any {
-        if (name in this.formData) {
-            return this.formData[name];
+        if (_.has(this.formData, name)) {
+            return _.get(this.formData,name);
         }
         return '';
     }
 
     private onValueChanged(name: string, value: any) {
-        this.formData[name] = value;
+        _.set(this.formData,name,value);
         this.emitChange();
     }
 

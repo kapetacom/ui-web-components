@@ -64,6 +64,54 @@ export const SimpleForm = () => {
     )
 }
 
+export const NestedDataForm = () => {
+
+    const [formData, setFormData] = useState({})
+
+    return (
+        <div style={{width: '550px'}}>
+            <FormContainer
+                initialValue={{author: {name: 'Henrik', age: 39}, options: {select_one: 'two', select_multi: ['two', 'three']}}}
+                onSubmitData={(data) => {
+                    console.log('Data', data);
+                    setFormData(data);
+                }}
+            >
+                <FormField name={'author.name'} label={'Name'}/>
+                <FormField name={'author.age'} label={'Age'} type={FormFieldType.NUMBER}/>
+                <FormField name={'enabled'} label={'Enable?'}
+                           type={FormFieldType.CHECKBOX} help={'Should this be enabled?'}/>
+
+                <FormField name={'radios'} label={'Radios'}
+                           type={FormFieldType.RADIO}
+                           help={'Pick one of these'}
+                           options={{one: 'One', two: 'Two', three: 'Three'}}
+                />
+
+                <FormField name={'options.select_multi'} label={'Select Multi'}
+                           type={FormFieldType.ENUM_MULTI}
+                           help={'You can choose multiple'}
+                           options={{one: 'One', two: 'Two', three: 'Three'}}
+                />
+
+                <FormField name={'options.select_one'} label={'Select One'}
+                           type={FormFieldType.ENUM}
+                           help={'Just one please'}
+                           options={{one: 'One', two: 'Two', three: 'Three'}}
+                />
+
+
+                <FormButtons>
+                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER}/>
+                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY}/>
+                </FormButtons>
+            </FormContainer>
+            <b>Submitted data</b>
+            <pre>{JSON.stringify(formData, null, 2)}</pre>
+        </div>
+    )
+}
+
 
 export const FormWithConditionals = () => {
 
