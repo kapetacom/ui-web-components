@@ -6,23 +6,28 @@ import SortableContext, {SwapMode} from './SortableContext';
 import {SortableItem} from "./SortableItem";
 import _ from "lodash";
 import {DRAGGING_SOURCE_CSS} from "./Draggable";
-import {action, makeObservable} from "mobx";
+import {action, makeObservable, observable} from "mobx";
 import {observer} from "mobx-react";
 
-interface SelectorContainerProps {
-    list: any[]
+interface SelectorContainerProps<T extends any> {
+    list: T[]
     children: any
-    onChange:() => void
+    onUpdate:(changedList:T[]) => void
+    onChanged?:(changedList:T[]) => void
 }
 
 @observer
-export class SortableContainer extends React.Component<SelectorContainerProps> {
+export class SortableContainer<T extends any> extends React.Component<SelectorContainerProps<T>> {
 
     private elm: DOMElement | null = null;
 
     private items:SortableItem[] = [];
 
+    @observable
     private dragging?:SortableItem;
+
+    @observable
+    private changed:boolean = false;
 
     constructor(props) {
         super(props);
@@ -50,6 +55,11 @@ export class SortableContainer extends React.Component<SelectorContainerProps> {
         this.dragging = drag;
     }
 
+    private onUpdate() {
+        this.changed = true;
+        this.props.onUpdate([...this.props.list]);
+    }
+
     @action
     private onDragMove(dimensions: Dimensions, dragRect:ClientRect, drag: SortableItem) {
         for(let i = 0; i < this.items.length; i++) {
@@ -71,12 +81,12 @@ export class SortableContainer extends React.Component<SelectorContainerProps> {
                     } else {
                         this.props.list.splice(Math.max(0,newIx), 0, drag.getItem());
                     }
-                    this.props.onChange();
+                    this.onUpdate();
                     return;
                 case SwapMode.AFTER:
                     this.props.list.splice(currentIx, 1);
                     this.props.list.splice(newIx, 0, drag.getItem());
-                    this.props.onChange();
+                    this.onUpdate();
                     return;
             }
         }
@@ -84,6 +94,10 @@ export class SortableContainer extends React.Component<SelectorContainerProps> {
 
     private onDragEnd(dimensions: Dimensions, dragRect:ClientRect, drag: SortableItem) {
         this.dragging = undefined;
+        if (this.changed && this.props.onChanged) {
+            this.props.onChanged([...this.props.list]);
+        }
+        this.changed = false;
         if (!this.elm) {
             return;
         }

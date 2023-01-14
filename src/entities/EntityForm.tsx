@@ -22,8 +22,6 @@ import { SortableContainer } from "../dnd/SortableContainer";
 import { SortableItem } from "../dnd/SortableItem";
 import { FormInput, Type } from "../form/inputs/FormInput";
 import { FormContainer } from "../form/FormContainer";
-import { FormButtons } from "../form/FormButtons";
-import { Button, ButtonSize, ButtonStyle, ButtonType } from "../button/buttons";
 
 
 function toTypeName(entry:SchemaEntryEdit):string {
@@ -200,7 +198,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
 
         return (
 
-            <SortableContainer list={properties} onChange={() => this.handleChange()} >
+            <SortableContainer list={properties} onUpdate={() => this.handleChange()} >
                 <div className={'field-list-container'}>
 
                     {properties.map((field, index) => {

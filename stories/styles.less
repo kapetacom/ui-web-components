@@ -90,3 +90,28 @@
         opacity: .5;
     }
 }
+
+.sortable-list {
+    .no-select();
+
+    .sortable-item {
+        .drop-shadow();
+        border:1px solid black;
+        margin:20px 0;
+        padding:20px;
+        background-color: white;
+        .handle {
+            cursor: move;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        &.dragging-handle {
+            opacity: 0.5;
+            background-color: #CCC;
+        }
+
+        &.dragging-source {
+            opacity: 0.2;
+        }
+    }
+}

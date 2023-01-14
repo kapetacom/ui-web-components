@@ -435,6 +435,11 @@ export class Draggable<T> {
         if (this.dragging) {
             this.elm.classList.add(DRAGGING_SOURCE_CSS);
             this.draggingTarget.classList.add(DRAGGING_HANDLE_CSS);
+            if (this.options.dragCopy) {
+                //It's a copy - we can modify the style
+                //Margin confuses coords
+                this.draggingTarget.style.margin = '0';
+            }
 
             let top = Math.max(0, dimensions.top);
             let left = Math.max(0, dimensions.left);
