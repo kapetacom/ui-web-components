@@ -32,9 +32,7 @@ export class FormSelect extends React.Component<Props> {
     @observable
     private inputSuggestion: string = '';
 
-    @observable
     private inputElement = React.createRef<HTMLInputElement>();
-
     private dropDownList = React.createRef<HTMLUListElement>();
 
     private formRowRef: React.RefObject<FormRow> = React.createRef();
@@ -231,6 +229,7 @@ export class FormSelect extends React.Component<Props> {
         </span>
     }
 
+    @action
     componentDidUpdate() {
         if (!this.dropDownList.current ||
             !this.inputElement.current) {

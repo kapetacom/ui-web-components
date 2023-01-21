@@ -6,7 +6,7 @@ import SortableContext, {SwapMode} from './SortableContext';
 import {SortableItem} from "./SortableItem";
 import _ from "lodash";
 import {DRAGGING_SOURCE_CSS} from "./Draggable";
-import {action, makeObservable, observable} from "mobx";
+import {action, computed, makeObservable, observable} from "mobx";
 import {observer} from "mobx-react";
 
 interface SelectorContainerProps<T extends any> {
@@ -43,6 +43,7 @@ export class SortableContainer<T extends any> extends React.Component<SelectorCo
     }
 
 
+    @observable
     public isDragging(item: SortableItem) {
         if (!this.dragging) {
             return false;
@@ -51,10 +52,12 @@ export class SortableContainer<T extends any> extends React.Component<SelectorCo
         return this.dragging.getItem() === item.getItem();
     }
 
+    @action
     private onDragStart(drag: SortableItem) {
         this.dragging = drag;
     }
 
+    @action
     private onUpdate() {
         this.changed = true;
         this.props.onUpdate([...this.props.list]);
@@ -92,6 +95,7 @@ export class SortableContainer<T extends any> extends React.Component<SelectorCo
         }
     }
 
+    @action
     private onDragEnd(dimensions: Dimensions, dragRect:ClientRect, drag: SortableItem) {
         this.dragging = undefined;
         if (this.changed && this.props.onChanged) {

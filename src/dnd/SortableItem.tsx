@@ -3,6 +3,8 @@ import {asHTMLElement, DOMElement} from "@blockware/ui-web-utils";
 
 import SortableContext, {SortableContextType, SwapMode} from './SortableContext';
 import {Draggable, DRAGGING_SOURCE_CSS} from "./Draggable";
+import {makeObservable, observable} from "mobx";
+import {observer} from "mobx-react";
 
 interface SelectorItemProps {
     item: any
@@ -12,13 +14,19 @@ interface SelectorItemProps {
 
 const MARGIN = 10;
 
+@observer
 export class SortableItem extends React.Component<SelectorItemProps> {
     static contextType = SortableContext;
     context!: React.ContextType<SortableContextType>;
 
     private elm:DOMElement|null = null;
 
-    private draggable?:Draggable<SortableItem>; 
+    private draggable?:Draggable<SortableItem>;
+
+    constructor(props:SelectorItemProps) {
+        super(props);
+        makeObservable(this);
+    }
 
     public shouldSwap(dragRect:ClientRect):SwapMode {
         if (!this.elm) {
@@ -53,6 +61,7 @@ export class SortableItem extends React.Component<SelectorItemProps> {
         return this.props.item;
     }
 
+    @observable
     private getClassName(child:any) {
         let className = '';
 

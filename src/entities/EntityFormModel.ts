@@ -63,7 +63,6 @@ export class EntityFormModel {
     private original: SchemaDTO;
 
     constructor(entry?: SchemaDTO) {
-        makeObservable(this);
         if (!entry) {
             entry = {type: SchemaEntityType.DTO, name:'', properties: {}};
         }
@@ -73,6 +72,7 @@ export class EntityFormModel {
             this.properties = [];
         }
         this.original = entry;
+        makeObservable(this);
     }
 
     public getData():SchemaDTO {

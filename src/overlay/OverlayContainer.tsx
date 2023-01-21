@@ -121,19 +121,14 @@ export class OverlayContainer extends React.Component<OverlayContainerProps, Ove
         this.popLast();
     };
 
-    @computed
-    private isVisible() {
-        return this.components.filter((c) => c.isModal()).length > 0;
-    }
-
-    @computed
+    @observable
     private getIndex = (component: OverlayComponent): number => {
 
         const ix = this.components.indexOf(component);
         return this.toZIndex(ix);
     };
 
-    @computed
+    @observable
     private isCurrent = (component: OverlayComponent): boolean => {
 
         const ix = this.components.indexOf(component);
@@ -142,10 +137,15 @@ export class OverlayContainer extends React.Component<OverlayContainerProps, Ove
         }
 
         return this.components.length === ix + 1; //Last one
-    };
+    }
 
     @computed
-    private getLevel() {
+    private get visible() {
+        return this.components.filter((c) => c.isModal()).length > 0;
+    }
+
+    @computed
+    private get level() {
         let lastIx = -1;
         for (let i = 0; i < this.components.length; i++) {
             const component = this.components[i];
@@ -169,10 +169,10 @@ export class OverlayContainer extends React.Component<OverlayContainerProps, Ove
     render() {
         const className = toClass({
             'overlay-container': true,
-            'visible': this.isVisible()
+            'visible': this.visible
         });
 
-        const zIndex = this.toZIndex(this.getLevel());
+        const zIndex = this.toZIndex(this.level);
 
         return (
             <div className={'overlay-modal-container'} ref={(ref) => {
