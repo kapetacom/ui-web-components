@@ -23,6 +23,7 @@
     "scripts": {
         "prebuild": "rm -rf dist",
         "storybook": "start-storybook -s stories/assets",
+        "build-storybook": "build-storybook",
         "prepublishOnly": "npm run test && npm run build",
         "start": "rollup -c -w",
         "build": "npm run prebuild && rollup -c",
