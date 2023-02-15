@@ -64,10 +64,11 @@ export const SelectInModal = () => {
             <FormSelect
               help={helpText}
               name={"text"}
-              label={"Text Value"}
+              label={"Text Value (w/ deselect)"}
               value={input2}
               onChange={(inputName, userInput) => setInput2(userInput)}
               options={["ONE", "TWO", "THREE"]}
+              enableDeselect
             />
           </div>
         </FormContainer>

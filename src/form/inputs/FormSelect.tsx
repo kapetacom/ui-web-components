@@ -17,6 +17,7 @@ interface Props {
     readOnly?: boolean,
     disabled?: boolean,
     multi?: boolean,
+    enableDeselect?: boolean,
     onChange?: (inputName: string, userInput: any) => void
 }
 
@@ -130,10 +131,12 @@ export class FormSelect extends React.Component<Props> {
         const isSelected: number = tempUserSelection.indexOf(selection);
 
         if (tempUserSelection.length > 0) {
-
             if (isSelected > -1) {
-                tempUserSelection.splice(isSelected, 1);
-                this.emitChange(this.props.multi ? tempUserSelection : tempUserSelection[0]);
+                // Toggle a selected item if its allowed (not last item, or we allow deselect)
+                if (this.props.enableDeselect || tempUserSelection.length > 1) {
+                    tempUserSelection.splice(isSelected, 1);
+                    this.emitChange(this.props.multi ? tempUserSelection : tempUserSelection[0]);
+                }
                 return;
             }
         }
