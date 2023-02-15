@@ -248,18 +248,19 @@ export namespace DSLConverters {
         const out: SchemaMethods = {}
 
         methods.forEach(method => {
-
             const args = {};
-            method.parameters.forEach((arg) => {
-                args[arg.name] = {
-                    type: toSchemaType(arg.type),
-                    transport: toSchemaTransport(arg.annotations && arg.annotations.length > 0 ? arg.annotations[0].type : '@Query')
-                };
-            })
+            if (method.parameters) {
+                method.parameters.forEach((arg) => {
+                    args[arg.name] = {
+                        type: toSchemaType(arg.type),
+                        transport: toSchemaTransport(arg.annotations && arg.annotations.length > 0 ? arg.annotations[0].type : '@Query')
+                    };
+                })
+            }
 
             out[method.name] = {
                 responseType: toSchemaType(method.returnType),
-                method: (method.annotations ? method?.annotations[0].type?.substring(1).toUpperCase() : 'GET') as HTTPMethod,
+                method: (method.annotations ? method.annotations[0].type?.substring(1).toUpperCase() : 'GET') as HTTPMethod,
                 path: (method.annotations && method.annotations[0].arguments ? method?.annotations[0].arguments[0] : '/'),
                 description: method.description,
                 arguments: args

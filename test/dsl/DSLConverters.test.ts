@@ -227,6 +227,32 @@ describe('DSLConverters', () => {
 
     describe('methods', () => {
 
+        test('can convert methods without arguments to schema', () => {
+
+            const methods: DSLMethod[] = [
+                // @ts-ignore
+                {
+                    type: DSLEntityType.METHOD,
+                    name: 'test',
+                    annotations: [{
+                        type: '@GET',
+                        arguments: ['/path']
+                    }],
+                    description: 'Test',
+                    returnType: {name: 'string', list: true}
+                }
+            ]
+            expect(DSLConverters.toSchemaMethods(methods)).toEqual({
+                test: {
+                    description: 'Test',
+                    method: 'GET',
+                    path: '/path',
+                    arguments: {},
+                    responseType: 'string[]'
+                }
+            })
+        });
+
         test('can convert methods to schema', () => {
             const methods: DSLMethod[] = [
                 {
