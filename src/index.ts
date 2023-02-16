@@ -20,6 +20,7 @@ export * from './entities/EntityList';
 export * from './form/Checkbox';
 export * from './form/field-handlers/EntityPicker';
 export * from './form/FormButtons';
+export * from './form/field-handlers/AssetNameInput';
 export * from './form/FormContainer';
 export * from './form/FormRow';
 export * from './form/FormReadyHandler';
