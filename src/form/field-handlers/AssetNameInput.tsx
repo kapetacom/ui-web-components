@@ -25,7 +25,7 @@ export const AssetNameInput = (props: Props) => {
     const [newNamespace, newBlockName] = props.value?.split("/") || [];
     const defaultNamespace = props.namespaces?.[0] || '';
     setNamespace(newNamespace || defaultNamespace);
-    setAssetName(newBlockName);
+    setAssetName(newBlockName || '');
   }, [props.value, props.namespaces]);
 
   const callback = useCallback(
