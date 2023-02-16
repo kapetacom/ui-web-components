@@ -150,8 +150,8 @@ export class FormSelect extends React.Component<Props> {
           this.emitChange(
             this.props.multi ? tempUserSelection : tempUserSelection[0]
           );
+          return;
         }
-        return;
       }
     }
 
