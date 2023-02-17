@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { FormSelect } from "../inputs/FormSelect";
 import { FormInput, Type } from "../inputs/FormInput";
+import { FormContext } from "../FormContext";
 
 interface SharedProps {
   name?: string;
@@ -17,16 +18,23 @@ interface Props extends SharedProps {
 }
 
 export const AssetNameInput = (props: Props) => {
+  const formContext = useContext(FormContext);
   const [namespace, setNamespace] = useState("");
   const [assetName, setAssetName] = useState("");
 
   // Reset state when value changes:
   useEffect(() => {
-    const [newNamespace, newBlockName] = props.value?.split("/") || [];
-    const defaultNamespace = props.namespaces?.[0] || '';
+    const [newNamespace, newAssetName] = props.value?.split("/") || [];
+    const defaultNamespace = props.namespaces?.[0] || "";
     setNamespace(newNamespace || defaultNamespace);
-    setAssetName(newBlockName || '');
+    setAssetName(newAssetName || "");
   }, [props.value, props.namespaces]);
+
+  // Report back to the form context for validation
+  useEffect(() => {
+      const ready = !!(namespace && assetName);
+      formContext.onReadyStateChanged(props.name, ready);
+  }, [props.name, namespace, assetName]);
 
   const callback = useCallback(
     (namespace: string, assetName: string) => {
@@ -53,16 +61,16 @@ export const AssetNameInput = (props: Props) => {
 
   // Add a fake option for unknown namespaces (e.g. loading an asset that you can no longer access)
 
-    const canAccessNamespace = (...args) => {
-        if (!(props.namespaces ||[]).includes(namespace)) {
-            throw new Error('Namespace not available');
-        }
+  const canAccessNamespace = (...args) => {
+    if (!(props.namespaces || []).includes(namespace)) {
+      throw new Error("Namespace not available");
     }
+  };
 
-    let namespaces = [...props.namespaces || []];
-    if (!namespaces.includes(namespace)) {
-        namespaces.push(namespace);
-    }
+  let namespaces = [...(props.namespaces || [])];
+  if (!namespaces.includes(namespace)) {
+    namespaces.push(namespace);
+  }
 
   return (
     <div
