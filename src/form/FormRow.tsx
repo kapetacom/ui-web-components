@@ -171,6 +171,8 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
         }
       }
     );
+
+    this.updateReadyState();
   }
 
   public setError(errorMessage?: string) {
