@@ -1,4 +1,4 @@
-import React, {Context} from "react";
+import React, {Context, useContext} from "react";
 import {FormContainer} from "./FormContainer";
 
 export type ResetListener = (value: any) => void;
@@ -25,3 +25,16 @@ const defaultValue:FormContextData = {
 };
 
 export const FormContext:FormContextType = React.createContext(defaultValue);
+
+export function useFormContextField<T = any>(fieldName:string) {
+    const context = useContext(FormContext);
+
+    return {
+        get(defaultValue?:T):T {
+            return context.container?.getValue(fieldName) ?? defaultValue;
+        },
+        set(value:T) {
+            context.onValueChanged(fieldName, value);
+        }
+    }
+}
