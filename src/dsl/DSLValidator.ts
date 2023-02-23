@@ -1,6 +1,6 @@
-import {editor, MarkerSeverity} from "monaco-editor";
-import {DSLParser} from "./DSLParser";
-import {DSL_LANGUAGE_ID, DSLLanguageOptions} from "./types";
+import { editor, MarkerSeverity } from 'monaco-editor';
+import { DSLParser } from './DSLParser';
+import { DSL_LANGUAGE_ID, DSLLanguageOptions } from './types';
 
 type ITextModel = editor.ITextModel;
 type Editor = typeof editor;
@@ -9,18 +9,18 @@ export class DSLValidator {
     private readonly editor: Editor;
     private readonly options: DSLLanguageOptions;
 
-    constructor(editor: Editor, options:DSLLanguageOptions) {
+    constructor(editor: Editor, options: DSLLanguageOptions) {
         this.editor = editor;
         this.options = options;
     }
 
-    static validateCode(options:DSLLanguageOptions, code:string) {
+    static validateCode(options: DSLLanguageOptions, code: string) {
         let errors = [];
         try {
             DSLParser.parse(code, {
                 ...options,
-                softErrorHandler: error => {
-                    let severity:MarkerSeverity = MarkerSeverity.Error;
+                softErrorHandler: (error) => {
+                    let severity: MarkerSeverity = MarkerSeverity.Error;
                     switch (error.type) {
                         case 'warning':
                             severity = MarkerSeverity.Warning;
@@ -37,9 +37,9 @@ export class DSLValidator {
                     errors.push({
                         code: '2',
                         severity,
-                        ...error
-                    })
-                }
+                        ...error,
+                    });
+                },
             });
         } catch (ex) {
             if (!ex.location) {
@@ -52,14 +52,14 @@ export class DSLValidator {
                 endLineNumber: ex.location.end.line,
                 message: ex.message,
                 startColumn: ex.location.start.column,
-                startLineNumber: ex.location.start.line
-            })
+                startLineNumber: ex.location.start.line,
+            });
         }
 
         return errors;
     }
 
-    validate(model:ITextModel) {
+    validate(model: ITextModel) {
         const code = model.getValue();
 
         const errors = DSLValidator.validateCode(this.options, code);

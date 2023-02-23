@@ -2,21 +2,20 @@
 COLORS
  */
 @gray-xxdark: #333333;
-@gray-xdark: #544B49;
+@gray-xdark: #544b49;
 @gray-dark: #999999;
-@gray: #C4C4C4;
+@gray: #c4c4c4;
 @gray-light: #efefef;
 @gray-xlight: #fafafa;
 @gray-xxlight: #fefefe;
-@gray-background:#E7E2DD;
+@gray-background: #e7e2dd;
 
-@cyan-dark: #009AA9;
-@cyan-light: #1BBDCD;
+@cyan-dark: #009aa9;
+@cyan-light: #1bbdcd;
 @cyan-xlight: #7ac5cb;
 
-
-@blue-light: #1EA7FD;
-@turquoise-light:#009aa932;
+@blue-light: #1ea7fd;
+@turquoise-light: #009aa932;
 @blue-xlight: lighten(@blue-light, 10%);
 @blue-xxlight: lighten(@blue-xlight, 10%);
 @blue-dark: #1d2b91;
@@ -26,53 +25,53 @@ COLORS
 @green-xlight: lighten(@green-light, 10%);
 @green-xxlight: lighten(@green-xlight, 10%);
 
-@red-dark:#ad0e25;
+@red-dark: #ad0e25;
 @red: #d9534f;
-@red-light:#f28f8c;
-@red-xlight:lighten(@red-light, 25%);
+@red-light: #f28f8c;
+@red-xlight:lighten (@red-light, 25%);
 
 @yellow-xlight: #ebeb839c;
-@yellow-alert: #FCC024;
+@yellow-alert: #fcc024;
 
-@bw-planner-background: #F5F1EE;
-@bw-orange:#EE766A;
+@bw-planner-background: #f5f1ee;
+@bw-orange: #ee766a;
 @bw-orange-light: #f3b5ad;
 @bw-green: #989681;
-@bw-green-light: #F5F1EE;
-@bw-gray-light:#989681;
+@bw-green-light: #f5f1ee;
+@bw-gray-light: #989681;
 @bw-light-gray: @gray;
-@bw-gray:#2E2323;
+@bw-gray: #2e2323;
 
-@hover-orange:#E5C8A8;
-@hover-gray:#EBE1D7;
+@hover-orange: #e5c8a8;
+@hover-gray: #ebe1d7;
 
-@bw-menu-default:@bw-orange;
+@bw-menu-default: @bw-orange;
 @bw-menu-dark: @gray-xdark;
-@bw-menu-category-icon-color: #F9DFDD;
-@bw-menu-category-icon-color-hover: #FFFFFF;
+@bw-menu-category-icon-color: #f9dfdd;
+@bw-menu-category-icon-color-hover: #ffffff;
 
 @bw-service-bg: @bw-orange;
-@bw-extension-bg: #D9D6CD;
+@bw-extension-bg: #d9d6cd;
 @bw-database-bg: @bw-green;
 
 /*  Button colors  */
-@btn-bg: #A19C9D;
-@btn-friendly-bg: #88B39A;
-@btn-friendly-bg-active: #92CDAB;
+@btn-bg: #a19c9d;
+@btn-friendly-bg: #88b39a;
+@btn-friendly-bg-active: #92cdab;
 
-@btn-cancel-bg:#E35A4C;
-@btn-cancel-bg-active:#FA7B6E;
-@btn-text-w:#fff;
+@btn-cancel-bg: #e35a4c;
+@btn-cancel-bg-active: #fa7b6e;
+@btn-text-w: #fff;
 @btn-fg: @bw-planner-background;
-@btn-disabled-light:#E1DCD9;
-@btn-disabled-dark:#C2BCB9;
-@btn-disabled-path: #E5E5E5;
-@btn-regular-text: #645C5A;
+@btn-disabled-light: #e1dcd9;
+@btn-disabled-dark: #c2bcb9;
+@btn-disabled-path: #e5e5e5;
+@btn-regular-text: #645c5a;
 @btn-regular-hover-bg: @bw-menu-dark;
-@btn-regular-active-bg: #FC9924;
+@btn-regular-active-bg: #fc9924;
 
 /* Dialog text color */
-@dialog-gray-light : #636262;
+@dialog-gray-light: #636262;
 
 /* States */
 @status-success-fg: #155724;
@@ -91,21 +90,27 @@ COLORS
 @status-info-bg: #d1ecf1;
 @status-info-border: #bee5eb;
 
-
 /* VALUES */
 @shadow-color: rgba(0, 0, 0, 0.15);
 @shadow-default: 1px 1px 3px 0px @shadow-color;
 @transition-default: all 150ms;
 
 @button-height: 40px;
-@button-primary-default: linear-gradient(288.29deg, #03799E 4.61%, rgba(0, 154, 169, 0) 89.84%), #009AA9;
-@button-primary-hover: #01ADBD;
+@button-primary-default: linear-gradient(
+        288.29deg,
+        #03799e 4.61%,
+        rgba(0, 154, 169, 0) 89.84%
+    ),
+    #009aa9;
+@button-primary-hover: #01adbd;
 @button-primary-active: @button-primary-default;
 
 @button-shadow-default: drop-shadow(1px 2px 4px @shadow-color);
 @button-shadow-hover: drop-shadow(1px 3px 6px @shadow-color);
 @button-shadow-active: drop-shadow(1px 1px 2px @shadow-color);
 
-@button-blue-shadow-default: drop-shadow(0px 4px 8px rgba(41, 158, 169, 0.45)) drop-shadow(0px 0px 4px rgba(7, 98, 106, 0.45));
-@button-blue-shadow-hover: drop-shadow(0px 4px 10px rgba(41, 158, 169, 0.45)) drop-shadow(0px 0px 6px rgba(4, 76, 83, 0.45));
+@button-blue-shadow-default: drop-shadow(0px 4px 8px rgba(41, 158, 169, 0.45))
+    drop-shadow(0px 0px 4px rgba(7, 98, 106, 0.45));
+@button-blue-shadow-hover: drop-shadow(0px 4px 10px rgba(41, 158, 169, 0.45))
+    drop-shadow(0px 0px 6px rgba(4, 76, 83, 0.45));
 @button-blue-shadow-active: @button-blue-shadow-default;

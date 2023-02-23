@@ -1,8 +1,7 @@
-import {useEffect, useRef} from "react";
-import {SVGButtonProps} from "./types";
+import { useEffect, useRef } from 'react';
+import { SVGButtonProps } from './types';
 
-export function useMouseDown(props:SVGButtonProps) {
-
+export function useMouseDown(props: SVGButtonProps) {
     const button = useRef<SVGSVGElement>(null);
 
     useEffect(() => {
@@ -12,7 +11,7 @@ export function useMouseDown(props:SVGButtonProps) {
 
         const current = button.current;
 
-        const listener = (evt:MouseEvent) => {
+        const listener = (evt: MouseEvent) => {
             evt.stopPropagation();
             if (!props.onClick) {
                 return;

@@ -1,67 +1,66 @@
-@import "../../styles/values";
-@import "../../styles/functions";
+@import '../../styles/values';
+@import '../../styles/functions';
 
 .checkbox-container {
-  cursor: pointer;
-  overflow: visible;
-  vertical-align: middle;
-  height: 26px;
-  width: 20px;
-  display: inline-block;
-  position: relative;
-
-  input {
-    display: none;
-    margin: auto;
-  }
-
-  .checkbox-icon {
+    cursor: pointer;
+    overflow: visible;
     vertical-align: middle;
-    position: absolute;
+    height: 26px;
+    width: 20px;
+    display: inline-block;
+    position: relative;
 
-    svg {
-      overflow: visible;
+    input {
+        display: none;
+        margin: auto;
     }
 
-    .border {
-      stroke: @gray-xxdark;
-      strokeWidth: 2;
-      strokeLinejoin: round
+    .checkbox-icon {
+        vertical-align: middle;
+        position: absolute;
+
+        svg {
+            overflow: visible;
+        }
+
+        .border {
+            stroke: @gray-xxdark;
+            strokewidth: 2;
+            strokelinejoin: round;
+        }
+
+        .checker {
+            fill: #009aa9;
+        }
+
+        &.check {
+            .transition();
+            transform-origin: center;
+            transform: scale(0);
+
+            &.checked {
+                transform: scale(1);
+            }
+        }
+
+        &.box {
+            .transition();
+            transform-origin: center;
+            transform: scale(1);
+
+            &.checked {
+                transform: scale(0);
+            }
+        }
+
+        &.disabled {
+            .border {
+                stroke: @gray;
+            }
+
+            .checker {
+                fill: @gray;
+            }
+        }
     }
-
-    .checker {
-      fill: #009AA9
-    }
-
-    &.check {
-      .transition();
-      transform-origin: center;
-      transform: scale(0);
-
-      &.checked {
-        transform: scale(1);
-      }
-    }
-
-    &.box {
-      .transition();
-      transform-origin: center;
-      transform: scale(1);
-
-      &.checked {
-        transform: scale(0);
-      }
-    }
-
-    &.disabled {
-      .border {
-        stroke: @gray;
-      }
-
-      .checker {
-        fill: @gray;
-      }
-    }
-  }
-
 }

@@ -1,8 +1,7 @@
-
 export interface SVGButtonProps {
     x: number;
     y: number;
-    style?:any;
+    style?: any;
     opacity?: number;
-    onClick?:() => void;
+    onClick?: () => void;
 }

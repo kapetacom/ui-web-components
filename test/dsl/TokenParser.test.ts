@@ -1,129 +1,130 @@
-import {describe, test, expect} from "@jest/globals";
-import {TokenParser} from "../../src/dsl/TokenParser";
+import { describe, test, expect } from '@jest/globals';
+import { TokenParser } from '../../src/dsl/TokenParser';
 
 describe('TokenParser', () => {
-
     test('can parse incomplete and invalid tokens', () => {
-
-        const tokens = TokenParser.parse(`\n//Some comment \nmethod()\n enum test{`);
+        const tokens = TokenParser.parse(
+            `\n//Some comment \nmethod()\n enum test{`
+        );
 
         expect(tokens).toEqual([
             {
                 type: 'whitespace',
-                value: '\n'
+                value: '\n',
             },
             {
                 type: 'comment',
-                value: '//Some comment '
+                value: '//Some comment ',
             },
             {
                 type: 'whitespace',
-                value: '\n'
+                value: '\n',
             },
             {
                 type: 'id',
-                value: 'method'
+                value: 'method',
             },
             {
                 type: 'special_other',
-                value: '('
+                value: '(',
             },
             {
                 type: 'special_other',
-                value: ')'
+                value: ')',
             },
             {
                 type: 'whitespace',
-                value: '\n '
+                value: '\n ',
             },
             {
                 type: 'id',
-                value: 'enum'
+                value: 'enum',
             },
             {
                 type: 'whitespace',
-                value: ' '
+                value: ' ',
             },
             {
                 type: 'id',
-                value: 'test'
+                value: 'test',
             },
             {
                 type: 'special_start',
-                value: '{'
-            }
-        ])
+                value: '{',
+            },
+        ]);
     });
 
     test('can parse valid tokens into types', () => {
-
-        const tokens = TokenParser.parse(`@Annotate("this")\nmethod():void\nenum test{}`)
+        const tokens = TokenParser.parse(
+            `@Annotate("this")\nmethod():void\nenum test{}`
+        );
 
         expect(tokens).toEqual([
             {
                 type: 'annotation_type',
-                value: '@Annotate'
+                value: '@Annotate',
             },
             {
                 type: 'special_start',
-                value: '('
+                value: '(',
             },
             {
                 type: 'string',
-                value: '"this"'
+                value: '"this"',
             },
             {
                 type: 'special_end',
-                value: ')'
+                value: ')',
             },
             {
                 type: 'whitespace',
-                value: '\n'
+                value: '\n',
             },
             {
                 type: 'method_name',
-                value: 'method'
+                value: 'method',
             },
             {
                 type: 'special_start',
-                value: '('
+                value: '(',
             },
             {
                 type: 'special_end',
-                value: ')'
+                value: ')',
             },
             {
                 type: 'special_colon',
-                value: ':'
+                value: ':',
             },
             {
                 type: 'return_type',
-                value: 'void'
+                value: 'void',
             },
             {
                 type: 'whitespace',
-                value: '\n'
+                value: '\n',
             },
             {
                 type: 'keyword',
-                value: 'enum'
+                value: 'enum',
             },
             {
                 type: 'whitespace',
-                value: ' '
+                value: ' ',
             },
             {
                 type: 'enum_name',
-                value: 'test'
+                value: 'test',
             },
             {
                 type: 'special_start',
-                value: '{'
+                value: '{',
             },
             {
                 type: 'special_end',
-                value: '}'
-            }
-        ])
-    })
+                value: '}',
+            },
+        ]);
+    });
 });

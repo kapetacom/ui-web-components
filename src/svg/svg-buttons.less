@@ -1,11 +1,10 @@
-@import "../../styles/values";
-@import "../../styles/functions";
+@import '../../styles/values';
+@import '../../styles/functions';
 
 .svg-button {
     .transition(opacity 500ms);
     fill: none;
     cursor: pointer;
-
 
     .svg-button-background,
     .svg-button-foreground {
@@ -22,40 +21,41 @@
         stroke: @btn-fg;
     }
 
-    &.warning{
-        .svg-button-background{
-            fill:@yellow-alert;
+    &.warning {
+        .svg-button-background {
+            fill: @yellow-alert;
             stroke: none;
         }
         .svg-button-foreground {
             stroke: none;
-            fill: @bw-gray
+            fill: @bw-gray;
         }
     }
-    &.delete, &.add {
-
+    &.delete,
+    &.add {
         .svg-button-foreground {
-            stroke-width:2;
-            stroke-linecap:round;
+            stroke-width: 2;
+            stroke-linecap: round;
         }
     }
 
-    &.edit, &.inspect {
+    &.edit,
+    &.inspect {
         .svg-button-foreground {
             fill: @btn-fg;
             stroke: @btn-fg;
         }
     }
 
-    &.inspect{
+    &.inspect {
         .svg-button-background {
             fill: @btn-friendly-bg;
             stroke: @btn-friendly-bg;
-        }  
+        }
     }
 
-    &.edit, &.add  {
-
+    &.edit,
+    &.add {
         .svg-button-background {
             fill: @btn-friendly-bg;
             stroke: @btn-friendly-bg;
@@ -65,7 +65,7 @@
     &:hover {
         .svg-button-background {
             fill: @gray-xlight;
-            stroke:@btn-bg;
+            stroke: @btn-bg;
         }
 
         .svg-button-foreground {
@@ -85,8 +85,8 @@
                 stroke: none;
             }
         }
-        &.warning{
-            .svg-button-background{
+        &.warning {
+            .svg-button-background {
                 fill: @btn-bg;
                 stroke: none;
             }
@@ -95,8 +95,5 @@
                 stroke: none;
             }
         }
-
-
     }
-
 }

@@ -1,35 +1,32 @@
-import React, {useState} from "react"
+import React, { useState } from 'react';
 
 import './DSLEditor.less';
 
-import Monaco from "@monaco-editor/react";
-import {editor} from 'monaco-editor';
-import {
-    DSL_LANGUAGE_ID,
-    DSLOptions,
-    DSLResult
-} from "./types";
+import Monaco from '@monaco-editor/react';
+import { editor } from 'monaco-editor';
+import { DSL_LANGUAGE_ID, DSLOptions, DSLResult } from './types';
 
 import './DSLLanguage';
-import {DSLValidator} from "./DSLValidator";
-import {DSLParser, DSLParserOptions} from "./DSLParser";
-import {DSLWriter} from "./DSLWriter";
-import {withAdditionalTypes} from "./DSLLanguage";
-import {restPathVariableValidator} from "./helpers/restPathVariableValidator";
+import { DSLValidator } from './DSLValidator';
+import { DSLParser, DSLParserOptions } from './DSLParser';
+import { DSLWriter } from './DSLWriter';
+import { withAdditionalTypes } from './DSLLanguage';
+import { restPathVariableValidator } from './helpers/restPathVariableValidator';
 
 export interface DSLEditorProps extends DSLOptions {
-    value?: DSLResult|string
-    readOnly?:boolean
-    onChange?: (structure:DSLResult) => any
+    value?: DSLResult | string;
+    readOnly?: boolean;
+    onChange?: (structure: DSLResult) => any;
 }
 
 export const DSLEditor = (props: DSLEditorProps) => {
-
     const [current, setCurrent] = useState(() => {
-        let value:string;
+        let value: string;
         const result = props.value as DSLResult;
         if (typeof result === 'object') {
-            value = result.code ? result.code : DSLWriter.write(result.entities);
+            value = result.code
+                ? result.code
+                : DSLWriter.write(result.entities);
         } else {
             value = props.value as string;
         }
@@ -37,7 +34,7 @@ export const DSLEditor = (props: DSLEditorProps) => {
         return value;
     });
 
-    const options:editor.IStandaloneEditorConstructionOptions = {
+    const options: editor.IStandaloneEditorConstructionOptions = {
         lineNumbersMinChars: 3,
         folding: true,
         roundedSelection: false,
@@ -49,18 +46,18 @@ export const DSLEditor = (props: DSLEditorProps) => {
         hideCursorInOverviewRuler: true,
         overviewRulerBorder: false,
         minimap: {
-            enabled: false
+            enabled: false,
         },
         contextmenu: true,
-        readOnly: props.readOnly
+        readOnly: props.readOnly,
     };
 
-    const parsingOptions:DSLParserOptions = {
+    const parsingOptions: DSLParserOptions = {
         methods: props.methods,
         rest: props.rest,
         types: props.types,
         validTypes: props.validTypes,
-        validator: props.rest ? restPathVariableValidator : null
+        validator: props.rest ? restPathVariableValidator : null,
     };
 
     return (
@@ -72,27 +69,33 @@ export const DSLEditor = (props: DSLEditorProps) => {
                     setCurrent(code);
                     if (props.onChange) {
                         try {
-                            props.onChange(DSLParser.parse(code, parsingOptions));
+                            props.onChange(
+                                DSLParser.parse(code, parsingOptions)
+                            );
                         } catch (e) {
                             //Ignore
                         }
                     }
                 }}
                 language={DSL_LANGUAGE_ID}
-
                 onMount={(editor, m) => {
                     //Syntax and semantic validation
-                    const validator = new DSLValidator(m.editor, parsingOptions);
+                    const validator = new DSLValidator(
+                        m.editor,
+                        parsingOptions
+                    );
                     validator.bind(editor.getModel());
 
                     if (props.validTypes && props.validTypes.length > 0) {
-                        withAdditionalTypes(editor.getModel(), props.validTypes);
+                        withAdditionalTypes(
+                            editor.getModel(),
+                            props.validTypes
+                        );
                     } else {
                         withAdditionalTypes(editor.getModel(), []);
                     }
                 }}
-
             />
         </div>
-    )
-}
+    );
+};

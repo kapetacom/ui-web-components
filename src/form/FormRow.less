@@ -1,6 +1,6 @@
-@import "../../styles/functions";
+@import '../../styles/functions';
 
-.form-row{
+.form-row {
     padding: 4px 0;
     box-sizing: border-box;
 
@@ -11,7 +11,8 @@
         color: #666;
     }
 
-    .row-help, .row-error {
+    .row-help,
+    .row-error {
         font-size: 10px;
         line-height: 18px;
         color: #666;
@@ -22,17 +23,20 @@
         color: rgb(179, 17, 24);
     }
 
-    input, select, textarea, .input {
+    input,
+    select,
+    textarea,
+    .input {
         width: 100%;
         box-sizing: border-box;
         padding: 0 4px;
         line-height: 24px;
         height: 22px;
-        border: 1px solid #BBB;
+        border: 1px solid #bbb;
         border-radius: 0;
 
         &[readonly] {
-            color: #BBB;
+            color: #bbb;
         }
 
         &[disabled] {
@@ -54,14 +58,20 @@
     }
 
     &.error {
-        input, select, textarea, .input {
-            border:1px solid rgb(179, 17, 24);
+        input,
+        select,
+        textarea,
+        .input {
+            border: 1px solid rgb(179, 17, 24);
         }
     }
 
     &.warning {
-        input, select, textarea, .input {
-            border:1px solid rgb(179,165,36);
+        input,
+        select,
+        textarea,
+        .input {
+            border: 1px solid rgb(179, 165, 36);
         }
     }
 
@@ -108,18 +118,18 @@
         z-index: 2;
         padding: 0 10px;
     }
-    
+
     .form-element-container {
         width: calc(100% - 70px);
         margin: 20px 35px;
         background-color: inherit;
     }
 
-    h3, h4 {
+    h3,
+    h4 {
         margin: 0 0 5px 0;
-        color: #AAA;
+        color: #aaa;
         font-size: 14px;
-
     }
 
     h4 {
@@ -130,7 +140,10 @@
         padding-right: 0px;
     }
 
-    input, select, textarea, .input {
-        border: 1px solid #AAA;
+    input,
+    select,
+    textarea,
+    .input {
+        border: 1px solid #aaa;
     }
 }

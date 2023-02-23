@@ -8,9 +8,8 @@ export const STRINGABLE_TYPES = [
     'double',
     'float',
     'long',
-    'string'
-]
-
+    'string',
+];
 
 export const BUILT_IN_TYPES = [
     ...STRINGABLE_TYPES,
@@ -18,8 +17,8 @@ export const BUILT_IN_TYPES = [
     'byte',
     'boolean',
     'date',
-    'void'
-]
+    'void',
+];
 
 export const REST_METHOD_ANNOTATIONS = [
     '@GET',
@@ -27,21 +26,14 @@ export const REST_METHOD_ANNOTATIONS = [
     '@PUT',
     '@PATCH',
     '@DELETE',
-    '@HEAD'
-]
+    '@HEAD',
+];
 
-export const METHOD_ANNOTATIONS = [
-    ...REST_METHOD_ANNOTATIONS
-]
+export const METHOD_ANNOTATIONS = [...REST_METHOD_ANNOTATIONS];
 
-export const PARAMETER_ANNOTATIONS = [
-    '@Path',
-    '@Header',
-    '@Query',
-    '@Body'
-]
+export const PARAMETER_ANNOTATIONS = ['@Path', '@Header', '@Query', '@Body'];
 
 export const BUILT_IN_ANNOTATIONS = [
     ...METHOD_ANNOTATIONS,
-    ...PARAMETER_ANNOTATIONS
-]
+    ...PARAMETER_ANNOTATIONS,
+];

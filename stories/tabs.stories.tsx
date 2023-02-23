@@ -1,18 +1,20 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { storiesOf } from '@storybook/react';
-import {TabContainer, TabPage} from "../src";
+import { TabContainer, TabPage } from '../src';
 
 export default {
-    title: 'Tab Pages'
-}
+    title: 'Tab Pages',
+};
 
 export const Controlled = () => {
-
-    const [currentTabId, setCurrentTabId] = useState('second')
+    const [currentTabId, setCurrentTabId] = useState('second');
 
     return (
-        <div style={{ width: "700px", padding: '10px' }}>
-            <TabContainer currentTabId={currentTabId} onTabChange={setCurrentTabId}>
+        <div style={{ width: '700px', padding: '10px' }}>
+            <TabContainer
+                currentTabId={currentTabId}
+                onTabChange={setCurrentTabId}
+            >
                 <TabPage id={'first'} title={'First Tab'}>
                     First tab page
                 </TabPage>
@@ -20,22 +22,99 @@ export const Controlled = () => {
                     Second tab page
                 </TabPage>
                 <TabPage id={'third'} title={'Third Tab'}>
-                    Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>
-                    Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>
-                    Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>
-                    Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>
-                    Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>
-                    Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>Third tab page<br/>
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
+                    Third tab page
+                    <br />
                 </TabPage>
             </TabContainer>
         </div>
-    )
-}
+    );
+};
 
 export const Uncontrolled = () => {
-
     return (
-        <div style={{ width: "700px", padding: '10px' }}>
+        <div style={{ width: '700px', padding: '10px' }}>
             <TabContainer defaultTab={'second'}>
                 <TabPage id={'first'} title={'First Tab'}>
                     First tab page
@@ -48,6 +127,5 @@ export const Uncontrolled = () => {
                 </TabPage>
             </TabContainer>
         </div>
-    )
-}
-
+    );
+};

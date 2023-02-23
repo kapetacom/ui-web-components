@@ -1,63 +1,68 @@
-import React from "react";
-import {  toClass } from "@blockware/ui-web-utils";
-import {PanelStructure} from "../helpers/PanelStructure";
-import {OverlayComponent, OverlayContextType} from "../overlay/OverlayContext";
-import {OverlayContext} from "../overlay/OverlayContext";
+import React from 'react';
+import { toClass } from '@blockware/ui-web-utils';
+import { PanelStructure } from '../helpers/PanelStructure';
+import {
+    OverlayComponent,
+    OverlayContextType,
+} from '../overlay/OverlayContext';
+import { OverlayContext } from '../overlay/OverlayContext';
 
-import "./SidePanel.less";
-import { RenderInBody } from "../overlay/RenderInBody";
+import './SidePanel.less';
+import { RenderInBody } from '../overlay/RenderInBody';
 
 interface SidePanelProps {
-    size?: PanelSize
-    side?: PanelAlignment
-    closable?:boolean
-    children: any
-    title?: string
+    size?: PanelSize;
+    side?: PanelAlignment;
+    closable?: boolean;
+    children: any;
+    title?: string;
 
     //Controlled properties
-    open?: boolean
-    onClose?: () => void
-    onOpen?: () => void
+    open?: boolean;
+    onClose?: () => void;
+    onOpen?: () => void;
 
     //Uncontrolled properties
-    openInitially?: boolean
+    openInitially?: boolean;
 
-    index?: number
-    modal?: boolean
-    className?:string
-    header?: JSX.Element
+    index?: number;
+    modal?: boolean;
+    className?: string;
+    header?: JSX.Element;
 }
 
 interface SidePanelState {
-    open: boolean
+    open: boolean;
 }
 
 export enum PanelAlignment {
-    left = "left",
-    right = "right"
+    left = 'left',
+    right = 'right',
 }
 
 export enum PanelSize {
-    small = "small",
-    medium = "medium",
-    large = "large",
-    full = "all"
+    small = 'small',
+    medium = 'medium',
+    large = 'large',
+    full = 'all',
 }
 
-export class SidePanel extends React.Component<SidePanelProps, SidePanelState> implements OverlayComponent {
-
+export class SidePanel
+    extends React.Component<SidePanelProps, SidePanelState>
+    implements OverlayComponent
+{
     static contextType = OverlayContext;
     context!: React.ContextType<OverlayContextType>;
 
-    constructor(props:SidePanelProps) {
+    constructor(props: SidePanelProps) {
         super(props);
 
         this.state = {
-            open: !!props.openInitially
+            open: !!props.openInitially,
         };
     }
 
-    private isControlled():boolean {
+    private isControlled(): boolean {
         return 'open' in this.props;
     }
 
@@ -65,11 +70,11 @@ export class SidePanel extends React.Component<SidePanelProps, SidePanelState> i
         return this.props.closable !== undefined ? this.props.closable : true;
     }
 
-    public isOpen():boolean {
+    public isOpen(): boolean {
         return this.isControlled() ? this.props.open : this.state.open;
     }
 
-    public isModal():boolean {
+    public isModal(): boolean {
         return !!this.props.modal;
     }
 
@@ -81,7 +86,7 @@ export class SidePanel extends React.Component<SidePanelProps, SidePanelState> i
         }
 
         this.setState({
-            open:false
+            open: false,
         });
 
         this.context.onClosing(this);
@@ -96,13 +101,16 @@ export class SidePanel extends React.Component<SidePanelProps, SidePanelState> i
             return;
         }
 
-        this.setState({
-            open:true
-        }, () => {
-            if (this.isClosable()) {
-                this.context.onChanged(this);
+        this.setState(
+            {
+                open: true,
+            },
+            () => {
+                if (this.isClosable()) {
+                    this.context.onChanged(this);
+                }
             }
-        });
+        );
     }
 
     componentDidMount() {
@@ -117,11 +125,10 @@ export class SidePanel extends React.Component<SidePanelProps, SidePanelState> i
         }
     }
 
-    private onTransitionEnd = (evt:React.TransitionEvent) => {
-        if (evt.propertyName !== "transform") {
+    private onTransitionEnd = (evt: React.TransitionEvent) => {
+        if (evt.propertyName !== 'transform') {
             return;
         }
-
 
         if (this.isOpen()) {
             if (this.props.onOpen) {
@@ -139,41 +146,38 @@ export class SidePanel extends React.Component<SidePanelProps, SidePanelState> i
     };
 
     public render() {
-
         const size = this.props.size ? this.props.size : PanelSize.small;
         const side = this.props.side ? this.props.side : PanelAlignment.right;
 
         let classNames = {
             'side-panel-container': true,
-            [size]:true,
-            [side]:true,
-            'open': this.isControlled() ? this.props.open : this.state.open,
-            'current': this.isClosable() ? this.context.isCurrent(this) : true
+            [size]: true,
+            [side]: true,
+            open: this.isControlled() ? this.props.open : this.state.open,
+            current: this.isClosable() ? this.context.isCurrent(this) : true,
         };
 
         const zIndex = this.isClosable() ? this.context.getIndex(this) : 5;
 
         return (
             <RenderInBody className={this.props.className}>
-                <div onTransitionEndCapture={this.onTransitionEnd}
-                     style={{ zIndex }}
-                     className={toClass(classNames)}>
-
+                <div
+                    onTransitionEndCapture={this.onTransitionEnd}
+                    style={{ zIndex }}
+                    className={toClass(classNames)}
+                >
                     <PanelStructure
-                        title={this.props.title || ""}
+                        title={this.props.title || ''}
                         closable={this.props.closable}
                         header={this.props.header}
                         onClose={() => {
                             this.close();
-                        }}>
-
+                        }}
+                    >
                         {this.props.children}
-
                     </PanelStructure>
-
                 </div>
             </RenderInBody>
-        )
+        );
     }
-
 }

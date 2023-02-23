@@ -1,9 +1,7 @@
-@import "../../../styles/values";
-@import "../../../styles/functions";
-
+@import '../../../styles/values';
+@import '../../../styles/functions';
 
 .form-element-container {
-
     position: relative;
     margin: 15px 0;
     width: 100%;
@@ -13,7 +11,7 @@
     background-color: inherit;
 
     .label {
-        position:absolute;
+        position: absolute;
         background-color: inherit;
         top: 6px;
         left: 13px;
@@ -42,7 +40,7 @@
         top: 8px;
         height: 17px;
     }
-  
+
     .tooltip {
         display: block;
         top: 20px;
@@ -50,44 +48,44 @@
         right: 0px;
 
         .right {
-            min-width:190px; 
-            top:50%;
-            left:100%;
-            margin-left:20px;
-            transform:translate(0, -20px);
-            padding:0px 20px;
-            color:@gray-xdark;
+            min-width: 190px;
+            top: 50%;
+            left: 100%;
+            margin-left: 20px;
+            transform: translate(0, -20px);
+            padding: 0px 20px;
+            color: @gray-xdark;
             background-color: @btn-text-w;
-            font-weight:normal;
-            font-size:13px;
+            font-weight: normal;
+            font-size: 13px;
             .border-radius(3px);
-            position:absolute;
+            position: absolute;
             z-index: 200;
-            box-sizing:border-box;
-            box-shadow:0 1px 8px rgba(0,0,0,0.5);
-            display:block;
-    
+            box-sizing: border-box;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+            display: block;
+
             i {
-                position:absolute;
-                top:20px;
-                right:100%;
-                margin-top:-12px;
-                width:12px;
-                height:24px;
-                overflow:hidden;
+                position: absolute;
+                top: 20px;
+                right: 100%;
+                margin-top: -12px;
+                width: 12px;
+                height: 24px;
+                overflow: hidden;
 
                 &::after {
-                    content:'';
-                    position:absolute;
-                    width:12px;
-                    height:12px;
-                    left:0;
-                    top:50%;
-                    transform:translate(50%,-50%) rotate(-45deg);
+                    content: '';
+                    position: absolute;
+                    width: 12px;
+                    height: 12px;
+                    left: 0;
+                    top: 50%;
+                    transform: translate(50%, -50%) rotate(-45deg);
                     background-color: @btn-text-w;
-                    box-shadow:0 1px 8px rgba(0,0,0,0.5);
+                    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
                 }
-            }        
+            }
         }
     }
 
@@ -95,70 +93,72 @@
         box-sizing: border-box;
         background-color: inherit;
         .border-radius(3px);
-        border:1px solid @gray-dark;
+        border: 1px solid @gray-dark;
     }
 
-    input ,.textarea-wrapper {
-        border:0;
+    input,
+    .textarea-wrapper {
+        border: 0;
     }
 
     .message {
         color: @gray-xdark;
         font-size: 11px;
         opacity: 0.8;
-        padding-left: 2px;        
-    }    
+        padding-left: 2px;
+    }
 
     .input-container {
-        
         &:hover {
-            border-color: @gray-xdark ;
+            border-color: @gray-xdark;
 
-            .label ,.label.zoom-out {
+            .label,
+            .label.zoom-out {
                 color: @gray-xdark;
             }
 
-            input ,.textarea-wrapper {
+            input,
+            .textarea-wrapper {
                 color: @gray-xxdark;
-            } 
+            }
         }
-    }   
+    }
 
     &.required {
         .input-container {
-            border-color: @btn-cancel-bg ;
+            border-color: @btn-cancel-bg;
         }
-        
 
         .message {
-            color : @btn-cancel-bg;
-        }         
+            color: @btn-cancel-bg;
+        }
     }
 
     &.focused {
         .input-container {
             border: 1.5px solid @cyan-dark;
-            margin:-0.5px;
-            
+            margin: -0.5px;
+
             .label.zoom-out {
                 color: @cyan-dark;
             }
-            
-            input ,.textarea-wrapper {
-                font-size:inherit;
-                color: @gray-xxdark
+
+            input,
+            .textarea-wrapper {
+                font-size: inherit;
+                color: @gray-xxdark;
             }
         }
 
-        .tooltip >.right {
+        .tooltip > .right {
             z-index: 300;
         }
     }
 
     &.warning-status {
         .input-container {
-            border: 1.5px solid @btn-regular-active-bg ;
-            margin:-0.5px;
+            border: 1.5px solid @btn-regular-active-bg;
+            margin: -0.5px;
 
             .arrows {
                 right: 30px;
@@ -172,7 +172,6 @@
                 right: 55px;
             }
         }
-        
 
         .label.zoom-out {
             color: @btn-regular-active-bg;
@@ -190,7 +189,7 @@
     &.error-status {
         .input-container {
             border: 1.5px solid @btn-cancel-bg;
-            margin:-0.5px;
+            margin: -0.5px;
 
             .arrows {
                 right: 30px;
@@ -209,7 +208,7 @@
             color: @btn-cancel-bg;
         }
         .message {
-            color : @btn-cancel-bg;
+            color: @btn-cancel-bg;
         }
 
         input {
@@ -227,13 +226,11 @@
         }
 
         .label.zoom-out {
-
         }
-        input,textarea {
+        input,
+        textarea {
             cursor: not-allowed;
-            color : inherit;
+            color: inherit;
         }
     }
-
-    
 }

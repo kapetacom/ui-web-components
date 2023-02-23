@@ -1,7 +1,7 @@
-@import "../styles/functions";
+@import '../styles/functions';
 
 .container {
-    padding:50px;
+    padding: 50px;
     width: 500px;
     height: 500px;
 }
@@ -24,7 +24,7 @@
         height: 50px;
         cursor: pointer;
         font-size: 10px;
-        padding:10px;
+        padding: 10px;
         z-index: 10;
         box-sizing: border-box;
 
@@ -49,11 +49,11 @@
         }
 
         &.dnd-zone-hovering {
-            background: #1EA7FD;
+            background: #1ea7fd;
             border: 1px solid blue;
 
             > rect {
-                fill: #1EA7FD;
+                fill: #1ea7fd;
                 stroke-width: 1px;
                 stroke: blue;
             }
@@ -61,8 +61,8 @@
     }
 
     .dnd-scrolling {
-        padding:50px;
-        left:150px;
+        padding: 50px;
+        left: 150px;
         background: #efefef;
 
         position: relative;
@@ -87,7 +87,7 @@
     }
 
     .dragging-source {
-        opacity: .5;
+        opacity: 0.5;
     }
 }
 
@@ -96,9 +96,9 @@
 
     .sortable-item {
         .drop-shadow();
-        border:1px solid black;
-        margin:20px 0;
-        padding:20px;
+        border: 1px solid black;
+        margin: 20px 0;
+        padding: 20px;
         background-color: white;
         .handle {
             cursor: move;
@@ -107,7 +107,7 @@
         }
         &.dragging-handle {
             opacity: 0.5;
-            background-color: #CCC;
+            background-color: #ccc;
         }
 
         &.dragging-source {

@@ -1,17 +1,17 @@
-@import "../../styles/values.less";
-@import "../../styles/functions.less";
+@import '../../styles/values.less';
+@import '../../styles/functions.less';
 
 .toast-container {
-    z-index: 100000;   
-    > div{
+    z-index: 100000;
+    > div {
         padding: 0;
         background: transparent;
         .border-radius(3px);
         cursor: default;
-     }
+    }
 
     .Toastify__toast-body {
-        padding:0;
+        padding: 0;
     }
 
     .toast {
@@ -20,17 +20,16 @@
         height: 90px;
         font-weight: 500;
         font-style: normal;
-        color: @btn-text-w;     
-        
+        color: @btn-text-w;
 
         &.danger {
-            background : @btn-cancel-bg;
+            background: @btn-cancel-bg;
         }
 
         &.success {
             background: @btn-friendly-bg;
         }
-        
+
         &.alert {
             background: @yellow-alert;
         }
@@ -58,22 +57,20 @@
             bottom: 15px;
             right: 20px;
             left: 80px;
-            width:70%;
+            width: 70%;
             height: 35px;
             font-size: 14px;
             line-height: 15px;
             opacity: 0.8;
         }
-    
     }
     .close-button {
         position: relative;
         right: 30px;
         top: 5px;
         color: @btn-text-w;
-        
     }
-    .progress-bar{
+    .progress-bar {
         background: @btn-text-w;
     }
 

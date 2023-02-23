@@ -1,11 +1,10 @@
-
-@import "values";
+@import 'values';
 
 .clearfix() {
     &:before,
     &:after {
         display: table; // 2
-        content: " "; // 1
+        content: ' '; // 1
     }
     &:after {
         clear: both;
@@ -14,7 +13,7 @@
 
 .container() {
     &:after {
-        content: ".";
+        content: '.';
         display: block;
         height: 0;
         clear: both;
@@ -46,7 +45,6 @@
     }
 }
 
-
 .pointer-event-none() {
     // Make sure events pass through
     pointer-events: none;
@@ -57,14 +55,12 @@
     pointer-events: all;
 }
 
-
 //drop-shadow
 .drop-shadow(@shadow: @shadow-default) {
     -webkit-box-shadow: @shadow;
     -moz-box-shadow: @shadow;
     box-shadow: @shadow;
 }
-
 
 .transform(@transform) {
     transform: @transform;
@@ -115,7 +111,6 @@
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
-
 
 @keyframes opacity-fade {
     0% {

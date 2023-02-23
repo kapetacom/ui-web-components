@@ -1,29 +1,30 @@
-import React from "react";
-import {observer} from "mobx-react";
-import {action, computed, makeObservable, observable} from "mobx";
+import React from 'react';
+import { observer } from 'mobx-react';
+import { action, computed, makeObservable, observable } from 'mobx';
 import _ from 'lodash';
-import {toClass} from "@blockware/ui-web-utils";
+import { toClass } from '@blockware/ui-web-utils';
 
-import {OverlayContext, OverlayComponent} from "./OverlayContext";
+import { OverlayContext, OverlayComponent } from './OverlayContext';
 
 import './OverlayContainer.less';
 
 interface OverlayContainerProps {
-    children: any
+    children: any;
 }
 
 interface OverlayContainerState {
-    container: HTMLElement | null
+    container: HTMLElement | null;
 }
 
 @observer
-export class OverlayContainer extends React.Component<OverlayContainerProps, OverlayContainerState> {
-
+export class OverlayContainer extends React.Component<
+    OverlayContainerProps,
+    OverlayContainerState
+> {
     private modalContainer: HTMLElement | null = null;
 
     @observable
     private components: OverlayComponent[] = [];
-
 
     private toZIndex(level: number) {
         return level + 10;
@@ -32,7 +33,7 @@ export class OverlayContainer extends React.Component<OverlayContainerProps, Ove
     constructor(props: OverlayContainerProps) {
         super(props);
         makeObservable(this);
-        this.state = {container: null}
+        this.state = { container: null };
     }
 
     @action
@@ -43,7 +44,7 @@ export class OverlayContainer extends React.Component<OverlayContainerProps, Ove
         }
 
         //Close all modals above this
-        for (let i = (ix + 1); i < this.components.length; i++) {
+        for (let i = ix + 1; i < this.components.length; i++) {
             if (!this.components[i].isClosable()) {
                 return;
             }
@@ -53,7 +54,6 @@ export class OverlayContainer extends React.Component<OverlayContainerProps, Ove
 
     @action
     private onRemoved = (component: OverlayComponent) => {
-
         _.pull(this.components, component);
     };
 
@@ -61,8 +61,7 @@ export class OverlayContainer extends React.Component<OverlayContainerProps, Ove
     private onAdded = (component: OverlayComponent) => {
         const ix = this.components.indexOf(component);
 
-        if (ix > -1 ||
-            !component.isOpen()) {
+        if (ix > -1 || !component.isOpen()) {
             return;
         }
 
@@ -71,7 +70,6 @@ export class OverlayContainer extends React.Component<OverlayContainerProps, Ove
 
     @action
     private onChanged = (component: OverlayComponent) => {
-
         const ix = this.components.indexOf(component);
         if (ix === -1 && component.isOpen()) {
             this.components.push(component);
@@ -123,21 +121,19 @@ export class OverlayContainer extends React.Component<OverlayContainerProps, Ove
 
     @observable
     private getIndex = (component: OverlayComponent): number => {
-
         const ix = this.components.indexOf(component);
         return this.toZIndex(ix);
     };
 
     @observable
     private isCurrent = (component: OverlayComponent): boolean => {
-
         const ix = this.components.indexOf(component);
         if (ix < 0) {
             return false;
         }
 
         return this.components.length === ix + 1; //Last one
-    }
+    };
 
     @computed
     private get visible() {
@@ -159,7 +155,7 @@ export class OverlayContainer extends React.Component<OverlayContainerProps, Ove
 
     componentDidMount() {
         document.addEventListener('keyup', this.onKeyPress);
-        this.setState({container: this.modalContainer})
+        this.setState({ container: this.modalContainer });
     }
 
     componentWillUnmount() {
@@ -169,31 +165,38 @@ export class OverlayContainer extends React.Component<OverlayContainerProps, Ove
     render() {
         const className = toClass({
             'overlay-container': true,
-            'visible': this.visible
+            visible: this.visible,
         });
 
         const zIndex = this.toZIndex(this.level);
 
         return (
-            <div className={'overlay-modal-container'} ref={(ref) => {
-                this.modalContainer = ref
-            }}>
-                <OverlayContext.Provider value={{
-                    onAdded: this.onAdded,
-                    onRemoved: this.onRemoved,
-                    onChanged: this.onChanged,
-                    onClosing: this.onClosing,
-                    getIndex: this.getIndex,
-                    isCurrent: this.isCurrent,
-                    container: this.state.container
-                }}>
-                    <div className={className} style={{zIndex}} onClick={this.popLastModal}/>
-
+            <div
+                className={'overlay-modal-container'}
+                ref={(ref) => {
+                    this.modalContainer = ref;
+                }}
+            >
+                <OverlayContext.Provider
+                    value={{
+                        onAdded: this.onAdded,
+                        onRemoved: this.onRemoved,
+                        onChanged: this.onChanged,
+                        onClosing: this.onClosing,
+                        getIndex: this.getIndex,
+                        isCurrent: this.isCurrent,
+                        container: this.state.container,
+                    }}
+                >
+                    <div
+                        className={className}
+                        style={{ zIndex }}
+                        onClick={this.popLastModal}
+                    />
 
                     {this.props.children}
-
                 </OverlayContext.Provider>
             </div>
-        )
+        );
     }
 }

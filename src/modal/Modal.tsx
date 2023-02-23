@@ -1,43 +1,49 @@
-import React from "react";
-import { toClass } from "@blockware/ui-web-utils";
+import React from 'react';
+import { toClass } from '@blockware/ui-web-utils';
 
-import {PanelStructure} from "../helpers/PanelStructure";
+import { PanelStructure } from '../helpers/PanelStructure';
 
-import "./Modal.less";
+import './Modal.less';
 
-import {OverlayContext, OverlayComponent, OverlayContextType} from "../overlay/OverlayContext";
-import {Draggable} from "../dnd/Draggable";
-import {RenderInBody} from "../overlay/RenderInBody";
+import {
+    OverlayContext,
+    OverlayComponent,
+    OverlayContextType,
+} from '../overlay/OverlayContext';
+import { Draggable } from '../dnd/Draggable';
+import { RenderInBody } from '../overlay/RenderInBody';
 
 interface ModalProps {
-    title: string
-    size: ModalSize
-    closable?: boolean
+    title: string;
+    size: ModalSize;
+    closable?: boolean;
 
     //Controlled properties
-    open?: boolean
-    onClose?: () => void
-    onOpen?: () => void
+    open?: boolean;
+    onClose?: () => void;
+    onOpen?: () => void;
 
     //Uncontrolled properties
-    openInitially?: boolean
+    openInitially?: boolean;
 
-    className?:string
-    children: any
+    className?: string;
+    children: any;
 }
 
 interface ModalState {
-    open: boolean
+    open: boolean;
 }
 
 export enum ModalSize {
-    small = "small",
-    medium = "medium",
-    large = "large"
+    small = 'small',
+    medium = 'medium',
+    large = 'large',
 }
 
-export class Modal extends React.Component<ModalProps,ModalState> implements OverlayComponent {
-
+export class Modal
+    extends React.Component<ModalProps, ModalState>
+    implements OverlayComponent
+{
     static contextType = OverlayContext;
     context!: React.ContextType<OverlayContextType>;
 
@@ -45,27 +51,27 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
 
     private draggable?: Draggable<any>;
 
-    constructor(props:ModalProps) {
+    constructor(props: ModalProps) {
         super(props);
 
         this.state = {
-            open: !!props.openInitially
+            open: !!props.openInitially,
         };
     }
 
-    private isControlled():boolean {
+    private isControlled(): boolean {
         return 'open' in this.props;
     }
 
-    public isOpen():boolean {
+    public isOpen(): boolean {
         return this.isControlled() ? this.props.open : this.state.open;
     }
 
-    public isModal():boolean {
+    public isModal(): boolean {
         return true;
     }
 
-    public isClosable():boolean {
+    public isClosable(): boolean {
         return this.props.closable !== false;
     }
 
@@ -77,12 +83,11 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
         }
 
         this.setState({
-            open:false
+            open: false,
         });
 
         this.context.onClosing(this);
     }
-
 
     public open() {
         if (this.isControlled()) {
@@ -93,13 +98,16 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
             return;
         }
 
-        this.setState({
-            open:true
-        }, () => {
-            if (this.isClosable()) {
-                this.context.onChanged(this);
+        this.setState(
+            {
+                open: true,
+            },
+            () => {
+                if (this.isClosable()) {
+                    this.context.onChanged(this);
+                }
             }
-        });
+        );
     }
 
     componentDidMount() {
@@ -111,7 +119,7 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
 
         this.draggable = new Draggable<any>(this, {
             elm: this.container,
-            handle: '.panel-header > .text'
+            handle: '.panel-header > .text',
         });
 
         this.draggable.start();
@@ -121,8 +129,8 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
         this.context.onRemoved(this);
     }
 
-    private onTransitionEnd = (evt:React.TransitionEvent) => {
-        if (evt.propertyName !== "opacity") {
+    private onTransitionEnd = (evt: React.TransitionEvent) => {
+        if (evt.propertyName !== 'opacity') {
             return;
         }
 
@@ -141,34 +149,32 @@ export class Modal extends React.Component<ModalProps,ModalState> implements Ove
 
     public render() {
         let classNames = {
-            'modal-container':true,
+            'modal-container': true,
             [this.props.size]: true,
-            'open': this.isControlled() ? this.props.open : this.state.open
+            open: this.isControlled() ? this.props.open : this.state.open,
         };
 
         const zIndex = this.context.getIndex(this);
 
         return (
             <RenderInBody className={this.props.className}>
-                <div className={toClass(classNames)}
-                     style={{ zIndex }}
-                     ref={(ref) => this.container = ref}
-                     onTransitionEndCapture={this.onTransitionEnd}>
-
+                <div
+                    className={toClass(classNames)}
+                    style={{ zIndex }}
+                    ref={(ref) => (this.container = ref)}
+                    onTransitionEndCapture={this.onTransitionEnd}
+                >
                     <PanelStructure
                         title={this.props.title}
                         closable={this.props.closable}
                         onClose={() => {
-                            this.close()
-                        }}>
+                            this.close();
+                        }}
+                    >
                         {this.props.children}
                     </PanelStructure>
-
                 </div>
             </RenderInBody>
-        )
+        );
     }
-
-
-
-};
+}

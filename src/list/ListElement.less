@@ -1,56 +1,53 @@
-@import "../../styles/functions";
-@import "../../styles/values";
+@import '../../styles/functions';
+@import '../../styles/values';
 
 .component-list-element {
-  border: 1px solid @gray-light;
-  padding: 5px;
+    border: 1px solid @gray-light;
+    padding: 5px;
 
-  .header {
-    .container();
-    .title {
-      font-weight: bold;
-      padding: 2px;
-      display: inline-block;
-      vertical-align: middle;
-      height: 26px;
-      box-sizing: border-box;
-    }
-
-  }
-
-
-  .properties {
-    .container();
-
-    .property {
-      font-size: 12px;
-      float: left;
-
-      &:after {
-        content: '|';
-      }
-
-      & > .name,
-      & > .value {
-        display: inline-block;
-        padding: 2px;
-      }
-
-      & > .name {
-        color: @gray-xdark;
-        &:after {
-          content: ':';
+    .header {
+        .container();
+        .title {
+            font-weight: bold;
+            padding: 2px;
+            display: inline-block;
+            vertical-align: middle;
+            height: 26px;
+            box-sizing: border-box;
         }
-      }
-
-      & > .value {
-        font-style: italic;
-      }
-
-      &:last-child:after {
-        content: '';
-      }
     }
-  }
 
+    .properties {
+        .container();
+
+        .property {
+            font-size: 12px;
+            float: left;
+
+            &:after {
+                content: '|';
+            }
+
+            & > .name,
+            & > .value {
+                display: inline-block;
+                padding: 2px;
+            }
+
+            & > .name {
+                color: @gray-xdark;
+                &:after {
+                    content: ':';
+                }
+            }
+
+            & > .value {
+                font-style: italic;
+            }
+
+            &:last-child:after {
+                content: '';
+            }
+        }
+    }
 }

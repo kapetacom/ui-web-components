@@ -1,4 +1,10 @@
-import {DSLDataTypeProperty, DSLEntity, DSLEntityType, DSLMethod, DSLType} from "./interfaces";
+import {
+    DSLDataTypeProperty,
+    DSLEntity,
+    DSLEntityType,
+    DSLMethod,
+    DSLType,
+} from './interfaces';
 import {
     HTTPMethod,
     HTTPTransport,
@@ -6,23 +12,22 @@ import {
     SchemaEntity,
     SchemaEntityType,
     SchemaEntryType,
-    SchemaProperties
-} from "@blockware/ui-web-types";
-import {BUILT_IN_TYPES} from "./types";
+    SchemaProperties,
+} from '@blockware/ui-web-types';
+import { BUILT_IN_TYPES } from './types';
 
 type SchemaMethods = { [p: string]: RESTMethod };
 
 export namespace DSLConverters {
-
     export function asDSLType(type: string): DSLType {
         if (!type) {
-            return 'void'
+            return 'void';
         }
         if (type.endsWith('[]')) {
             return {
                 name: type.substring(0, type.length - 2),
-                list: true
-            }
+                list: true,
+            };
         }
 
         return type;
@@ -42,13 +47,12 @@ export namespace DSLConverters {
 
     export function fromSchemaType(type: any): string {
         if (!type) {
-            return 'void'
+            return 'void';
         }
         return type && type.$ref ? type.$ref : type;
     }
 
     export function toSchemaType(dslType: DSLType): SchemaEntryType {
-
         const type = fromDSLType(dslType);
         let onlyType = type;
 
@@ -58,7 +62,7 @@ export namespace DSLConverters {
         }
 
         if (!onlyType) {
-            return ''
+            return '';
         }
 
         if (onlyType === 'object') {
@@ -66,7 +70,7 @@ export namespace DSLConverters {
         }
 
         if (BUILT_IN_TYPES.indexOf(onlyType) === -1) {
-            return {$ref: type};
+            return { $ref: type };
         }
 
         return type;
@@ -79,14 +83,16 @@ export namespace DSLConverters {
                     type: SchemaEntityType.ENUM,
                     name: entity.name,
                     description: entity.description,
-                    values: entity.values
+                    values: entity.values,
                 };
             case DSLEntityType.DATATYPE:
                 return {
                     type: SchemaEntityType.DTO,
                     name: entity.name,
                     description: entity.description,
-                    properties: entity.properties ? toSchemaProperties(entity.properties) : {}
+                    properties: entity.properties
+                        ? toSchemaProperties(entity.properties)
+                        : {},
                 };
             case DSLEntityType.COMMENT:
                 //Ignore
@@ -103,7 +109,7 @@ export namespace DSLConverters {
                     type: DSLEntityType.ENUM,
                     name: entity.name,
                     description: entity.description,
-                    values: entity.values
+                    values: entity.values,
                 };
 
             default:
@@ -112,52 +118,63 @@ export namespace DSLConverters {
                     type: DSLEntityType.DATATYPE,
                     name: entity.name,
                     description: entity.description,
-                    properties: entity.properties ? fromSchemaProperties(entity.properties) : []
+                    properties: entity.properties
+                        ? fromSchemaProperties(entity.properties)
+                        : [],
                 };
-
         }
-
     }
 
-    export function fromSchemaProperties(properties: SchemaProperties): DSLDataTypeProperty[] {
-        return Object.entries(properties).map(([name, value]): DSLDataTypeProperty => {
-            // @ts-ignore
-            const stringType = fromSchemaType(value.type);
+    export function fromSchemaProperties(
+        properties: SchemaProperties
+    ): DSLDataTypeProperty[] {
+        return Object.entries(properties).map(
+            ([name, value]): DSLDataTypeProperty => {
+                // @ts-ignore
+                const stringType = fromSchemaType(value.type);
 
-            if (stringType === 'array') {
+                if (stringType === 'array') {
+                    return {
+                        name,
+                        description: value.description,
+                        type: {
+                            name: fromSchemaType(value.items?.type),
+                            list: true,
+                        },
+                        properties: value.items?.properties
+                            ? fromSchemaProperties(value.items?.properties)
+                            : undefined,
+                    };
+                }
+
                 return {
                     name,
+                    type: asDSLType(stringType),
                     description: value.description,
-                    type: {
-                        name: fromSchemaType(value.items?.type),
-                        list: true
-                    },
-                    properties: value.items?.properties ? fromSchemaProperties(value.items?.properties) : undefined
-                }
+                    properties: value.properties
+                        ? fromSchemaProperties(value.properties)
+                        : undefined,
+                };
             }
-
-            return {
-                name,
-                type: asDSLType(stringType),
-                description: value.description,
-                properties: value.properties ? fromSchemaProperties(value.properties) : undefined
-            }
-        });
+        );
     }
 
-    export function toSchemaProperties(properties: DSLDataTypeProperty[]): SchemaProperties {
+    export function toSchemaProperties(
+        properties: DSLDataTypeProperty[]
+    ): SchemaProperties {
         const out = {};
 
-        properties.forEach(property => {
+        properties.forEach((property) => {
             let type = toSchemaType(property.type);
 
-            if (typeof property.type === 'string' ||
-                !property.type.list) {
+            if (typeof property.type === 'string' || !property.type.list) {
                 out[property.name] = {
                     description: property.description,
                     type,
-                    properties: property.properties ? toSchemaProperties(property.properties) : null
-                }
+                    properties: property.properties
+                        ? toSchemaProperties(property.properties)
+                        : null,
+                };
             } else {
                 //Normally this includes [] if its a list - we want to strip that off for properties
                 //To not create a "List of Lists"
@@ -167,7 +184,10 @@ export namespace DSLConverters {
                     }
                 } else {
                     if (type.$ref.endsWith('[]')) {
-                        type.$ref = type.$ref.substring(0, type.$ref.length - 2);
+                        type.$ref = type.$ref.substring(
+                            0,
+                            type.$ref.length - 2
+                        );
                     }
                 }
                 out[property.name] = {
@@ -175,12 +195,13 @@ export namespace DSLConverters {
                     description: property.description,
                     items: {
                         type,
-                        properties: property.properties ? toSchemaProperties(property.properties) : null
-                    }
-                }
+                        properties: property.properties
+                            ? toSchemaProperties(property.properties)
+                            : null,
+                    },
+                };
             }
-
-        })
+        });
 
         return out;
     }
@@ -217,65 +238,79 @@ export namespace DSLConverters {
 
     export function fromSchemaMethods(methods: SchemaMethods): DSLMethod[] {
         return Object.entries(methods).map(([name, method]) => {
-
             return {
                 name,
                 returnType: asDSLType(fromSchemaType(method.responseType)),
                 type: DSLEntityType.METHOD,
                 description: method.description,
-                parameters: method.arguments ? Object.entries(method.arguments).map(([name, arg]) => {
-                    return {
-                        name,
-                        type: asDSLType(fromSchemaType(arg.type)),
-                        annotations: arg.transport ? [
-                            {
-                                type: fromSchemaTransport(arg.transport)
-                            }
-                        ] : []
-                    }
-                }) : [],
+                parameters: method.arguments
+                    ? Object.entries(method.arguments).map(([name, arg]) => {
+                          return {
+                              name,
+                              type: asDSLType(fromSchemaType(arg.type)),
+                              annotations: arg.transport
+                                  ? [
+                                        {
+                                            type: fromSchemaTransport(
+                                                arg.transport
+                                            ),
+                                        },
+                                    ]
+                                  : [],
+                          };
+                      })
+                    : [],
                 annotations: [
                     {
                         type: `@${method.method}`,
-                        arguments: [method.path]
-                    }
-                ]
-            }
+                        arguments: [method.path],
+                    },
+                ],
+            };
         });
     }
 
     export function toSchemaMethods(methods: DSLMethod[]): SchemaMethods {
-        const out: SchemaMethods = {}
+        const out: SchemaMethods = {};
 
-        methods.forEach(method => {
+        methods.forEach((method) => {
             const args = {};
             if (method.parameters) {
                 method.parameters.forEach((arg) => {
                     args[arg.name] = {
                         type: toSchemaType(arg.type),
-                        transport: toSchemaTransport(arg.annotations && arg.annotations.length > 0 ? arg.annotations[0].type : '@Query')
+                        transport: toSchemaTransport(
+                            arg.annotations && arg.annotations.length > 0
+                                ? arg.annotations[0].type
+                                : '@Query'
+                        ),
                     };
-                })
+                });
             }
 
             const annotations = method.annotations ?? [];
-            const firstAnnotation = annotations.length > 0 ? annotations[0] : null;
+            const firstAnnotation =
+                annotations.length > 0 ? annotations[0] : null;
 
-            const path = firstAnnotation &&
-                            firstAnnotation.arguments &&
-                            firstAnnotation.arguments.length > 0 ?
-                            firstAnnotation.arguments[0] : '/';
+            const path =
+                firstAnnotation &&
+                firstAnnotation.arguments &&
+                firstAnnotation.arguments.length > 0
+                    ? firstAnnotation.arguments[0]
+                    : '/';
 
-            const httpMethod = firstAnnotation && firstAnnotation.type ?
-                                firstAnnotation.type.substring(1).toUpperCase() : 'GET'
+            const httpMethod =
+                firstAnnotation && firstAnnotation.type
+                    ? firstAnnotation.type.substring(1).toUpperCase()
+                    : 'GET';
 
             out[method.name] = {
                 responseType: toSchemaType(method.returnType),
                 method: httpMethod as HTTPMethod,
                 path,
                 description: method.description,
-                arguments: args
-            }
+                arguments: args,
+            };
         });
 
         return out;

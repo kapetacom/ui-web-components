@@ -1,5 +1,5 @@
-@import "../../styles/values";
-@import "../../styles/functions";
+@import '../../styles/values';
+@import '../../styles/functions';
 
 .entity-list,
 .entity-mapper,
@@ -16,7 +16,7 @@
     .entities-items {
         max-height: 100%;
         overflow: auto;
-        border-bottom:1px solid @gray;
+        border-bottom: 1px solid @gray;
     }
 
     .add-entity-box {
@@ -25,7 +25,7 @@
         border: 1px solid @cyan-dark;
         height: 20px;
         cursor: pointer;
-        
+
         .add-entity-text {
             position: relative;
             bottom: 5%;
@@ -35,25 +35,24 @@
             color: @btn-text-w;
         }
     }
-    
-    .entity-row {        
+
+    .entity-row {
         position: relative;
         background: @btn-text-w;
         border: 1px solid @gray;
         height: 40px;
         padding-left: 5%;
         padding-right: 10%;
-        
 
         &:hover {
-            .drop-shadow(0px 0px 15px #00000050)  ;        
+            .drop-shadow(0px 0px 15px #00000050);
             z-index: 2;
 
             .entity-icons {
                 display: flex;
             }
         }
-        
+
         .entity-name {
             max-width: 200px;
             position: relative;
@@ -62,9 +61,9 @@
             font-size: 14px;
             line-height: 15px;
             text-overflow: ellipsis;
-            overflow: hidden;            
+            overflow: hidden;
             white-space: nowrap;
-            color: @gray-xdark;            
+            color: @gray-xdark;
         }
 
         .entity-status {
@@ -73,7 +72,7 @@
             bottom: 10%;
             font-size: 12px;
             font-weight: 450;
-            
+
             &.status-active {
                 color: @green-light;
             }
@@ -83,25 +82,25 @@
             }
         }
 
-        >.entity-icons {
+        > .entity-icons {
             width: 50px;
             position: absolute;
             display: none;
             flex-direction: row;
-            right:10px;
+            right: 10px;
             bottom: 25%;
             color: @btn-text-w;
-                        
+
             .edit-icon {
-                display: flex ;
+                display: flex;
                 align-items: center;
-                justify-content:center;
+                justify-content: center;
                 background-color: @cyan-dark;
                 margin-right: 10px;
                 width: 20px;
                 height: 20px;
                 .border-radius(3px);
-                
+
                 &:hover {
                     .drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.24));
                 }
@@ -113,14 +112,14 @@
             }
 
             .delete-icon {
-                display: flex ;
+                display: flex;
                 align-items: center;
-                justify-content:center;
+                justify-content: center;
                 width: 20px;
                 height: 20px;
                 .border-radius(3px);
                 background-color: @bw-orange;
-                
+
                 &:hover {
                     .drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.24));
                 }
@@ -130,8 +129,6 @@
                     .drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.12));
                 }
             }
-            
         }
     }
-
 }

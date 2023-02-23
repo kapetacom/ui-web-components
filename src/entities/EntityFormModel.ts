@@ -1,46 +1,55 @@
-import {makeObservable, observable} from "mobx";
-import {Guid} from "guid-typescript";
+import { makeObservable, observable } from 'mobx';
+import { Guid } from 'guid-typescript';
 
-import {SchemaDTO, SchemaEntityType, SchemaEntry, SchemaEntryType, SchemaProperties} from "@blockware/ui-web-types";
+import {
+    SchemaDTO,
+    SchemaEntityType,
+    SchemaEntry,
+    SchemaEntryType,
+    SchemaProperties,
+} from '@blockware/ui-web-types';
 
 export interface SchemaEntryEdit {
-    uid: string
-    error?: string
-    id: string
-    type: SchemaEntryType
-    items?: SchemaEntryEdit
-    properties?: SchemaEntryEdit[]
-    required?: string[]
-    enum?: string[]
+    uid: string;
+    error?: string;
+    id: string;
+    type: SchemaEntryType;
+    items?: SchemaEntryEdit;
+    properties?: SchemaEntryEdit[];
+    required?: string[];
+    enum?: string[];
 }
 
 export interface SchemaEntityEdit {
-    name: string
-    properties: SchemaEntryEdit[]
+    name: string;
+    properties: SchemaEntryEdit[];
 }
 
-function toEditEntry(fieldId:string, original:SchemaEntry):SchemaEntryEdit {
-
+function toEditEntry(fieldId: string, original: SchemaEntry): SchemaEntryEdit {
     return {
         uid: Guid.create().toString(),
         ...original,
-        items: original.items ? toEditEntry(fieldId + '[]', original.items) : undefined,
-        properties: original.properties ? toEditProperties(original.properties) : undefined,
-        id: fieldId
-    }
+        items: original.items
+            ? toEditEntry(fieldId + '[]', original.items)
+            : undefined,
+        properties: original.properties
+            ? toEditProperties(original.properties)
+            : undefined,
+        id: fieldId,
+    };
 }
 
-function toEditProperties(original:SchemaProperties):SchemaEntryEdit[] {
+function toEditProperties(original: SchemaProperties): SchemaEntryEdit[] {
     return Object.entries(original).map(([fieldId, field]) => {
         return toEditEntry(fieldId, field);
     });
 }
 
-function fromEditProperties(original:SchemaEntryEdit[]):SchemaProperties {
-    const properties:{[key:string]:any} = {};
+function fromEditProperties(original: SchemaEntryEdit[]): SchemaProperties {
+    const properties: { [key: string]: any } = {};
 
     original.forEach((field) => {
-        const copiedField:any = {...field};
+        const copiedField: any = { ...field };
         const id = copiedField.id;
         delete copiedField.id;
         delete copiedField.uid;
@@ -52,7 +61,6 @@ function fromEditProperties(original:SchemaEntryEdit[]):SchemaProperties {
 }
 
 export class EntityFormModel {
-
     @observable
     name: string;
 
@@ -64,7 +72,7 @@ export class EntityFormModel {
 
     constructor(entry?: SchemaDTO) {
         if (!entry) {
-            entry = {type: SchemaEntityType.DTO, name:'', properties: {}};
+            entry = { type: SchemaEntityType.DTO, name: '', properties: {} };
         }
         this.name = entry.name;
         this.properties = toEditProperties(entry.properties);
@@ -75,12 +83,11 @@ export class EntityFormModel {
         makeObservable(this);
     }
 
-    public getData():SchemaDTO {
+    public getData(): SchemaDTO {
         return {
             type: SchemaEntityType.DTO,
             name: this.name,
-            properties: fromEditProperties(this.properties)
+            properties: fromEditProperties(this.properties),
         };
     }
-
 }

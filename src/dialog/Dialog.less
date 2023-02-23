@@ -1,24 +1,26 @@
-@import "../../styles/values.less";
-@import "../../styles/functions.less";
-@import "../../styles/animation.less";
+@import '../../styles/values.less';
+@import '../../styles/functions.less';
+@import '../../styles/animation.less';
 
 .dialog-container {
     .transition(opacity 200ms);
     position: fixed;
-    filter: url("#dialog-shadow");
+    filter: url('#dialog-shadow');
     opacity: 0;
     pointer-events: none;
 
     .delete {
-    animation: scale-down-center 400ms  cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        animation: scale-down-center 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94)
+            both;
     }
 
-    &.confirmation, &.prompt {
+    &.confirmation,
+    &.prompt {
         .border-radius(5px);
-        .drop-shadow(0 0 20px rgba(0, 0, 0, 0.15));  
+        .drop-shadow(0 0 20px rgba(0, 0, 0, 0.15));
         background-color: white;
         display: block;
-        overflow:auto;
+        overflow: auto;
         max-height: ~'calc(100% - 100px)';
 
         .panel-header {
@@ -37,7 +39,7 @@
             margin: 30px 20px 0px 30px;
             display: flex;
             flex-direction: column;
-            
+
             .dialog-title {
                 font-size: 18px;
                 font-weight: 500;
@@ -50,10 +52,9 @@
                 color: @dialog-gray-light;
             }
         }
-        
     }
 
-    &.confirmation{
+    &.confirmation {
         .checked-icon {
             position: absolute;
             top: 35%;
@@ -76,18 +77,17 @@
             .form-container {
                 width: fit-content;
                 margin-left: -10px;
-                
+
                 .form-buttons {
                     margin: 0 auto;
                 }
             }
         }
-
     }
 
     &.prompt {
         .content-wrapper {
-            justify-content:center;
+            justify-content: center;
             align-items: center;
 
             .dialog-message {
@@ -100,18 +100,18 @@
 
             .form-element-container {
                 margin-bottom: 5px;
-                
+
                 .message {
                     display: none;
                 }
             }
-            
+
             .form-buttons {
                 .blockware-button {
                     right: 6px;
-                }                
+                }
             }
-        }        
+        }
     }
 
     .dialog-shape {
@@ -131,19 +131,21 @@
         pointer-events: all;
         opacity: 1;
         &.delete {
-            animation: scale-up-center 400ms  cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+            animation: scale-up-center 400ms
+                cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
         }
     }
 
-    ~.dialog-holder {
+    ~ .dialog-holder {
         .transition(all 200ms);
-      
+
         &.dialog-opening {
             opacity: 1;
-            animation: scale-up-center 400ms  cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+            animation: scale-up-center 400ms
+                cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
         }
 
-        filter: url("#dialog-shadow");
+        filter: url('#dialog-shadow');
 
         .dialog-shape {
             fill: #f3f3f3; //@bw-menu-dark;
@@ -156,17 +158,14 @@
                 fill: @bw-menu-dark;
                 text-transform: capitalize;
             }
-
-
         }
         &.dialog-closing {
-            animation: scale-down-center 400ms  cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+            animation: scale-down-center 400ms
+                cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
             opacity: 0;
-            .dialog-shape{
+            .dialog-shape {
                 display: none;
             }
-
         }
-        
     }
 }
