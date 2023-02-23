@@ -1,10 +1,9 @@
 import React from 'react';
-import './FormCheckbox.less';
-import { observable, action, makeObservable } from 'mobx';
 import { toClass } from '@blockware/ui-web-utils';
-import { observer } from 'mobx-react';
 import { FormRow } from '../FormRow';
 import { Checkbox } from '../Checkbox';
+
+import './FormCheckbox.less';
 
 interface Props {
     name: string;
@@ -16,40 +15,35 @@ interface Props {
     onChange?: (inputName: string, userInput: any) => void;
 }
 
-@observer
-export class FormCheckbox extends React.Component<Props> {
-    @observable
-    private inputFocused: boolean = false;
+interface State {
+    inputFocused: boolean;
+}
 
+export class FormCheckbox extends React.Component<Props, State> {
     private formRowRef: React.RefObject<FormRow> = React.createRef();
 
-    constructor(props: Props) {
+    constructor(props) {
         super(props);
-        makeObservable(this);
+        this.state = {
+            inputFocused: false,
+        };
     }
 
-    @action
     private inputOnBlur = () => {
-        this.inputFocused = false;
+        this.setState({ inputFocused: false });
     };
 
-    @action
     private inputOnFocus = () => {
-        this.inputFocused = true;
+        this.setState({ inputFocused: true });
     };
 
-    @action
     private onChange = (value: boolean) => {
-        this.emitChange(value);
-    };
-
-    private emitChange(value: boolean) {
         if (this.props.onChange) {
             this.props.onChange(this.props.name, value);
         }
 
         this.formRowRef.current?.updateReadyState(value);
-    }
+    };
 
     componentDidMount() {
         this.formRowRef.current?.updateReadyState();
@@ -70,7 +64,7 @@ export class FormCheckbox extends React.Component<Props> {
                 validation={this.props.validation}
                 type={'checkbox'}
                 disableZoom={true}
-                focused={this.inputFocused}
+                focused={this.state.inputFocused}
                 disabled={this.props.disabled}
             >
                 <div
