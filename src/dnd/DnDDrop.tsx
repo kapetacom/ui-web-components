@@ -1,23 +1,23 @@
-import React from "react";
-import DnDContext, {DnDContextType} from './DnDContext';
-import {DnDDrag} from "./DnDDrag";
-import {asHTMLElement, DOMElement} from "@blockware/ui-web-utils";
-import {Dimensions} from "@blockware/ui-web-types";
+import React from 'react';
+import DnDContext, { DnDContextType } from './DnDContext';
+import { DnDDrag } from './DnDDrag';
+import { asHTMLElement, DOMElement } from '@blockware/ui-web-utils';
+import { Dimensions } from '@blockware/ui-web-types';
 
 interface DnDDropProps {
-    children: any
-    droppable?: (value:any) => boolean
-    onDrop: (type:string, value:any, dragDimensions:Dimensions) => void
-    onDrag?: (type:string, value:any, dragDimensions:Dimensions) => void
-    type:string|string[]
+    children: any;
+    droppable?: (value: any) => boolean;
+    onDrop: (type: string, value: any, dragDimensions: Dimensions) => void;
+    onDrag?: (type: string, value: any, dragDimensions: Dimensions) => void;
+    type: string | string[];
 }
 
 interface DnDDropState {
-    dragging:boolean
-    hovering:boolean
+    dragging: boolean;
+    hovering: boolean;
 }
 
-function normaliseType(type:string|string[]) {
+function normaliseType(type: string | string[]) {
     if (!Array.isArray(type)) {
         return [type];
     }
@@ -25,12 +25,13 @@ function normaliseType(type:string|string[]) {
     return type;
 }
 
-
-function isDragOverDrop(dropSize:ClientRect, dragSize:ClientRect) {
-    return !(dragSize.left > dropSize.right ||
-                dragSize.right < dropSize.left ||
-                dragSize.top > dropSize.bottom ||
-                dragSize.bottom < dropSize.top);
+function isDragOverDrop(dropSize: ClientRect, dragSize: ClientRect) {
+    return !(
+        dragSize.left > dropSize.right ||
+        dragSize.right < dropSize.left ||
+        dragSize.top > dropSize.bottom ||
+        dragSize.bottom < dropSize.top
+    );
 }
 
 const CSS_DRAGGING = 'dnd-zone-dragging';
@@ -40,14 +41,14 @@ export class DnDDrop extends React.Component<DnDDropProps, DnDDropState> {
     static contextType = DnDContext;
     context!: React.ContextType<DnDContextType>;
 
-    private elm: DOMElement|null = null;
+    private elm: DOMElement | null = null;
 
-    constructor(props:DnDDropProps) {
+    constructor(props: DnDDropProps) {
         super(props);
 
         this.state = {
             dragging: false,
-            hovering: false
+            hovering: false,
         };
     }
 
@@ -71,15 +72,16 @@ export class DnDDrop extends React.Component<DnDDropProps, DnDDropState> {
         this.context.onDropZoneRemoved(this);
     }
 
-    private getDimensionsForElement(dimensions:Dimensions) {
+    private getDimensionsForElement(dimensions: Dimensions) {
         if (!this.elm) {
             return dimensions;
         }
 
-        return {...dimensions,
+        return {
+            ...dimensions,
             left: dimensions.left + this.elm.scrollLeft,
-            top: dimensions.top + this.elm.scrollTop
-        }
+            top: dimensions.top + this.elm.scrollTop,
+        };
     }
 
     onDragStart(drag: DnDDrag) {
@@ -90,7 +92,7 @@ export class DnDDrop extends React.Component<DnDDropProps, DnDDropState> {
         this.elm.classList.add(CSS_DRAGGING);
     }
 
-    onDragEnd(dimensions:Dimensions, dragRect:ClientRect, drag: DnDDrag) {
+    onDragEnd(dimensions: Dimensions, dragRect: ClientRect, drag: DnDDrag) {
         if (!this.elm) {
             return;
         }
@@ -102,13 +104,17 @@ export class DnDDrop extends React.Component<DnDDropProps, DnDDropState> {
         const hitTest = isDragOverDrop(zoneRect, dragRect);
 
         if (hitTest) {
-            this.props.onDrop(drag.props.type, drag.props.value, this.getDimensionsForElement(dimensions));
+            this.props.onDrop(
+                drag.props.type,
+                drag.props.value,
+                this.getDimensionsForElement(dimensions)
+            );
         }
 
         return hitTest;
     }
 
-    onDragMove(dimensions:Dimensions, dragRect:ClientRect, drag: DnDDrag) {
+    onDragMove(dimensions: Dimensions, dragRect: ClientRect, drag: DnDDrag) {
         if (!this.elm) {
             return;
         }
@@ -119,7 +125,11 @@ export class DnDDrop extends React.Component<DnDDropProps, DnDDropState> {
 
         if (hitTest) {
             if (this.props.onDrag) {
-                this.props.onDrag(drag.props.type, drag.props.value, this.getDimensionsForElement(dimensions));
+                this.props.onDrag(
+                    drag.props.type,
+                    drag.props.value,
+                    this.getDimensionsForElement(dimensions)
+                );
             }
             this.elm.classList.add(CSS_HOVERING);
         } else {
@@ -146,17 +156,14 @@ export class DnDDrop extends React.Component<DnDDropProps, DnDDropState> {
     }
 
     render() {
-
         const child = React.Children.only(this.props.children);
 
         const clone = React.cloneElement(child, {
-            ref: (ref:HTMLElement) => {this.elm = asHTMLElement(ref)}
+            ref: (ref: HTMLElement) => {
+                this.elm = asHTMLElement(ref);
+            },
         });
 
-        return (
-            <>
-                {clone}
-            </>
-        )
+        return <>{clone}</>;
     }
 }

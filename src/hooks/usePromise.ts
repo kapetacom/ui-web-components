@@ -1,13 +1,13 @@
-import {useMemo} from "react";
+import { useMemo } from 'react';
 
 interface Result<T = any> {
-    promise: Promise<T>,
-    resolve: (value?: T) => void,
-    reject: (err?: any) => void
+    promise: Promise<T>;
+    resolve: (value?: T) => void;
+    reject: (err?: any) => void;
 }
 
 export const usePromise = <T>() => {
-    return useMemo(():Result<T> => {
+    return useMemo((): Result<T> => {
         let resolver, rejector;
 
         const promise = new Promise<T>((resolve, reject) => {
@@ -19,7 +19,6 @@ export const usePromise = <T>() => {
             promise,
             resolve: resolver ? resolver : () => {},
             reject: rejector ? rejector : () => {},
-        }
-    }, [])
-
-}
+        };
+    }, []);
+};

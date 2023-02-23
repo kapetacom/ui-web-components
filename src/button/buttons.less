@@ -1,5 +1,5 @@
-@import "../../styles/values";
-@import "../../styles/functions";
+@import '../../styles/values';
+@import '../../styles/functions';
 
 a.button,
 button.button {
@@ -11,12 +11,12 @@ button.button {
     cursor: pointer;
     display: inline-block;
     box-sizing: border-box;
-    padding:0;
+    padding: 0;
     background-position: 0 0;
     margin: 0 10px 0 0;
 
     .inner {
-        margin:0;
+        margin: 0;
         line-height: @button-height;
     }
 
@@ -50,7 +50,6 @@ button.button {
     }
 
     &.default {
-
         .inner {
             color: @btn-regular-text;
             background-color: @gray-xxlight;
@@ -72,7 +71,6 @@ button.button {
     }
 
     &.primary {
-
         .inner {
             background: @cyan-dark;
             color: white;
@@ -92,7 +90,6 @@ button.button {
     }
 
     &.secondary {
-
         .inner {
             background: @btn-friendly-bg;
             color: white;
@@ -112,7 +109,6 @@ button.button {
     }
 
     &.danger {
-
         .inner {
             background: @btn-cancel-bg;
             color: white;
@@ -136,7 +132,7 @@ button.button {
         filter: @button-blue-shadow-default;
 
         .inner {
-            background: #FFFFFF;
+            background: #ffffff;
         }
 
         &:hover {
@@ -147,13 +143,12 @@ button.button {
             filter: @button-blue-shadow-active;
 
             .inner {
-                background: linear-gradient(0deg, #F8FDFE, #F8FDFE), #056D77;
+                background: linear-gradient(0deg, #f8fdfe, #f8fdfe), #056d77;
             }
         }
     }
 
     &.primary_shine {
-
         .inner {
             background: @button-primary-default;
             color: white;
@@ -173,7 +168,6 @@ button.button {
     }
 
     &.logo {
-
         .inner {
             .container();
             color: black;
@@ -189,7 +183,7 @@ button.button {
             color: white;
             font-style: normal;
             display: inline-block;
-            padding-top:6px;
+            padding-top: 6px;
             float: left;
             text-align: center;
 
@@ -204,10 +198,9 @@ button.button {
             text-align: left;
             padding-left: 10px;
             float: left;
-            color: #0282A1;
+            color: #0282a1;
             font-weight: 400;
         }
-
 
         &:hover {
             .logo {
@@ -219,7 +212,6 @@ button.button {
             .logo {
                 background: @button-primary-hover;
             }
-
         }
     }
 
@@ -267,7 +259,6 @@ button.button {
             }
         }
     }
-
 }
 
 .actions {

@@ -1,24 +1,23 @@
-import React from "react";
-import "./FormCheckbox.less";
-import {observable, action, makeObservable} from "mobx";
-import {toClass} from "@blockware/ui-web-utils";
-import {observer} from "mobx-react";
-import {FormRow} from "../FormRow";
-import {Checkbox} from "../Checkbox";
+import React from 'react';
+import './FormCheckbox.less';
+import { observable, action, makeObservable } from 'mobx';
+import { toClass } from '@blockware/ui-web-utils';
+import { observer } from 'mobx-react';
+import { FormRow } from '../FormRow';
+import { Checkbox } from '../Checkbox';
 
 interface Props {
-    name: string,
-    label?: string,
-    value?: any,
-    validation?: any[],
-    help?: string,
-    disabled?: boolean,
-    onChange?: (inputName: string, userInput: any) => void
+    name: string;
+    label?: string;
+    value?: any;
+    validation?: any[];
+    help?: string;
+    disabled?: boolean;
+    onChange?: (inputName: string, userInput: any) => void;
 }
 
 @observer
 export class FormCheckbox extends React.Component<Props> {
-
     @observable
     private inputFocused: boolean = false;
 
@@ -40,7 +39,7 @@ export class FormCheckbox extends React.Component<Props> {
     };
 
     @action
-    private onChange = (value:boolean) => {
+    private onChange = (value: boolean) => {
         this.emitChange(value);
     };
 
@@ -57,15 +56,13 @@ export class FormCheckbox extends React.Component<Props> {
     }
 
     render() {
-
         let className = toClass({
-            "form-checkbox": true
+            'form-checkbox': true,
         });
 
-        let checked = (this.props.value === true);
+        let checked = this.props.value === true;
 
         return (
-
             <FormRow
                 ref={this.formRowRef}
                 help={this.props.help}
@@ -76,21 +73,22 @@ export class FormCheckbox extends React.Component<Props> {
                 focused={this.inputFocused}
                 disabled={this.props.disabled}
             >
-                <div className={className} data-name={this.props.name} data-value={this.props.value}>
+                <div
+                    className={className}
+                    data-name={this.props.name}
+                    data-value={this.props.value}
+                >
                     <label>
-                        <Checkbox value={checked}
-                                  onChange={this.onChange}
-                                  disabled={this.props.disabled}
+                        <Checkbox
+                            value={checked}
+                            onChange={this.onChange}
+                            disabled={this.props.disabled}
                         />
 
                         <span className={'name'}>{this.props.label}</span>
                     </label>
                 </div>
-
             </FormRow>
-        )
+        );
     }
 }
-
-
-

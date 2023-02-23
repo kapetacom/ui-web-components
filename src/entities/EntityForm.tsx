@@ -1,30 +1,28 @@
-import React from "react";
-import {action, makeObservable, observable} from "mobx";
-import {observer} from "mobx-react";
+import React from 'react';
+import { action, makeObservable, observable } from 'mobx';
+import { observer } from 'mobx-react';
 
-import {SchemaEntryType, typeName} from "@blockware/ui-web-types";
-import {toClass} from "@blockware/ui-web-utils";
+import { SchemaEntryType, typeName } from '@blockware/ui-web-types';
+import { toClass } from '@blockware/ui-web-utils';
 
-import {EntityPicker} from "../form/field-handlers/EntityPicker";
-import _ from "lodash";
+import { EntityPicker } from '../form/field-handlers/EntityPicker';
+import _ from 'lodash';
 
-import {Guid} from "guid-typescript";
-import {EntityFormModel, SchemaEntryEdit} from "./EntityFormModel";
+import { Guid } from 'guid-typescript';
+import { EntityFormModel, SchemaEntryEdit } from './EntityFormModel';
 
-import PlusHexagon from "../svg/SVGAddEntityButton";
+import PlusHexagon from '../svg/SVGAddEntityButton';
 
-import SVGGrabber from "../svg/SVGGrabber";
-import SVGDeleteHexagon from "../svg/SVGDeleteHexagon";
-
+import SVGGrabber from '../svg/SVGGrabber';
+import SVGDeleteHexagon from '../svg/SVGDeleteHexagon';
 
 import './EntityForm.less';
-import { SortableContainer } from "../dnd/SortableContainer";
-import { SortableItem } from "../dnd/SortableItem";
-import { FormInput, Type } from "../form/inputs/FormInput";
-import { FormContainer } from "../form/FormContainer";
+import { SortableContainer } from '../dnd/SortableContainer';
+import { SortableItem } from '../dnd/SortableItem';
+import { FormInput, Type } from '../form/inputs/FormInput';
+import { FormContainer } from '../form/FormContainer';
 
-
-function toTypeName(entry:SchemaEntryEdit):string {
+function toTypeName(entry: SchemaEntryEdit): string {
     let type = typeName(entry.type);
     if (type === 'number') {
         type = 'double';
@@ -43,39 +41,33 @@ function toTypeName(entry:SchemaEntryEdit):string {
     return type;
 }
 
-function isObject(entry:SchemaEntryEdit):boolean {
-
-    if (entry.type === 'object' ||
-        entry.type === 'object[]') {
+function isObject(entry: SchemaEntryEdit): boolean {
+    if (entry.type === 'object' || entry.type === 'object[]') {
         return true;
     }
 
-    if (entry.type === 'array' &&
-        entry.items) {
+    if (entry.type === 'array' && entry.items) {
         return isObject(entry.items);
     }
 
     return false;
 }
 
-
 interface EntityFormProps {
-    name: string
-    entity: EntityFormModel
-    onChange?: (value:EntityFormModel) => void
+    name: string;
+    entity: EntityFormModel;
+    onChange?: (value: EntityFormModel) => void;
 }
 
 @observer
 export class EntityForm extends React.Component<EntityFormProps> {
+    @observable
+    private openedObjects: { [key: string]: boolean } = {};
 
     @observable
-    private openedObjects:{[key:string]:boolean} = {};
+    private hoveredItemId = '';
 
-    @observable
-    private hoveredItemId = "";
-
-
-    constructor(props:EntityFormProps) {
+    constructor(props: EntityFormProps) {
         super(props);
         makeObservable(this);
     }
@@ -86,7 +78,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
     }
 
     @action
-    private removeEntry(properties:SchemaEntryEdit[], field: SchemaEntryEdit) {
+    private removeEntry(properties: SchemaEntryEdit[], field: SchemaEntryEdit) {
         _.pull(properties, field);
         this.handleChange();
     }
@@ -98,7 +90,11 @@ export class EntityForm extends React.Component<EntityFormProps> {
     }
 
     @action
-    private updateFieldId(properties:SchemaEntryEdit[], field: SchemaEntryEdit, newId: string) {
+    private updateFieldId(
+        properties: SchemaEntryEdit[],
+        field: SchemaEntryEdit,
+        newId: string
+    ) {
         this.validateField(properties, field, newId);
 
         field.id = newId;
@@ -106,22 +102,24 @@ export class EntityForm extends React.Component<EntityFormProps> {
         this.handleChange();
     }
 
-
     @action
-    private addField(properties: SchemaEntryEdit[],index:number,isSubElement?:boolean): void {
-
+    private addField(
+        properties: SchemaEntryEdit[],
+        index: number,
+        isSubElement?: boolean
+    ): void {
         const field = {
             uid: Guid.create().toString(),
-            id: 'field_' + (properties.length),
-            type: 'string'
+            id: 'field_' + properties.length,
+            type: 'string',
         };
 
         this.validateField(properties, field, field.id);
 
-        if(!isSubElement){
+        if (!isSubElement) {
             properties.splice(index, 0, field);
-        }else{
-            field.id= 'field_0';
+        } else {
+            field.id = 'field_0';
             if (properties.length < 1) {
                 properties.push(field);
             } else {
@@ -129,12 +127,11 @@ export class EntityForm extends React.Component<EntityFormProps> {
             }
         }
 
-
         this.handleChange();
     }
 
     @action
-    private toggleOpen(key:string) {
+    private toggleOpen(key: string) {
         this.openedObjects[key] = !this.openedObjects[key];
     }
 
@@ -146,13 +143,19 @@ export class EntityForm extends React.Component<EntityFormProps> {
         this.props.onChange(this.props.entity);
     }
 
-    private hasConflicts(properties:SchemaEntryEdit[], newId: string) {
-        const conflicts = properties.filter((otherField) => otherField.id === newId);
+    private hasConflicts(properties: SchemaEntryEdit[], newId: string) {
+        const conflicts = properties.filter(
+            (otherField) => otherField.id === newId
+        );
 
         return conflicts.length > 0;
     }
 
-    private validateField(properties:SchemaEntryEdit[], field: SchemaEntryEdit, newId: string) {
+    private validateField(
+        properties: SchemaEntryEdit[],
+        field: SchemaEntryEdit,
+        newId: string
+    ) {
         if (this.hasConflicts(properties, newId)) {
             //ID already in use by sibling
             field.error = 'Field ID must be unique';
@@ -163,157 +166,261 @@ export class EntityForm extends React.Component<EntityFormProps> {
         }
     }
 
-    private isOpen(key:string) {
+    private isOpen(key: string) {
         return !!this.openedObjects[key];
     }
 
-    private renderAddFirst(properties:SchemaEntryEdit[],depth:number,index:number) {
-
+    private renderAddFirst(
+        properties: SchemaEntryEdit[],
+        depth: number,
+        index: number
+    ) {
         return (
-            <div className={'add-first'} style={{marginLeft: depth * 24}}
+            <div
+                className={'add-first'}
+                style={{ marginLeft: depth * 24 }}
                 onClick={() => {
-                    this.addField(properties,index,true)
-                }}>
-
-                <div className={'field-name'}>
-                    + Add field
-                </div>
+                    this.addField(properties, index, true);
+                }}
+            >
+                <div className={'field-name'}>+ Add field</div>
             </div>
-        )
+        );
     }
 
-    private renderAddField(properties:SchemaEntryEdit[], depth:number,index:number) {
-        return(
+    private renderAddField(
+        properties: SchemaEntryEdit[],
+        depth: number,
+        index: number
+    ) {
+        return (
             <div style={{ marginLeft: depth * 24 }}>
                 <div
-                    className="single-plus" onClick={() => this.addField(properties, index)}>
+                    className="single-plus"
+                    onClick={() => this.addField(properties, index)}
+                >
                     <PlusHexagon />
                 </div>
             </div>
-        )
+        );
     }
 
-
-    private renderProperties(properties:SchemaEntryEdit[], depth:number, parentId?:string):JSX.Element {
-
+    private renderProperties(
+        properties: SchemaEntryEdit[],
+        depth: number,
+        parentId?: string
+    ): JSX.Element {
         return (
-
-            <SortableContainer list={properties} onUpdate={() => this.handleChange()} >
+            <SortableContainer
+                list={properties}
+                onUpdate={() => this.handleChange()}
+            >
                 <div className={'field-list-container'}>
-
                     {properties.map((field, index) => {
-
                         let type = toTypeName(field);
                         const objectType = isObject(field);
-                        let key = parentId ? parentId + '.' + field.id : field.id;
+                        let key = parentId
+                            ? parentId + '.' + field.id
+                            : field.id;
 
                         const openerClass = toClass({
-                            'open': this.isOpen(key)
+                            open: this.isOpen(key),
                         });
 
                         const fieldNameClass = toClass({
-                            'field-name':true,
-                            'error': !!field.error
+                            'field-name': true,
+                            error: !!field.error,
                         });
 
-                        const addClassNames=toClass({
-                            "add":true,
-                            "add-visible": this.hoveredItemId === field.uid,
-                        })
+                        const addClassNames = toClass({
+                            add: true,
+                            'add-visible': this.hoveredItemId === field.uid,
+                        });
 
-                        const isFirstAttribute = ((field.type === "object"||field.type === "object[]") && (!field.properties || field.properties.length===0) );
-    
+                        const isFirstAttribute =
+                            (field.type === 'object' ||
+                                field.type === 'object[]') &&
+                            (!field.properties ||
+                                field.properties.length === 0);
+
                         return (
-                            <div className="row" key={field.uid}
-                                onMouseMove={(evt)=>{this.setHoveredItem(field.uid); evt.stopPropagation() }}
-                                onMouseLeave={(evt)=>{this.setHoveredItem(''); evt.stopPropagation() }}>
-
+                            <div
+                                className="row"
+                                key={field.uid}
+                                onMouseMove={(evt) => {
+                                    this.setHoveredItem(field.uid);
+                                    evt.stopPropagation();
+                                }}
+                                onMouseLeave={(evt) => {
+                                    this.setHoveredItem('');
+                                    evt.stopPropagation();
+                                }}
+                            >
                                 <SortableItem item={field} handle={'.mover'}>
-                                    <div className={'field-row data'} style={{marginLeft: depth * 24}}>
+                                    <div
+                                        className={'field-row data'}
+                                        style={{ marginLeft: depth * 24 }}
+                                    >
                                         <div className={'mover'}>
                                             <SVGGrabber />
                                         </div>
                                         <div className={'opener'}>
-                                            {objectType &&
-                                                <svg className={openerClass} width="7" height="13" viewBox="0 0 7 13" fill="none" onClick={() => this.toggleOpen(key)} >
-                                                    <path d="M0.75 12.25L6.25 6.75L0.75 1.25" stroke="#5C5F64" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                            {objectType && (
+                                                <svg
+                                                    className={openerClass}
+                                                    width="7"
+                                                    height="13"
+                                                    viewBox="0 0 7 13"
+                                                    fill="none"
+                                                    onClick={() =>
+                                                        this.toggleOpen(key)
+                                                    }
+                                                >
+                                                    <path
+                                                        d="M0.75 12.25L6.25 6.75L0.75 1.25"
+                                                        stroke="#5C5F64"
+                                                        strokeWidth="1.5"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    />
                                                 </svg>
-                                            }
+                                            )}
                                         </div>
                                         <div className={fieldNameClass}>
-                                            <FormInput validation={["required"]} name="" label="" type={Type.TEXT} value={field.id}
-                                                       onChange={(_,value) => {this.updateFieldId(properties, field, value)}} />
+                                            <FormInput
+                                                validation={['required']}
+                                                name=""
+                                                label=""
+                                                type={Type.TEXT}
+                                                value={field.id}
+                                                onChange={(_, value) => {
+                                                    this.updateFieldId(
+                                                        properties,
+                                                        field,
+                                                        value
+                                                    );
+                                                }}
+                                            />
                                         </div>
-                                        <div className={'field-type'} onClick={(evt) => evt.stopPropagation()}>
-                                            <EntityPicker name={'fieldType'}
+                                        <div
+                                            className={'field-type'}
+                                            onClick={(evt) =>
+                                                evt.stopPropagation()
+                                            }
+                                        >
+                                            <EntityPicker
+                                                name={'fieldType'}
                                                 value={type}
                                                 allowObject={true}
-                                                onChange={(value: SchemaEntryType) => { this.updateType(field, value) }} />
+                                                onChange={(
+                                                    value: SchemaEntryType
+                                                ) => {
+                                                    this.updateType(
+                                                        field,
+                                                        value
+                                                    );
+                                                }}
+                                            />
 
-                                            <div className={"object-attribute-count"}>
-                                                {isObject(field) && field.properties &&
-                                                    <>  ({field.properties.length})</>
+                                            <div
+                                                className={
+                                                    'object-attribute-count'
                                                 }
+                                            >
+                                                {isObject(field) &&
+                                                    field.properties && (
+                                                        <>
+                                                            {' '}
+                                                            (
+                                                            {
+                                                                field.properties
+                                                                    .length
+                                                            }
+                                                            )
+                                                        </>
+                                                    )}
                                             </div>
                                         </div>
-                                        <div onClick={()=>{this.removeEntry(properties,field)}} className={'remover'}>
-                                            <SVGDeleteHexagon/>
+                                        <div
+                                            onClick={() => {
+                                                this.removeEntry(
+                                                    properties,
+                                                    field
+                                                );
+                                            }}
+                                            className={'remover'}
+                                        >
+                                            <SVGDeleteHexagon />
                                         </div>
-
                                     </div>
                                 </SortableItem>
                                 <div className={addClassNames}>
-                                    {this.renderAddField(properties, depth,index)}
+                                    {this.renderAddField(
+                                        properties,
+                                        depth,
+                                        index
+                                    )}
                                 </div>
-                                {objectType && this.isOpen(key) &&
-                                    this.renderProperties(field.properties?field.properties:[], depth + 1, key)
-                                }
-                                {(this.isOpen(key) && isFirstAttribute)
-                                    && this.renderAddFirst(properties, depth + 1, index)}
+                                {objectType &&
+                                    this.isOpen(key) &&
+                                    this.renderProperties(
+                                        field.properties
+                                            ? field.properties
+                                            : [],
+                                        depth + 1,
+                                        key
+                                    )}
+                                {this.isOpen(key) &&
+                                    isFirstAttribute &&
+                                    this.renderAddFirst(
+                                        properties,
+                                        depth + 1,
+                                        index
+                                    )}
                             </div>
-                        )
-                    })
-                    }
+                        );
+                    })}
                 </div>
             </SortableContainer>
-
         );
     }
 
     render() {
-
         return (
             <div className={'entity-form'}>
-                <FormContainer onSubmit={()=>{this.handleChange()}}>
-                    <div className={"entity-name-field"}>
+                <FormContainer
+                    onSubmit={() => {
+                        this.handleChange();
+                    }}
+                >
+                    <div className={'entity-name-field'}>
                         <FormInput
-                            name={"name"}
+                            name={'name'}
                             value={this.props.entity.name}
-                            label={"Entity name"}
+                            label={'Entity name'}
                             validation={['required']}
-                            onChange={(inputName, userInput)=>{this.props.entity.name = userInput.trim(); this.handleChange(); }} />
+                            onChange={(inputName, userInput) => {
+                                this.props.entity.name = userInput.trim();
+                                this.handleChange();
+                            }}
+                        />
                     </div>
 
                     <div className={'field-row header'}>
-                        <div className={'mover'}/>
-                        <div className={'opener'}/>
-                        <div className={'field-name'}>
-                            Field
-                        </div>
-                        <div className={'field-type'}>
-                            Type
-                        </div>
-                        <div className={'field-sub-elements'}>
-                            List
-                        </div>
-                        <div className={'remover'}/>
+                        <div className={'mover'} />
+                        <div className={'opener'} />
+                        <div className={'field-name'}>Field</div>
+                        <div className={'field-type'}>Type</div>
+                        <div className={'field-sub-elements'}>List</div>
+                        <div className={'remover'} />
                     </div>
-                    {
-                        this.props.entity.properties.length > 0 ?
-                            this.renderProperties(this.props.entity.properties, 0)
-                            :
-                            this.renderAddFirst(this.props.entity.properties, 0, 0)}
-
+                    {this.props.entity.properties.length > 0
+                        ? this.renderProperties(this.props.entity.properties, 0)
+                        : this.renderAddFirst(
+                              this.props.entity.properties,
+                              0,
+                              0
+                          )}
                 </FormContainer>
             </div>
         );

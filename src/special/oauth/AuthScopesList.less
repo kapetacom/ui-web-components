@@ -1,72 +1,73 @@
-@import "../../../styles/values";
-@import "../../../styles/functions";
+@import '../../../styles/values';
+@import '../../../styles/functions';
 
 ul.auth-scopes-list {
-  padding: 0;
-  margin-top: 35px;
-
-  li {
-    .container();
-    list-style: none;
     padding: 0;
-    height: 55px;
-    white-space: nowrap;
+    margin-top: 35px;
 
-    .icon {
-      float: left;
-      margin-right: 14px;
-      color: @gray-dark;
-    }
-
-    .text {
-      display: block;
-      float: left;
-      width: 330px;
-    }
-
-    .name, .id {
-      display: block;
-      line-height: 16px;
-      vertical-align: top;
-    }
-
-    .name {
-      font-weight: 300;
-      font-size: 12px;
-    }
-
-    .id {
-      display: block;
-      font-size: 10px;
-      color: @gray-dark;
-    }
-
-    &.enabled {
-      .icon {
-        color: @cyan-dark;
-      }
-
-      &.enabled-by-scope {
-        .icon {
-          color: @gray-dark;
-        }
-      }
-    }
-  }
-
-  &.editable {
     li {
-      cursor: pointer;
-      &:hover {
-        background-color: @gray-xlight;
-      }
+        .container();
+        list-style: none;
+        padding: 0;
+        height: 55px;
+        white-space: nowrap;
 
-      &.enabled-by-scope {
-        cursor: default;
-        &:hover {
-          background-color: inherit;
+        .icon {
+            float: left;
+            margin-right: 14px;
+            color: @gray-dark;
         }
-      }
+
+        .text {
+            display: block;
+            float: left;
+            width: 330px;
+        }
+
+        .name,
+        .id {
+            display: block;
+            line-height: 16px;
+            vertical-align: top;
+        }
+
+        .name {
+            font-weight: 300;
+            font-size: 12px;
+        }
+
+        .id {
+            display: block;
+            font-size: 10px;
+            color: @gray-dark;
+        }
+
+        &.enabled {
+            .icon {
+                color: @cyan-dark;
+            }
+
+            &.enabled-by-scope {
+                .icon {
+                    color: @gray-dark;
+                }
+            }
+        }
     }
-  }
+
+    &.editable {
+        li {
+            cursor: pointer;
+            &:hover {
+                background-color: @gray-xlight;
+            }
+
+            &.enabled-by-scope {
+                cursor: default;
+                &:hover {
+                    background-color: inherit;
+                }
+            }
+        }
+    }
 }

@@ -1,6 +1,5 @@
-
 export interface AuthScope {
-    id: string
-    name: string
-    enabled?:boolean
+    id: string;
+    name: string;
+    enabled?: boolean;
 }

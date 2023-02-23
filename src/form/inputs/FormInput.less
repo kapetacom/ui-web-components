@@ -1,8 +1,7 @@
-@import "../../../styles/values";
-@import "../../../styles/functions";
+@import '../../../styles/values';
+@import '../../../styles/functions';
 
 .form-input {
-
     input {
         width: 100%;
         height: 30px;
@@ -14,15 +13,16 @@
         box-sizing: border-box;
         .text-overflow();
         background-color: transparent;
-        font-size:inherit;
+        font-size: inherit;
         color: @gray-xdark;
         z-index: 1;
-        margin:0;
+        margin: 0;
 
-        &[type=checkbox],&[type=radio] {
+        &[type='checkbox'],
+        &[type='radio'] {
             margin: 1px 15px;
             vertical-align: middle;
-            width: ~"calc(100% - 30px)";
+            width: ~'calc(100% - 30px)';
         }
     }
 
@@ -33,11 +33,11 @@
     }
 
     /* Firefox to remove the arrows on input[type=number]*/
-    input[type=number] {
-        -moz-appearance:textfield;
+    input[type='number'] {
+        -moz-appearance: textfield;
     }
 
-    .upper-arrow{
+    .upper-arrow {
         top: 3px;
     }
 
@@ -45,8 +45,8 @@
         top: 15px;
     }
 
-    .arrows{
-        position:absolute;
+    .arrows {
+        position: absolute;
         right: 7px;
 
         path {
@@ -59,15 +59,15 @@
 
         &:hover {
             rect {
-                fill: #A6DCE1;
+                fill: #a6dce1;
             }
         }
         &:active {
             rect {
-                fill: #A6DCE1;
+                fill: #a6dce1;
             }
             path {
-                fill: #009AA9;
+                fill: #009aa9;
             }
         }
     }
@@ -85,7 +85,6 @@
 }
 
 .form-element-container {
-
     &.type-number {
         .label {
             left: 35px;

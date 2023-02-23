@@ -1,6 +1,6 @@
-import {Dimensions, Point, Size} from "@blockware/ui-web-types";
-import { DOMElement, toDOMElement} from "@blockware/ui-web-utils";
-import {DraggableContext} from "./DraggableContext";
+import { Dimensions, Point, Size } from '@blockware/ui-web-types';
+import { DOMElement, toDOMElement } from '@blockware/ui-web-utils';
+import { DraggableContext } from './DraggableContext';
 
 import './Draggable.less';
 
@@ -10,59 +10,62 @@ export const DRAGGING_HANDLE_CSS = 'dragging-handle';
 export const DRAGGING_SOURCE_CSS = 'dragging-source';
 
 interface DraggableOptions<T> {
-    elm:DOMElement
-    dragCopy?:boolean
-    horizontal?:boolean
-    vertical?:boolean
-    disabled?:boolean
-    handle?:string
-    target?:DOMElement
-    container?:Element
-    context?: DraggableContext<T>
-    zoom?:number
-    overflowX?:boolean
-    overflowY?:boolean
-    onDragStart?: () => void
-    onDragMove?: (dimensions: Dimensions) => boolean
-    onDragEnd?: (dimensions: Dimensions) => boolean
+    elm: DOMElement;
+    dragCopy?: boolean;
+    horizontal?: boolean;
+    vertical?: boolean;
+    disabled?: boolean;
+    handle?: string;
+    target?: DOMElement;
+    container?: Element;
+    context?: DraggableContext<T>;
+    zoom?: number;
+    overflowX?: boolean;
+    overflowY?: boolean;
+    onDragStart?: () => void;
+    onDragMove?: (dimensions: Dimensions) => boolean;
+    onDragEnd?: (dimensions: Dimensions) => boolean;
 }
 
 export class Draggable<T> {
-
     private options: DraggableOptions<T>;
 
-    private elm:DOMElement;
+    private elm: DOMElement;
 
-    private handle:DOMElement;
-    
-    private target:DOMElement;
+    private handle: DOMElement;
 
-    private draggingTarget:DOMElement|null = null;
+    private target: DOMElement;
 
-    private dragging:boolean = false;
+    private draggingTarget: DOMElement | null = null;
 
-    private startPosition:Point = {x:0,y:0};
+    private dragging: boolean = false;
 
-    private lastMouseMoveEvent:MouseEvent = null;
+    private startPosition: Point = { x: 0, y: 0 };
 
-    private lastScrollPoint:Point = null;
+    private lastMouseMoveEvent: MouseEvent = null;
 
-    private initialSize:Size = {width:-1, height:-1};
+    private lastScrollPoint: Point = null;
 
-    private mouseElementOffset:Point = {x:0,y:0};
-    private containerDimensions:Dimensions = {top:0,left:0,width:0,height:0};
+    private initialSize: Size = { width: -1, height: -1 };
 
-    private svgContainer?:boolean;
+    private mouseElementOffset: Point = { x: 0, y: 0 };
+    private containerDimensions: Dimensions = {
+        top: 0,
+        left: 0,
+        width: 0,
+        height: 0,
+    };
 
-    private enabledAxis:{
-        horizontal:boolean,
-        vertical:boolean
+    private svgContainer?: boolean;
+
+    private enabledAxis: {
+        horizontal: boolean;
+        vertical: boolean;
     };
 
     private item: T;
 
-
-    constructor(item:T, options:DraggableOptions<T>) {
+    constructor(item: T, options: DraggableOptions<T>) {
         this.item = item;
         this.options = options;
 
@@ -80,23 +83,24 @@ export class Draggable<T> {
 
         if (options.handle) {
             const handle = this.elm.querySelector(options.handle);
-                if (handle) {
-                    this.handle = toDOMElement(handle);
-                }
+            if (handle) {
+                this.handle = toDOMElement(handle);
+            }
         }
 
         this.enabledAxis = {
-            horizontal: options.horizontal === undefined ? true : options.horizontal,
-            vertical: options.vertical === undefined ? true : options.vertical
+            horizontal:
+                options.horizontal === undefined ? true : options.horizontal,
+            vertical: options.vertical === undefined ? true : options.vertical,
         };
     }
 
     public start() {
-        this.handle.addEventListener('mousedown', this.handleMouseDown)
+        this.handle.addEventListener('mousedown', this.handleMouseDown);
     }
-    
+
     public stop() {
-        this.handle.removeEventListener('mousedown', this.handleMouseDown)
+        this.handle.removeEventListener('mousedown', this.handleMouseDown);
     }
 
     private getContainerElement() {
@@ -112,8 +116,7 @@ export class Draggable<T> {
     }
 
     private getDocumentBody() {
-        if (!this.elm ||
-            !this.elm.ownerDocument) {
+        if (!this.elm || !this.elm.ownerDocument) {
             return null;
         }
 
@@ -121,15 +124,16 @@ export class Draggable<T> {
     }
 
     private getWindow() {
-        if (!this.elm ||
+        if (
+            !this.elm ||
             !this.elm.ownerDocument ||
-            !this.elm.ownerDocument.defaultView) {
+            !this.elm.ownerDocument.defaultView
+        ) {
             return null;
         }
 
         return this.elm.ownerDocument.defaultView;
     }
-
 
     private isSVG() {
         if (this.svgContainer !== undefined) {
@@ -138,73 +142,70 @@ export class Draggable<T> {
 
         const container = this.getContainerElement();
         if (!container) {
-            return this.svgContainer = false;
+            return (this.svgContainer = false);
         }
 
-        return this.svgContainer = container.matches('svg');
+        return (this.svgContainer = container.matches('svg'));
     }
 
     private calculateDimensions(mousePosition: Point) {
-
         return {
             left: mousePosition.x - this.mouseElementOffset.x,
             top: mousePosition.y - this.mouseElementOffset.y,
             width: this.initialSize.width,
-            height: this.initialSize.height
+            height: this.initialSize.height,
         };
     }
 
     private getZoomLevel() {
-        if(this.options.zoom) {
+        if (this.options.zoom) {
             return this.options.zoom;
         }
         return 1;
     }
-
 
     private updateContainerDimensions() {
         const container = this.getContainerElement();
         if (!container) {
             return;
         }
-        
+
         const containerRect = container.getBoundingClientRect();
 
         const dimensions = {
             left: containerRect.left,
             top: containerRect.top,
-            width: containerRect.width,//trim decimal points and parse to number
-            height: containerRect.height
+            width: containerRect.width, //trim decimal points and parse to number
+            height: containerRect.height,
         };
 
         this.containerDimensions = dimensions;
-
     }
 
     private getGlobalScroll() {
         return {
             y: document.documentElement.scrollTop,
-            x: document.documentElement.scrollLeft
+            x: document.documentElement.scrollLeft,
         };
     }
 
     private getGlobalScrollDelta() {
         const globalScroll = this.getGlobalScroll();
         return {
-            y: (globalScroll.y - this.lastScrollPoint.y),
-            x: (globalScroll.x - this.lastScrollPoint.x)
+            y: globalScroll.y - this.lastScrollPoint.y,
+            x: globalScroll.x - this.lastScrollPoint.x,
         };
     }
-    
+
     /**
      * Gets the mouse position translated down to the local coordinate system of the element
      * @param evt
      */
-    private getTranslatedMousePosition(evt:MouseEvent):Point {   
-        this.updateContainerDimensions();     
+    private getTranslatedMousePosition(evt: MouseEvent): Point {
+        this.updateContainerDimensions();
         const container = this.getContainerElement();
         const globalScroll = this.getGlobalScroll();
-        let scrolling = {left:0,top:0};
+        let scrolling = { left: 0, top: 0 };
 
         if (container) {
             scrolling.top = container.scrollTop;
@@ -234,7 +235,7 @@ export class Draggable<T> {
 
         return {
             x: Math.round(x),
-            y: Math.round(y)
+            y: Math.round(y),
         };
     }
 
@@ -249,11 +250,7 @@ export class Draggable<T> {
         const container = this.getContainerElement();
         const body = this.getDocumentBody();
         const window = this.getWindow();
-        if (!container ||
-            !this.elm ||
-            !body ||
-            !window ||
-            this.dragging) {
+        if (!container || !this.elm || !body || !window || this.dragging) {
             return;
         }
 
@@ -261,7 +258,7 @@ export class Draggable<T> {
 
         this.lastScrollPoint = this.getGlobalScroll();
 
-        this.startPosition = {... mousePosition};
+        this.startPosition = { ...mousePosition };
 
         container.addEventListener('mousemove', this.handleMouseMove);
         window.addEventListener('mousemove', this.handleMouseMove);
@@ -273,34 +270,39 @@ export class Draggable<T> {
         const globalScroll = this.getGlobalScroll();
 
         this.mouseElementOffset = {
-            x: ((evt.pageX - globalScroll.x - elmRect.left)/this.getZoomLevel()),
-            y: ((evt.pageY - globalScroll.y - elmRect.top)/this.getZoomLevel())
+            x:
+                (evt.pageX - globalScroll.x - elmRect.left) /
+                this.getZoomLevel(),
+            y: (evt.pageY - globalScroll.y - elmRect.top) / this.getZoomLevel(),
         };
 
         this.initialSize = {
             width: elmRect.width,
-            height: elmRect.height
+            height: elmRect.height,
         };
     };
 
     private handleScroll = () => {
-
         const container = this.getContainerElement();
-        if (!this.startPosition ||
+        if (
+            !this.startPosition ||
             !this.elm ||
             !this.lastMouseMoveEvent ||
             !this.draggingTarget ||
-            !container) {
+            !container
+        ) {
             return;
         }
         const scrollDelta = this.getGlobalScrollDelta();
-        const mousePosition = this.getTranslatedMousePosition(this.lastMouseMoveEvent);
+        const mousePosition = this.getTranslatedMousePosition(
+            this.lastMouseMoveEvent
+        );
 
-        mousePosition.y += Math.round(scrollDelta.y/this.getZoomLevel());
-        mousePosition.x += Math.round(scrollDelta.x/this.getZoomLevel());
+        mousePosition.y += Math.round(scrollDelta.y / this.getZoomLevel());
+        mousePosition.x += Math.round(scrollDelta.x / this.getZoomLevel());
 
         this.updateFromMousePosition(mousePosition);
-    }
+    };
 
     private handleMouseMove = (evt: any) => {
         const container = this.getContainerElement();
@@ -308,9 +310,7 @@ export class Draggable<T> {
             return;
         }
         evt['$draggable_handled'] = true;
-        if (!this.startPosition ||
-            !this.elm ||
-            !container) {
+        if (!this.startPosition || !this.elm || !container) {
             return;
         }
 
@@ -319,8 +319,12 @@ export class Draggable<T> {
 
         const mousePosition = this.getTranslatedMousePosition(evt);
 
-        if (Math.abs(this.startPosition.x - mousePosition.x) < MIN_MOVE_BEFORE_DRAG &&
-            Math.abs(this.startPosition.y - mousePosition.y) < MIN_MOVE_BEFORE_DRAG) {
+        if (
+            Math.abs(this.startPosition.x - mousePosition.x) <
+                MIN_MOVE_BEFORE_DRAG &&
+            Math.abs(this.startPosition.y - mousePosition.y) <
+                MIN_MOVE_BEFORE_DRAG
+        ) {
             return;
         }
 
@@ -338,8 +342,10 @@ export class Draggable<T> {
         if (!this.draggingTarget) {
             if (this.options.dragCopy) {
                 const clonedNode = this.target.cloneNode(true);
-                if (!(clonedNode instanceof HTMLElement) && 
-                    !(clonedNode instanceof SVGElement)) {
+                if (
+                    !(clonedNode instanceof HTMLElement) &&
+                    !(clonedNode instanceof SVGElement)
+                ) {
                     return;
                 }
 
@@ -357,7 +363,7 @@ export class Draggable<T> {
         this.updateFromMousePosition(mousePosition);
     };
 
-    private updateFromMousePosition(mousePosition:Point) {
+    private updateFromMousePosition(mousePosition: Point) {
         if (!this.draggingTarget) {
             return;
         }
@@ -392,8 +398,7 @@ export class Draggable<T> {
         window.removeEventListener('mouseup', this.handleMouseUp);
         window.removeEventListener('scroll', this.handleScroll);
 
-        if (!this.dragging ||
-            !this.draggingTarget) {
+        if (!this.dragging || !this.draggingTarget) {
             return;
         }
 
@@ -412,8 +417,7 @@ export class Draggable<T> {
         this.lastMouseMoveEvent = null;
         this.containerDimensions = null;
 
-        if (!(this.options.onDragEnd &&
-                this.options.onDragEnd(dimensions))) {
+        if (!(this.options.onDragEnd && this.options.onDragEnd(dimensions))) {
             this.updateDraggingTarget(dimensions);
         }
 
@@ -422,13 +426,10 @@ export class Draggable<T> {
         }
 
         this.draggingTarget = null;
-
     };
 
-
-    private updateDraggingTarget(dimensions:Dimensions) {
-        if (!this.draggingTarget ||
-            !this.elm) {
+    private updateDraggingTarget(dimensions: Dimensions) {
+        if (!this.draggingTarget || !this.elm) {
             return;
         }
 
@@ -448,29 +449,43 @@ export class Draggable<T> {
             const bottom = top + (dimensions.height || 0);
 
             if (!this.options.overflowX) {
-                const containerRight = this.containerDimensions.left + this.containerDimensions.width;
+                const containerRight =
+                    this.containerDimensions.left +
+                    this.containerDimensions.width;
                 if (right > containerRight) {
-                    left -= (right - containerRight);
+                    left -= right - containerRight;
                 }
             }
 
             if (!this.options.overflowY) {
-                const containerBottom = this.containerDimensions.top + this.containerDimensions.height || 0;
+                const containerBottom =
+                    this.containerDimensions.top +
+                        this.containerDimensions.height || 0;
                 if (bottom > containerBottom) {
-                    top -= (bottom - containerBottom);
+                    top -= bottom - containerBottom;
                 }
             }
 
             if (this.isSVG()) {
-
                 if (!this.elm.matches('svg')) {
-                    if (this.enabledAxis.vertical &&
-                        this.enabledAxis.horizontal) {
-                        this.draggingTarget.setAttribute('transform', `translate(${left},${top})`);
+                    if (
+                        this.enabledAxis.vertical &&
+                        this.enabledAxis.horizontal
+                    ) {
+                        this.draggingTarget.setAttribute(
+                            'transform',
+                            `translate(${left},${top})`
+                        );
                     } else if (this.enabledAxis.vertical) {
-                        this.draggingTarget.setAttribute('transform', `translate(0,${top})`);
+                        this.draggingTarget.setAttribute(
+                            'transform',
+                            `translate(0,${top})`
+                        );
                     } else if (this.enabledAxis.horizontal) {
-                        this.draggingTarget.setAttribute('transform', `translate(${left},0)`);
+                        this.draggingTarget.setAttribute(
+                            'transform',
+                            `translate(${left},0)`
+                        );
                     }
                 } else {
                     if (this.enabledAxis.vertical) {
@@ -482,8 +497,14 @@ export class Draggable<T> {
                     }
                 }
 
-                this.draggingTarget.setAttribute('width', dimensions.width + 'px');
-                this.draggingTarget.setAttribute('height', dimensions.height + 'px');
+                this.draggingTarget.setAttribute(
+                    'width',
+                    dimensions.width + 'px'
+                );
+                this.draggingTarget.setAttribute(
+                    'height',
+                    dimensions.height + 'px'
+                );
             } else {
                 if (this.enabledAxis.vertical) {
                     this.draggingTarget.style.top = top + 'px';
@@ -496,7 +517,6 @@ export class Draggable<T> {
                 this.draggingTarget.style.width = dimensions.width + 'px';
                 this.draggingTarget.style.height = dimensions.height + 'px';
             }
-
         } else {
             this.draggingTarget.classList.remove(DRAGGING_HANDLE_CSS);
             this.elm.classList.remove(DRAGGING_SOURCE_CSS);

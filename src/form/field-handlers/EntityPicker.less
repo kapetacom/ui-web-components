@@ -1,5 +1,5 @@
-@import "../../../styles/values";
-@import "../../../styles/functions";
+@import '../../../styles/values';
+@import '../../../styles/functions';
 
 .entity-picker {
     display: flex;
@@ -7,26 +7,26 @@
     background-color: inherit;
 
     select {
-        margin:5px;
-        padding:5px;
-        border:1px solid @gray;
-        option{
+        margin: 5px;
+        padding: 5px;
+        border: 1px solid @gray;
+        option {
             height: 20px;
         }
     }
 
-    .entity-attribute-types{
-        option{
+    .entity-attribute-types {
+        option {
             &:after {
                 position: absolute;
-                content: "";
+                content: '';
                 top: 14px;
                 right: 10px;
                 width: 0;
                 height: 0;
                 border: 6px solid transparent;
                 border-color: #fff transparent transparent transparent;
-              }
+            }
             background-color: @turquoise-light;
             height: 20px;
         }
@@ -35,6 +35,4 @@
     .checkbox-container {
         padding: 20px 10px;
     }
-
-
 }

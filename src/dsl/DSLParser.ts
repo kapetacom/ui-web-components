@@ -1,4 +1,4 @@
-import Peggy, {ParserTracer} from 'peggy';
+import Peggy, { ParserTracer } from 'peggy';
 
 // @ts-ignore
 import parser from './grammars/grammar_dsl.pegjs';
@@ -7,29 +7,27 @@ import {
     DSLLanguageOptions,
     DSLResult,
     METHOD_ANNOTATIONS,
-    PARAMETER_ANNOTATIONS
-} from "./types";
+    PARAMETER_ANNOTATIONS,
+} from './types';
 
 interface SoftError {
-    type: string
+    type: string;
     endColumn: number;
     endLineNumber: number;
     startColumn: number;
     startLineNumber: number;
-    message: string,
+    message: string;
 }
 
 export interface DSLParserOptions extends DSLLanguageOptions {
     startRule?: string;
     tracer?: ParserTracer;
     softErrorHandler?: (error: SoftError) => void;
-    validator?: (object:any) => void
+    validator?: (object: any) => void;
 }
 
-
 export const DSLParser = {
-
-    parse(code:string, options?:DSLParserOptions):DSLResult {
+    parse(code: string, options?: DSLParserOptions): DSLResult {
         if (!options) {
             options = {};
         }
@@ -58,11 +56,11 @@ export const DSLParser = {
 
         options.validTypes.push(...BUILT_IN_TYPES);
 
-        const entities = parser.parse(code, {...options});
+        const entities = parser.parse(code, { ...options });
 
         return {
             code,
-            entities
+            entities,
         };
-    }
+    },
 };

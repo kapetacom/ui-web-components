@@ -1,22 +1,20 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 import './DataGrid.less';
-import {DataGrid, DataGridProps} from "./DataGrid";
-
+import { DataGrid, DataGridProps } from './DataGrid';
 
 interface Props<T> extends DataGridProps<T> {
-    onDataRowSelected?: (data: T) => any
-    onDataRowDeselected?: () => any
+    onDataRowSelected?: (data: T) => any;
+    onDataRowDeselected?: () => any;
 }
 
 export function DataList<T = any>(props: Props<T>) {
-
     const defaultProps: Props<T> = {};
 
-    let [selectedRow, setSelectedRow] = useState<number>(-1)
+    let [selectedRow, setSelectedRow] = useState<number>(-1);
 
     const innerProps: Props<T> = {
-        rowSelection: "single",
+        rowSelection: 'single',
         suppressRowClickSelection: false,
         enableCellTextSelection: true,
         suppressCellFocus: true,
@@ -28,9 +26,11 @@ export function DataList<T = any>(props: Props<T>) {
             }
         },
         onRowSelected(evt) {
-            if (!evt.node.isSelected() ||
+            if (
+                !evt.node.isSelected() ||
                 !evt.data ||
-                !props.onDataRowSelected) {
+                !props.onDataRowSelected
+            ) {
                 if (evt.node.__objectId === selectedRow) {
                     setSelectedRow(-1);
                 }
@@ -44,11 +44,8 @@ export function DataList<T = any>(props: Props<T>) {
             props.onDataRowSelected(evt.data);
         },
         ...defaultProps,
-        ...props
-    }
+        ...props,
+    };
 
-    return (
-        <DataGrid {...innerProps} />
-    )
-
+    return <DataGrid {...innerProps} />;
 }

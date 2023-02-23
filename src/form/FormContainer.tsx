@@ -1,36 +1,35 @@
-import React from "react";
+import React from 'react';
 import _ from 'lodash';
-import "./FormContainer.less";
+import './FormContainer.less';
 
-import {FormContext, FormContextType, ResetListener} from './FormContext';
-import {toClass} from "@blockware/ui-web-utils";
+import { FormContext, FormContextType, ResetListener } from './FormContext';
+import { toClass } from '@blockware/ui-web-utils';
 
 export type FormChangeHandler = (formState: FormStateChangeEvent) => void;
 
 export interface FormStateChangeEvent {
-    type: string
-    value: any
+    type: string;
+    value: any;
 }
 
 export type FormData = { [key: string]: any };
 
 interface Props {
-    onSubmit?: () => void
-    onReset?: () => void
-    initialValue?: FormData,
-    onSubmitData?: (data: FormData) => void
-    onChange?: (data: FormData) => void
-    children: any
+    onSubmit?: () => void;
+    onReset?: () => void;
+    initialValue?: FormData;
+    onSubmitData?: (data: FormData) => void;
+    onChange?: (data: FormData) => void;
+    children: any;
 }
 
 interface State {
-    readyStates: { [key: string]: boolean }
-    valid: boolean
-    processing: boolean
+    readyStates: { [key: string]: boolean };
+    valid: boolean;
+    processing: boolean;
 }
 
 export class FormContainer extends React.Component<Props, State> {
-
     static contextType = FormContext;
     context!: React.ContextType<FormContextType>;
 
@@ -46,40 +45,39 @@ export class FormContainer extends React.Component<Props, State> {
 
     private formData: FormData = {};
 
-
     constructor(props: any) {
         super(props);
 
-        this.formData = props.initialValue ? {...props.initialValue} : {};
+        this.formData = props.initialValue ? { ...props.initialValue } : {};
 
         this.state = {
             readyStates: {},
             processing: false,
-            valid: true
+            valid: true,
         };
 
         this.submitClickHandler = {
             handleEvent: (evt: MouseEvent) => {
                 this.handleSubmitClick(evt);
-            }
+            },
         };
 
         this.resetClickHandler = {
             handleEvent: (evt: MouseEvent) => {
                 this.handleResetClick(evt);
-            }
+            },
         };
     }
 
     public getValue(name: string): any {
         if (_.has(this.formData, name)) {
-            return _.get(this.formData,name);
+            return _.get(this.formData, name);
         }
         return '';
     }
 
     private onValueChanged(name: string, value: any) {
-        _.set(this.formData,name,value);
+        _.set(this.formData, name, value);
         this.emitChange();
     }
 
@@ -97,8 +95,10 @@ export class FormContainer extends React.Component<Props, State> {
         }
 
         for (let propertyId in readyStates) {
-            if (readyStates.hasOwnProperty(propertyId) &&
-                readyStates[propertyId] === false) {
+            if (
+                readyStates.hasOwnProperty(propertyId) &&
+                readyStates[propertyId] === false
+            ) {
                 return false;
             }
         }
@@ -109,7 +109,7 @@ export class FormContainer extends React.Component<Props, State> {
     private emitFormStateChange(type: string, value: any) {
         const evt: FormStateChangeEvent = {
             type,
-            value
+            value,
         };
 
         this.changeHandlers.forEach((handler) => {
@@ -128,7 +128,10 @@ export class FormContainer extends React.Component<Props, State> {
         };
     }
 
-    private addResetListener(name: string, callback: ResetListener): () => void {
+    private addResetListener(
+        name: string,
+        callback: ResetListener
+    ): () => void {
         if (!this.resetListeners[name]) {
             this.resetListeners[name] = [];
         }
@@ -143,39 +146,40 @@ export class FormContainer extends React.Component<Props, State> {
             if (ix > -1) {
                 this.resetListeners[name].splice(ix, 1);
             }
-        }
+        };
     }
 
     private renderFormContainer() {
         const className = toClass({
             'form-container': true,
-            'valid':this.state.valid,
-            'invalid':!this.state.valid,
-            'processing':this.state.processing
+            valid: this.state.valid,
+            invalid: !this.state.valid,
+            processing: this.state.processing,
         });
 
         return (
-            <div className={className}
-                 form-container="true"
-                 ref={(container) => this.container = container}
-                 onKeyPress={(evt) => this.handleKeyPress(evt)}>
+            <div
+                className={className}
+                form-container="true"
+                ref={(container) => (this.container = container)}
+                onKeyPress={(evt) => this.handleKeyPress(evt)}
+            >
                 {this.props.children}
             </div>
-        )
+        );
     }
 
     private async processingWhile(callback) {
-        this.setState({processing: true});
+        this.setState({ processing: true });
         try {
             await callback();
         } finally {
-            this.setState({processing: false});
+            this.setState({ processing: false });
         }
     }
 
     private shouldSubmitForm() {
-        if (!this.props.onSubmit &&
-            !this.props.onSubmitData) {
+        if (!this.props.onSubmit && !this.props.onSubmitData) {
             return true;
         }
 
@@ -183,7 +187,6 @@ export class FormContainer extends React.Component<Props, State> {
     }
 
     public async submit() {
-
         if (!this.state.valid) {
             this.emitFormStateChange('submit', false);
             return;
@@ -193,7 +196,7 @@ export class FormContainer extends React.Component<Props, State> {
             this.emitFormStateChange('submit', true);
             const formElm = this.container.closest('form');
             if (formElm) {
-                formElm.submit()
+                formElm.submit();
             }
             return;
         }
@@ -205,12 +208,11 @@ export class FormContainer extends React.Component<Props, State> {
                 }
 
                 if (this.props.onSubmitData) {
-                    await this.props.onSubmitData({...this.formData});
+                    await this.props.onSubmitData({ ...this.formData });
                 }
 
                 this.emitFormStateChange('submit', true);
-            })
-
+            });
         } catch (e) {
             this.emitFormStateChange('submit_failed', e);
         }
@@ -218,19 +220,19 @@ export class FormContainer extends React.Component<Props, State> {
 
     private emitChange() {
         if (this.props.onChange) {
-            this.props.onChange({...this.formData});
+            this.props.onChange({ ...this.formData });
         }
     }
 
     public reset() {
         const originalData = this.props.initialValue || {};
         Object.entries(this.resetListeners).forEach(([name, listeners]) => {
-            listeners.forEach(listener => {
+            listeners.forEach((listener) => {
                 listener(originalData[name] || '');
             });
-        })
+        });
 
-        this.formData = {...originalData};
+        this.formData = { ...originalData };
         this.emitChange();
 
         if (this.props.onReset) {
@@ -241,8 +243,7 @@ export class FormContainer extends React.Component<Props, State> {
     }
 
     private handleResetClick(evt: MouseEvent): void {
-        if (this.props.onSubmit ||
-            this.props.onSubmitData) {
+        if (this.props.onSubmit || this.props.onSubmitData) {
             //Otherwise let the native form handle this
             evt.stopPropagation();
             evt.preventDefault();
@@ -252,9 +253,11 @@ export class FormContainer extends React.Component<Props, State> {
     }
 
     private async handleSubmitClick(evt: MouseEvent): Promise<void> {
-        if (this.props.onSubmit ||
+        if (
+            this.props.onSubmit ||
             this.props.onSubmitData ||
-            !this.state.valid) {
+            !this.state.valid
+        ) {
             //Otherwise let the native form handle this
             evt.stopPropagation();
             evt.preventDefault();
@@ -267,7 +270,9 @@ export class FormContainer extends React.Component<Props, State> {
         await this.submit();
     }
 
-    private async handleKeyPress(evt: React.KeyboardEvent<HTMLElement>): Promise<void> {
+    private async handleKeyPress(
+        evt: React.KeyboardEvent<HTMLElement>
+    ): Promise<void> {
         evt.stopPropagation();
 
         if (evt.which !== 13) {
@@ -283,9 +288,7 @@ export class FormContainer extends React.Component<Props, State> {
             return;
         }
 
-        if (evt.target.matches('textarea') &&
-            !evt.metaKey &&
-            !evt.ctrlKey) {
+        if (evt.target.matches('textarea') && !evt.metaKey && !evt.ctrlKey) {
             //Only submit if meta or ctrl is pressed when pressing enter
             return;
         }
@@ -302,16 +305,20 @@ export class FormContainer extends React.Component<Props, State> {
             'button:not([type=button]):not([form-bound])',
             'input[type=submit]:not([form-bound])',
             'input[type=image]:not([form-bound])',
-            '.blockware-button.submit:not([form-bound])'
+            '.blockware-button.submit:not([form-bound])',
         ];
 
-        const buttons = this.container.querySelectorAll(buttonSelector.join(','));
+        const buttons = this.container.querySelectorAll(
+            buttonSelector.join(',')
+        );
 
         if (buttons.length < 1) {
             return;
         }
 
-        const subContainers = this.container.querySelectorAll('div.form-container[form-container]');
+        const subContainers = this.container.querySelectorAll(
+            'div.form-container[form-container]'
+        );
 
         buttons.forEach((btn) => {
             for (let i = 0; i < subContainers.length; i++) {
@@ -320,15 +327,18 @@ export class FormContainer extends React.Component<Props, State> {
                 }
             }
 
-            const isReset = btn.matches('[type=reset],.blockware-button.reset')
+            const isReset = btn.matches('[type=reset],.blockware-button.reset');
 
             btn.setAttribute('form-bound', 'true');
-            btn.addEventListener('click', isReset ? this.resetClickHandler : this.submitClickHandler);
+            btn.addEventListener(
+                'click',
+                isReset ? this.resetClickHandler : this.submitClickHandler
+            );
         });
     }
 
     private hasParentContainer() {
-        return (this.context.container && this.context.container !== this);
+        return this.context.container && this.context.container !== this;
     }
 
     private focusFirstUnready() {
@@ -340,7 +350,8 @@ export class FormContainer extends React.Component<Props, State> {
             return;
         }
 
-        const firstUnready: HTMLInputElement | null = this.container.querySelector('.form-row.unready input[type=text]');
+        const firstUnready: HTMLInputElement | null =
+            this.container.querySelector('.form-row.unready input[type=text]');
         if (firstUnready) {
             firstUnready.focus();
         }
@@ -356,20 +367,26 @@ export class FormContainer extends React.Component<Props, State> {
     }
 
     render() {
-
         return (
             <>
-                <FormContext.Provider value={{
-                    valid: this.state.valid,
-                    processing: this.state.processing,
-                    container: this,
-                    onReadyStateChanged: (fieldName: string, ready: boolean) => this.onReadyStateChanged(fieldName, ready),
-                    onValueChanged: (name, value) => this.onValueChanged(name, value),
-                    onReset: (name: string, callback: (value) => void) => this.addResetListener(name, callback)
-                }}>
+                <FormContext.Provider
+                    value={{
+                        valid: this.state.valid,
+                        processing: this.state.processing,
+                        container: this,
+                        onReadyStateChanged: (
+                            fieldName: string,
+                            ready: boolean
+                        ) => this.onReadyStateChanged(fieldName, ready),
+                        onValueChanged: (name, value) =>
+                            this.onValueChanged(name, value),
+                        onReset: (name: string, callback: (value) => void) =>
+                            this.addResetListener(name, callback),
+                    }}
+                >
                     {this.renderFormContainer()}
                 </FormContext.Provider>
             </>
-        )
+        );
     }
 }

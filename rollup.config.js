@@ -1,31 +1,30 @@
-import resolve from "@rollup/plugin-node-resolve"
-import commonjs from "@rollup/plugin-commonjs"
-import typescript from "@rollup/plugin-typescript"
-import { terser } from "rollup-plugin-terser"
-import external from "rollup-plugin-peer-deps-external"
-import styles from "rollup-plugin-styles"
-import dts from "rollup-plugin-dts"
-import pegjs from "rollup-plugin-pegjs";
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import typescript from '@rollup/plugin-typescript';
+import { terser } from 'rollup-plugin-terser';
+import external from 'rollup-plugin-peer-deps-external';
+import styles from 'rollup-plugin-styles';
+import dts from 'rollup-plugin-dts';
+import pegjs from 'rollup-plugin-pegjs';
 
-
-const packageJson = require("./package.json")
+const packageJson = require('./package.json');
 
 export default [
     {
-        input: "src/index.ts",
+        input: 'src/index.ts',
         inlineDynamicImports: true,
         output: [
             {
                 file: packageJson.main,
-                format: "cjs",
+                format: 'cjs',
                 sourcemap: 'inline',
                 name: packageJson.name,
             },
             {
                 file: packageJson.module,
-                format: "esm",
+                format: 'esm',
                 sourcemap: 'inline',
-            }
+            },
         ],
         plugins: [
             //sourcemaps(),
@@ -34,16 +33,16 @@ export default [
             resolve(),
             commonjs(),
             typescript({
-                tsconfig: "./tsconfig.build.json"
+                tsconfig: './tsconfig.build.json',
             }),
             styles(),
             terser(),
         ],
     },
     {
-        input: "dist/esm/index.d.ts",
-        output: [{ file: "dist/index.d.ts", format: "esm" }],
+        input: 'dist/esm/index.d.ts',
+        output: [{ file: 'dist/index.d.ts', format: 'esm' }],
         external: [/\.(css|less)$/],
         plugins: [dts()],
-    }
-]
+    },
+];

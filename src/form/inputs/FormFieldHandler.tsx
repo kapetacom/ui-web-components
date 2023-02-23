@@ -1,31 +1,31 @@
-import React, {useContext, useEffect, useState} from "react";
-import {FormContext} from "../FormContext";
+import React, { useContext, useEffect, useState } from 'react';
+import { FormContext } from '../FormContext';
 
 export interface FieldProps {
-    name: string
-    value?:any
-    onChange: (name: string, value: any) => void
-    disabled?: boolean
+    name: string;
+    value?: any;
+    onChange: (name: string, value: any) => void;
+    disabled?: boolean;
 }
 
 interface Props {
-    name: string
-    component:(props:FieldProps) => JSX.Element
+    name: string;
+    component: (props: FieldProps) => JSX.Element;
 }
 
 export const FormFieldHandler = (props: Props) => {
-
     const formContext = useContext(FormContext);
-    const [fieldValue, setFieldValue] = useState(formContext.container.getValue(props.name));
+    const [fieldValue, setFieldValue] = useState(
+        formContext.container.getValue(props.name)
+    );
 
-
-    const fieldProps:FieldProps = {
+    const fieldProps: FieldProps = {
         name: props.name,
         value: fieldValue,
-        onChange:(name, value) => {
+        onChange: (name, value) => {
             formContext.onValueChanged(name, value);
             setFieldValue(value);
-        }
+        },
     };
 
     if (formContext.processing) {
@@ -33,13 +33,10 @@ export const FormFieldHandler = (props: Props) => {
     }
 
     useEffect(() => {
-        return formContext.onReset(props.name,(value) => {
+        return formContext.onReset(props.name, (value) => {
             setFieldValue(value);
-        })
-    }, [])
-
+        });
+    }, []);
 
     return props.component(fieldProps);
-
-
-}
+};

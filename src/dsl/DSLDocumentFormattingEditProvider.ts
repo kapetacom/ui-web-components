@@ -1,6 +1,6 @@
-import {languages, CancellationToken, editor} from "monaco-editor";
-import {DSLParser} from "./DSLParser";
-import {DSLWriter} from "./DSLWriter";
+import { languages, CancellationToken, editor } from 'monaco-editor';
+import { DSLParser } from './DSLParser';
+import { DSLWriter } from './DSLWriter';
 
 type DocumentFormattingEditProvider = languages.DocumentFormattingEditProvider;
 type FormattingOptions = languages.FormattingOptions;
@@ -8,19 +8,22 @@ type ITextModel = editor.ITextModel;
 type TextEdit = languages.TextEdit;
 type ProviderResult<T> = languages.ProviderResult<T>;
 
-export class DSLDocumentFormattingEditProvider implements DocumentFormattingEditProvider {
+export class DSLDocumentFormattingEditProvider
+    implements DocumentFormattingEditProvider
+{
     provideDocumentFormattingEdits(
         model: ITextModel,
         options: FormattingOptions,
-        token: CancellationToken): ProviderResult<TextEdit[]> {
-        let result,formattedCode;
+        token: CancellationToken
+    ): ProviderResult<TextEdit[]> {
+        let result, formattedCode;
 
         try {
             result = DSLParser.parse(model.getValue(), {
                 types: true,
                 rest: true,
                 methods: true,
-                ignoreSemantics: true
+                ignoreSemantics: true,
             });
             formattedCode = DSLWriter.write(result.entities);
         } catch (e) {
@@ -32,9 +35,8 @@ export class DSLDocumentFormattingEditProvider implements DocumentFormattingEdit
         return [
             {
                 range: model.getFullModelRange(),
-                text: formattedCode
+                text: formattedCode,
             },
         ];
     }
-
 }

@@ -1,25 +1,24 @@
-import React from "react";
-import DnDContext, {DnDContextType} from './DnDContext';
-import {asHTMLElement, DOMElement} from "@blockware/ui-web-utils";
-import {Draggable} from "./Draggable";
-import {Dimensions} from "@blockware/ui-web-types";
+import React from 'react';
+import DnDContext, { DnDContextType } from './DnDContext';
+import { asHTMLElement, DOMElement } from '@blockware/ui-web-utils';
+import { Draggable } from './Draggable';
+import { Dimensions } from '@blockware/ui-web-types';
 
 interface DnDDragProps {
-    children: any
-    type: string
-    value: any
-    horizontal?: boolean
-    vertical?: boolean
-    disabled?: boolean
-    zoom?: number
-    copyElm?: () => JSX.Element
-    onDragStart?: () => void
-    onDragMove?: (dimensions: Dimensions) => boolean
-    onDragEnd?: (dimensions: Dimensions) => boolean
-    dragCopy?: boolean
-    container?: DOMElement | string
+    children: any;
+    type: string;
+    value: any;
+    horizontal?: boolean;
+    vertical?: boolean;
+    disabled?: boolean;
+    zoom?: number;
+    copyElm?: () => JSX.Element;
+    onDragStart?: () => void;
+    onDragMove?: (dimensions: Dimensions) => boolean;
+    onDragEnd?: (dimensions: Dimensions) => boolean;
+    dragCopy?: boolean;
+    container?: DOMElement | string;
 }
-
 
 export class DnDDrag extends React.Component<DnDDragProps> {
     static contextType = DnDContext;
@@ -53,11 +52,12 @@ export class DnDDrag extends React.Component<DnDDragProps> {
             elm: this.elm,
             target: this.target,
             container: container,
-            dragCopy: this.props.dragCopy !== undefined ? this.props.dragCopy : true,
+            dragCopy:
+                this.props.dragCopy !== undefined ? this.props.dragCopy : true,
             context: this.context,
             zoom: this.props.zoom ? this.props.zoom : this.context.zoom,
             overflowX: this.context ? this.context.overflowX : false,
-            overflowY: this.context ? this.context.overflowY : false
+            overflowY: this.context ? this.context.overflowY : false,
         });
 
         this.draggable.start();
@@ -80,7 +80,7 @@ export class DnDDrag extends React.Component<DnDDragProps> {
             }
         }
 
-        this.draggable?.stop()
+        this.draggable?.stop();
 
         if (this.props.disabled) {
             return;
@@ -91,11 +91,12 @@ export class DnDDrag extends React.Component<DnDDragProps> {
             elm: this.elm,
             target: this.target,
             container: container,
-            dragCopy: this.props.dragCopy !== undefined ? this.props.dragCopy : true,
+            dragCopy:
+                this.props.dragCopy !== undefined ? this.props.dragCopy : true,
             context: this.context,
             zoom: this.props.zoom ? this.props.zoom : this.context.zoom,
             overflowX: this.context ? this.context.overflowX : false,
-            overflowY: this.context ? this.context.overflowY : false
+            overflowY: this.context ? this.context.overflowY : false,
         });
 
         this.draggable.start();
@@ -107,29 +108,27 @@ export class DnDDrag extends React.Component<DnDDragProps> {
 
         const clone = React.cloneElement(child, {
             ref: (ref: HTMLElement) => {
-                this.elm = this.target = asHTMLElement(ref)
-            }
+                this.elm = this.target = asHTMLElement(ref);
+            },
         });
 
         if (this.props.copyElm) {
             const copyElm = React.cloneElement(this.props.copyElm(), {
                 ref: (ref: HTMLElement) => {
-                    this.target = asHTMLElement(ref)
-                }
+                    this.target = asHTMLElement(ref);
+                },
             });
 
-            return <>
-                {clone}
-                <div style={{position: 'absolute', left: '-99999px'}}>
-                    {copyElm}
-                </div>
-            </>;
+            return (
+                <>
+                    {clone}
+                    <div style={{ position: 'absolute', left: '-99999px' }}>
+                        {copyElm}
+                    </div>
+                </>
+            );
         }
 
-
-        return <>
-            {clone}
-        </>;
-
+        return <>{clone}</>;
     }
 }

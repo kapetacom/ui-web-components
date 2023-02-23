@@ -1,46 +1,49 @@
-import React from "react";
-import {action, makeObservable, observable} from "mobx";
-import {observer} from "mobx-react";
+import React from 'react';
+import { action, makeObservable, observable } from 'mobx';
+import { observer } from 'mobx-react';
 
-import {SchemaEntity, SchemaEntityType, SchemaEntryType} from "@blockware/ui-web-types";
-import {Modal, ModalSize} from "../../modal/Modal";
-import {EntityForm} from "../../entities/EntityForm";
-import {FormContainer} from "../FormContainer";
-import {FormButtons} from "../FormButtons";
-import {EntityFormModel} from "../../entities/EntityFormModel";
+import {
+    SchemaEntity,
+    SchemaEntityType,
+    SchemaEntryType,
+} from '@blockware/ui-web-types';
+import { Modal, ModalSize } from '../../modal/Modal';
+import { EntityForm } from '../../entities/EntityForm';
+import { FormContainer } from '../FormContainer';
+import { FormButtons } from '../FormButtons';
+import { EntityFormModel } from '../../entities/EntityFormModel';
 
 import './EntityPicker.less';
-import {FormSelect} from "../inputs/FormSelect";
-import {Checkbox} from "../Checkbox";
+import { FormSelect } from '../inputs/FormSelect';
+import { Checkbox } from '../Checkbox';
 
 const CREATE_VALUE = '__create__';
 
 interface EntityPickerProps {
-    name: string
-    value: SchemaEntryType
-    onChange: (a: SchemaEntryType) => void
-    allowVoid?: boolean
-    allowObject?: boolean
-    entities?: string[]
-    onEntityCreated?: (entity: SchemaEntity) => void
-    label?: string
-    help?: string
+    name: string;
+    value: SchemaEntryType;
+    onChange: (a: SchemaEntryType) => void;
+    allowVoid?: boolean;
+    allowObject?: boolean;
+    entities?: string[];
+    onEntityCreated?: (entity: SchemaEntity) => void;
+    label?: string;
+    help?: string;
 }
 
 interface ParsedValue {
-    list: boolean
-    type: string
+    list: boolean;
+    type: string;
 }
 
 @observer
 export class EntityPicker extends React.Component<EntityPickerProps> {
-
     @observable
-    private newEntity:EntityFormModel = new EntityFormModel();
+    private newEntity: EntityFormModel = new EntityFormModel();
 
     private createEntityModal: Modal | null = null;
 
-    constructor(props:EntityPickerProps) {
+    constructor(props: EntityPickerProps) {
         super(props);
         makeObservable(this);
     }
@@ -59,7 +62,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         }
         return {
             list: isList,
-            type: stringName
+            type: stringName,
         };
     };
 
@@ -68,10 +71,10 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         if (parsedValue.list) {
             value += '[]';
         }
-        
+
         if (value.startsWith('$ref:')) {
             this.props.onChange({
-                $ref: value.substr(5)
+                $ref: value.substr(5),
             });
         } else {
             this.props.onChange(value);
@@ -80,7 +83,6 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
 
     @action
     private onSelectHandler = (value: string) => {
-        
         if (value === CREATE_VALUE) {
             this.openModal();
             return;
@@ -112,11 +114,15 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         }
 
         this.createEntityModal.open();
-        this.newEntity = new EntityFormModel({type: SchemaEntityType.DTO, name:'NewEntity', properties:{}});
+        this.newEntity = new EntityFormModel({
+            type: SchemaEntityType.DTO,
+            name: 'NewEntity',
+            properties: {},
+        });
     };
 
     @action
-    private saveEntity = () =>  {
+    private saveEntity = () => {
         if (this.createEntityModal) {
             this.createEntityModal.close();
         }
@@ -131,7 +137,6 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         this.handleOnChange(parsedValue);
     };
 
-
     render() {
         const parsedValue = this.asValue();
         const isVoid = () => {
@@ -139,67 +144,84 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         };
 
         let currentType = parsedValue.type;
-        if (typeof this.props.value !== 'string' &&
-            (this.props.value && this.props.value.$ref)) {
+        if (
+            typeof this.props.value !== 'string' &&
+            this.props.value &&
+            this.props.value.$ref
+        ) {
             currentType = '$ref:' + currentType;
         }
 
-        let options:{[key:string]:string} ={
-            "string":"string",
-            "integer":"integer",
-            "double":"double",
-            "float":"float",
-            "long":"long",
-            "short":"short",
-            "boolean":"boolean",
-            "char":"char",
-            "byte":"byte",
-             };
-              
-        if(this.props.allowObject){
-            options["object"]="object";                
+        let options: { [key: string]: string } = {
+            string: 'string',
+            integer: 'integer',
+            double: 'double',
+            float: 'float',
+            long: 'long',
+            short: 'short',
+            boolean: 'boolean',
+            char: 'char',
+            byte: 'byte',
+        };
+
+        if (this.props.allowObject) {
+            options['object'] = 'object';
         }
-        if(this.props.allowVoid){
-            options["void"]="void";                
-            
+        if (this.props.allowVoid) {
+            options['void'] = 'void';
         }
-        if(this.props.entities){
+        if (this.props.entities) {
             this.props.entities.forEach((item, ix) => {
-                options[item]="$ref:" + item;
-            })
+                options[item] = '$ref:' + item;
+            });
         }
         return (
             <>
-                <div className={"entity-picker"}>
-                    <FormSelect value={parsedValue.type} validation={["required"]} label={this.props.label ? this.props.label : ""} name={""} help={this.props.help ? this.props.help : ""}
-                                onChange={(_,value)=>{
-                            
-                            this.onSelectHandler(value)
+                <div className={'entity-picker'}>
+                    <FormSelect
+                        value={parsedValue.type}
+                        validation={['required']}
+                        label={this.props.label ? this.props.label : ''}
+                        name={''}
+                        help={this.props.help ? this.props.help : ''}
+                        onChange={(_, value) => {
+                            this.onSelectHandler(value);
                         }}
-                                options={options}  />
-                    {!isVoid() &&
-                        <Checkbox onClick={this.toggleList}
-                                  value={parsedValue.list}
-                                  disabled={this.props.value === ""} />
+                        options={options}
+                    />
+                    {!isVoid() && (
+                        <Checkbox
+                            onClick={this.toggleList}
+                            value={parsedValue.list}
+                            disabled={this.props.value === ''}
+                        />
+                    )}
 
-                    }
-
-                    <Modal ref={(ref) => this.createEntityModal = ref}
-                           size={ModalSize.medium}
-                           onClose={this.closeModal}
-                           title={'Create entity'}>
+                    <Modal
+                        ref={(ref) => (this.createEntityModal = ref)}
+                        size={ModalSize.medium}
+                        onClose={this.closeModal}
+                        title={'Create entity'}
+                    >
                         <FormContainer onSubmit={this.saveEntity}>
-                            <EntityForm name={'new-entity'} entity={this.newEntity}/>
+                            <EntityForm
+                                name={'new-entity'}
+                                entity={this.newEntity}
+                            />
 
                             <FormButtons>
-                                <button type={'button'} onClick={this.closeModal}>Cancel</button>
+                                <button
+                                    type={'button'}
+                                    onClick={this.closeModal}
+                                >
+                                    Cancel
+                                </button>
                                 <button type={'submit'}>Create</button>
                             </FormButtons>
                         </FormContainer>
-
                     </Modal>
                 </div>
             </>
         );
     }
-};
+}

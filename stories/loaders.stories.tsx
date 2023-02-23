@@ -1,67 +1,103 @@
 import React from 'react';
-import {Loader, LoaderType, SimpleLoader} from '../src';
+import { Loader, LoaderType, SimpleLoader } from '../src';
 
 export default {
-    title: 'Loaders'
-}
+    title: 'Loaders',
+};
 
 export const UncontrolledSimpleLoader = () => {
     return (
-        <div style={{padding: '20px'}}>
-            <SimpleLoader type={LoaderType.CIRCLE} loader={() => new Promise(() => {})}>
+        <div style={{ padding: '20px' }}>
+            <SimpleLoader
+                type={LoaderType.CIRCLE}
+                loader={() => new Promise(() => {})}
+            >
                 Shows when loaded
             </SimpleLoader>
 
-            <SimpleLoader type={LoaderType.GRID} loader={() => new Promise(() => {})}>
+            <SimpleLoader
+                type={LoaderType.GRID}
+                loader={() => new Promise(() => {})}
+            >
                 Shows when loaded
             </SimpleLoader>
 
-            <SimpleLoader type={LoaderType.DEFAULT} loader={() => new Promise(() => {})}>
+            <SimpleLoader
+                type={LoaderType.DEFAULT}
+                loader={() => new Promise(() => {})}
+            >
                 Shows when loaded
             </SimpleLoader>
 
-            <SimpleLoader type={LoaderType.DUAL_RING} loader={() => new Promise(() => {})}>
+            <SimpleLoader
+                type={LoaderType.DUAL_RING}
+                loader={() => new Promise(() => {})}
+            >
                 Shows when loaded
             </SimpleLoader>
 
-            <SimpleLoader type={LoaderType.ELLIPSIS} loader={() => new Promise(() => {})}>
+            <SimpleLoader
+                type={LoaderType.ELLIPSIS}
+                loader={() => new Promise(() => {})}
+            >
                 Shows when loaded
             </SimpleLoader>
 
-            <SimpleLoader type={LoaderType.FACEBOOK} loader={() => new Promise(() => {})}>
+            <SimpleLoader
+                type={LoaderType.FACEBOOK}
+                loader={() => new Promise(() => {})}
+            >
                 Shows when loaded
             </SimpleLoader>
 
-            <SimpleLoader type={LoaderType.RING} loader={() => new Promise(() => {})}>
+            <SimpleLoader
+                type={LoaderType.RING}
+                loader={() => new Promise(() => {})}
+            >
                 Shows when loaded
             </SimpleLoader>
 
-            <SimpleLoader type={LoaderType.HEART} loader={() => new Promise(() => {})}>
+            <SimpleLoader
+                type={LoaderType.HEART}
+                loader={() => new Promise(() => {})}
+            >
                 Shows when loaded
             </SimpleLoader>
 
-            <SimpleLoader type={LoaderType.HOURGLASS} loader={() => new Promise(() => {})}>
+            <SimpleLoader
+                type={LoaderType.HOURGLASS}
+                loader={() => new Promise(() => {})}
+            >
                 Shows when loaded
             </SimpleLoader>
 
-            <SimpleLoader type={LoaderType.RIPPLE} loader={() => new Promise(() => {})}>
+            <SimpleLoader
+                type={LoaderType.RIPPLE}
+                loader={() => new Promise(() => {})}
+            >
                 Shows when loaded
             </SimpleLoader>
 
-            <SimpleLoader type={LoaderType.ROLLER} loader={() => new Promise(() => {})}>
+            <SimpleLoader
+                type={LoaderType.ROLLER}
+                loader={() => new Promise(() => {})}
+            >
                 Shows when loaded
             </SimpleLoader>
 
-            <SimpleLoader type={LoaderType.SPINNER} loader={() => new Promise(() => {})}>
+            <SimpleLoader
+                type={LoaderType.SPINNER}
+                loader={() => new Promise(() => {})}
+            >
                 Shows when loaded
             </SimpleLoader>
         </div>
-    )
-}
+    );
+};
 
 export const ControlledSimpleLoader = () => {
     return (
-        <div style={{padding: '20px'}}>
+        <div style={{ padding: '20px' }}>
             <SimpleLoader type={LoaderType.CIRCLE} loading={true}>
                 Shows when loaded
             </SimpleLoader>
@@ -110,15 +146,13 @@ export const ControlledSimpleLoader = () => {
                 Shows when loaded
             </SimpleLoader>
         </div>
-    )
-}
+    );
+};
 
 export const ShowLoader = () => {
     return (
-        <div style={{padding: '20px'}}>
-            <Loader load={() => new Promise<JSX.Element>(() => {})}/>
+        <div style={{ padding: '20px' }}>
+            <Loader load={() => new Promise<JSX.Element>(() => {})} />
         </div>
-    )
-}
-
-
+    );
+};

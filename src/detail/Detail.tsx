@@ -1,51 +1,50 @@
-import React, {Context, createContext, useContext, useState} from 'react';
+import React, { Context, createContext, useContext, useState } from 'react';
 import _ from 'lodash';
 import './Detail.less';
-import {toClass} from "@blockware/ui-web-utils";
-import {Button, ButtonShape, ButtonStyle, StandardIcons} from '../button/buttons';
-import {applyValidation} from "../validation/Validators";
-import {showToasty, ToastType} from "../toast/ToastComponent";
-import {DialogControl} from "../dialog/DialogControl";
-
+import { toClass } from '@blockware/ui-web-utils';
+import {
+    Button,
+    ButtonShape,
+    ButtonStyle,
+    StandardIcons,
+} from '../button/buttons';
+import { applyValidation } from '../validation/Validators';
+import { showToasty, ToastType } from '../toast/ToastComponent';
+import { DialogControl } from '../dialog/DialogControl';
 
 interface DetailContextData {
-    onValueChanged: (name: string, value: any) => void
-    data: { [key: string]: any }
-    editable: boolean
-    isEditing: (field: string) => boolean
-    setEditing: (fieldId: string) => void
-    isProcessing: (field: string) => boolean
+    onValueChanged: (name: string, value: any) => void;
+    data: { [key: string]: any };
+    editable: boolean;
+    isEditing: (field: string) => boolean;
+    setEditing: (fieldId: string) => void;
+    isProcessing: (field: string) => boolean;
 }
 
-export interface DetailContextType extends Context<DetailContextData> {
-
-}
+export interface DetailContextType extends Context<DetailContextData> {}
 
 const DetailContext: DetailContextType = createContext({
-    onValueChanged: () => {
-    },
+    onValueChanged: () => {},
     isEditing: () => false,
-    setEditing: () => {
-    },
+    setEditing: () => {},
     isProcessing: () => false,
     data: {},
-    editable: false
-})
-
+    editable: false,
+});
 
 export enum DetailSize {
     SMALL = 'small',
-    FULL = 'full'
+    FULL = 'full',
 }
 
 type Data = { [key: string]: any };
 
 interface DetailProps {
-    children: any
-    size?: DetailSize
-    editable?: boolean
-    data: Data
-    onChange?: (name: string, value: any, data: Data) => any
+    children: any;
+    size?: DetailSize;
+    editable?: boolean;
+    data: Data;
+    onChange?: (name: string, value: any, data: Data) => any;
 }
 
 export const Detail = (props: DetailProps) => {
@@ -74,21 +73,21 @@ export const Detail = (props: DetailProps) => {
                 showToasty({
                     type: ToastType.DANGER,
                     message,
-                    title: 'Failed to update field'
+                    title: 'Failed to update field',
                 });
             } finally {
                 setProcessingFieldId('');
             }
         }
-    }
+    };
 
     const isEditing = (name: string) => {
         return editingFieldId === name;
-    }
+    };
 
     const isProcessing = (name: string) => {
         return processingFieldId === name;
-    }
+    };
 
     const setEditing = (name: string) => {
         if (processingFieldId) {
@@ -96,29 +95,31 @@ export const Detail = (props: DetailProps) => {
         }
 
         setEditingFieldId(name);
-    }
+    };
 
     const classNames = toClass({
-        'detail': true,
-        'processing': !!processingFieldId,
-        [size]: true
+        detail: true,
+        processing: !!processingFieldId,
+        [size]: true,
     });
 
     return (
         <div className={classNames}>
-            <DetailContext.Provider value={{
-                onValueChanged,
-                isProcessing,
-                isEditing,
-                setEditing,
-                data: props.data,
-                editable: !!props.editable
-            }}>
+            <DetailContext.Provider
+                value={{
+                    onValueChanged,
+                    isProcessing,
+                    isEditing,
+                    setEditing,
+                    data: props.data,
+                    editable: !!props.editable,
+                }}
+            >
                 {props.children}
             </DetailContext.Provider>
         </div>
     );
-}
+};
 
 enum RowType {
     CUSTOM = 'custom',
@@ -127,10 +128,10 @@ enum RowType {
 }
 
 interface DetailRowProps {
-    label: string
-    name?: string
-    children: any
-    rowType?: RowType
+    label: string;
+    name?: string;
+    children: any;
+    rowType?: RowType;
 }
 
 export const DetailRow = (props: DetailRowProps) => {
@@ -144,29 +145,26 @@ export const DetailRow = (props: DetailRowProps) => {
     const classNames = toClass({
         'detail-row': true,
         [rowType]: true,
-        'editing': isEditing,
-        'processing': isProcessing
+        editing: isEditing,
+        processing: isProcessing,
     });
 
     return (
         <div className={classNames}>
             <div className={'name'}>{props.label}</div>
-            <div className={'value'}>
-                {props.children}
-            </div>
+            <div className={'value'}>{props.children}</div>
         </div>
     );
-}
+};
 
 interface DetailRowValueProps {
-    name: string
-    label: string
-    fixed?:boolean
-    validation?: any
+    name: string;
+    label: string;
+    fixed?: boolean;
+    validation?: any;
 }
 
 export const DetailRowValue = (props: DetailRowValueProps) => {
-
     let context = useContext(DetailContext);
 
     const originalValue = _.get(context.data, props.name);
@@ -179,7 +177,7 @@ export const DetailRowValue = (props: DetailRowValueProps) => {
 
     const doCancel = () => {
         context.setEditing('');
-    }
+    };
 
     let errors = [];
     if (isEditing) {
@@ -190,245 +188,285 @@ export const DetailRowValue = (props: DetailRowValueProps) => {
     const isEditable = context.editable && !props.fixed;
 
     return (
-        <DetailRow label={props.label}
-                   name={props.name}
-                   rowType={RowType.SIMPLE}>
-
+        <DetailRow
+            label={props.label}
+            name={props.name}
+            rowType={RowType.SIMPLE}
+        >
             <span className={'inner'}>
-                {isEditing &&
+                {isEditing && (
                     <>
-                        <input type={'text'} value={value}
-                               readOnly={isProcessing}
-                               autoFocus={true}
-                               onChange={(evt) => {
-                                   setValue(evt.target.value);
-                               }}
+                        <input
+                            type={'text'}
+                            value={value}
+                            readOnly={isProcessing}
+                            autoFocus={true}
+                            onChange={(evt) => {
+                                setValue(evt.target.value);
+                            }}
                         />
-                        {errors.length > 0 && <div className={'error'}>
-                            {errors[0]}
-                        </div>}
+                        {errors.length > 0 && (
+                            <div className={'error'}>{errors[0]}</div>
+                        )}
                     </>
-                }
+                )}
 
                 {!isEditing && originalValue}
             </span>
 
-            {isEditable &&
-                !isEditing &&
-                <Button text={StandardIcons.EDIT}
-                        shape={ButtonShape.ICON}
-                        style={ButtonStyle.PRIMARY}
-                        onClick={() => {
-                            setValue(originalValue);
-                            context.setEditing(props.name);
-                        }}/>
-            }
+            {isEditable && !isEditing && (
+                <Button
+                    text={StandardIcons.EDIT}
+                    shape={ButtonShape.ICON}
+                    style={ButtonStyle.PRIMARY}
+                    onClick={() => {
+                        setValue(originalValue);
+                        context.setEditing(props.name);
+                    }}
+                />
+            )}
 
-            {isEditing &&
-                !isProcessing &&
+            {isEditing && !isProcessing && (
                 <SaveCancelButtons
                     invalid={invalid}
                     onSave={async () => {
                         await context.onValueChanged(props.name, value);
                     }}
-                    onCancel={doCancel} />
-
-            }
+                    onCancel={doCancel}
+                />
+            )}
 
             {isProcessing && <Spinner />}
-
         </DetailRow>
     );
-}
+};
 
-interface DetailRowListValueProps extends DetailRowValueProps{
-    typeName: string
+interface DetailRowListValueProps extends DetailRowValueProps {
+    typeName: string;
 }
 
 export const DetailRowListValue = (props: DetailRowListValueProps) => {
-
     let context = useContext(DetailContext);
 
-    const originalValue: any[] = _.has(context.data,props.name) ? _.get(context.data, props.name) : [];
+    const originalValue: any[] = _.has(context.data, props.name)
+        ? _.get(context.data, props.name)
+        : [];
 
     const isAdding = context.isEditing(props.name);
     const isProcessing = context.isProcessing(props.name);
     const [listEntryValue, setListEntryValue] = useState('');
     const [newListEntry, setNewListEntry] = useState('');
-    const errors = isAdding ? applyValidation(props.validation, props.name, newListEntry) : [];
+    const errors = isAdding
+        ? applyValidation(props.validation, props.name, newListEntry)
+        : [];
     const invalid = errors.length > 0;
 
     const doCancel = () => {
         context.setEditing('');
-    }
+    };
 
     const isEditable = context.editable && !props.fixed;
 
     return (
-        <DetailRow label={props.label}
-                   name={props.name}
-                   rowType={RowType.LIST}>
+        <DetailRow label={props.label} name={props.name} rowType={RowType.LIST}>
             <ul className={'detail-list-value'}>
                 {originalValue.map((entryValue, ix) => {
                     const fieldId = `${props.name}[${ix}]`;
                     const isEditing = context.isEditing(fieldId);
 
-                    const errors = isEditing ? applyValidation(props.validation, props.name, listEntryValue) : [];
+                    const errors = isEditing
+                        ? applyValidation(
+                              props.validation,
+                              props.name,
+                              listEntryValue
+                          )
+                        : [];
                     const invalid = errors.length > 0;
                     return (
                         <li key={`elm_${ix}`}>
                             <span className={'name'}>
                                 {!isEditing && entryValue}
-                                {isEditing &&
+                                {isEditing && (
                                     <>
-                                        <input type={'text'}
-                                               value={listEntryValue}
-                                               readOnly={isProcessing}
-                                               autoFocus={true}
-                                               onChange={(evt) => {
-                                                   setListEntryValue(evt.target.value);
-                                               }}
+                                        <input
+                                            type={'text'}
+                                            value={listEntryValue}
+                                            readOnly={isProcessing}
+                                            autoFocus={true}
+                                            onChange={(evt) => {
+                                                setListEntryValue(
+                                                    evt.target.value
+                                                );
+                                            }}
                                         />
                                     </>
-                                }
+                                )}
                             </span>
-                            {isEditing && errors.length > 0 && <div className={'error'}>
-                                {errors[0]}
-                            </div>}
+                            {isEditing && errors.length > 0 && (
+                                <div className={'error'}>{errors[0]}</div>
+                            )}
 
-                            {isEditable &&
+                            {isEditable && (
                                 <span className={'actions'}>
-                                    {!isEditing &&
+                                    {!isEditing && (
                                         <>
-                                            <Button text={StandardIcons.EDIT}
-                                                    shape={ButtonShape.ICON}
-                                                    style={ButtonStyle.PRIMARY}
-                                                    onClick={() => {
-                                                        setListEntryValue(entryValue);
-                                                        context.setEditing(fieldId);
-                                                    }}/>
+                                            <Button
+                                                text={StandardIcons.EDIT}
+                                                shape={ButtonShape.ICON}
+                                                style={ButtonStyle.PRIMARY}
+                                                onClick={() => {
+                                                    setListEntryValue(
+                                                        entryValue
+                                                    );
+                                                    context.setEditing(fieldId);
+                                                }}
+                                            />
 
-                                            <Button text={StandardIcons.DELETE}
-                                                    shape={ButtonShape.ICON}
-                                                    style={ButtonStyle.DANGER}
-                                                    onClick={() => {
-                                                        DialogControl.delete(
-                                                            `Delete ${props.typeName}?`,
-                                                            'This action can not be undone. Continue?',
-                                                            async (ok) => {
-                                                                if (!ok) {
-                                                                    return;
-                                                                }
-                                                                const newValue = [...originalValue];
-                                                                newValue.splice(ix, 1);
-                                                                context.onValueChanged(props.name, newValue);
-                                                            })
-                                                    }}
+                                            <Button
+                                                text={StandardIcons.DELETE}
+                                                shape={ButtonShape.ICON}
+                                                style={ButtonStyle.DANGER}
+                                                onClick={() => {
+                                                    DialogControl.delete(
+                                                        `Delete ${props.typeName}?`,
+                                                        'This action can not be undone. Continue?',
+                                                        async (ok) => {
+                                                            if (!ok) {
+                                                                return;
+                                                            }
+                                                            const newValue = [
+                                                                ...originalValue,
+                                                            ];
+                                                            newValue.splice(
+                                                                ix,
+                                                                1
+                                                            );
+                                                            context.onValueChanged(
+                                                                props.name,
+                                                                newValue
+                                                            );
+                                                        }
+                                                    );
+                                                }}
                                             />
                                         </>
-                                    }
-                                    {isEditing && !isProcessing &&
+                                    )}
+                                    {isEditing && !isProcessing && (
                                         <SaveCancelButtons
                                             invalid={invalid}
                                             onSave={async () => {
-                                                const newValue = [...originalValue];
+                                                const newValue = [
+                                                    ...originalValue,
+                                                ];
                                                 newValue[ix] = listEntryValue;
-                                                await context.onValueChanged(props.name, newValue);
+                                                await context.onValueChanged(
+                                                    props.name,
+                                                    newValue
+                                                );
                                             }}
-                                            onCancel={doCancel} />
-
-                                    }
-
+                                            onCancel={doCancel}
+                                        />
+                                    )}
                                 </span>
-                            }
+                            )}
                         </li>
-                    )
+                    );
                 })}
-                {isEditable &&
+                {isEditable && (
                     <li className={'adder'}>
-                        {!isAdding &&
-                            <a onClick={() => {
-                                setNewListEntry('');
-                                context.setEditing(props.name);
-                            }}>
+                        {!isAdding && (
+                            <a
+                                onClick={() => {
+                                    setNewListEntry('');
+                                    context.setEditing(props.name);
+                                }}
+                            >
                                 Add {props.typeName}
-                            </a>}
+                            </a>
+                        )}
 
-                        {isAdding &&
+                        {isAdding && (
                             <>
-                                <input type={'text'}
-                                       value={newListEntry}
-                                       readOnly={isProcessing}
-                                       autoFocus={true}
-                                       onChange={(evt) => {
-                                           setNewListEntry(evt.target.value);
-                                       }}
+                                <input
+                                    type={'text'}
+                                    value={newListEntry}
+                                    readOnly={isProcessing}
+                                    autoFocus={true}
+                                    onChange={(evt) => {
+                                        setNewListEntry(evt.target.value);
+                                    }}
                                 />
-                                {errors.length > 0 && <div className={'error'}>
-                                    {errors[0]}
-                                </div>}
+                                {errors.length > 0 && (
+                                    <div className={'error'}>{errors[0]}</div>
+                                )}
 
-                                {!isProcessing &&
+                                {!isProcessing && (
                                     <SaveCancelButtons
                                         invalid={invalid}
                                         onSave={async () => {
-                                            const newValue = [...originalValue, newListEntry];
-                                            await context.onValueChanged(props.name, newValue);
+                                            const newValue = [
+                                                ...originalValue,
+                                                newListEntry,
+                                            ];
+                                            await context.onValueChanged(
+                                                props.name,
+                                                newValue
+                                            );
                                         }}
-                                        onCancel={doCancel} />
-
-                                }
+                                        onCancel={doCancel}
+                                    />
+                                )}
                             </>
-                        }
-
-
+                        )}
                     </li>
-                }
+                )}
             </ul>
 
             {isProcessing && <Spinner />}
         </DetailRow>
     );
-}
-
+};
 
 interface DetailButtonsProps {
-    children: any
+    children: any;
 }
 
 export const DetailButtons = (props: DetailButtonsProps) => {
-
     const classNames = toClass({
-        'detail-buttons': true
+        'detail-buttons': true,
     });
 
-    return (
-        <div className={classNames}>
-            {props.children}
-        </div>
-    );
-}
+    return <div className={classNames}>{props.children}</div>;
+};
 
 const Spinner = () => (
     <div className={'spinner'}>
-        <i className={'fad fa-cog fa-spin'}/>
-        <span className={'inner'}>
-        Saving...
-        </span>
+        <i className={'fad fa-cog fa-spin'} />
+        <span className={'inner'}>Saving...</span>
     </div>
-)
+);
 
-const SaveCancelButtons = (props:{invalid:boolean, onSave:() => any, onCancel:() => any}) => {
-    return (<>
-        <Button text={StandardIcons.SAVE}
+const SaveCancelButtons = (props: {
+    invalid: boolean;
+    onSave: () => any;
+    onCancel: () => any;
+}) => {
+    return (
+        <>
+            <Button
+                text={StandardIcons.SAVE}
                 shape={ButtonShape.ICON}
                 disabled={props.invalid}
                 style={ButtonStyle.PRIMARY}
-                onClick={props.onSave}/>
+                onClick={props.onSave}
+            />
 
-        <Button text={StandardIcons.CANCEL}
+            <Button
+                text={StandardIcons.CANCEL}
                 shape={ButtonShape.ICON}
                 style={ButtonStyle.DANGER}
-                onClick={props.onCancel}/>
-    </>)
-}
+                onClick={props.onCancel}
+            />
+        </>
+    );
+};

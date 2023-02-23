@@ -1,6 +1,5 @@
-@import "../../styles/values";
-@import "../../styles/functions";
-
+@import '../../styles/values';
+@import '../../styles/functions';
 
 .entity-form {
     .no-select();
@@ -48,24 +47,22 @@
                     margin-top: -1px;
                     top: -45px;
                     height: 0;
-    
+
                     .add-button-wrapper {
                         position: relative;
                         top: -12px;
                         left: 0;
                         height: 0;
                     }
-    
+
                     .transition();
                     transform: scale(1);
-    
+
                     .single-plus {
                         width: 100%;
                     }
                 }
             }
-
-            
         }
 
         .field-row {
@@ -74,8 +71,6 @@
             height: 40px;
             background-color: white;
             width: inherit;
-
-
 
             /* all field row items  */
             .field-type,
@@ -234,28 +229,25 @@
                 span sup {
                     display: none;
                 }
-
             }
 
             &.header {
                 position: relative;
                 display: block;
 
-                >.field-name {
+                > .field-name {
                     padding-left: 20px;
                 }
 
-                >.field-type {
+                > .field-type {
                     margin-left: 0px;
                 }
 
-                >.field-sub-elements {
+                > .field-sub-elements {
                     margin-left: -55px;
-                    ;
                 }
             }
         }
-
     }
 
     .form-buttons {
@@ -263,7 +255,6 @@
             position: relative;
             padding-left: 40px;
             right: 0;
-
         }
     }
 }

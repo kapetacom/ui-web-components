@@ -1,22 +1,21 @@
-
-.sub-horizontal(@size: "small") {
+.sub-horizontal(@size: 'small') {
     &.left-h {
         left: 10vw;
         .sub-vertical(@size);
     }
 
     &.center-h {
-        left:100px;
-        & when (@size = "big") {
+        left: 100px;
+        & when (@size = 'big') {
             left: 10vw;
         }
-        & when (@size = "medium") {
+        & when (@size = 'medium') {
             left: 30vw;
         }
-        & when (@size = "small") {
+        & when (@size = 'small') {
             left: 40vw;
         }
-        & when (@size = "full") {
+        & when (@size = 'full') {
             left: 2vw;
         }
         .sub-vertical(@size);
@@ -28,9 +27,8 @@
     }
 }
 
-.sub-vertical(@size: "small") {
-
-    & when (@size ="small") {
+.sub-vertical(@size: 'small') {
+    & when (@size ='small') {
         &.center-v {
             bottom: 0;
             top: 0;
@@ -46,7 +44,7 @@
         }
     }
 
-    & when (@size ="medium") {
+    & when (@size ='medium') {
         &.center-v {
             bottom: 0;
             top: 0;
@@ -62,7 +60,7 @@
         }
     }
 
-    & when (@size ="big") {
+    & when (@size ='big') {
         &.center-v {
             bottom: 0;
             top: 0;
@@ -78,7 +76,7 @@
         }
     }
 
-    & when (@size ="full") {
+    & when (@size ='full') {
         &.center-v {
             bottom: 0;
             top: 0;

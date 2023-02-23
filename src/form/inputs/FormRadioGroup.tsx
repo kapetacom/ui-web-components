@@ -1,25 +1,24 @@
-import React from "react";
-import "./FormRadioGroup.less";
-import {observable, action, makeObservable} from "mobx";
-import {toClass} from "@blockware/ui-web-utils";
-import {observer} from "mobx-react";
-import {FormRow} from "../FormRow";
-import _ from "lodash";
+import React from 'react';
+import './FormRadioGroup.less';
+import { observable, action, makeObservable } from 'mobx';
+import { toClass } from '@blockware/ui-web-utils';
+import { observer } from 'mobx-react';
+import { FormRow } from '../FormRow';
+import _ from 'lodash';
 
 interface Props {
-    name: string,
-    label?: string,
-    value?: any,
-    validation?: any[],
-    help?: string,
-    options: string[] | { [key: string]: string },
-    disabled?: boolean,
-    onChange?: (inputName: string, userInput: any) => void
+    name: string;
+    label?: string;
+    value?: any;
+    validation?: any[];
+    help?: string;
+    options: string[] | { [key: string]: string };
+    disabled?: boolean;
+    onChange?: (inputName: string, userInput: any) => void;
 }
 
 @observer
 export class FormRadioGroup extends React.Component<Props> {
-
     @observable
     private inputFocused: boolean = false;
 
@@ -47,7 +46,6 @@ export class FormRadioGroup extends React.Component<Props> {
         this.emitChange(evt.target.value);
     };
 
-
     private emitChange(value: any) {
         if (this.props.onChange) {
             this.props.onChange(this.props.name, value);
@@ -66,13 +64,12 @@ export class FormRadioGroup extends React.Component<Props> {
     }
 
     private getOptions() {
-
         let options: { [key: string]: string } = {};
 
         if (Array.isArray(this.props.options)) {
-            this.props.options.forEach(val => {
+            this.props.options.forEach((val) => {
                 options[val] = val;
-            })
+            });
         } else {
             options = this.props.options;
         }
@@ -91,16 +88,14 @@ export class FormRadioGroup extends React.Component<Props> {
     }
 
     render() {
-
         let className = toClass({
-            "form-radiogroup": true
+            'form-radiogroup': true,
         });
 
         const options = this.getOptions();
         const currentValue = this.getCurrentValue();
 
         return (
-
             <FormRow
                 ref={this.formRowRef}
                 label={this.props.label}
@@ -111,13 +106,16 @@ export class FormRadioGroup extends React.Component<Props> {
                 focused={this.inputFocused}
                 disabled={this.props.disabled}
             >
-                <div className={className} data-name={this.props.name} data-value={this.props.value}>
+                <div
+                    className={className}
+                    data-name={this.props.name}
+                    data-value={this.props.value}
+                >
                     {Object.entries(options).map(([value, label], ix) => {
-
                         return (
                             <label key={`radio_${ix}`}>
                                 <input
-                                    type={"radio"}
+                                    type={'radio'}
                                     name={this.props.name}
                                     onChange={this.onChange}
                                     onFocus={this.inputOnFocus}
@@ -125,17 +123,14 @@ export class FormRadioGroup extends React.Component<Props> {
                                     value={value}
                                     checked={value === currentValue}
                                     disabled={this.props.disabled}
-                                    ref={this.inputRef}/>
+                                    ref={this.inputRef}
+                                />
                                 <span className={'name'}>{label}</span>
                             </label>
-                        )
+                        );
                     })}
                 </div>
-
             </FormRow>
-        )
+        );
     }
 }
-
-
-

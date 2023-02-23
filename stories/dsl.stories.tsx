@@ -1,7 +1,15 @@
 import React from 'react';
-import {storiesOf} from '@storybook/react';
-import {DataTypeEditor, DSLDataType, DSLEntity, DSLEntityType, DSLMethod, DSLRichEntity, MethodEditor} from "../src";
-import {DSLEditor} from "../src/dsl/DSLEditor";
+import { storiesOf } from '@storybook/react';
+import {
+    DataTypeEditor,
+    DSLDataType,
+    DSLEntity,
+    DSLEntityType,
+    DSLMethod,
+    DSLRichEntity,
+    MethodEditor,
+} from '../src';
+import { DSLEditor } from '../src/dsl/DSLEditor';
 
 const REST_METHODS = `
 #Get todo 
@@ -48,12 +56,12 @@ Todo {
     status:string
 }`;
 
-const DATA_TYPE_ENTITIES:DSLEntity[] = [
+const DATA_TYPE_ENTITIES: DSLEntity[] = [
     {
         type: DSLEntityType.ENUM,
         name: 'Status',
         description: 'Enum values for status',
-        values: ['ENABLED','DISABLED','UNKNOWN']
+        values: ['ENABLED', 'DISABLED', 'UNKNOWN'],
     },
     {
         type: DSLEntityType.DATATYPE,
@@ -62,23 +70,23 @@ const DATA_TYPE_ENTITIES:DSLEntity[] = [
         properties: [
             {
                 name: 'id',
-                type:'string'
+                type: 'string',
             },
             {
                 name: 'tags',
-                type: {name: 'string', list:true},
+                type: { name: 'string', list: true },
             },
             {
                 name: 'children',
                 type: 'object',
                 properties: [
                     {
-                        name:'childId',
-                        type:'integer'
-                    }
-                ]
-            }
-        ]
+                        name: 'childId',
+                        type: 'integer',
+                    },
+                ],
+            },
+        ],
     },
     {
         type: DSLEntityType.DATATYPE,
@@ -87,27 +95,27 @@ const DATA_TYPE_ENTITIES:DSLEntity[] = [
         properties: [
             {
                 name: 'id',
-                type:'string'
+                type: 'string',
             },
             {
                 name: 'tags',
-                type: {name: 'string', list:true}
+                type: { name: 'string', list: true },
             },
             {
                 name: 'children',
-                type: {name: 'object', list: true},
+                type: { name: 'object', list: true },
                 properties: [
                     {
-                        name:'childId',
-                        type:'integer'
-                    }
-                ]
-            }
-        ]
-    }
-]
+                        name: 'childId',
+                        type: 'integer',
+                    },
+                ],
+            },
+        ],
+    },
+];
 
-const REST_METHOD_ENTITIES:DSLEntity[] = [
+const REST_METHOD_ENTITIES: DSLEntity[] = [
     {
         type: DSLEntityType.METHOD,
         name: 'myMethod',
@@ -115,32 +123,31 @@ const REST_METHOD_ENTITIES:DSLEntity[] = [
         returnType: 'void',
         annotations: [
             {
-                type:'@GET',
-                arguments: ['/some/{id}']
-            }
+                type: '@GET',
+                arguments: ['/some/{id}'],
+            },
         ],
         parameters: [
             {
                 name: 'id',
-                type:'string',
+                type: 'string',
                 annotations: [
                     {
-                        type: '@Path'
-                    }
-                ]
-
+                        type: '@Path',
+                    },
+                ],
             },
             {
                 name: 'tags',
-                type: {name:'string', list: true},
+                type: { name: 'string', list: true },
                 annotations: [
                     {
                         type: '@Query',
-                        arguments: ['_tags']
-                    }
-                ]
-            }
-        ]
+                        arguments: ['_tags'],
+                    },
+                ],
+            },
+        ],
     },
     {
         type: DSLEntityType.METHOD,
@@ -149,37 +156,35 @@ const REST_METHOD_ENTITIES:DSLEntity[] = [
         returnType: 'void',
         annotations: [
             {
-                type:'@GET',
-                arguments: ['/some/{id}']
-            }
+                type: '@GET',
+                arguments: ['/some/{id}'],
+            },
         ],
         parameters: [
             {
                 name: 'id',
-                type:'string',
+                type: 'string',
                 annotations: [
                     {
-                        type: '@Path'
-                    }
-                ]
-
+                        type: '@Path',
+                    },
+                ],
             },
             {
                 name: 'tags',
-                type:'string',
+                type: 'string',
                 annotations: [
                     {
                         type: '@Query',
-                        arguments: ['_tags']
-                    }
-                ]
-            }
-        ]
-    }
-]
+                        arguments: ['_tags'],
+                    },
+                ],
+            },
+        ],
+    },
+];
 
-
-const METHOD_ENTITIES:DSLMethod[] = [
+const METHOD_ENTITIES: DSLMethod[] = [
     {
         type: DSLEntityType.METHOD,
         name: 'myMethod',
@@ -188,114 +193,142 @@ const METHOD_ENTITIES:DSLMethod[] = [
         parameters: [
             {
                 name: 'id',
-                type:'string'
+                type: 'string',
             },
             {
                 name: 'tags',
-                type: {name:'string',list: true}
-            }
-        ]
+                type: { name: 'string', list: true },
+            },
+        ],
     },
     {
         type: DSLEntityType.METHOD,
         name: 'myMethod2',
         description: 'Some info about my method\nWith multiple lines',
-        returnType: {name:'string', list: true},
+        returnType: { name: 'string', list: true },
         parameters: [
             {
                 name: 'id',
-                type:'string'
+                type: 'string',
             },
             {
                 name: 'tags',
-                type:'string'
-            }
-        ]
-    }
-]
+                type: 'string',
+            },
+        ],
+    },
+];
 
 storiesOf('DSL Editors', module)
-
-    .add("DSL Editor", () => (
+    .add('DSL Editor', () => (
         <div>
-            <DSLEditor types={true}
-                       methods={true}
-                       onChange={result => console.log('result', result)}
-                       value={'## Types\n' + DATA_TYPES + '\n\n## Methods\n' + METHODS} />
+            <DSLEditor
+                types={true}
+                methods={true}
+                onChange={(result) => console.log('result', result)}
+                value={'## Types\n' + DATA_TYPES + '\n\n## Methods\n' + METHODS}
+            />
         </div>
     ))
 
-    .add("DSL Editor (Object)", () => (
+    .add('DSL Editor (Object)', () => (
         <div>
-            <DSLEditor types={true}
-                       methods={true}
-                       onChange={result => console.log('result', result)}
-                       value={{code:'', entities: [...DATA_TYPE_ENTITIES, ...METHOD_ENTITIES]}} />
+            <DSLEditor
+                types={true}
+                methods={true}
+                onChange={(result) => console.log('result', result)}
+                value={{
+                    code: '',
+                    entities: [...DATA_TYPE_ENTITIES, ...METHOD_ENTITIES],
+                }}
+            />
         </div>
     ))
 
-    .add("DSL Editor (REST)", () => (
+    .add('DSL Editor (REST)', () => (
         <div>
-            <DSLEditor types={true}
-                       methods={true}
-                       rest={true}
-                       onChange={result => console.log('result', result)}
-                       value={'## Types\n' + DATA_TYPES + '\n\n## REST methods\n' + REST_METHODS} />
+            <DSLEditor
+                types={true}
+                methods={true}
+                rest={true}
+                onChange={(result) => console.log('result', result)}
+                value={
+                    '## Types\n' +
+                    DATA_TYPES +
+                    '\n\n## REST methods\n' +
+                    REST_METHODS
+                }
+            />
         </div>
     ))
 
-    .add("DSL Editor (REST - Object)", () => (
+    .add('DSL Editor (REST - Object)', () => (
         <div>
-            <DSLEditor types={true}
-                       methods={true}
-                       rest={true}
-                       onChange={result => console.log('result', result)}
-                       value={{code:'', entities: [...DATA_TYPE_ENTITIES, ...REST_METHOD_ENTITIES]}} />
+            <DSLEditor
+                types={true}
+                methods={true}
+                rest={true}
+                onChange={(result) => console.log('result', result)}
+                value={{
+                    code: '',
+                    entities: [...DATA_TYPE_ENTITIES, ...REST_METHOD_ENTITIES],
+                }}
+            />
         </div>
     ))
 
-    .add("REST Method Editor", () => (
+    .add('REST Method Editor', () => (
         <div>
-            <MethodEditor value={REST_METHODS}
-                          validTypes={['Todo']}
-                          onChange={result => console.log('result', result)}
-                          restMethods={true} />
+            <MethodEditor
+                value={REST_METHODS}
+                validTypes={['Todo']}
+                onChange={(result) => console.log('result', result)}
+                restMethods={true}
+            />
         </div>
     ))
 
-    .add("REST Method Editor (Object)", () => (
+    .add('REST Method Editor (Object)', () => (
         <div>
-            <MethodEditor value={{code: '', entities: REST_METHOD_ENTITIES}}
-                          validTypes={['Todo']}
-                          onChange={result => console.log('result', result)}
-                          restMethods={true} />
+            <MethodEditor
+                value={{ code: '', entities: REST_METHOD_ENTITIES }}
+                validTypes={['Todo']}
+                onChange={(result) => console.log('result', result)}
+                restMethods={true}
+            />
         </div>
     ))
-    .add("Method Editor", () => (
+    .add('Method Editor', () => (
         <div>
-            <MethodEditor value={METHODS}
-                          onChange={result => console.log('result', result)}
-                          validTypes={['TreeNode']}  />
+            <MethodEditor
+                value={METHODS}
+                onChange={(result) => console.log('result', result)}
+                validTypes={['TreeNode']}
+            />
         </div>
     ))
-    .add("Method Editor (Object)", () => (
+    .add('Method Editor (Object)', () => (
         <div>
-            <MethodEditor value={{code: '', entities: METHOD_ENTITIES}}
-                          onChange={result => console.log('result', result)}
-                          validTypes={['TreeNode']}  />
+            <MethodEditor
+                value={{ code: '', entities: METHOD_ENTITIES }}
+                onChange={(result) => console.log('result', result)}
+                validTypes={['TreeNode']}
+            />
         </div>
     ))
-    .add("Data Type Editor", () => (
+    .add('Data Type Editor', () => (
         <div>
-            <DataTypeEditor value={DATA_TYPES}
-                            onChange={result => console.log('result', result)}/>
+            <DataTypeEditor
+                value={DATA_TYPES}
+                onChange={(result) => console.log('result', result)}
+            />
         </div>
     ))
-    .add("Data Type Editor (Object)", () => (
+    .add('Data Type Editor (Object)', () => (
         <div>
-            <DataTypeEditor value={{entities:DATA_TYPE_ENTITIES, code:''}}
-                            onChange={result => console.log('result', result)}/>
+            <DataTypeEditor
+                value={{ entities: DATA_TYPE_ENTITIES, code: '' }}
+                onChange={(result) => console.log('result', result)}
+            />
         </div>
-    ))
-
-
+    ));

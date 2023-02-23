@@ -1,29 +1,29 @@
-export const DSL_LANGUAGE_ID = 'blockware-dsl'
+export const DSL_LANGUAGE_ID = 'blockware-dsl';
 
 export interface DSLAnnotation {
-    arguments?:string[]
-    type:string
+    arguments?: string[];
+    type: string;
 }
 
 export interface DSLTypeComplex {
-    name:string,
-    list?:boolean
+    name: string;
+    list?: boolean;
 }
 
-export type DSLType = DSLTypeComplex|string
+export type DSLType = DSLTypeComplex | string;
 
 export interface DSLDataTypeProperty {
-    type:DSLType,
-    name:string
-    properties?:DSLDataTypeProperty[]
-    annotations?:DSLAnnotation[]
-    description?:string
+    type: DSLType;
+    name: string;
+    properties?: DSLDataTypeProperty[];
+    annotations?: DSLAnnotation[];
+    description?: string;
 }
 
 export interface DSLParameter {
-    name:string
-    type:DSLType
-    annotations?:DSLAnnotation[]
+    name: string;
+    type: DSLType;
+    annotations?: DSLAnnotation[];
 }
 
 export enum DSLEntityType {
@@ -34,66 +34,65 @@ export enum DSLEntityType {
 }
 
 export interface DSLEntityBase {
-    type:DSLEntityType
+    type: DSLEntityType;
 }
 
 export interface DSLRichEntity extends DSLEntityBase {
-    name:string
-    annotations?:DSLAnnotation[]
-    description?:string
+    name: string;
+    annotations?: DSLAnnotation[];
+    description?: string;
 }
 
 export interface DSLEnum extends DSLRichEntity {
-    type: DSLEntityType.ENUM
-    values:string[]
+    type: DSLEntityType.ENUM;
+    values: string[];
 }
 
 export interface DSLDataType extends DSLRichEntity {
-    type: DSLEntityType.DATATYPE
-    properties:DSLDataTypeProperty[]
+    type: DSLEntityType.DATATYPE;
+    properties: DSLDataTypeProperty[];
 }
 
 export interface DSLMethod extends DSLRichEntity {
-    type: DSLEntityType.METHOD
-    returnType:DSLType
-    parameters:DSLParameter[]
+    type: DSLEntityType.METHOD;
+    returnType: DSLType;
+    parameters: DSLParameter[];
 }
 
 export interface DSLComment extends DSLEntityBase {
-    type: DSLEntityType.COMMENT
-    text:string
+    type: DSLEntityType.COMMENT;
+    text: string;
 }
 
-export type DSLEntity = DSLEnum|DSLDataType|DSLMethod|DSLComment;
+export type DSLEntity = DSLEnum | DSLDataType | DSLMethod | DSLComment;
 
 export interface DSLResult {
-    code:string
-    errors?: [],
-    entities?: DSLEntity[]
+    code: string;
+    errors?: [];
+    entities?: DSLEntity[];
 }
 
 export interface DSLOptions {
-    rest?:boolean
-    types?: boolean
-    methods?: boolean
-    validTypes?: string[]
-    ignoreSemantics?: boolean
+    rest?: boolean;
+    types?: boolean;
+    methods?: boolean;
+    validTypes?: string[];
+    ignoreSemantics?: boolean;
 }
 
 export interface DSLLanguageOptions extends DSLOptions {
-    parameterAnnotations?: string[]
-    methodAnnotations?: string[]
-    typeAnnotations?: string[]
-    fieldAnnotations?: string[]
+    parameterAnnotations?: string[];
+    methodAnnotations?: string[];
+    typeAnnotations?: string[];
+    fieldAnnotations?: string[];
 }
 
-
-export function toStandardType(type:DSLType) {
+export function toStandardType(type: DSLType) {
     if (typeof type === 'string') {
         return {
             name: type,
-            list: false
-        }
+            list: false,
+        };
     } else {
         return type;
     }
