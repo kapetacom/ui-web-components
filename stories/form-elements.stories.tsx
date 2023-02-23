@@ -144,6 +144,7 @@ export const FormTextareas = () => {
                     help={helpText}
                     name={'multi'}
                     label={'Multi line'}
+                    validation={['required']}
                 />
                 <FormInput
                     help={helpText}

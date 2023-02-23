@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { FormSelect } from '../inputs/FormSelect';
 import { FormInput, Type } from '../inputs/FormInput';
-import { FormContext } from '../FormContext';
+import { FormContext, useFormContextField } from '../FormContext';
 
 interface SharedProps {
     name?: string;
@@ -12,28 +12,31 @@ interface SharedProps {
 }
 
 interface Props extends SharedProps {
-    value: string;
-    onChange: (name: string, value: string) => void;
     namespaces: string[];
 }
 
 export const AssetNameInput = (props: Props) => {
     const formContext = useContext(FormContext);
+    const formField = useFormContextField<string>(props.name);
+
     const [namespace, setNamespace] = useState('');
     const [assetName, setAssetName] = useState('');
 
     // Reset state when value changes:
+    const value = formField.get('/');
     useEffect(() => {
-        const [newNamespace, newAssetName] = props.value?.split('/') || [];
+        console.log('new value', value);
+        const [newNamespace, newAssetName] = value.split('/') || [];
         const defaultNamespace = props.namespaces?.[0] || '';
         setNamespace(newNamespace || defaultNamespace);
         setAssetName(newAssetName || '');
-    }, [props.value, props.namespaces]);
+    }, [value, props.namespaces]);
 
     // Report back to the form context for validation
     useEffect(() => {
         const ready = !!(namespace && assetName);
         formContext.onReadyStateChanged(props.name, ready);
+        console.log('readyState', ready);
     }, [props.name, namespace, assetName]);
 
     const callback = useCallback(
@@ -41,7 +44,6 @@ export const AssetNameInput = (props: Props) => {
             const value =
                 namespace || assetName
                     ? [
-                          // TODO: can we assume namespaces are already sanitized?
                           namespace.toLowerCase(),
                           assetName
                               .toLowerCase()
@@ -50,17 +52,16 @@ export const AssetNameInput = (props: Props) => {
                       ].join('/')
                     : '';
 
-            props.onChange(
-                props.name,
+            console.log('set', props.name, value);
+            formField.set(
                 // Ensure value is empty if neither part is filled out
                 value
             );
         },
-        [props.name, props.onChange]
+        [props.name, formField]
     );
 
     // Add a fake option for unknown namespaces (e.g. loading an asset that you can no longer access)
-
     const canAccessNamespace = (...args) => {
         if (!(props.namespaces || []).includes(namespace)) {
             throw new Error('Namespace not available');

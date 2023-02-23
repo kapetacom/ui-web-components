@@ -1,13 +1,28 @@
-import React, { useCallback, useState } from 'react';
-import { AssetNameInput } from '../src';
+import React, { useCallback, useContext, useState } from 'react';
+import {
+    AssetNameInput,
+    FormContainer,
+    FormContext,
+    useFormContextField,
+} from '../src';
 
 export default {
     title: 'Asset Name Input',
 };
 
 const defaultState = {
-    name: 'myuser/test',
+    name: '',
     namespaces: ['myuser'],
+};
+
+const FormState = () => {
+    const context = useContext(FormContext);
+    return (
+        <>
+            <pre>{JSON.stringify(context.container?.context)}</pre>
+            <pre>{JSON.stringify(context.container?.state, null, 4)}</pre>
+        </>
+    );
 };
 
 const createStory =
@@ -19,17 +34,15 @@ const createStory =
             [setState]
         );
         return (
-            <div>
+            <FormContainer initialValue={initialState}>
                 <p>{description}</p>
                 <AssetNameInput
+                    label={'Name'}
                     name={'name'}
                     namespaces={state.namespaces}
-                    onChange={onChange}
-                    value={state.name}
-                    label={'Name'}
                 ></AssetNameInput>
-                <pre>{JSON.stringify(state)}</pre>
-            </div>
+                <FormState />
+            </FormContainer>
         );
     };
 
