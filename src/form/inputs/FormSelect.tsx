@@ -285,6 +285,7 @@ export class FormSelect extends React.Component<Props, State> {
     };
 
     componentDidUpdate() {
+        this.formRowRef.current?.updateReadyState();
         if (!this.dropDownList.current || !this.inputElement.current) {
             return;
         }

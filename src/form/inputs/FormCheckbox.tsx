@@ -49,6 +49,10 @@ export class FormCheckbox extends React.Component<Props, State> {
         this.formRowRef.current?.updateReadyState();
     }
 
+    componentDidUpdate() {
+        this.formRowRef.current?.updateReadyState();
+    }
+
     render() {
         let className = toClass({
             'form-checkbox': true,
