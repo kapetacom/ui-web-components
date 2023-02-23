@@ -24,6 +24,7 @@ interface Props {
 }
 
 interface State {
+    formData: FormData;
     readyStates: { [key: string]: boolean };
     valid: boolean;
     processing: boolean;
@@ -43,14 +44,11 @@ export class FormContainer extends React.Component<Props, State> {
 
     private readonly resetListeners: { [key: string]: ResetListener[] } = {};
 
-    private formData: FormData = {};
-
     constructor(props: any) {
         super(props);
 
-        this.formData = props.initialValue ? { ...props.initialValue } : {};
-
         this.state = {
+            formData: props.initialValue ? { ...props.initialValue } : {},
             readyStates: {},
             processing: false,
             valid: true,
@@ -70,15 +68,24 @@ export class FormContainer extends React.Component<Props, State> {
     }
 
     public getValue(name: string): any {
-        if (_.has(this.formData, name)) {
-            return _.get(this.formData, name);
+        if (_.has(this.state.formData, name)) {
+            return _.get(this.state.formData, name);
         }
         return '';
     }
 
     private onValueChanged(name: string, value: any) {
-        _.set(this.formData, name, value);
-        this.emitChange();
+        this.setState(
+            (state) => {
+                return {
+                    formData: {
+                        ...state.formData,
+                        [name]: value,
+                    },
+                };
+            },
+            () => this.emitChange()
+        );
     }
 
     private onReadyStateChanged(fieldName: string, ready: boolean) {
@@ -208,7 +215,7 @@ export class FormContainer extends React.Component<Props, State> {
                 }
 
                 if (this.props.onSubmitData) {
-                    await this.props.onSubmitData({ ...this.formData });
+                    await this.props.onSubmitData({ ...this.state.formData });
                 }
 
                 this.emitFormStateChange('submit', true);
@@ -220,7 +227,7 @@ export class FormContainer extends React.Component<Props, State> {
 
     private emitChange() {
         if (this.props.onChange) {
-            this.props.onChange({ ...this.formData });
+            this.props.onChange({ ...this.state.formData });
         }
     }
 
@@ -232,14 +239,15 @@ export class FormContainer extends React.Component<Props, State> {
             });
         });
 
-        this.formData = { ...originalData };
-        this.emitChange();
+        this.setState({ formData: { ...originalData } }, () => {
+            this.emitChange();
 
-        if (this.props.onReset) {
-            this.props.onReset();
-        }
+            if (this.props.onReset) {
+                this.props.onReset();
+            }
 
-        this.emitFormStateChange('reset', true);
+            this.emitFormStateChange('reset', true);
+        });
     }
 
     private handleResetClick(evt: MouseEvent): void {
