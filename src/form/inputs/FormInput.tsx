@@ -167,6 +167,10 @@ export class FormInput extends React.Component<Props> {
         this.formRowRef.current?.updateReadyState();
     }
 
+    componentDidUpdate() {
+        this.formRowRef.current?.updateReadyState();
+    }
+
     render() {
         let className = toClass({
             'form-input': true,

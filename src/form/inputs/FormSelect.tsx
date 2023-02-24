@@ -1,11 +1,10 @@
 import React, { ChangeEvent } from 'react';
-import './FormSelect.less';
-import { action, makeObservable, observable } from 'mobx';
 import { toClass } from '@blockware/ui-web-utils';
 import * as _ from 'lodash';
-import { observer } from 'mobx-react';
 import { FormRow } from '../FormRow';
 import { RenderInBody } from '../../overlay/RenderInBody';
+
+import './FormSelect.less';
 
 interface Props {
     options: string[] | { [key: string]: string };
@@ -24,17 +23,13 @@ interface Props {
     optionProps?: React.HTMLProps<any>;
 }
 
-@observer
-export class FormSelect extends React.Component<Props> {
-    @observable
-    private inputFocus: boolean = false;
+interface State {
+    userInputDisplay: string;
+    inputSuggestion: string;
+    inputFocus: boolean;
+}
 
-    @observable
-    private userInputDisplay: string = '';
-
-    @observable
-    private inputSuggestion: string = '';
-
+export class FormSelect extends React.Component<Props, State> {
     private inputElement = React.createRef<HTMLInputElement>();
     private dropDownList = React.createRef<HTMLUListElement>();
 
@@ -42,7 +37,12 @@ export class FormSelect extends React.Component<Props> {
 
     constructor(props: Props) {
         super(props);
-        makeObservable(this);
+
+        this.state = {
+            userInputDisplay: '',
+            inputSuggestion: '',
+            inputFocus: false,
+        };
     }
 
     private userSelection = (): string[] => {
@@ -57,16 +57,16 @@ export class FormSelect extends React.Component<Props> {
         return !this.props.disabled && !this.props.readOnly;
     }
 
-    @action
     private onInputFocus = () => {
         if (!this.isEnabled()) {
             return;
         }
-        this.inputFocus = true;
-        this.userInputDisplay = '';
+        this.setState({
+            inputFocus: true,
+            userInputDisplay: '',
+        });
     };
 
-    @action
     private onInputBlur = () => {
         if (!this.isEnabled()) {
             return;
@@ -74,20 +74,28 @@ export class FormSelect extends React.Component<Props> {
 
         // Select value if it is equal to suggestion
         if (
-            this.userInputDisplay &&
-            this.inputSuggestion &&
-            this.inputSuggestion.toUpperCase() ===
-                this.userInputDisplay.toUpperCase()
+            this.state.userInputDisplay &&
+            this.state.inputSuggestion &&
+            this.state.inputSuggestion.toUpperCase() ===
+                this.state.userInputDisplay.toUpperCase()
         ) {
             this.emitChange(
-                _.invert(this.optionListFiltered())[this.inputSuggestion]
+                _.invert(this.optionListFiltered())[this.state.inputSuggestion]
             );
         }
-        this.inputFocus = false;
-        if (this.inputElement.current) {
-            this.userInputDisplay = '';
-            this.inputElement.current.blur();
-        }
+
+        this.setState((state) => {
+            let userInputDisplay = state.userInputDisplay;
+
+            if (this.inputElement.current) {
+                userInputDisplay = '';
+                this.inputElement.current.blur();
+            }
+            return {
+                inputFocus: false,
+                userInputDisplay,
+            };
+        });
     };
 
     private emitChange(value) {
@@ -105,10 +113,9 @@ export class FormSelect extends React.Component<Props> {
         return keys.map((key) => options[key]).join(', ');
     };
 
-    @action
     private onInputToggle = () => {
         if (this.isEnabled()) {
-            if (this.inputFocus) {
+            if (this.state.inputFocus) {
                 this.onInputBlur();
             } else {
                 this.onInputFocus();
@@ -116,21 +123,24 @@ export class FormSelect extends React.Component<Props> {
         }
     };
 
-    @action
     private setInputSuggestion() {
-        if (this.userInputDisplay && this.userInputDisplay.length > 0) {
+        let inputSuggestion = '';
+        if (
+            this.state.userInputDisplay &&
+            this.state.userInputDisplay.length > 0
+        ) {
             const filteredOptions = this.optionListFiltered();
             if (_.isObject(filteredOptions)) {
-                this.inputSuggestion = Object.values(filteredOptions)[0];
+                inputSuggestion = Object.values(filteredOptions)[0];
             } else if (_.isString(filteredOptions)) {
-                this.inputSuggestion = filteredOptions;
+                inputSuggestion = filteredOptions;
             }
-        } else {
-            this.inputSuggestion = '';
         }
+        this.setState({
+            inputSuggestion,
+        });
     }
 
-    @action
     private selectHandler(selection: string) {
         if (this.inputElement.current) {
             this.inputElement.current.focus();
@@ -163,8 +173,9 @@ export class FormSelect extends React.Component<Props> {
         }
 
         tempUserSelection.push(selection);
-        this.userInputDisplay = '';
-        this.setInputSuggestion();
+        this.setState({ userInputDisplay: '' }, () =>
+            this.setInputSuggestion()
+        );
 
         this.emitChange(
             this.props.multi ? tempUserSelection : tempUserSelection[0]
@@ -179,7 +190,7 @@ export class FormSelect extends React.Component<Props> {
         return _.pickBy(this.getOptions(), (value) => {
             return value
                 .toUpperCase()
-                .startsWith(this.userInputDisplay.toUpperCase());
+                .startsWith(this.state.userInputDisplay.toUpperCase());
         });
     };
 
@@ -231,7 +242,7 @@ export class FormSelect extends React.Component<Props> {
                         this.selectHandler(key);
                     }}
                 >
-                    {this.boldQuery(value, this.userInputDisplay)}
+                    {this.boldQuery(value, this.state.userInputDisplay)}
 
                     {this.userSelection().indexOf(key) < 0 ? null : (
                         <span className={'selected-icon'}>
@@ -250,10 +261,10 @@ export class FormSelect extends React.Component<Props> {
         });
     };
 
-    @action
     private setUserInputDisplay = (evt: ChangeEvent<HTMLInputElement>) => {
-        this.userInputDisplay = evt.target.value;
-        this.setInputSuggestion();
+        this.setState({ userInputDisplay: evt.target.value }, () =>
+            this.setInputSuggestion()
+        );
     };
 
     private boldQuery = (str: string, query: string) => {
@@ -273,15 +284,15 @@ export class FormSelect extends React.Component<Props> {
         );
     };
 
-    @action
     componentDidUpdate() {
+        this.formRowRef.current?.updateReadyState();
         if (!this.dropDownList.current || !this.inputElement.current) {
             return;
         }
 
         const position = this.inputElement.current.getBoundingClientRect();
 
-        if (this.inputFocus) {
+        if (this.state.inputFocus) {
             this.dropDownList.current.style.top = position.bottom + 'px';
             this.dropDownList.current.style.left = position.left + 'px';
             this.dropDownList.current.style.width = position.width + 'px';
@@ -289,7 +300,7 @@ export class FormSelect extends React.Component<Props> {
     }
 
     render() {
-        const showList = this.inputFocus;
+        const showList = this.state.inputFocus;
 
         let classNameList = toClass({
             'form-select-list': true,
@@ -298,12 +309,12 @@ export class FormSelect extends React.Component<Props> {
 
         let classNameArrowIcon = toClass({
             'arrow-icon': true,
-            'focus-icon': !!this.inputFocus,
+            'focus-icon': !!this.state.inputFocus,
         });
 
         let inputValue =
-            this.userInputDisplay || this.inputFocus
-                ? this.userInputDisplay
+            this.state.userInputDisplay || this.state.inputFocus
+                ? this.state.userInputDisplay
                 : this.renderKeysAsValues(this.props.value);
 
         const inputClassName = [this.props.noTransform ? 'no-transform' : '']
@@ -316,7 +327,7 @@ export class FormSelect extends React.Component<Props> {
                 label={this.props.label}
                 help={this.props.help}
                 validation={this.props.validation}
-                focused={this.inputFocus}
+                focused={this.state.inputFocus}
                 disabled={this.props.disabled}
                 readOnly={this.props.readOnly}
             >
@@ -325,11 +336,12 @@ export class FormSelect extends React.Component<Props> {
                     data-name={this.props.name}
                     data-value={inputValue}
                 >
-                    {this.inputFocus && this.userInputDisplay.length > 0 && (
-                        <span className={'user-suggestion'}>
-                            {this.inputSuggestion}
-                        </span>
-                    )}
+                    {this.state.inputFocus &&
+                        this.state.userInputDisplay.length > 0 && (
+                            <span className={'user-suggestion'}>
+                                {this.state.inputSuggestion}
+                            </span>
+                        )}
 
                     <input
                         className={inputClassName}
