@@ -25,7 +25,6 @@ export const AssetNameInput = (props: Props) => {
     // Reset state when value changes:
     const value = formField.get('/');
     useEffect(() => {
-        console.log('new value', value);
         const [newNamespace, newAssetName] = value.split('/') || [];
         const defaultNamespace = props.namespaces?.[0] || '';
         setNamespace(newNamespace || defaultNamespace);
@@ -36,7 +35,6 @@ export const AssetNameInput = (props: Props) => {
     useEffect(() => {
         const ready = !!(namespace && assetName);
         formContext.onReadyStateChanged(props.name, ready);
-        console.log('readyState', ready);
     }, [props.name, namespace, assetName]);
 
     const callback = useCallback(
@@ -52,7 +50,6 @@ export const AssetNameInput = (props: Props) => {
                       ].join('/')
                     : '';
 
-            console.log('set', props.name, value);
             formField.set(
                 // Ensure value is empty if neither part is filled out
                 value
