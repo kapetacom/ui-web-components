@@ -78,10 +78,13 @@ export class FormContainer extends React.Component<Props, State> {
         this.setState(
             (state) => {
                 return {
-                    formData: {
-                        ...state.formData,
-                        [name]: value,
-                    },
+                    formData: _.set(
+                        {
+                            ...state.formData,
+                        },
+                        name,
+                        value
+                    ),
                 };
             },
             () => this.emitChange()
