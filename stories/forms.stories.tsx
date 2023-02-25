@@ -17,6 +17,22 @@ function minMaxAgeCheck(name: string, value: number) {
     }
 }
 
+
+const InitialFormValue = {
+    name: 'Henrik',
+    age: 39,
+    select_one: 'two',
+    select_multi: ['two', 'three'],
+};
+
+const AltFormValue = {
+    name: 'John',
+    age: 32,
+    select_one: 'three',
+    select_multi: ['one'],
+};
+
+
 export default {
     title: 'Forms',
 };
@@ -24,15 +40,13 @@ export default {
 export const SimpleForm = () => {
     const [formData, setFormData] = useState({});
 
+    const [initialValue, setInitialValue] = useState(InitialFormValue);
+
+
     return (
         <div style={{ width: '550px' }}>
             <FormContainer
-                initialValue={{
-                    name: 'Henrik',
-                    age: 39,
-                    select_one: 'two',
-                    select_multi: ['two', 'three'],
-                }}
+                initialValue={initialValue}
                 onSubmitData={(data) => {
                     console.log('Data', data);
                     setFormData(data);
@@ -77,6 +91,18 @@ export const SimpleForm = () => {
 
                 <FormButtons>
                     <Button
+                        width={120}
+                        text={'Load Alt'}
+                        onClick={() => setInitialValue(AltFormValue)}
+                        type={ButtonType.BUTTON}
+                    />
+                    <Button
+                        width={120}
+                        text={'Load Normal'}
+                        onClick={() => setInitialValue(InitialFormValue)}
+                        type={ButtonType.BUTTON}
+                    />
+                    <Button
                         width={80}
                         text={'Reset'}
                         type={ButtonType.RESET}
@@ -102,13 +128,7 @@ export const NestedDataForm = () => {
     return (
         <div style={{ width: '550px' }}>
             <FormContainer
-                initialValue={{
-                    author: { name: 'Henrik', age: 39 },
-                    options: {
-                        select_one: 'two',
-                        select_multi: ['two', 'three'],
-                    },
-                }}
+                initialValue={InitialFormValue}
                 onSubmitData={(data) => {
                     console.log('Data', data);
                     setFormData(data);
@@ -178,7 +198,7 @@ export const FormWithConditionals = () => {
     return (
         <div style={{ width: '550px' }}>
             <FormContainer
-                initialValue={{ name: 'Henrik', age: 39 }}
+                initialValue={InitialFormValue}
                 onSubmitData={(data) => {
                     setFormData(data);
                 }}
@@ -254,7 +274,7 @@ export const FormWithValidation = () => {
     return (
         <div style={{ width: '550px' }}>
             <FormContainer
-                initialValue={{ name: 'Henrik', age: 39, enabled: true }}
+                initialValue={InitialFormValue}
                 onSubmitData={(data) => {
                     setFormData(data);
                 }}
@@ -316,12 +336,7 @@ export const AsyncForm = () => {
     return (
         <div style={{ width: '550px' }}>
             <FormContainer
-                initialValue={{
-                    name: 'Henrik',
-                    age: 39,
-                    select_one: 'two',
-                    select_multi: ['two', 'three'],
-                }}
+                initialValue={InitialFormValue}
                 onSubmitData={async (data) => {
                     await new Promise((resolve) => setTimeout(resolve, 1000));
                     setFormData(data);
@@ -366,12 +381,7 @@ export const FormNavigationOnSubmit = () => {
         <div style={{ width: '550px' }}>
             <form method={'GET'}>
                 <FormContainer
-                    initialValue={{
-                        name: 'Henrik',
-                        age: 39,
-                        select_one: 'two',
-                        select_multi: ['two', 'three'],
-                    }}
+                    initialValue={InitialFormValue}
                 >
                     <FormField name={'name'} label={'Name'} />
                     <FormField
