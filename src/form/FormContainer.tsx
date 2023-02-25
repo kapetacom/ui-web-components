@@ -44,15 +44,8 @@ export class FormContainer extends React.Component<Props, State> {
 
     private readonly resetListeners: { [key: string]: ResetListener[] } = {};
 
-    constructor(props: any) {
+    constructor(props: Props) {
         super(props);
-
-        this.state = {
-            formData: props.initialValue ? { ...props.initialValue } : {},
-            readyStates: {},
-            processing: false,
-            valid: true,
-        };
 
         this.submitClickHandler = {
             handleEvent: (evt: MouseEvent) => {
@@ -65,12 +58,22 @@ export class FormContainer extends React.Component<Props, State> {
                 this.handleResetClick(evt);
             },
         };
+
+
+        this.state = {
+            formData: props.initialValue ? { ...props.initialValue } : {},
+            readyStates: {},
+            processing: false,
+            valid: true,
+        };
     }
+
 
     public getValue(name: string): any {
         if (_.has(this.state.formData, name)) {
             return _.get(this.state.formData, name);
         }
+
         return '';
     }
 
@@ -238,7 +241,7 @@ export class FormContainer extends React.Component<Props, State> {
         const originalData = this.props.initialValue || {};
         Object.entries(this.resetListeners).forEach(([name, listeners]) => {
             listeners.forEach((listener) => {
-                listener(originalData[name] || '');
+                listener(_.has(originalData,name) ? _.get(originalData,name) : '');
             });
         });
 
@@ -373,8 +376,13 @@ export class FormContainer extends React.Component<Props, State> {
         this.focusFirstUnready();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps:Props) {
         this.bindButtons();
+
+        if (this.props.initialValue !== prevProps.initialValue) {
+            //Reset form whenever initialValue changes.
+            this.reset();
+        }
     }
 
     render() {
