@@ -6,6 +6,8 @@ import external from 'rollup-plugin-peer-deps-external';
 import styles from 'rollup-plugin-styles';
 import dts from 'rollup-plugin-dts';
 import pegjs from 'rollup-plugin-pegjs';
+const { visualizer } = require("rollup-plugin-visualizer");
+const bundleSize = require('rollup-plugin-bundle-size');
 
 const packageJson = require('./package.json');
 
@@ -36,6 +38,8 @@ export default [
             }),
             styles(),
             terser(),
+            visualizer(),
+            bundleSize()
         ],
     },
     {
