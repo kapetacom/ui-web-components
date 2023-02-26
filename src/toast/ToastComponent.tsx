@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { toast } from 'react-toastify';
-import { ToastContainer as Container } from 'react-toastify';
+import { toast, ToastContainer as Container } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './ToastComponent.less';

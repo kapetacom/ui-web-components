@@ -5,7 +5,7 @@
         "jsx": "react",
         "sourceMap": true,
         "declaration": true,
-        "inlineSourceMap": true,
+        "inlineSourceMap": false,
         "declarationDir": "types",
         "outDir": "dist",
         "strict": false,
