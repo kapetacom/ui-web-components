@@ -1,6 +1,6 @@
 {
     "name": "@blockware/ui-web-components",
-    "version": "0.0.115",
+    "version": "0.0.116",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
     "types": "dist/index.d.ts",
@@ -34,30 +34,12 @@
         "@blockware/ui-web-context": "<2",
         "@blockware/ui-web-types": "<2",
         "@blockware/ui-web-utils": "<2",
-        "@monaco-editor/react": "4",
-        "monaco-editor": "*",
-        "ag-grid-community": "28",
-        "ag-grid-react": "28",
         "guid-typescript": "*",
         "lodash": ">=4",
         "mobx": ">=6",
         "mobx-react": ">=6",
         "react": ">=18",
         "react-dom": ">=18"
-    },
-    "peerDependenciesMeta": {
-        "ag-grid-community": {
-            "optional": true
-        },
-        "ag-grid-react": {
-            "optional": true
-        },
-        "@monaco-editor/react": {
-            "optional": true
-        },
-        "monaco-editor": {
-            "optional": true
-        }
     },
     "devDependencies": {
         "@blockware/ui-web-context": "<2",
