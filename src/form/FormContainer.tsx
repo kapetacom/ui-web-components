@@ -3,7 +3,7 @@ import _ from 'lodash';
 import './FormContainer.less';
 
 import { FormContext, FormContextType, ResetListener } from './FormContext';
-import { toClass } from '@blockware/ui-web-utils';
+import { toClass } from '@kapeta/ui-web-utils';
 
 export type FormChangeHandler = (formState: FormStateChangeEvent) => void;
 

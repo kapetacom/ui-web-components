@@ -1,7 +1,7 @@
 import React from 'react';
 import './FormInput.less';
 import { observable, action, makeObservable } from 'mobx';
-import { toClass } from '@blockware/ui-web-utils';
+import { toClass } from '@kapeta/ui-web-utils';
 import { observer } from 'mobx-react';
 import { FormRow } from '../FormRow';
 

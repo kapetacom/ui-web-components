@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './ListElement.less';
-import { toClass } from '@blockware/ui-web-utils';
+import { toClass } from '@kapeta/ui-web-utils';
 import { Actions, Button, ButtonShape, ButtonStyle } from '../button/buttons';
 
 export interface ActionType {

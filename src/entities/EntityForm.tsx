@@ -2,8 +2,8 @@ import React from 'react';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 
-import { SchemaEntryType, typeName } from '@blockware/ui-web-types';
-import { toClass } from '@blockware/ui-web-utils';
+import { SchemaEntryType, typeName } from '@kapeta/ui-web-types';
+import { toClass } from '@kapeta/ui-web-utils';
 
 import { EntityPicker } from '../form/field-handlers/EntityPicker';
 import _ from 'lodash';

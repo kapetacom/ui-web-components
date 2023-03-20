@@ -5,7 +5,7 @@ import {
     createHexagonPath,
     Orientation,
     toClass,
-} from '@blockware/ui-web-utils';
+} from '@kapeta/ui-web-utils';
 
 import { DialogControl } from './DialogControl';
 import {

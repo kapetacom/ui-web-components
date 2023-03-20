@@ -12,7 +12,7 @@ import {
     SchemaDTO,
     SchemaEntityType,
     SchemaEnum,
-} from '@blockware/ui-web-types';
+} from '@kapeta/ui-web-types';
 
 describe('DSLConverters', () => {
     describe('types', () => {

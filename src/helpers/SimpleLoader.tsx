@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { toClass } from '@blockware/ui-web-utils';
+import { toClass } from '@kapeta/ui-web-utils';
 
 import './SimpleLoader.less';
 import { Simulate } from 'react-dom/test-utils';

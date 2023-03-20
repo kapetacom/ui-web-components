@@ -3,7 +3,7 @@ import { roundPathCorners } from '../utils/rounding';
 import { createHexagon } from '../utils/hexagon';
 
 import './buttons.less';
-import { toClass } from '@blockware/ui-web-utils';
+import { toClass } from '@kapeta/ui-web-utils';
 
 const BUTTON_HEIGHT = 40;
 const BUTTON_POINT_SIZE = 10;

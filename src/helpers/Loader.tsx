@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { toClass } from '@blockware/ui-web-utils';
+import { toClass } from '@kapeta/ui-web-utils';
 
 interface LoaderProps {
     load: () => Promise<JSX.Element>;

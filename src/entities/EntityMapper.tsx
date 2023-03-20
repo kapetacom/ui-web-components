@@ -6,7 +6,7 @@ import {
     SchemaEntryType,
     SchemaProperties,
     typeName,
-} from '@blockware/ui-web-types';
+} from '@kapeta/ui-web-types';
 
 import { FormSelect } from '../form/inputs/FormSelect';
 

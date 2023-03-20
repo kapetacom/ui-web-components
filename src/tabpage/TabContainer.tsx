@@ -1,7 +1,7 @@
 import * as React from 'react';
 import _ from 'lodash';
 
-import { toClass } from '@blockware/ui-web-utils';
+import { toClass } from '@kapeta/ui-web-utils';
 
 import TabContext from './TabContext';
 

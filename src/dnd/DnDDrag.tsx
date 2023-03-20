@@ -1,8 +1,8 @@
 import React from 'react';
 import DnDContext, { DnDContextType } from './DnDContext';
-import { asHTMLElement, DOMElement } from '@blockware/ui-web-utils';
+import { asHTMLElement, DOMElement } from '@kapeta/ui-web-utils';
 import { Draggable } from './Draggable';
-import { Dimensions } from '@blockware/ui-web-types';
+import { Dimensions } from '@kapeta/ui-web-types';
 
 interface DnDDragProps {
     children: any;

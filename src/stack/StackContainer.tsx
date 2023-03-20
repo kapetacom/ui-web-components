@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import * as React from 'react';
 
-import { asHTMLElement, DOMElement, toClass } from '@blockware/ui-web-utils';
+import { asHTMLElement, DOMElement, toClass } from '@kapeta/ui-web-utils';
 
-import { Size } from '@blockware/ui-web-types';
+import { Size } from '@kapeta/ui-web-types';
 
 import StackContext from './StackContext';
 

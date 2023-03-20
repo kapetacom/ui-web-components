@@ -1,5 +1,5 @@
-import { Dimensions } from '@blockware/ui-web-types';
-import { DOMElement } from '@blockware/ui-web-utils';
+import { Dimensions } from '@kapeta/ui-web-types';
+import { DOMElement } from '@kapeta/ui-web-utils';
 
 export interface DraggableContext<T> {
     containerElement: () => DOMElement | null;

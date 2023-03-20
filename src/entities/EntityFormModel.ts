@@ -7,7 +7,7 @@ import {
     SchemaEntry,
     SchemaEntryType,
     SchemaProperties,
-} from '@blockware/ui-web-types';
+} from '@kapeta/ui-web-types';
 
 export interface SchemaEntryEdit {
     uid: string;

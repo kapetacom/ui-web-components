@@ -1,5 +1,5 @@
-import { Dimensions, Point, Size } from '@blockware/ui-web-types';
-import { DOMElement, toDOMElement } from '@blockware/ui-web-utils';
+import { Dimensions, Point, Size } from '@kapeta/ui-web-types';
+import { DOMElement, toDOMElement } from '@kapeta/ui-web-utils';
 import { DraggableContext } from './DraggableContext';
 
 import './Draggable.less';

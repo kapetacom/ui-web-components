@@ -13,7 +13,7 @@ import {
     SchemaEntityType,
     SchemaEntryType,
     SchemaProperties,
-} from '@blockware/ui-web-types';
+} from '@kapeta/ui-web-types';
 import { BUILT_IN_TYPES } from './types';
 
 type SchemaMethods = { [p: string]: RESTMethod };

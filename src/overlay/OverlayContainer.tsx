@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { action, computed, makeObservable, observable } from 'mobx';
 import _ from 'lodash';
-import { toClass } from '@blockware/ui-web-utils';
+import { toClass } from '@kapeta/ui-web-utils';
 
 import { OverlayContext, OverlayComponent } from './OverlayContext';
 

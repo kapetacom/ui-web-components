@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './AuthScopesList.less';
-import { toClass } from '@blockware/ui-web-utils';
+import { toClass } from '@kapeta/ui-web-utils';
 import { AuthScope } from './scopes';
 
 interface Props {

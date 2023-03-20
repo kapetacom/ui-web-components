@@ -9,7 +9,7 @@ import {
     EntityFormModel,
 } from '../src';
 import { EntityList } from '../src/entities/EntityList';
-import { SchemaEntryType } from '@blockware/ui-web-types';
+import { SchemaEntryType } from '@kapeta/ui-web-types';
 
 const EntityFrom = {
     name: {

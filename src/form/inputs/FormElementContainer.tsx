@@ -1,6 +1,6 @@
 import React from 'react';
 import './FormElementContainer.less';
-import { toClass } from '@blockware/ui-web-utils';
+import { toClass } from '@kapeta/ui-web-utils';
 import * as _ from 'lodash';
 import { observer } from 'mobx-react';
 import { makeObservable } from 'mobx';

@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { toClass } from '@blockware/ui-web-utils';
+import { toClass } from '@kapeta/ui-web-utils';
 import * as _ from 'lodash';
 import { FormRow } from '../FormRow';
 import { RenderInBody } from '../../overlay/RenderInBody';

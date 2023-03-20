@@ -1,6 +1,6 @@
 import React, { CSSProperties } from 'react';
-import { asHTMLElement, DOMElement } from '@blockware/ui-web-utils';
-import { Dimensions } from '@blockware/ui-web-types';
+import { asHTMLElement, DOMElement } from '@kapeta/ui-web-utils';
+import { Dimensions } from '@kapeta/ui-web-types';
 
 import SortableContext, { SwapMode } from './SortableContext';
 import { SortableItem } from './SortableItem';

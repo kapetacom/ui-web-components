@@ -1,6 +1,6 @@
 import React from 'react';
-import { SchemaDTO, SchemaEntity } from '@blockware/ui-web-types';
-import { toClass } from '@blockware/ui-web-utils';
+import { SchemaDTO, SchemaEntity } from '@kapeta/ui-web-types';
+import { toClass } from '@kapeta/ui-web-utils';
 import './EntityList.less';
 
 interface EntityListProps {

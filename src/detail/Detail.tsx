@@ -1,7 +1,7 @@
 import React, { Context, createContext, useContext, useState } from 'react';
 import _ from 'lodash';
 import './Detail.less';
-import { toClass } from '@blockware/ui-web-utils';
+import { toClass } from '@kapeta/ui-web-utils';
 import {
     Button,
     ButtonShape,

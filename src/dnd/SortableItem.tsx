@@ -1,5 +1,5 @@
 import React from 'react';
-import { asHTMLElement, DOMElement } from '@blockware/ui-web-utils';
+import { asHTMLElement, DOMElement } from '@kapeta/ui-web-utils';
 
 import SortableContext, {
     SortableContextType,

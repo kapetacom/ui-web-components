@@ -6,7 +6,7 @@ import {
     SchemaEntity,
     SchemaEntityType,
     SchemaEntryType,
-} from '@blockware/ui-web-types';
+} from '@kapeta/ui-web-types';
 import { Modal, ModalSize } from '../../modal/Modal';
 import { EntityForm } from '../../entities/EntityForm';
 import { FormContainer } from '../FormContainer';
