@@ -1,4 +1,4 @@
-# ReactJS Component library for Blockware
+# ReactJS Component library for Kapeta
 
 ## Storybook
 
