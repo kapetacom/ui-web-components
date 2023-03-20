@@ -1,5 +1,5 @@
 {
-    "name": "@blockware/ui-web-components",
+    "name": "@kapeta/ui-web-components",
     "version": "0.0.116",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
@@ -11,13 +11,13 @@
         "styles",
         "src"
     ],
-    "description": "Provides shared ReactJS components for implementing Blockware UI",
+    "description": "Provides shared ReactJS components for implementing Kapeta UI",
     "private": false,
     "publishConfig": {
         "access": "public"
     },
     "keywords": [
-        "blockware"
+        "kapeta"
     ],
     "license": "MIT",
     "scripts": {
@@ -31,9 +31,9 @@
         "format": "prettier --write ."
     },
     "peerDependencies": {
-        "@blockware/ui-web-context": "<2",
-        "@blockware/ui-web-types": "<2",
-        "@blockware/ui-web-utils": "<2",
+        "@kapeta/ui-web-context": "<2",
+        "@kapeta/ui-web-types": "<2",
+        "@kapeta/ui-web-utils": "<2",
         "guid-typescript": "*",
         "lodash": ">=4",
         "mobx": ">=6",
@@ -42,9 +42,9 @@
         "react-dom": ">=18"
     },
     "devDependencies": {
-        "@blockware/ui-web-context": "<2",
-        "@blockware/ui-web-types": "<2",
-        "@blockware/ui-web-utils": "<2",
+        "@kapeta/ui-web-context": "<2",
+        "@kapeta/ui-web-types": "<2",
+        "@kapeta/ui-web-utils": "<2",
         "@jest/globals": "^29.1.2",
         "@monaco-editor/react": "^4.4.6",
         "@rollup/plugin-commonjs": "^21.0.1",
