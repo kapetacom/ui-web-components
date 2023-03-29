@@ -1,5 +1,5 @@
 /*
-Parses blockware DSL
+Parses kapeta DSL
 
 Example:
 myDataType {

@@ -319,7 +319,7 @@ export class FormContainer extends React.Component<Props, State> {
             'button:not([type=button]):not([form-bound])',
             'input[type=submit]:not([form-bound])',
             'input[type=image]:not([form-bound])',
-            '.blockware-button.submit:not([form-bound])',
+            '.kapeta-button.submit:not([form-bound])',
         ];
 
         const buttons = this.container.querySelectorAll(
@@ -341,7 +341,7 @@ export class FormContainer extends React.Component<Props, State> {
                 }
             }
 
-            const isReset = btn.matches('[type=reset],.blockware-button.reset');
+            const isReset = btn.matches('[type=reset],.kapeta-button.reset');
 
             btn.setAttribute('form-bound', 'true');
             btn.addEventListener(

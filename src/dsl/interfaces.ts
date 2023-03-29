@@ -1,4 +1,4 @@
-export const DSL_LANGUAGE_ID = 'blockware-dsl';
+export const DSL_LANGUAGE_ID = 'kapeta-dsl';
 
 export interface DSLAnnotation {
     arguments?: string[];

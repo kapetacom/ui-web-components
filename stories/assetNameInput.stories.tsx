@@ -53,11 +53,11 @@ export const SingleOption = createStory(
 export const MultiOption = createStory(
     'Should allow selecions when multiple namespaces are available',
     {},
-    { name: 'blockware/test', namespaces: ['myuser', 'blockware'] }
+    { name: 'kapeta/test', namespaces: ['myuser', 'kapeta'] }
 );
 
 export const UnknownNamespace = createStory(
     'Should prevent values outside of user namespaces',
     {},
-    { name: 'supersecret/test', namespaces: ['myuser', 'blockware'] }
+    { name: 'supersecret/test', namespaces: ['myuser', 'kapeta'] }
 );
