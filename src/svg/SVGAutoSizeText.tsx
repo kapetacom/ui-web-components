@@ -1,4 +1,10 @@
-import React, { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import React, {
+    KeyboardEvent,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'react';
 
 import { toClass } from '@kapeta/ui-web-utils';
 
@@ -46,40 +52,33 @@ interface SVGTextProps {
 export function SVGAutoSizeText(props: SVGTextProps) {
     const padding = 2;
 
-    const text = useRef<SVGTextElement>(null);
+    const textRef = useRef<SVGTextElement>(null);
 
-    const [realWidth, setRealWidth] = useState<number>(0);
-    const [ratio, setRatio] = useState<number>(1);
+    const [realWidth, setRealWidth] = useState<number>(props.maxWidth);
     const [editing, setEditing] = useState(false);
     const [editedValue, setEditedValue] = useState(props.value);
 
-    useEffect(() => {
-        if (!text.current) {
+    useLayoutEffect(() => {
+        if (!textRef.current) {
             return;
         }
 
-        const current = text.current;
-
-        let realWidth = current.getComputedTextLength() + padding * 2;
-
-        setRealWidth(Math.max(props.maxWidth, realWidth));
-        const newRatio = props.maxWidth / realWidth;
-        setRatio(newRatio);
-    }, [props, props.value]);
+        const current = textRef.current;
+        const computedWidth = current.getComputedTextLength() + padding * 2;
+        setRealWidth(Math.max(props.maxWidth, computedWidth));
+    }, [props, textRef, textRef.current]);
 
     let textLines = wordwrap(props.value, props.maxChars);
 
     if (textLines.length > props.maxLines) {
         textLines = textLines.slice(0, props.maxLines);
+        getSelection();
         const lastIx = props.maxLines - 1;
         textLines[lastIx] =
             textLines[lastIx].substr(0, textLines[lastIx].length - 3) + '...';
     }
 
-    let usedRatio = ratio;
-    if (ratio > 1) {
-        usedRatio = 1;
-    }
+    let usedRatio = Math.min(1, props.maxWidth / realWidth);
 
     const onChange = props.onChange;
 
@@ -138,7 +137,12 @@ export function SVGAutoSizeText(props: SVGTextProps) {
         return textLines.map((textLine: string, ix: number) => {
             const lineY = yOffset + (ix + 1) * lineHeight - padding * 2;
             return (
-                <tspan key={ix} x={halfWidth} y={lineY + 'px'}>
+                <tspan
+                    key={textLine}
+                    x={halfWidth}
+                    y={lineY + 'px'}
+                    ref={ix === 0 ? textRef : undefined}
+                >
                     {textLine}
                 </tspan>
             );
@@ -151,83 +155,56 @@ export function SVGAutoSizeText(props: SVGTextProps) {
     }
 
     return (
-        <>
+        <svg
+            x={props.x - halfWidth}
+            y={props.y}
+            className={containerClass}
+            height={fullHeight}
+            width={props.maxWidth}
+            onClick={onEditStart}
+        >
+            <rect
+                className={'background'}
+                x={0}
+                y={0}
+                width={props.maxWidth}
+                height={fullHeight}
+            />
+
             <svg
-                x={props.x - halfWidth}
-                y={props.y}
-                className={containerClass}
+                x={0}
+                y={0}
                 height={fullHeight}
                 width={props.maxWidth}
-                onClick={onEditStart}
+                viewBox={`0 0 ${realWidth} ${realHeight}`}
             >
-                <rect
-                    className={'background'}
-                    x={0}
-                    y={0}
-                    width={props.maxWidth}
-                    height={fullHeight}
-                />
-
-                <svg
-                    x={0}
-                    y={0}
-                    height={fullHeight}
-                    width={props.maxWidth}
-                    viewBox={`0 0 ${realWidth} ${realHeight}`}
+                <text
+                    style={{ fontSize: fontSize + 'px' }}
+                    className={props.className}
                 >
-                    <text
-                        style={{ fontSize: fontSize + 'px' }}
-                        className={props.className}
-                    >
-                        {renderTextLines()}
-                    </text>
-                </svg>
-
-                {onChange && editing && (
-                    <foreignObject
-                        x={0}
-                        y={0}
-                        width={props.maxWidth}
-                        height={fullHeight}
-                        className={'editing'}
-                    >
-                        <input
-                            type={'text'}
-                            style={{ fontSize: inputFontSize + 'px' }}
-                            onChange={(evt) => setEditedValue(evt.target.value)}
-                            onBlur={onBlur}
-                            onKeyDown={onKeyDown}
-                            autoFocus={true}
-                            value={editedValue}
-                        />
-                    </foreignObject>
-                )}
+                    {renderTextLines()}
+                </text>
             </svg>
 
-            <text
-                className={props.className}
-                style={{
-                    fontSize: fontSize + 'px',
-                    opacity: 0,
-                    pointerEvents: 'none',
-                }}
-            >
-                {textLines.map((textValue, ix) => {
-                    if (ix === 0) {
-                        return (
-                            <tspan key={ix} ref={text} x={0} y={ix + 'em'}>
-                                {textValue}
-                            </tspan>
-                        );
-                    }
-
-                    return (
-                        <tspan key={ix} x={0} y={ix + 'em'}>
-                            {textValue}
-                        </tspan>
-                    );
-                })}
-            </text>
-        </>
+            {onChange && editing && (
+                <foreignObject
+                    x={0}
+                    y={0}
+                    width={props.maxWidth}
+                    height={fullHeight}
+                    className={'editing'}
+                >
+                    <input
+                        type={'text'}
+                        style={{ fontSize: inputFontSize + 'px' }}
+                        onChange={(evt) => setEditedValue(evt.target.value)}
+                        onBlur={onBlur}
+                        onKeyDown={onKeyDown}
+                        autoFocus={true}
+                        value={editedValue}
+                    />
+                </foreignObject>
+            )}
+        </svg>
     );
 }
