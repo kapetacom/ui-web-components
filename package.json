@@ -1,6 +1,6 @@
 {
     "name": "@kapeta/ui-web-components",
-    "version": "0.0.127",
+    "version": "0.0.128",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
     "types": "dist/index.d.ts",
@@ -35,7 +35,7 @@
         "@kapeta/ui-web-types": "<2",
         "@kapeta/ui-web-utils": "<2",
         "guid-typescript": "*",
-        "lodash": ">=git stat4",
+        "lodash": ">=4",
         "mobx": ">=6",
         "mobx-react": ">=6",
         "react": ">=18",
