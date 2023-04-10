@@ -11,7 +11,13 @@ import {
     RESTMethod,
 } from '@kapeta/ui-web-types';
 
-import { Entity, EntityProperties, EntityReference, EntityType, EntityValueType } from '@kapeta/schemas';
+import {
+    Entity,
+    EntityProperties,
+    EntityType,
+    EntityValueType,
+    EntityProperty
+} from '@kapeta/schemas';
 
 import { BUILT_IN_TYPES } from './types';
 
@@ -124,12 +130,12 @@ export namespace DSLConverters {
         }
     }
 
-    export function fromSchemaProperties(
-        properties: EntityProperties
-    ): DSLDataTypeProperty[] {
-        return Object.entries(properties).map(
-            ([name, value]): DSLDataTypeProperty => {
-                // @ts-ignore
+    export function fromSchemaProperties(properties: EntityProperties): DSLDataTypeProperty[] {
+        if (!properties) {
+            return [];
+        }
+
+        return Object.entries(properties).map(([name, value]:[string,EntityProperty]): DSLDataTypeProperty => {
                 const stringType = fromSchemaType(value.type);
 
                 if (stringType === 'array') {
