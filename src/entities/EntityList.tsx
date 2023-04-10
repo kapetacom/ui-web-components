@@ -1,13 +1,14 @@
 import React from 'react';
-import { SchemaDTO, SchemaEntity } from '@kapeta/ui-web-types';
+
 import { toClass } from '@kapeta/ui-web-utils';
 import './EntityList.less';
+import { Entity, EntityDTO } from '@kapeta/schemas';
 
 interface EntityListProps {
-    entities: SchemaEntity[];
+    entities: Entity[];
     handleCreateEntity: () => void;
-    handleEditEntity: (entity: SchemaEntity) => void;
-    handleRemoveEntity: (entity: SchemaEntity) => void;
+    handleEditEntity: (entity: Entity) => void;
+    handleRemoveEntity: (entity: Entity) => void;
 }
 
 const EditIcon: React.FC = () => (
@@ -40,21 +41,12 @@ const DeleteIcon: React.FC = () => (
 );
 
 export const EntityList = (props: EntityListProps) => {
-    const entityList: SchemaEntity[] = props.entities;
+    const entityList: Entity[] = props.entities;
 
-    const listItems = entityList.map((entity: SchemaDTO) => {
-        let entityStatusClass = toClass({
-            'entity-status': true,
-            'status-active': !!entity.status,
-            'status-inactive': !entity.status,
-        });
-
+    const listItems = entityList.map((entity: EntityDTO) => {
         return (
             <div className={'entity-row'} key={entity.name}>
                 <div className={'entity-name'}> {entity.name}</div>
-                <div className={'entity-status ' + entityStatusClass}>
-                    {entity.status ? 'In use' : 'Unused'}
-                </div>
                 <div className={'entity-icons'}>
                     <div
                         className="edit-icon"

@@ -4,7 +4,7 @@ import { DnDDrop } from './DnDDrop';
 import { DnDDrag } from './DnDDrag';
 import _ from 'lodash';
 
-import { Dimensions } from '@kapeta/ui-web-types';
+import { Dimensions } from '@kapeta/schemas';
 import { asHTMLElement, DOMElement } from '@kapeta/ui-web-utils';
 
 interface DnDContainerProps {

@@ -2,7 +2,7 @@ import React from 'react';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 
-import { SchemaEntryType, typeName } from '@kapeta/ui-web-types';
+
 import { toClass } from '@kapeta/ui-web-utils';
 
 import { EntityPicker } from '../form/field-handlers/EntityPicker';
@@ -21,6 +21,7 @@ import { SortableContainer } from '../dnd/SortableContainer';
 import { SortableItem } from '../dnd/SortableItem';
 import { FormInput, Type } from '../form/inputs/FormInput';
 import { FormContainer } from '../form/FormContainer';
+import {EntityType, typeName } from '@kapeta/schemas';
 
 function toTypeName(entry: SchemaEntryEdit): string {
     let type = typeName(entry.type);
@@ -84,7 +85,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
     }
 
     @action
-    private updateType(field: SchemaEntryEdit, type: SchemaEntryType) {
+    private updateType(field: SchemaEntryEdit, type: EntityType) {
         field.type = type;
         this.handleChange();
     }
@@ -313,7 +314,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                                 value={type}
                                                 allowObject={true}
                                                 onChange={(
-                                                    value: SchemaEntryType
+                                                    value: EntityType
                                                 ) => {
                                                     this.updateType(
                                                         field,

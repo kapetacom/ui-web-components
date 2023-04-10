@@ -2,7 +2,7 @@ import React from 'react';
 import DnDContext, { DnDContextType } from './DnDContext';
 import { DnDDrag } from './DnDDrag';
 import { asHTMLElement, DOMElement } from '@kapeta/ui-web-utils';
-import { Dimensions } from '@kapeta/ui-web-types';
+import { Dimensions } from '@kapeta/schemas';
 
 interface DnDDropProps {
     children: any;

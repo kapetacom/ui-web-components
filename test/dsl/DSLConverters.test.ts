@@ -1,18 +1,8 @@
-import { describe, expect, test } from '@jest/globals';
-import { DSLConverters } from '../../src/dsl/DSLConverters';
-import {
-    DSLDataType,
-    DSLEntityType,
-    DSLEnum,
-    DSLMethod,
-} from '../../src/dsl/types';
-import {
-    HTTPMethod,
-    RESTMethod,
-    SchemaDTO,
-    SchemaEntityType,
-    SchemaEnum,
-} from '@kapeta/ui-web-types';
+import {describe, expect, test} from '@jest/globals';
+import {DSLConverters} from '../../src/dsl/DSLConverters';
+import {DSLDataType, DSLEntityType, DSLEnum, DSLMethod,} from '../../src/dsl/types';
+import {HTTPMethod, RESTMethod,} from '@kapeta/ui-web-types';
+import {EntityDTO, EntityEnum, EntityType} from '@kapeta/schemas';
 
 describe('DSLConverters', () => {
     describe('types', () => {
@@ -36,7 +26,7 @@ describe('DSLConverters', () => {
         test('can convert from SchemaType', () => {
             expect(DSLConverters.fromSchemaType('')).toBe('void');
             expect(DSLConverters.fromSchemaType('string')).toBe('string');
-            expect(DSLConverters.fromSchemaType({ $ref: 'MyClass' })).toEqual(
+            expect(DSLConverters.fromSchemaType({ ref: 'MyClass' })).toEqual(
                 'MyClass'
             );
         });
@@ -46,7 +36,7 @@ describe('DSLConverters', () => {
             expect(DSLConverters.toSchemaType('string')).toBe('string');
             expect(
                 DSLConverters.toSchemaType({ name: 'MyClass', list: true })
-            ).toEqual({ $ref: 'MyClass[]' });
+            ).toEqual({ ref: 'MyClass[]' });
         });
     });
 
@@ -60,7 +50,7 @@ describe('DSLConverters', () => {
                 values: ['ONE', 'TWO'],
             };
             expect(DSLConverters.toSchemaEntity(entity)).toEqual({
-                type: SchemaEntityType.ENUM,
+                type: EntityType.Enum,
                 name: entity.name,
                 description: entity.description,
                 values: entity.values,
@@ -68,8 +58,8 @@ describe('DSLConverters', () => {
         });
 
         test('can convert from schema Enum', () => {
-            const entity: SchemaEnum = {
-                type: SchemaEntityType.ENUM,
+            const entity: EntityEnum = {
+                type: EntityType.Enum,
                 description: 'Some description',
                 name: 'MyEnum',
                 values: ['ONE', 'TWO'],
@@ -121,7 +111,7 @@ describe('DSLConverters', () => {
                 ],
             };
             expect(DSLConverters.toSchemaEntity(entity)).toEqual({
-                type: SchemaEntityType.DTO,
+                type: EntityType.Dto,
                 name: entity.name,
                 description: entity.description,
                 properties: {
@@ -163,8 +153,8 @@ describe('DSLConverters', () => {
         });
 
         test('can convert from schema dto', () => {
-            const entity: SchemaDTO = {
-                type: SchemaEntityType.DTO,
+            const entity: EntityDTO = {
+                type: EntityType.Dto,
                 name: 'MyDTO',
                 description: 'Some description',
                 properties: {
@@ -323,11 +313,11 @@ describe('DSLConverters', () => {
                     path: '/path',
                     arguments: {
                         body: {
-                            type: { $ref: 'Test[]' },
+                            type: { ref: 'Test[]' },
                             transport: 'BODY',
                         },
                     },
-                    responseType: { $ref: 'Test[]' },
+                    responseType: { ref: 'Test[]' },
                 },
             });
         });
@@ -352,11 +342,11 @@ describe('DSLConverters', () => {
                     path: '/path',
                     arguments: {
                         body: {
-                            type: { $ref: 'Test[]' },
+                            type: { ref: 'Test[]' },
                             transport: 'BODY',
                         },
                     },
-                    responseType: { $ref: 'Test[]' },
+                    responseType: { ref: 'Test[]' },
                 },
             };
             expect(DSLConverters.fromSchemaMethods(methods)).toEqual([
