@@ -1,19 +1,13 @@
 import { makeObservable, observable } from 'mobx';
 import { Guid } from 'guid-typescript';
+import {Entity, EntityDTO, EntityProperties, EntityProperty, EntityType, EntityValueType } from '@kapeta/schemas';
 
-import {
-    SchemaDTO,
-    SchemaEntityType,
-    SchemaEntry,
-    SchemaEntryType,
-    SchemaProperties,
-} from '@kapeta/ui-web-types';
 
 export interface SchemaEntryEdit {
     uid: string;
     error?: string;
     id: string;
-    type: SchemaEntryType;
+    type: EntityValueType;
     items?: SchemaEntryEdit;
     properties?: SchemaEntryEdit[];
     required?: string[];
@@ -25,7 +19,7 @@ export interface SchemaEntityEdit {
     properties: SchemaEntryEdit[];
 }
 
-function toEditEntry(fieldId: string, original: SchemaEntry): SchemaEntryEdit {
+function toEditEntry(fieldId: string, original: EntityProperty): SchemaEntryEdit {
     return {
         uid: Guid.create().toString(),
         ...original,
@@ -39,13 +33,13 @@ function toEditEntry(fieldId: string, original: SchemaEntry): SchemaEntryEdit {
     };
 }
 
-function toEditProperties(original: SchemaProperties): SchemaEntryEdit[] {
+function toEditProperties(original: EntityProperties): SchemaEntryEdit[] {
     return Object.entries(original).map(([fieldId, field]) => {
         return toEditEntry(fieldId, field);
     });
 }
 
-function fromEditProperties(original: SchemaEntryEdit[]): SchemaProperties {
+function fromEditProperties(original: SchemaEntryEdit[]): EntityProperties {
     const properties: { [key: string]: any } = {};
 
     original.forEach((field) => {
@@ -68,11 +62,11 @@ export class EntityFormModel {
     properties: SchemaEntryEdit[];
 
     @observable
-    private original: SchemaDTO;
+    private original: EntityDTO;
 
-    constructor(entry?: SchemaDTO) {
+    constructor(entry?: EntityDTO) {
         if (!entry) {
-            entry = { type: SchemaEntityType.DTO, name: '', properties: {} };
+            entry = { type: EntityType.Dto, name: '', properties: {} };
         }
         this.name = entry.name;
         this.properties = toEditProperties(entry.properties);
@@ -83,9 +77,9 @@ export class EntityFormModel {
         makeObservable(this);
     }
 
-    public getData(): SchemaDTO {
+    public getData(): EntityDTO {
         return {
-            type: SchemaEntityType.DTO,
+            type: EntityType.Dto,
             name: this.name,
             properties: fromEditProperties(this.properties),
         };

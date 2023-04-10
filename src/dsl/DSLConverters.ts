@@ -9,11 +9,10 @@ import {
     HTTPMethod,
     HTTPTransport,
     RESTMethod,
-    SchemaEntity,
-    SchemaEntityType,
-    SchemaEntryType,
-    SchemaProperties,
 } from '@kapeta/ui-web-types';
+
+import { Entity, EntityProperties, EntityReference, EntityType, EntityValueType } from '@kapeta/schemas';
+
 import { BUILT_IN_TYPES } from './types';
 
 type SchemaMethods = { [p: string]: RESTMethod };
@@ -49,10 +48,10 @@ export namespace DSLConverters {
         if (!type) {
             return 'void';
         }
-        return type && type.$ref ? type.$ref : type;
+        return type && type.ref ? type.ref : type;
     }
 
-    export function toSchemaType(dslType: DSLType): SchemaEntryType {
+    export function toSchemaType(dslType: DSLType): EntityValueType {
         const type = fromDSLType(dslType);
         let onlyType = type;
 
@@ -70,24 +69,24 @@ export namespace DSLConverters {
         }
 
         if (BUILT_IN_TYPES.indexOf(onlyType) === -1) {
-            return { $ref: type };
+            return { ref: type };
         }
 
         return type;
     }
 
-    export function toSchemaEntity(entity: DSLEntity): SchemaEntity {
+    export function toSchemaEntity(entity: DSLEntity): Entity {
         switch (entity.type) {
             case DSLEntityType.ENUM:
                 return {
-                    type: SchemaEntityType.ENUM,
+                    type: EntityType.Enum,
                     name: entity.name,
                     description: entity.description,
                     values: entity.values,
                 };
             case DSLEntityType.DATATYPE:
                 return {
-                    type: SchemaEntityType.DTO,
+                    type: EntityType.Dto,
                     name: entity.name,
                     description: entity.description,
                     properties: entity.properties
@@ -102,9 +101,9 @@ export namespace DSLConverters {
         }
     }
 
-    export function fromSchemaEntity(entity: SchemaEntity): DSLEntity {
+    export function fromSchemaEntity(entity: Entity): DSLEntity {
         switch (entity.type) {
-            case SchemaEntityType.ENUM:
+            case EntityType.Enum:
                 return {
                     type: DSLEntityType.ENUM,
                     name: entity.name,
@@ -113,7 +112,7 @@ export namespace DSLConverters {
                 };
 
             default:
-            case SchemaEntityType.DTO:
+            case EntityType.Dto:
                 return {
                     type: DSLEntityType.DATATYPE,
                     name: entity.name,
@@ -126,7 +125,7 @@ export namespace DSLConverters {
     }
 
     export function fromSchemaProperties(
-        properties: SchemaProperties
+        properties: EntityProperties
     ): DSLDataTypeProperty[] {
         return Object.entries(properties).map(
             ([name, value]): DSLDataTypeProperty => {
@@ -161,7 +160,7 @@ export namespace DSLConverters {
 
     export function toSchemaProperties(
         properties: DSLDataTypeProperty[]
-    ): SchemaProperties {
+    ): EntityProperties {
         const out = {};
 
         properties.forEach((property) => {
@@ -183,10 +182,10 @@ export namespace DSLConverters {
                         type = type.substring(0, type.length - 2);
                     }
                 } else {
-                    if (type.$ref.endsWith('[]')) {
-                        type.$ref = type.$ref.substring(
+                    if (type.ref.endsWith('[]')) {
+                        type.ref = type.ref.substring(
                             0,
-                            type.$ref.length - 2
+                            type.ref.length - 2
                         );
                     }
                 }

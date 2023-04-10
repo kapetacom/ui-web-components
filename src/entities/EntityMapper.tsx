@@ -1,18 +1,11 @@
+import {EntityDTO, EntityProperties, EntityProperty, EntityValueType, isCompatibleTypes, typeName } from '@kapeta/schemas';
 import React from 'react';
-import {
-    isCompatibleTypes,
-    SchemaDTO,
-    SchemaEntry,
-    SchemaEntryType,
-    SchemaProperties,
-    typeName,
-} from '@kapeta/ui-web-types';
 
 import { FormSelect } from '../form/inputs/FormSelect';
 
 interface IDEntry {
     id: string;
-    type: SchemaEntryType;
+    type: EntityValueType;
 }
 
 type IDList = IDEntry[];
@@ -20,10 +13,10 @@ type IDList = IDEntry[];
 type EntityMap = { [from: string]: MappedEntity };
 
 interface EntityMapperProps {
-    from: SchemaProperties;
-    fromEntities: SchemaDTO[];
-    to: SchemaProperties;
-    toEntities: SchemaDTO[];
+    from: EntityProperties;
+    fromEntities: EntityDTO[];
+    to: EntityProperties;
+    toEntities: EntityDTO[];
     onChange: (entityMap: EntityMap) => void;
 }
 
@@ -60,7 +53,7 @@ export class EntityMapper extends React.Component<
         };
     }
 
-    toTargetFlatList(properties: SchemaProperties, parentId?: string) {
+    toTargetFlatList(properties: EntityProperties, parentId?: string) {
         let flatList: IDList = [];
         Object.entries(properties).forEach(([id, entry]) => {
             flatList = flatList.concat(
@@ -73,7 +66,7 @@ export class EntityMapper extends React.Component<
 
     toTargetLastListEntry(
         id: string,
-        entry: SchemaEntry,
+        entry: EntityProperty,
         parentId?: string
     ): IDList {
         let entryId = parentId ? parentId + '.' + id : id;
@@ -97,7 +90,7 @@ export class EntityMapper extends React.Component<
         ];
     }
 
-    renderObject(properties: SchemaProperties, parentId?: string) {
+    renderObject(properties: EntityProperties, parentId?: string) {
         return (
             <div className={'entity-mapper-properties'}>
                 {Object.entries(properties).map(([id, entry], ix) => {
@@ -112,7 +105,7 @@ export class EntityMapper extends React.Component<
         );
     }
 
-    renderEntry(id: string, entry: SchemaEntry): React.ReactNode {
+    renderEntry(id: string, entry: EntityProperty): React.ReactNode {
         switch (entry.type) {
             case 'object':
                 if (entry.properties) {

@@ -1,8 +1,9 @@
-import { Dimensions, Point, Size } from '@kapeta/ui-web-types';
+import { Point, Size } from '@kapeta/ui-web-types';
 import { DOMElement, toDOMElement } from '@kapeta/ui-web-utils';
 import { DraggableContext } from './DraggableContext';
 
 import './Draggable.less';
+import { Dimensions } from '@kapeta/schemas';
 
 const MIN_MOVE_BEFORE_DRAG = 5;
 

@@ -1,6 +1,6 @@
 {
     "name": "@kapeta/ui-web-components",
-    "version": "0.0.125",
+    "version": "0.0.127",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
     "types": "dist/index.d.ts",
@@ -42,10 +42,11 @@
         "react-dom": ">=18"
     },
     "devDependencies": {
+        "@jest/globals": "^29.1.2",
+        "@kapeta/schemas": "<2",
         "@kapeta/ui-web-context": "<2",
         "@kapeta/ui-web-types": "<2",
         "@kapeta/ui-web-utils": "<2",
-        "@jest/globals": "^29.1.2",
         "@monaco-editor/react": "^4.4.6",
         "@rollup/plugin-commonjs": "^21.0.1",
         "@rollup/plugin-node-resolve": "^13.3.0",

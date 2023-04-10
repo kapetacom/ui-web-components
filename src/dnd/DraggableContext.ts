@@ -1,4 +1,4 @@
-import { Dimensions } from '@kapeta/ui-web-types';
+import { Dimensions } from '@kapeta/schemas';
 import { DOMElement } from '@kapeta/ui-web-utils';
 
 export interface DraggableContext<T> {

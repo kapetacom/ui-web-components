@@ -2,11 +2,6 @@ import React from 'react';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 
-import {
-    SchemaEntity,
-    SchemaEntityType,
-    SchemaEntryType,
-} from '@kapeta/ui-web-types';
 import { Modal, ModalSize } from '../../modal/Modal';
 import { EntityForm } from '../../entities/EntityForm';
 import { FormContainer } from '../FormContainer';
@@ -16,17 +11,18 @@ import { EntityFormModel } from '../../entities/EntityFormModel';
 import './EntityPicker.less';
 import { FormSelect } from '../inputs/FormSelect';
 import { Checkbox } from '../Checkbox';
+import {Entity, EntityType, EntityValueType } from '@kapeta/schemas';
 
 const CREATE_VALUE = '__create__';
 
 interface EntityPickerProps {
     name: string;
-    value: SchemaEntryType;
-    onChange: (a: SchemaEntryType) => void;
+    value: EntityValueType;
+    onChange: (a: EntityValueType) => void;
     allowVoid?: boolean;
     allowObject?: boolean;
     entities?: string[];
-    onEntityCreated?: (entity: SchemaEntity) => void;
+    onEntityCreated?: (entity: Entity) => void;
     label?: string;
     help?: string;
 }
@@ -54,7 +50,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         if (typeof value === 'string') {
             stringName = value;
         } else if (value) {
-            stringName = value.$ref;
+            stringName = value.ref;
         }
         const isList = stringName.endsWith('[]');
         if (isList) {
@@ -72,9 +68,9 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
             value += '[]';
         }
 
-        if (value.startsWith('$ref:')) {
+        if (value.startsWith('ref:')) {
             this.props.onChange({
-                $ref: value.substr(5),
+                ref: value.substring(5),
             });
         } else {
             this.props.onChange(value);
@@ -115,7 +111,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
 
         this.createEntityModal.open();
         this.newEntity = new EntityFormModel({
-            type: SchemaEntityType.DTO,
+            type: EntityType.Dto,
             name: 'NewEntity',
             properties: {},
         });
@@ -132,7 +128,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         }
 
         const parsedValue = this.asValue();
-        parsedValue.type = '$ref:' + this.newEntity.name;
+        parsedValue.type = 'ref:' + this.newEntity.name;
 
         this.handleOnChange(parsedValue);
     };
@@ -147,9 +143,9 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         if (
             typeof this.props.value !== 'string' &&
             this.props.value &&
-            this.props.value.$ref
+            this.props.value.ref
         ) {
-            currentType = '$ref:' + currentType;
+            currentType = 'ref:' + currentType;
         }
 
         let options: { [key: string]: string } = {
@@ -172,7 +168,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         }
         if (this.props.entities) {
             this.props.entities.forEach((item, ix) => {
-                options[item] = '$ref:' + item;
+                options[item] = 'ref:' + item;
             });
         }
         return (

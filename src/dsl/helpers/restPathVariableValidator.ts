@@ -1,6 +1,6 @@
 import { DSLMethod, DSLParameter, toStandardType } from '../interfaces';
 import { REST_METHOD_ANNOTATIONS, STRINGABLE_TYPES } from '../types';
-import { isStringableType } from '@kapeta/ui-web-types';
+import { isStringableType } from '@kapeta/schemas';
 
 /**
  * Validates that REST methods contain valid path variables both in the path definition
