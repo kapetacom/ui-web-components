@@ -35,7 +35,7 @@
         "@kapeta/ui-web-types": "<2",
         "@kapeta/ui-web-utils": "<2",
         "guid-typescript": "*",
-        "lodash": ">=4",
+        "lodash": ">=git stat4",
         "mobx": ">=6",
         "mobx-react": ">=6",
         "react": ">=18",
