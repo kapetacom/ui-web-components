@@ -160,36 +160,15 @@ describe('DSLConverters', () => {
                 properties: {
                     tags: {
                         description: 'Tags',
-                        type: 'array',
-                        items: {
-                            type: 'string',
-                            properties: null,
-                        },
+                        type: 'string[]'
                     },
                     children: {
                         description: 'Children',
-                        type: 'array',
-                        items: {
-                            type: 'object',
-                            properties: {
-                                id: {
-                                    type: 'string',
-                                    description: undefined,
-                                    properties: null,
-                                },
-                            },
-                        },
+                        type: 'Node[]',
                     },
                     parent: {
                         description: 'Parent',
-                        type: 'object',
-                        properties: {
-                            id: {
-                                type: 'string',
-                                description: undefined,
-                                properties: null,
-                            },
-                        },
+                        type: 'Node'
                     },
                 },
             };
@@ -205,26 +184,14 @@ describe('DSLConverters', () => {
                         description: 'Tags',
                     },
                     {
-                        type: { name: 'object', list: true },
+                        type: { name: 'Node', list: true },
                         name: 'children',
-                        description: 'Children',
-                        properties: [
-                            {
-                                type: 'string',
-                                name: 'id',
-                            },
-                        ],
+                        description: 'Children'
                     },
                     {
-                        type: 'object',
+                        type: 'Node',
                         name: 'parent',
-                        description: 'Parent',
-                        properties: [
-                            {
-                                type: 'string',
-                                name: 'id',
-                            },
-                        ],
+                        description: 'Parent'
                     },
                 ],
             });
@@ -234,7 +201,6 @@ describe('DSLConverters', () => {
     describe('methods', () => {
         test('can convert methods without arguments or annotations to schema', () => {
             const methods: DSLMethod[] = [
-                // @ts-ignore
                 {
                     type: DSLEntityType.METHOD,
                     name: 'test',
@@ -330,7 +296,7 @@ describe('DSLConverters', () => {
                     path: '/path',
                     arguments: {
                         tags: {
-                            type: {type: 'string[]'},
+                            type: 'string[]',
                             transport: 'QUERY',
                         },
                     },
@@ -342,7 +308,7 @@ describe('DSLConverters', () => {
                     path: '/path',
                     arguments: {
                         body: {
-                            type: { ref: 'Test[]' },
+                            ref: 'Test[]' ,
                             transport: 'BODY',
                         },
                     },

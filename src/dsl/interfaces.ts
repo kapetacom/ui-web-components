@@ -56,7 +56,7 @@ export interface DSLDataType extends DSLRichEntity {
 export interface DSLMethod extends DSLRichEntity {
     type: DSLEntityType.METHOD;
     returnType: DSLType;
-    parameters: DSLParameter[];
+    parameters?: DSLParameter[];
 }
 
 export interface DSLComment extends DSLEntityBase {

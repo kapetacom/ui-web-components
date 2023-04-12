@@ -8,14 +8,14 @@ import {
 import {
     HTTPMethod,
     HTTPTransport,
-    RESTMethod,
+    RESTMethod, TypeLike,
 } from '@kapeta/ui-web-types';
 
 import {
     Entity,
     EntityProperties,
     EntityType,
-    EntityProperty
+    EntityProperty, isList
 } from '@kapeta/schemas';
 
 import { BUILT_IN_TYPES } from './types';
@@ -49,14 +49,14 @@ export namespace DSLConverters {
         return type.name + (type.list ? '[]' : '');
     }
 
-    export function fromSchemaType(type: EntityProperty): string {
-        if (!type ||type.type === '') {
+    export function fromSchemaType(type: TypeLike): string {
+        if (!type || type.type === '') {
             return 'void';
         }
         return type && type.ref ? type.ref : type.type;
     }
 
-    export function toSchemaType(dslType: DSLType): EntityProperty {
+    export function toSchemaType(dslType: DSLType): TypeLike {
         const type = fromDSLType(dslType);
         let onlyType = type;
 
@@ -137,17 +137,15 @@ export namespace DSLConverters {
         return Object.entries(properties).map(([name, value]:[string,EntityProperty]): DSLDataTypeProperty => {
                 const stringType = fromSchemaType(value);
 
-                if (stringType === 'array') {
+                if (isList(value)) {
+                    const typeName = stringType.substring(0, stringType.length - 2);
                     return {
                         name,
                         description: value.description,
                         type: {
-                            name: fromSchemaType(value.items),
+                            name: typeName,
                             list: true,
-                        },
-                        properties: value.items?.properties
-                            ? fromSchemaProperties(value.items?.properties)
-                            : undefined,
+                        }
                     };
                 }
 
@@ -251,7 +249,7 @@ export namespace DSLConverters {
                     ? Object.entries(method.arguments).map(([name, arg]) => {
                           return {
                               name,
-                              type: asDSLType(fromSchemaType(arg.type)),
+                              type: asDSLType(fromSchemaType(arg)),
                               annotations: arg.transport
                                   ? [
                                         {
