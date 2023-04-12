@@ -1,13 +1,13 @@
 import { makeObservable, observable } from 'mobx';
 import { Guid } from 'guid-typescript';
-import {Entity, EntityDTO, EntityProperties, EntityProperty, EntityType, EntityValueType } from '@kapeta/schemas';
+import {EntityDTO, EntityProperties, EntityProperty, EntityType } from '@kapeta/schemas';
 
 
 export interface SchemaEntryEdit {
     uid: string;
     error?: string;
     id: string;
-    type: EntityValueType;
+    type: EntityProperty;
     items?: SchemaEntryEdit;
     properties?: SchemaEntryEdit[];
     required?: string[];
@@ -20,16 +20,18 @@ export interface SchemaEntityEdit {
 }
 
 function toEditEntry(fieldId: string, original: EntityProperty): SchemaEntryEdit {
+    const newEntry = { ...original };
+    delete newEntry.items;
+    delete newEntry.properties;
+    const items = original.items ? toEditEntry(fieldId + '[]', original.items) : undefined;
+    const props = original.properties ? toEditProperties(original.properties) : undefined;
     return {
         uid: Guid.create().toString(),
-        ...original,
-        items: original.items
-            ? toEditEntry(fieldId + '[]', original.items)
-            : undefined,
-        properties: original.properties
-            ? toEditProperties(original.properties)
-            : undefined,
+        type: original,
         id: fieldId,
+        items: items,
+        properties: props,
+
     };
 }
 

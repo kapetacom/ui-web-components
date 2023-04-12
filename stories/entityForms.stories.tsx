@@ -7,9 +7,10 @@ import {
     EntityPicker,
     EntityForm,
     EntityFormModel,
+    SchemaEntityEdit,
 } from '../src';
 import { EntityList } from '../src/entities/EntityList';
-import { SchemaEntryType } from '@kapeta/ui-web-types';
+import { EntityProperty, EntityType, toDTO } from '@kapeta/schemas';
 
 const EntityFrom = {
     name: {
@@ -25,10 +26,10 @@ const EntityFrom = {
         type: 'object',
         properties: {
             google: {
-                type: 'boolean',
+                type:  'boolean',
             },
             github: {
-                type: 'boolean',
+                type:  'boolean',
             },
         },
     },
@@ -76,9 +77,9 @@ let pickerState = new Store({
     },
 });
 
-const entity = { name: 'MyType', properties: EntityFrom };
+const entity = { name: 'MyType', properties: EntityFrom, type: EntityType.Dto};
 let entityFormState = new Store({
-    entity: new EntityFormModel(entity),
+    entity: new EntityFormModel(toDTO(entity)),
 });
 
 storiesOf('Entity Forms', module)
@@ -110,9 +111,9 @@ storiesOf('Entity Forms', module)
                 <EntityPicker
                     name={'test'}
                     value={props.value}
-                    onChange={(eventValue: SchemaEntryType) => {
+                    onChange={(eventValue: EntityProperty) => {
                         pickerState.state.handleValueUpdate(
-                            eventValue.toString()
+                            eventValue.type
                         );
                     }}
                     onEntityCreated={(newEntity) => {

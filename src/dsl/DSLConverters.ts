@@ -15,7 +15,6 @@ import {
     Entity,
     EntityProperties,
     EntityType,
-    EntityValueType,
     EntityProperty
 } from '@kapeta/schemas';
 
@@ -50,14 +49,14 @@ export namespace DSLConverters {
         return type.name + (type.list ? '[]' : '');
     }
 
-    export function fromSchemaType(type: any): string {
-        if (!type) {
+    export function fromSchemaType(type: EntityProperty): string {
+        if (!type ||type.type === '') {
             return 'void';
         }
-        return type && type.ref ? type.ref : type;
+        return type && type.ref ? type.ref : type.type;
     }
 
-    export function toSchemaType(dslType: DSLType): EntityValueType {
+    export function toSchemaType(dslType: DSLType): EntityProperty {
         const type = fromDSLType(dslType);
         let onlyType = type;
 
@@ -67,18 +66,18 @@ export namespace DSLConverters {
         }
 
         if (!onlyType) {
-            return '';
+            return {type: ''};
         }
 
         if (onlyType === 'object') {
-            return type;
+            return {type: type};
         }
 
         if (BUILT_IN_TYPES.indexOf(onlyType) === -1) {
             return { ref: type };
         }
 
-        return type;
+        return {type: type};
     }
 
     export function toSchemaEntity(entity: DSLEntity): Entity {
@@ -117,16 +116,16 @@ export namespace DSLConverters {
                     values: entity.values,
                 };
 
-            default:
             case EntityType.Dto:
                 return {
                     type: DSLEntityType.DATATYPE,
                     name: entity.name,
                     description: entity.description,
                     properties: entity.properties
-                        ? fromSchemaProperties(entity.properties)
-                        : [],
+                    ? fromSchemaProperties(entity.properties)
+                    : [],
                 };
+            default:
         }
     }
 
@@ -136,14 +135,14 @@ export namespace DSLConverters {
         }
 
         return Object.entries(properties).map(([name, value]:[string,EntityProperty]): DSLDataTypeProperty => {
-                const stringType = fromSchemaType(value.type);
+                const stringType = fromSchemaType(value);
 
                 if (stringType === 'array') {
                     return {
                         name,
                         description: value.description,
                         type: {
-                            name: fromSchemaType(value.items?.type),
+                            name: fromSchemaType(value.items),
                             list: true,
                         },
                         properties: value.items?.properties
@@ -183,9 +182,9 @@ export namespace DSLConverters {
             } else {
                 //Normally this includes [] if its a list - we want to strip that off for properties
                 //To not create a "List of Lists"
-                if (typeof type === 'string') {
-                    if (type.endsWith('[]')) {
-                        type = type.substring(0, type.length - 2);
+                if (type.type) {
+                    if (type.type.endsWith('[]')) {
+                        type = {type: type.type.substring(0, type.type.length - 2)};
                     }
                 } else {
                     if (type.ref.endsWith('[]')) {

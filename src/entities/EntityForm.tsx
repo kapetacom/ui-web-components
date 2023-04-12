@@ -21,7 +21,7 @@ import { SortableContainer } from '../dnd/SortableContainer';
 import { SortableItem } from '../dnd/SortableItem';
 import { FormInput, Type } from '../form/inputs/FormInput';
 import { FormContainer } from '../form/FormContainer';
-import {EntityType, typeName } from '@kapeta/schemas';
+import {EntityProperty, EntityType, typeName } from '@kapeta/schemas';
 
 function toTypeName(entry: SchemaEntryEdit): string {
     let type = typeName(entry.type);
@@ -43,11 +43,11 @@ function toTypeName(entry: SchemaEntryEdit): string {
 }
 
 function isObject(entry: SchemaEntryEdit): boolean {
-    if (entry.type === 'object' || entry.type === 'object[]') {
+    if (entry.type.type === 'object' || entry.type.type === 'object[]') {
         return true;
     }
 
-    if (entry.type === 'array' && entry.items) {
+    if (entry.type.type === 'array' && entry.items) {
         return isObject(entry.items);
     }
 
@@ -86,7 +86,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
 
     @action
     private updateType(field: SchemaEntryEdit, type: EntityType) {
-        field.type = type;
+        field.type.type = type;
         this.handleChange();
     }
 
@@ -112,7 +112,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
         const field = {
             uid: Guid.create().toString(),
             id: 'field_' + properties.length,
-            type: 'string',
+            type: {type: 'string'},
         };
 
         this.validateField(properties, field, field.id);
@@ -218,7 +218,6 @@ export class EntityForm extends React.Component<EntityFormProps> {
             >
                 <div className={'field-list-container'}>
                     {properties.map((field, index) => {
-                        let type = toTypeName(field);
                         const objectType = isObject(field);
                         let key = parentId
                             ? parentId + '.' + field.id
@@ -239,8 +238,8 @@ export class EntityForm extends React.Component<EntityFormProps> {
                         });
 
                         const isFirstAttribute =
-                            (field.type === 'object' ||
-                                field.type === 'object[]') &&
+                            (field.type.type === 'object' ||
+                                field.type.type === 'object[]') &&
                             (!field.properties ||
                                 field.properties.length === 0);
 
@@ -311,14 +310,14 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                         >
                                             <EntityPicker
                                                 name={'fieldType'}
-                                                value={type}
+                                                value={field.type}
                                                 allowObject={true}
                                                 onChange={(
-                                                    value: EntityType
+                                                    value: EntityProperty
                                                 ) => {
                                                     this.updateType(
                                                         field,
-                                                        value
+                                                        EntityType.Dto
                                                     );
                                                 }}
                                             />
