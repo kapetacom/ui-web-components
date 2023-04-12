@@ -11,14 +11,14 @@ import { EntityFormModel } from '../../entities/EntityFormModel';
 import './EntityPicker.less';
 import { FormSelect } from '../inputs/FormSelect';
 import { Checkbox } from '../Checkbox';
-import {Entity, EntityType, EntityValueType } from '@kapeta/schemas';
+import {Entity, EntityType, EntityProperty } from '@kapeta/schemas';
 
 const CREATE_VALUE = '__create__';
 
 interface EntityPickerProps {
     name: string;
-    value: EntityValueType;
-    onChange: (a: EntityValueType) => void;
+    value: EntityProperty;
+    onChange: (a: EntityProperty) => void;
     allowVoid?: boolean;
     allowObject?: boolean;
     entities?: string[];
@@ -47,14 +47,14 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
     private asValue = (): ParsedValue => {
         const value = this.props.value;
         let stringName = '';
-        if (typeof value === 'string') {
-            stringName = value;
+        if (value.type) {
+            stringName = value.type;
         } else if (value) {
             stringName = value.ref;
         }
         const isList = stringName.endsWith('[]');
         if (isList) {
-            stringName = stringName.substr(0, stringName.length - 2);
+            stringName = stringName.substring(0, stringName.length - 2);
         }
         return {
             list: isList,
@@ -73,7 +73,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
                 ref: value.substring(5),
             });
         } else {
-            this.props.onChange(value);
+            this.props.onChange({type: value});
         }
     };
 
@@ -189,7 +189,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
                         <Checkbox
                             onClick={this.toggleList}
                             value={parsedValue.list}
-                            disabled={this.props.value === ''}
+                            disabled={this.props.value.type === ''}
                         />
                     )}
 

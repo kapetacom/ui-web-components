@@ -1,11 +1,11 @@
-import {EntityDTO, EntityProperties, EntityProperty, EntityValueType, isCompatibleTypes, typeName } from '@kapeta/schemas';
+import {EntityDTO, EntityProperties, EntityProperty, isCompatibleTypes, typeName } from '@kapeta/schemas';
 import React from 'react';
 
 import { FormSelect } from '../form/inputs/FormSelect';
 
 interface IDEntry {
     id: string;
-    type: EntityValueType;
+    type: EntityProperty;
 }
 
 type IDList = IDEntry[];
@@ -85,7 +85,7 @@ export class EntityMapper extends React.Component<
         return [
             {
                 id: entryId,
-                type: entry.type,
+                type: entry,
             },
         ];
     }
@@ -119,18 +119,16 @@ export class EntityMapper extends React.Component<
 
                 return this.renderEntry(id + '[]', items);
         }
-
         const targetFields = this.toTargetFlatList(this.props.from).filter(
             (targetField) => {
                 return isCompatibleTypes(
                     targetField.type,
-                    entry.type,
+                    entry,
                     this.props.fromEntities,
                     this.props.toEntities
                 );
             }
         );
-
         let targetFieldsList: string[] = targetFields.map(
             (target) => `${target.id}:${typeName(target.type)}`
         );

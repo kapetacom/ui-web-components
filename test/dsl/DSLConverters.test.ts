@@ -24,16 +24,16 @@ describe('DSLConverters', () => {
         });
 
         test('can convert from SchemaType', () => {
-            expect(DSLConverters.fromSchemaType('')).toBe('void');
-            expect(DSLConverters.fromSchemaType('string')).toBe('string');
+            expect(DSLConverters.fromSchemaType({type: ''})).toBe('void');
+            expect(DSLConverters.fromSchemaType({type: 'string'})).toBe('string');
             expect(DSLConverters.fromSchemaType({ ref: 'MyClass' })).toEqual(
                 'MyClass'
             );
         });
 
         test('can convert to SchemaType', () => {
-            expect(DSLConverters.toSchemaType('')).toBe('void');
-            expect(DSLConverters.toSchemaType('string')).toBe('string');
+            expect(DSLConverters.toSchemaType('')).toStrictEqual({type: "void"});
+            expect(DSLConverters.toSchemaType('string')).toStrictEqual({type: 'string'});
             expect(
                 DSLConverters.toSchemaType({ name: 'MyClass', list: true })
             ).toEqual({ ref: 'MyClass[]' });
@@ -119,7 +119,7 @@ describe('DSLConverters', () => {
                         description: 'Tags',
                         type: 'array',
                         items: {
-                            type: 'string',
+                            type: {type: 'string'},
                             properties: null,
                         },
                     },
@@ -127,10 +127,10 @@ describe('DSLConverters', () => {
                         description: 'Children',
                         type: 'array',
                         items: {
-                            type: 'object',
+                            type: {type: 'object'},
                             properties: {
                                 id: {
-                                    type: 'string',
+                                    type: {type: 'string'},
                                     description: undefined,
                                     properties: null,
                                 },
@@ -139,10 +139,10 @@ describe('DSLConverters', () => {
                     },
                     parent: {
                         description: 'Parent',
-                        type: 'object',
+                        type: {type: 'object'},
                         properties: {
                             id: {
-                                type: 'string',
+                                type: {type: 'string'},
                                 description: undefined,
                                 properties: null,
                             },
@@ -248,7 +248,7 @@ describe('DSLConverters', () => {
                     method: 'GET',
                     path: '/',
                     arguments: {},
-                    responseType: 'string[]',
+                    responseType: {type: 'string[]'},
                 },
             });
         });
@@ -301,11 +301,11 @@ describe('DSLConverters', () => {
                     path: '/path',
                     arguments: {
                         tags: {
-                            type: 'string[]',
+                            type: {type: 'string[]'},
                             transport: 'QUERY',
                         },
                     },
-                    responseType: 'string[]',
+                    responseType: {type: 'string[]'},
                 },
                 complex: {
                     description: 'Complex',
@@ -330,11 +330,11 @@ describe('DSLConverters', () => {
                     path: '/path',
                     arguments: {
                         tags: {
-                            type: 'string[]',
+                            type: {type: 'string[]'},
                             transport: 'QUERY',
                         },
                     },
-                    responseType: 'string[]',
+                    responseType:{type: 'string[]'},
                 },
                 complex: {
                     description: 'Complex',
