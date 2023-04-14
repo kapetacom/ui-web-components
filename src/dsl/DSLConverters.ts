@@ -167,12 +167,12 @@ export namespace DSLConverters {
         const out = {};
 
         properties.forEach((property) => {
-            let type = toSchemaType(property.type);
+            let typeLike = toSchemaType(property.type);
 
             if (typeof property.type === 'string' || !property.type.list) {
                 out[property.name] = {
+                    ...typeLike,
                     description: property.description,
-                    type,
                     properties: property.properties
                         ? toSchemaProperties(property.properties)
                         : null,
@@ -180,15 +180,15 @@ export namespace DSLConverters {
             } else {
                 //Normally this includes [] if its a list - we want to strip that off for properties
                 //To not create a "List of Lists"
-                if (type.type) {
-                    if (type.type.endsWith('[]')) {
-                        type = {type: type.type.substring(0, type.type.length - 2)};
+                if (typeLike.type) {
+                    if (typeLike.type.endsWith('[]')) {
+                        typeLike = {type: typeLike.type.substring(0, typeLike.type.length - 2)};
                     }
                 } else {
-                    if (type.ref.endsWith('[]')) {
-                        type.ref = type.ref.substring(
+                    if (typeLike.ref.endsWith('[]')) {
+                        typeLike.ref = typeLike.ref.substring(
                             0,
-                            type.ref.length - 2
+                            typeLike.ref.length - 2
                         );
                     }
                 }
@@ -196,7 +196,7 @@ export namespace DSLConverters {
                     type: 'array',
                     description: property.description,
                     items: {
-                        type,
+                        ...typeLike,
                         properties: property.properties
                             ? toSchemaProperties(property.properties)
                             : null,

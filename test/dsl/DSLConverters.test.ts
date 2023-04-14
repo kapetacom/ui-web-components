@@ -119,7 +119,7 @@ describe('DSLConverters', () => {
                         description: 'Tags',
                         type: 'array',
                         items: {
-                            type: {type: 'string'},
+                            type: 'string',
                             properties: null,
                         },
                     },
@@ -127,10 +127,10 @@ describe('DSLConverters', () => {
                         description: 'Children',
                         type: 'array',
                         items: {
-                            type: {type: 'object'},
+                            type: 'object',
                             properties: {
                                 id: {
-                                    type: {type: 'string'},
+                                    type: 'string',
                                     description: undefined,
                                     properties: null,
                                 },
@@ -139,10 +139,10 @@ describe('DSLConverters', () => {
                     },
                     parent: {
                         description: 'Parent',
-                        type: {type: 'object'},
+                        type:  'object',
                         properties: {
                             id: {
-                                type: {type: 'string'},
+                                type: 'string',
                                 description: undefined,
                                 properties: null,
                             },
