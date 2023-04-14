@@ -17,7 +17,6 @@ function minMaxAgeCheck(name: string, value: number) {
     }
 }
 
-
 const InitialFormValue = {
     name: 'Henrik',
     age: 39,
@@ -32,7 +31,6 @@ const AltFormValue = {
     select_multi: ['one'],
 };
 
-
 export default {
     title: 'Forms',
 };
@@ -41,7 +39,6 @@ export const SimpleForm = () => {
     const [formData, setFormData] = useState({});
 
     const [initialValue, setInitialValue] = useState(InitialFormValue);
-
 
     return (
         <div style={{ width: '550px' }}>
@@ -380,9 +377,7 @@ export const FormNavigationOnSubmit = () => {
     return (
         <div style={{ width: '550px' }}>
             <form method={'GET'}>
-                <FormContainer
-                    initialValue={InitialFormValue}
-                >
+                <FormContainer initialValue={InitialFormValue}>
                     <FormField name={'name'} label={'Name'} />
                     <FormField
                         name={'age'}

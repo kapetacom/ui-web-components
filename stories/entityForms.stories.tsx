@@ -26,10 +26,10 @@ const EntityFrom = {
         type: 'object',
         properties: {
             google: {
-                type:  'boolean',
+                type: 'boolean',
             },
             github: {
-                type:  'boolean',
+                type: 'boolean',
             },
         },
     },
@@ -77,7 +77,7 @@ let pickerState = new Store({
     },
 });
 
-const entity = { name: 'MyType', properties: EntityFrom, type: EntityType.Dto};
+const entity = { name: 'MyType', properties: EntityFrom, type: EntityType.Dto };
 let entityFormState = new Store({
     entity: new EntityFormModel(toDTO(entity)),
 });
@@ -112,9 +112,7 @@ storiesOf('Entity Forms', module)
                     name={'test'}
                     value={props.value}
                     onChange={(eventValue: EntityProperty) => {
-                        pickerState.state.handleValueUpdate(
-                            eventValue.type
-                        );
+                        pickerState.state.handleValueUpdate(eventValue.type);
                     }}
                     onEntityCreated={(newEntity) => {
                         let entities: string[] = [

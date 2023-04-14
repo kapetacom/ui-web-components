@@ -59,7 +59,6 @@ export class FormContainer extends React.Component<Props, State> {
             },
         };
 
-
         this.state = {
             formData: props.initialValue ? { ...props.initialValue } : {},
             readyStates: {},
@@ -67,7 +66,6 @@ export class FormContainer extends React.Component<Props, State> {
             valid: true,
         };
     }
-
 
     public getValue(name: string): any {
         if (_.has(this.state.formData, name)) {
@@ -241,7 +239,9 @@ export class FormContainer extends React.Component<Props, State> {
         const originalData = this.props.initialValue || {};
         Object.entries(this.resetListeners).forEach(([name, listeners]) => {
             listeners.forEach((listener) => {
-                listener(_.has(originalData,name) ? _.get(originalData,name) : '');
+                listener(
+                    _.has(originalData, name) ? _.get(originalData, name) : ''
+                );
             });
         });
 
@@ -376,7 +376,7 @@ export class FormContainer extends React.Component<Props, State> {
         this.focusFirstUnready();
     }
 
-    componentDidUpdate(prevProps:Props) {
+    componentDidUpdate(prevProps: Props) {
         this.bindButtons();
 
         if (this.props.initialValue !== prevProps.initialValue) {

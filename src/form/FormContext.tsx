@@ -1,4 +1,4 @@
-import React, {Context, useContext, useEffect} from 'react';
+import React, { Context, useContext, useEffect } from 'react';
 import { FormContainer } from './FormContainer';
 
 export type ResetListener = (value: any) => void;
@@ -26,7 +26,10 @@ const defaultValue: FormContextData = {
 
 export const FormContext: FormContextType = React.createContext(defaultValue);
 
-export function useFormContextField<T = any>(fieldName: string, resetHandler?:ResetListener) {
+export function useFormContextField<T = any>(
+    fieldName: string,
+    resetHandler?: ResetListener
+) {
     const context = useContext(FormContext);
 
     if (resetHandler) {
@@ -39,7 +42,7 @@ export function useFormContextField<T = any>(fieldName: string, resetHandler?:Re
         return () => {
             //We mark fields as ready when they get detached
             context.onReadyStateChanged(fieldName, true);
-        }
+        };
     }, []);
 
     return {
@@ -54,6 +57,6 @@ export function useFormContextField<T = any>(fieldName: string, resetHandler?:Re
         },
         invalid() {
             context.onReadyStateChanged(fieldName, false);
-        }
+        },
     };
 }

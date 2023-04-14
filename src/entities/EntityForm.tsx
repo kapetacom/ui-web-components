@@ -2,7 +2,6 @@ import React from 'react';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 
-
 import { toClass } from '@kapeta/ui-web-utils';
 
 import { EntityPicker } from '../form/field-handlers/EntityPicker';
@@ -21,7 +20,7 @@ import { SortableContainer } from '../dnd/SortableContainer';
 import { SortableItem } from '../dnd/SortableItem';
 import { FormInput, Type } from '../form/inputs/FormInput';
 import { FormContainer } from '../form/FormContainer';
-import {EntityProperty, EntityType, typeName } from '@kapeta/schemas';
+import { EntityProperty, EntityType, typeName } from '@kapeta/schemas';
 
 function toTypeName(entry: SchemaEntryEdit): string {
     let type = typeName(entry.type);
@@ -112,7 +111,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
         const field = {
             uid: Guid.create().toString(),
             id: 'field_' + properties.length,
-            type: {type: 'string'},
+            type: { type: 'string' },
         };
 
         this.validateField(properties, field, field.id);

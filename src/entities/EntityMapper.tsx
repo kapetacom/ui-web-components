@@ -1,4 +1,10 @@
-import {EntityDTO, EntityProperties, EntityProperty, isCompatibleTypes, typeName } from '@kapeta/schemas';
+import {
+    EntityDTO,
+    EntityProperties,
+    EntityProperty,
+    isCompatibleTypes,
+    typeName,
+} from '@kapeta/schemas';
 import React from 'react';
 
 import { FormSelect } from '../form/inputs/FormSelect';

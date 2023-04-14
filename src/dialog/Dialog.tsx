@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 
-import {
-    createHexagonPath,
-    Orientation,
-    toClass,
-} from '@kapeta/ui-web-utils';
+import { createHexagonPath, Orientation, toClass } from '@kapeta/ui-web-utils';
 
 import { DialogControl } from './DialogControl';
 import {

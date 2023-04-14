@@ -8,14 +8,16 @@ import {
 import {
     HTTPMethod,
     HTTPTransport,
-    RESTMethod, TypeLike,
+    RESTMethod,
+    TypeLike,
 } from '@kapeta/ui-web-types';
 
 import {
     Entity,
     EntityProperties,
     EntityType,
-    EntityProperty, isList
+    EntityProperty,
+    isList,
 } from '@kapeta/schemas';
 
 import { BUILT_IN_TYPES } from './types';
@@ -66,18 +68,18 @@ export namespace DSLConverters {
         }
 
         if (!onlyType) {
-            return {type: ''};
+            return { type: '' };
         }
 
         if (onlyType === 'object') {
-            return {type: type};
+            return { type: type };
         }
 
         if (BUILT_IN_TYPES.indexOf(onlyType) === -1) {
             return { ref: type };
         }
 
-        return {type: type};
+        return { type: type };
     }
 
     export function toSchemaEntity(entity: DSLEntity): Entity {
@@ -122,30 +124,36 @@ export namespace DSLConverters {
                     name: entity.name,
                     description: entity.description,
                     properties: entity.properties
-                    ? fromSchemaProperties(entity.properties)
-                    : [],
+                        ? fromSchemaProperties(entity.properties)
+                        : [],
                 };
             default:
         }
     }
 
-    export function fromSchemaProperties(properties: EntityProperties): DSLDataTypeProperty[] {
+    export function fromSchemaProperties(
+        properties: EntityProperties
+    ): DSLDataTypeProperty[] {
         if (!properties) {
             return [];
         }
 
-        return Object.entries(properties).map(([name, value]:[string,EntityProperty]): DSLDataTypeProperty => {
+        return Object.entries(properties).map(
+            ([name, value]: [string, EntityProperty]): DSLDataTypeProperty => {
                 const stringType = fromSchemaType(value);
 
                 if (isList(value)) {
-                    const typeName = stringType.substring(0, stringType.length - 2);
+                    const typeName = stringType.substring(
+                        0,
+                        stringType.length - 2
+                    );
                     return {
                         name,
                         description: value.description,
                         type: {
                             name: typeName,
                             list: true,
-                        }
+                        },
                     };
                 }
 
@@ -182,7 +190,12 @@ export namespace DSLConverters {
                 //To not create a "List of Lists"
                 if (typeLike.type) {
                     if (typeLike.type.endsWith('[]')) {
-                        typeLike = {type: typeLike.type.substring(0, typeLike.type.length - 2)};
+                        typeLike = {
+                            type: typeLike.type.substring(
+                                0,
+                                typeLike.type.length - 2
+                            ),
+                        };
                     }
                 } else {
                     if (typeLike.ref.endsWith('[]')) {
@@ -280,7 +293,7 @@ export namespace DSLConverters {
             if (method.parameters) {
                 method.parameters.forEach((arg) => {
                     args[arg.name] = {
-                        type: toSchemaType(arg.type),
+                        ...toSchemaType(arg.type),
                         transport: toSchemaTransport(
                             arg.annotations && arg.annotations.length > 0
                                 ? arg.annotations[0].type

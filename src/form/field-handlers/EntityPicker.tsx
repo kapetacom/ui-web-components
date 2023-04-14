@@ -11,7 +11,7 @@ import { EntityFormModel } from '../../entities/EntityFormModel';
 import './EntityPicker.less';
 import { FormSelect } from '../inputs/FormSelect';
 import { Checkbox } from '../Checkbox';
-import {Entity, EntityType, EntityProperty } from '@kapeta/schemas';
+import { Entity, EntityType, EntityProperty } from '@kapeta/schemas';
 
 const CREATE_VALUE = '__create__';
 
@@ -73,7 +73,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
                 ref: value.substring(5),
             });
         } else {
-            this.props.onChange({type: value});
+            this.props.onChange({ type: value });
         }
     };
 
