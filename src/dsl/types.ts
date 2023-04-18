@@ -33,7 +33,10 @@ export const METHOD_ANNOTATIONS = [...REST_METHOD_ANNOTATIONS];
 
 export const PARAMETER_ANNOTATIONS = ['@Path', '@Header', '@Query', '@Body'];
 
+export const FIELD_ANNOTATIONS = ['@secret', '@required'];
+
 export const BUILT_IN_ANNOTATIONS = [
     ...METHOD_ANNOTATIONS,
     ...PARAMETER_ANNOTATIONS,
+    ...FIELD_ANNOTATIONS
 ];

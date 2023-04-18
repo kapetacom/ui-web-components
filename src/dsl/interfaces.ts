@@ -12,9 +12,15 @@ export interface DSLTypeComplex {
 
 export type DSLType = DSLTypeComplex | string;
 
+export interface DSLDefaultValue {
+    type: 'enum'|'literal';
+    value: string|number|boolean|null;
+}
+
 export interface DSLDataTypeProperty {
     type: DSLType;
     name: string;
+    defaultValue?: DSLDefaultValue|null;
     properties?: DSLDataTypeProperty[];
     annotations?: DSLAnnotation[];
     description?: string;

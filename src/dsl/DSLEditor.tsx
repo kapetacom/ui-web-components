@@ -4,7 +4,7 @@ import './DSLEditor.less';
 
 import Monaco from '@monaco-editor/react';
 import { editor } from 'monaco-editor';
-import { DSL_LANGUAGE_ID, DSLOptions, DSLResult } from './types';
+import {DSL_LANGUAGE_ID, DSLLanguageOptions, DSLOptions, DSLResult} from './types';
 
 import './DSLLanguage';
 import { DSLValidator } from './DSLValidator';
@@ -13,7 +13,7 @@ import { DSLWriter } from './DSLWriter';
 import { withAdditionalTypes } from './DSLLanguage';
 import { restPathVariableValidator } from './helpers/restPathVariableValidator';
 
-export interface DSLEditorProps extends DSLOptions {
+export interface DSLEditorProps extends DSLLanguageOptions {
     value?: DSLResult | string;
     readOnly?: boolean;
     onChange?: (structure: DSLResult) => any;
@@ -58,6 +58,11 @@ export const DSLEditor = (props: DSLEditorProps) => {
         types: props.types,
         validTypes: props.validTypes,
         validator: props.rest ? restPathVariableValidator : null,
+        fieldAnnotations: props.fieldAnnotations,
+        methodAnnotations: props.methodAnnotations,
+        ignoreSemantics: props.ignoreSemantics,
+        parameterAnnotations: props.parameterAnnotations,
+        typeAnnotations: props.typeAnnotations,
     };
 
     return (

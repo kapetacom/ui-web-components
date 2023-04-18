@@ -100,7 +100,13 @@ function toPropertyCode(data: DSLDataTypeProperty, indent = 0) {
         out.push(metaCode);
     }
 
-    out.push(prefix + data.name + ': ' + type);
+    let postfix = ''
+    if (data.defaultValue?.value) {
+        postfix = ' = ' + data.defaultValue.value;
+    }
+
+    out.push(prefix + data.name + ': ' + type + postfix);
+
     return out.join('\n');
 }
 
