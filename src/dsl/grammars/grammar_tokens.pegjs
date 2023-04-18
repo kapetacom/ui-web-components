@@ -41,7 +41,6 @@ expression
     / field_definition
     / method
     / enum_value
-    / variable_name
     / id
     / name
     / path
@@ -79,7 +78,6 @@ number
 	= [0-9]+ ( '.' [0-9]+ )?   { return {type: 'number', value: text()} }
 
 enum_value = value:(name '.' name) { return {type: 'enum_value', value} }
-variable_name = value:name { return {type: 'variable', value} }
 
 char
 	= [<{\[] { return {type: 'special_start', value: text()} }
