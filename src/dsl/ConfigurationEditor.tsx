@@ -3,13 +3,13 @@ import React from 'react';
 import { DSLEditor } from './DSLEditor';
 import {DSLResult, FIELD_ANNOTATIONS} from './types';
 
-export interface DataTypeEditorProps {
+export interface ConfigurationEditorProps {
     value?: DSLResult | string;
     onChange?: (structure: DSLResult) => any;
     validTypes?: string[];
 }
 
-export const ConfigurationEditor = (props: DataTypeEditorProps) => {
+export const ConfigurationEditor = (props: ConfigurationEditorProps) => {
     return (
         <DSLEditor
             types={true}
