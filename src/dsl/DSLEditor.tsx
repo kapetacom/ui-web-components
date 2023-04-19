@@ -16,6 +16,7 @@ import { restPathVariableValidator } from './helpers/restPathVariableValidator';
 export interface DSLEditorProps extends DSLLanguageOptions {
     value?: DSLResult | string;
     readOnly?: boolean;
+    validator?: (object: any) => void;
     onChange?: (structure: DSLResult) => any;
 }
 
@@ -57,7 +58,7 @@ export const DSLEditor = (props: DSLEditorProps) => {
         rest: props.rest,
         types: props.types,
         validTypes: props.validTypes,
-        validator: props.rest ? restPathVariableValidator : null,
+        validator: props.validator,
         fieldAnnotations: props.fieldAnnotations,
         methodAnnotations: props.methodAnnotations,
         ignoreSemantics: props.ignoreSemantics,

@@ -1,4 +1,4 @@
-import { DSLMethod, DSLParameter, toStandardType } from '../interfaces';
+import {DSLMethod, DSLParameter, PEGValidationEntity, toStandardType} from '../interfaces';
 import { REST_METHOD_ANNOTATIONS, STRINGABLE_TYPES } from '../types';
 import { isStringableType } from '@kapeta/schemas';
 
@@ -7,15 +7,18 @@ import { isStringableType } from '@kapeta/schemas';
  * as well as uses all path variables defined
  * @param entity
  */
-export const restPathVariableValidator = (entity: DSLMethod) => {
+export const restPathVariableValidator = (entity: PEGValidationEntity<DSLMethod>) => {
     if (entity.type !== 'method') {
         return;
     }
-    if (!entity.annotations) {
+
+    const method = entity.data;
+
+    if (!method.annotations) {
         return;
     }
 
-    const restAnnotation = entity.annotations.find(
+    const restAnnotation = method.annotations.find(
         (a) => REST_METHOD_ANNOTATIONS.indexOf(a.type) > -1
     );
     if (!restAnnotation) {
@@ -62,7 +65,7 @@ export const restPathVariableValidator = (entity: DSLMethod) => {
     while ((result = rx.exec(path)) != null) {
         const [_, variableName, pattern] = result;
         pathVariables.push(variableName);
-        const parameter = entity.parameters?.find((parameter) => {
+        const parameter = method.parameters?.find((parameter) => {
             const pathVariableId = getPathVariableId(parameter);
             if (!pathVariableId) {
                 return null;
@@ -90,7 +93,7 @@ export const restPathVariableValidator = (entity: DSLMethod) => {
 
     //2. Validate that all path variable parameters has a corresponding variable in the path
 
-    entity.parameters?.forEach((parameter) => {
+    method.parameters?.forEach((parameter) => {
         const pathAnnotation = parameter.annotations?.find(
             (a) => a.type === '@Path'
         );

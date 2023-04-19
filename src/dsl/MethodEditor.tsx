@@ -2,6 +2,7 @@ import React from 'react';
 
 import { DSLEditor } from './DSLEditor';
 import { DSLResult } from './types';
+import {restPathVariableValidator} from "./helpers/restPathVariableValidator";
 
 export interface MethodEditorProps {
     value?: DSLResult | string;
@@ -16,6 +17,7 @@ export const MethodEditor = (props: MethodEditorProps) => {
             rest={props.restMethods}
             validTypes={props.validTypes}
             onChange={props.onChange}
+            validator={props.restMethods ? restPathVariableValidator : undefined}
             methods={true}
             types={false}
             value={props.value}

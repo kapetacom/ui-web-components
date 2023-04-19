@@ -13,8 +13,25 @@ export interface DSLTypeComplex {
 export type DSLType = DSLTypeComplex | string;
 
 export interface DSLDefaultValue {
-    type: 'enum'|'literal';
+    type: 'reference'|'literal';
     value: string|number|boolean|null;
+}
+
+export interface PEGLocationCoord {
+    offset: number
+    line: number
+    column: number
+}
+
+export interface PEGLocation {
+    start: PEGLocationCoord
+    end: PEGLocationCoord
+}
+
+export interface PEGValidationEntity<T = any> {
+    type: string
+    location: PEGLocation
+    data: T
 }
 
 export interface DSLDataTypeProperty {

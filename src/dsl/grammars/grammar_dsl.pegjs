@@ -169,8 +169,8 @@ fields =
 
 number = value:('-'? [0-9]+ ('.' [0-9]+)?) { return parseFloat(text()) }
 variable_name = value:([a-zA-Z][_a-zA-Z0-9]*) { return value }
-literal = value:('true' / 'false' / 'null' / number / string) {
-    let val = typeof value === 'number' ? value : JSON.stringify(value);
+literal = value:(number / string_quotes / 'true' / 'false' / 'null') {
+    let val = typeof value === 'string' ? JSON.stringify(value) : value;
     if (value === 'true') {
         val = true;
     } else if (value === 'false') {
@@ -180,12 +180,21 @@ literal = value:('true' / 'false' / 'null' / number / string) {
     }
     return {type: 'literal', value: val}
 }
-enum_value = value:(variable_name '.' variable_name) { return {type: 'enum', value: text()} }
+reference_value = value:(variable_name '.' variable_name) { return {type: 'reference', value: text()} }
 
-default_value = _ '=' _ value:(literal / enum_value) { return value }
+default_value = _ '=' _ value:(literal / reference_value) { return value }
 
 field = description:comments? annotations:field_annotation* name:id _ ':' _ type:fieldType defaultValue:default_value? {
-    return {name,annotations,description, ...type, defaultValue}
+
+    const out = {name,annotations,description, ...type, defaultValue};
+
+    validate({
+         type:'field',
+         location: location(),
+         data: out
+    });
+
+    return out;
 }
 
 fieldType
@@ -286,14 +295,19 @@ method "method"
         }
     }
 
+    const out = {
+        type:'method',
+        name: name.value,
+        description: description,
+        parameters: args,
+        returnType,
+        annotations
+    };
+
     validate({
          type:'method',
          location: location(),
-         name: name.value,
-         description: description,
-         parameters: args,
-         returnType,
-         annotations: annotations
+         data: out
     });
 
     args && args.forEach(data => delete data.location);
@@ -339,6 +353,10 @@ quote_single_char "character"
 
 quote_none_char "character"
     = !("'" / '"' / ')'  / ']' / "\\" / nl) char { return text() }
+
+string_quotes "string"
+	= '"' char:quote_double_char* '"' { return text() }
+    / "'" char:quote_single_char* "'" { return text() }
 
 string "string"
 	= '"' char:quote_double_char* '"' { return char.join('') }
