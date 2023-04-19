@@ -5,7 +5,7 @@ import {
     DSLEntity,
     DSLEntityType,
     DSLMethod,
-    DSLType
+    DSLType,
 } from './interfaces';
 import { HTTPMethod, HTTPTransport, RESTMethod, TypeLike } from '@kapeta/ui-web-types';
 
@@ -15,7 +15,7 @@ import { BUILT_IN_TYPES } from './types';
 
 type SchemaMethods = { [p: string]: RESTMethod };
 
-function fromSchemaDefaultValue(value: EntityProperty):DSLDefaultValue|null {
+function fromSchemaDefaultValue(value: EntityProperty): DSLDefaultValue | null {
     if (value.defaultValue === undefined) {
         return null;
     }
@@ -168,20 +168,19 @@ export namespace DSLConverters {
         return Object.entries(properties).map(([name, value]: [string, EntityProperty]): DSLDataTypeProperty => {
             const stringType = fromSchemaType(value);
 
-            let annotations:DSLAnnotation[] = [];
+            let annotations: DSLAnnotation[] = [];
 
             if (value.required) {
                 annotations.push({
-                    type: 'required'
+                    type: '@required',
                 });
             }
 
             if (value.secret) {
                 annotations.push({
-                    type: 'secret'
+                    type: '@secret',
                 });
             }
-
 
             if (isList(value)) {
                 const typeName = stringType.substring(0, stringType.length - 2);
