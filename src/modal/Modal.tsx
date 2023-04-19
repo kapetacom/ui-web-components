@@ -5,11 +5,7 @@ import { PanelStructure } from '../helpers/PanelStructure';
 
 import './Modal.less';
 
-import {
-    OverlayContext,
-    OverlayComponent,
-    OverlayContextType,
-} from '../overlay/OverlayContext';
+import { OverlayContext, OverlayComponent, OverlayContextType } from '../overlay/OverlayContext';
 import { Draggable } from '../dnd/Draggable';
 import { RenderInBody } from '../overlay/RenderInBody';
 
@@ -40,10 +36,7 @@ export enum ModalSize {
     large = 'large',
 }
 
-export class Modal
-    extends React.Component<ModalProps, ModalState>
-    implements OverlayComponent
-{
+export class Modal extends React.Component<ModalProps, ModalState> implements OverlayComponent {
     static contextType = OverlayContext;
     context!: React.ContextType<OverlayContextType>;
 

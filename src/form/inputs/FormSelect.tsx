@@ -76,12 +76,9 @@ export class FormSelect extends React.Component<Props, State> {
         if (
             this.state.userInputDisplay &&
             this.state.inputSuggestion &&
-            this.state.inputSuggestion.toUpperCase() ===
-                this.state.userInputDisplay.toUpperCase()
+            this.state.inputSuggestion.toUpperCase() === this.state.userInputDisplay.toUpperCase()
         ) {
-            this.emitChange(
-                _.invert(this.optionListFiltered())[this.state.inputSuggestion]
-            );
+            this.emitChange(_.invert(this.optionListFiltered())[this.state.inputSuggestion]);
         }
 
         this.setState((state) => {
@@ -125,10 +122,7 @@ export class FormSelect extends React.Component<Props, State> {
 
     private setInputSuggestion() {
         let inputSuggestion = '';
-        if (
-            this.state.userInputDisplay &&
-            this.state.userInputDisplay.length > 0
-        ) {
+        if (this.state.userInputDisplay && this.state.userInputDisplay.length > 0) {
             const filteredOptions = this.optionListFiltered();
             if (_.isObject(filteredOptions)) {
                 inputSuggestion = Object.values(filteredOptions)[0];
@@ -149,20 +143,14 @@ export class FormSelect extends React.Component<Props, State> {
         let tempUserSelection: string[] = this.userSelection();
         const isSelected: number = tempUserSelection.indexOf(selection);
         // For multi-select, allow full deselection unless explicitly disabled:
-        const allowDeselect = this.props.multi
-            ? this.props.enableDeselect !== false
-            : this.props.enableDeselect;
+        const allowDeselect = this.props.multi ? this.props.enableDeselect !== false : this.props.enableDeselect;
 
         if (tempUserSelection.length > 0) {
             if (isSelected > -1) {
                 // Toggle a selected item if its allowed (not last item, or we allow deselect)
                 if (allowDeselect || tempUserSelection.length > 1) {
                     tempUserSelection.splice(isSelected, 1);
-                    this.emitChange(
-                        this.props.multi
-                            ? tempUserSelection
-                            : tempUserSelection[0]
-                    );
+                    this.emitChange(this.props.multi ? tempUserSelection : tempUserSelection[0]);
                     return;
                 }
             }
@@ -173,13 +161,9 @@ export class FormSelect extends React.Component<Props, State> {
         }
 
         tempUserSelection.push(selection);
-        this.setState({ userInputDisplay: '' }, () =>
-            this.setInputSuggestion()
-        );
+        this.setState({ userInputDisplay: '' }, () => this.setInputSuggestion());
 
-        this.emitChange(
-            this.props.multi ? tempUserSelection : tempUserSelection[0]
-        );
+        this.emitChange(this.props.multi ? tempUserSelection : tempUserSelection[0]);
 
         if (!this.props.multi) {
             this.onInputBlur();
@@ -188,17 +172,13 @@ export class FormSelect extends React.Component<Props, State> {
 
     private optionListFiltered = () => {
         return _.pickBy(this.getOptions(), (value) => {
-            return value
-                .toUpperCase()
-                .startsWith(this.state.userInputDisplay.toUpperCase());
+            return value.toUpperCase().startsWith(this.state.userInputDisplay.toUpperCase());
         });
     };
 
     private getOptions = (): { [key: string]: string } => {
         if (this.props.options === null || this.props.options === undefined) {
-            throw new Error(
-                'Provide an array of strings or an object of options.'
-            );
+            throw new Error('Provide an array of strings or an object of options.');
         }
 
         let options: { [key: string]: string } = {};
@@ -222,11 +202,7 @@ export class FormSelect extends React.Component<Props, State> {
                 ...(this.props.optionProps || {}),
                 className: [
                     this.props.optionProps?.className || '',
-                    `option ${
-                        this.userSelection().indexOf(key) > -1
-                            ? ' selected'
-                            : ''
-                    }`,
+                    `option ${this.userSelection().indexOf(key) > -1 ? ' selected' : ''}`,
                     this.props.noTransform ? 'no-transform' : '',
                 ].join(' '),
             };
@@ -262,9 +238,7 @@ export class FormSelect extends React.Component<Props, State> {
     };
 
     private setUserInputDisplay = (evt: ChangeEvent<HTMLInputElement>) => {
-        this.setState({ userInputDisplay: evt.target.value }, () =>
-            this.setInputSuggestion()
-        );
+        this.setState({ userInputDisplay: evt.target.value }, () => this.setInputSuggestion());
     };
 
     private boldQuery = (str: string, query: string) => {
@@ -317,9 +291,7 @@ export class FormSelect extends React.Component<Props, State> {
                 ? this.state.userInputDisplay
                 : this.renderKeysAsValues(this.props.value);
 
-        const inputClassName = [this.props.noTransform ? 'no-transform' : '']
-            .filter(Boolean)
-            .join(' ');
+        const inputClassName = [this.props.noTransform ? 'no-transform' : ''].filter(Boolean).join(' ');
 
         return (
             <FormRow
@@ -331,17 +303,10 @@ export class FormSelect extends React.Component<Props, State> {
                 disabled={this.props.disabled}
                 readOnly={this.props.readOnly}
             >
-                <div
-                    className={`form-select`}
-                    data-name={this.props.name}
-                    data-value={inputValue}
-                >
-                    {this.state.inputFocus &&
-                        this.state.userInputDisplay.length > 0 && (
-                            <span className={'user-suggestion'}>
-                                {this.state.inputSuggestion}
-                            </span>
-                        )}
+                <div className={`form-select`} data-name={this.props.name} data-value={inputValue}>
+                    {this.state.inputFocus && this.state.userInputDisplay.length > 0 && (
+                        <span className={'user-suggestion'}>{this.state.inputSuggestion}</span>
+                    )}
 
                     <input
                         className={inputClassName}
@@ -359,25 +324,13 @@ export class FormSelect extends React.Component<Props, State> {
                         disabled={this.props.disabled}
                     />
                     <div className={classNameArrowIcon}>
-                        <svg
-                            width="13"
-                            height="5"
-                            fill="none"
-                            onClick={this.onInputToggle}
-                        >
-                            <path
-                                d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z"
-                                fill="#908988"
-                            />
+                        <svg width="13" height="5" fill="none" onClick={this.onInputToggle}>
+                            <path d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z" fill="#908988" />
                         </svg>
                     </div>
                     {this.props.value
                         ? this.props.value.length > 0 &&
-                          this.props.multi && (
-                              <span className="selected-number">
-                                  ({this.props.value.length})
-                              </span>
-                          )
+                          this.props.multi && <span className="selected-number">({this.props.value.length})</span>
                         : null}
                     <RenderInBody>
                         <ul ref={this.dropDownList} className={classNameList}>

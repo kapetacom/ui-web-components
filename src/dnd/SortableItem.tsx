@@ -1,10 +1,7 @@
 import React from 'react';
 import { asHTMLElement, DOMElement } from '@kapeta/ui-web-utils';
 
-import SortableContext, {
-    SortableContextType,
-    SwapMode,
-} from './SortableContext';
+import SortableContext, { SortableContextType, SwapMode } from './SortableContext';
 import { Draggable, DRAGGING_SOURCE_CSS } from './Draggable';
 import { makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -41,17 +38,14 @@ export class SortableItem extends React.Component<SelectorItemProps> {
         if (!(dragRect.top > elmRect.bottom || dragRect.bottom < elmRect.top)) {
             const elmTop = elmRect.top + MARGIN;
 
-            const inTopMargin =
-                dragRect.top >= elmRect.top && dragRect.top <= elmTop;
+            const inTopMargin = dragRect.top >= elmRect.top && dragRect.top <= elmTop;
 
             if (inTopMargin) {
                 return SwapMode.BEFORE;
             }
 
             const elmBottom = elmRect.bottom - MARGIN;
-            const inBottomMargin =
-                dragRect.bottom >= elmBottom &&
-                dragRect.bottom <= elmRect.bottom;
+            const inBottomMargin = dragRect.bottom >= elmBottom && dragRect.bottom <= elmRect.bottom;
 
             if (inBottomMargin) {
                 return SwapMode.AFTER;

@@ -39,19 +39,11 @@ export const Checkbox = (props: CheckboxProps) => {
                 props.onChange && props.onChange(!value);
             }}
         >
-            <input
-                type="checkbox"
-                checked={value}
-                readOnly={true}
-                disabled={props.disabled}
-            />
+            <input type="checkbox" checked={value} readOnly={true} disabled={props.disabled} />
 
             <div className={checkBoxCheckClassName}>
                 <svg width="20" height="20" viewBox="0 -2 14 12" fill="none">
-                    <path
-                        className={'checker'}
-                        d="M5 10L0 5.19231L1.4 3.84615L5 7.30769L12.6 0L14 1.34615L5 10Z"
-                    />
+                    <path className={'checker'} d="M5 10L0 5.19231L1.4 3.84615L5 7.30769L12.6 0L14 1.34615L5 10Z" />
                 </svg>
             </div>
             <div className={checkBoxBoxClassName}>

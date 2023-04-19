@@ -13,10 +13,7 @@ export class FormButtons extends React.Component<FormButtonsProps, any> {
     context!: React.ContextType<FormContextType>;
 
     isSubmitButton(child: any) {
-        if (
-            child.type === 'button' &&
-            (child.props.type === 'submit' || child.props.type === undefined)
-        ) {
+        if (child.type === 'button' && (child.props.type === 'submit' || child.props.type === undefined)) {
             return true;
         }
 
@@ -61,9 +58,7 @@ export class FormButtons extends React.Component<FormButtonsProps, any> {
             //Disable submit buttons when form is invalid or processing
             return React.cloneElement(child, {
                 disabled: true,
-                text: this.context.processing
-                    ? 'Submitting...'
-                    : child.props.text,
+                text: this.context.processing ? 'Submitting...' : child.props.text,
                 width: this.context.processing ? 120 : child.props.width,
                 key: ix,
             });

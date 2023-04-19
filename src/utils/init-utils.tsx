@@ -6,9 +6,7 @@ import { globalObject } from './global-object';
 
 export const initApplication = (Application: ComponentType) => {
     if (!globalObject.Kapeta) {
-        throw new Error(
-            'Global object not initialised. Make sure you load shared libraries first'
-        );
+        throw new Error('Global object not initialised. Make sure you load shared libraries first');
     }
 
     const root = (

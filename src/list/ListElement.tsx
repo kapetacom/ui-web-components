@@ -49,9 +49,7 @@ export const ListElement = (props: Props) => {
                     return (
                         <div className={'property'} key={`property_${key}`}>
                             <div className={'name'}>{info.label}</div>
-                            <div className={`value ${info.type}`}>
-                                {props.entry[key]}
-                            </div>
+                            <div className={`value ${info.type}`}>{props.entry[key]}</div>
                         </div>
                     );
                 })}

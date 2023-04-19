@@ -10,14 +10,9 @@ interface SidePanelHeaderProps {
 
 export function SidePanelHeader(props: SidePanelHeaderProps) {
     return (
-        <div
-            className={props.className ? props.className : 'side-panel-header'}
-        >
+        <div className={props.className ? props.className : 'side-panel-header'}>
             {props.icon && (
-                <div
-                    className="side-panel-header-icon"
-                    onClick={props.onIconPress}
-                >
+                <div className="side-panel-header-icon" onClick={props.onIconPress}>
                     {props.icon}
                 </div>
             )}

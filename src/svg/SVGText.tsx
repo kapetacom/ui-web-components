@@ -55,11 +55,7 @@ export function SVGText(props: SVGTextProps) {
             <text className={props.className} x={props.x} y={props.y}>
                 {state.text}
             </text>
-            <text
-                ref={text}
-                className={props.className}
-                style={{ opacity: 0, pointerEvents: 'none' }}
-            >
+            <text ref={text} className={props.className} style={{ opacity: 0, pointerEvents: 'none' }}>
                 {props.value}
             </text>
         </>

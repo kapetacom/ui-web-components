@@ -1,10 +1,4 @@
-import {
-    EntityDTO,
-    EntityProperties,
-    EntityProperty,
-    isCompatibleTypes,
-    typeName,
-} from '@kapeta/schemas';
+import { EntityDTO, EntityProperties, EntityProperty, isCompatibleTypes, typeName } from '@kapeta/schemas';
 import React from 'react';
 
 import { FormSelect } from '../form/inputs/FormSelect';
@@ -47,10 +41,7 @@ function getItems(entry: any) {
     return { type: 'string' };
 }
 
-export class EntityMapper extends React.Component<
-    EntityMapperProps,
-    EntityMapperState
-> {
+export class EntityMapper extends React.Component<EntityMapperProps, EntityMapperState> {
     constructor(props: EntityMapperProps) {
         super(props);
 
@@ -62,19 +53,13 @@ export class EntityMapper extends React.Component<
     toTargetFlatList(properties: EntityProperties, parentId?: string) {
         let flatList: IDList = [];
         Object.entries(properties).forEach(([id, entry]) => {
-            flatList = flatList.concat(
-                this.toTargetLastListEntry(id, entry, parentId)
-            );
+            flatList = flatList.concat(this.toTargetLastListEntry(id, entry, parentId));
         });
 
         return flatList;
     }
 
-    toTargetLastListEntry(
-        id: string,
-        entry: EntityProperty,
-        parentId?: string
-    ): IDList {
+    toTargetLastListEntry(id: string, entry: EntityProperty, parentId?: string): IDList {
         let entryId = parentId ? parentId + '.' + id : id;
         switch (entry.type) {
             case 'object':
@@ -125,19 +110,10 @@ export class EntityMapper extends React.Component<
 
                 return this.renderEntry(id + '[]', items);
         }
-        const targetFields = this.toTargetFlatList(this.props.from).filter(
-            (targetField) => {
-                return isCompatibleTypes(
-                    targetField.type,
-                    entry,
-                    this.props.fromEntities,
-                    this.props.toEntities
-                );
-            }
-        );
-        let targetFieldsList: string[] = targetFields.map(
-            (target) => `${target.id}:${typeName(target.type)}`
-        );
+        const targetFields = this.toTargetFlatList(this.props.from).filter((targetField) => {
+            return isCompatibleTypes(targetField.type, entry, this.props.fromEntities, this.props.toEntities);
+        });
+        let targetFieldsList: string[] = targetFields.map((target) => `${target.id}:${typeName(target.type)}`);
         return (
             <FormSelect
                 name={id}
@@ -172,10 +148,6 @@ export class EntityMapper extends React.Component<
     }
 
     render() {
-        return (
-            <div className={'entity-mapper'}>
-                {this.renderObject(this.props.to)}
-            </div>
-        );
+        return <div className={'entity-mapper'}>{this.renderObject(this.props.to)}</div>;
     }
 }

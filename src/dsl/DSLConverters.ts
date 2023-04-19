@@ -1,24 +1,7 @@
-import {
-    DSLDataTypeProperty,
-    DSLEntity,
-    DSLEntityType,
-    DSLMethod,
-    DSLType,
-} from './interfaces';
-import {
-    HTTPMethod,
-    HTTPTransport,
-    RESTMethod,
-    TypeLike,
-} from '@kapeta/ui-web-types';
+import { DSLDataTypeProperty, DSLEntity, DSLEntityType, DSLMethod, DSLType } from './interfaces';
+import { HTTPMethod, HTTPTransport, RESTMethod, TypeLike } from '@kapeta/ui-web-types';
 
-import {
-    Entity,
-    EntityProperties,
-    EntityType,
-    EntityProperty,
-    isList,
-} from '@kapeta/schemas';
+import { Entity, EntityProperties, EntityType, EntityProperty, isList } from '@kapeta/schemas';
 
 import { BUILT_IN_TYPES } from './types';
 
@@ -96,9 +79,7 @@ export namespace DSLConverters {
                     type: EntityType.Dto,
                     name: entity.name,
                     description: entity.description,
-                    properties: entity.properties
-                        ? toSchemaProperties(entity.properties)
-                        : {},
+                    properties: entity.properties ? toSchemaProperties(entity.properties) : {},
                 };
             case DSLEntityType.COMMENT:
                 //Ignore
@@ -123,86 +104,109 @@ export namespace DSLConverters {
                     type: DSLEntityType.DATATYPE,
                     name: entity.name,
                     description: entity.description,
-                    properties: entity.properties
-                        ? fromSchemaProperties(entity.properties)
-                        : [],
+                    properties: entity.properties ? fromSchemaProperties(entity.properties) : [],
                 };
             default:
         }
     }
 
-    export function fromSchemaProperties(
-        properties: EntityProperties
-    ): DSLDataTypeProperty[] {
+    export function fromSchemaProperties(properties: EntityProperties): DSLDataTypeProperty[] {
         if (!properties) {
             return [];
         }
 
-        return Object.entries(properties).map(
-            ([name, value]: [string, EntityProperty]): DSLDataTypeProperty => {
-                const stringType = fromSchemaType(value);
+        return Object.entries(properties).map(([name, value]: [string, EntityProperty]): DSLDataTypeProperty => {
+            const stringType = fromSchemaType(value);
 
-                if (isList(value)) {
-                    const typeName = stringType.substring(
-                        0,
-                        stringType.length - 2
-                    );
-                    return {
-                        name,
-                        description: value.description,
-                        type: {
-                            name: typeName,
-                            list: true,
-                        },
-                    };
-                }
-
+            if (isList(value)) {
+                const typeName = stringType.substring(0, stringType.length - 2);
                 return {
                     name,
-                    type: asDSLType(stringType),
                     description: value.description,
-                    properties: value.properties
-                        ? fromSchemaProperties(value.properties)
-                        : undefined,
+                    type: {
+                        name: typeName,
+                        list: true,
+                    },
                 };
             }
-        );
+
+            let defaultValue;
+
+            if (value.defaultValue !== undefined) {
+                if (/^[0-9]+(\.[0-9]+)?$/.test(value.defaultValue)) {
+                    defaultValue = {
+                        type: 'literal',
+                        value: parseFloat(value.defaultValue),
+                    };
+                } else if ('null' === value.defaultValue.toLowerCase()) {
+                    defaultValue = {
+                        type: 'literal',
+                        value: null,
+                    };
+                } else if (/^(false|true)$/i.test(value.defaultValue)) {
+                    defaultValue = {
+                        type: 'literal',
+                        value: value.defaultValue.toLowerCase() === 'true',
+                    };
+                } else if (
+                    !value.defaultValue.startsWith('"') &&
+                    !value.defaultValue.startsWith("'") &&
+                    value.defaultValue.indexOf('.') > -1
+                ) {
+                    defaultValue = {
+                        type: 'reference',
+                        value: value.defaultValue,
+                    };
+                } else {
+                    defaultValue = {
+                        type: 'literal',
+                        value: value.defaultValue,
+                    };
+                }
+            }
+
+            return {
+                name,
+                type: asDSLType(stringType),
+                description: value.description,
+                defaultValue,
+                properties: value.properties ? fromSchemaProperties(value.properties) : undefined,
+            };
+        });
     }
 
-    export function toSchemaProperties(
-        properties: DSLDataTypeProperty[]
-    ): EntityProperties {
+    export function toSchemaProperties(properties: DSLDataTypeProperty[]): EntityProperties {
         const out = {};
 
         properties.forEach((property) => {
             let typeLike = toSchemaType(property.type);
+            const secret = property.annotations?.some((annotation) => annotation.type === 'secret') || false;
+            const required = property.annotations?.some((annotation) => annotation.type === 'required') || false;
 
             if (typeof property.type === 'string' || !property.type.list) {
                 out[property.name] = {
                     ...typeLike,
+                    defaultValue: property.defaultValue?.value,
                     description: property.description,
-                    properties: property.properties
-                        ? toSchemaProperties(property.properties)
-                        : null,
+                    properties: property.properties ? toSchemaProperties(property.properties) : null,
                 };
+
+                if (!property.properties) {
+                    out[property.name].secret = secret;
+                    out[property.name].required = required;
+                }
             } else {
                 //Normally this includes [] if its a list - we want to strip that off for properties
                 //To not create a "List of Lists"
                 if (typeLike.type) {
                     if (typeLike.type.endsWith('[]')) {
                         typeLike = {
-                            type: typeLike.type.substring(
-                                0,
-                                typeLike.type.length - 2
-                            ),
+                            type: typeLike.type.substring(0, typeLike.type.length - 2),
                         };
                     }
                 } else {
                     if (typeLike.ref.endsWith('[]')) {
-                        typeLike.ref = typeLike.ref.substring(
-                            0,
-                            typeLike.ref.length - 2
-                        );
+                        typeLike.ref = typeLike.ref.substring(0, typeLike.ref.length - 2);
                     }
                 }
                 out[property.name] = {
@@ -210,9 +214,9 @@ export namespace DSLConverters {
                     description: property.description,
                     items: {
                         ...typeLike,
-                        properties: property.properties
-                            ? toSchemaProperties(property.properties)
-                            : null,
+                        secret,
+                        required,
+                        properties: property.properties ? toSchemaProperties(property.properties) : null,
                     },
                 };
             }
@@ -266,9 +270,7 @@ export namespace DSLConverters {
                               annotations: arg.transport
                                   ? [
                                         {
-                                            type: fromSchemaTransport(
-                                                arg.transport
-                                            ),
+                                            type: fromSchemaTransport(arg.transport),
                                         },
                                     ]
                                   : [],
@@ -295,29 +297,22 @@ export namespace DSLConverters {
                     args[arg.name] = {
                         ...toSchemaType(arg.type),
                         transport: toSchemaTransport(
-                            arg.annotations && arg.annotations.length > 0
-                                ? arg.annotations[0].type
-                                : '@Query'
+                            arg.annotations && arg.annotations.length > 0 ? arg.annotations[0].type : '@Query'
                         ),
                     };
                 });
             }
 
             const annotations = method.annotations ?? [];
-            const firstAnnotation =
-                annotations.length > 0 ? annotations[0] : null;
+            const firstAnnotation = annotations.length > 0 ? annotations[0] : null;
 
             const path =
-                firstAnnotation &&
-                firstAnnotation.arguments &&
-                firstAnnotation.arguments.length > 0
+                firstAnnotation && firstAnnotation.arguments && firstAnnotation.arguments.length > 0
                     ? firstAnnotation.arguments[0]
                     : '/';
 
             const httpMethod =
-                firstAnnotation && firstAnnotation.type
-                    ? firstAnnotation.type.substring(1).toUpperCase()
-                    : 'GET';
+                firstAnnotation && firstAnnotation.type ? firstAnnotation.type.substring(1).toUpperCase() : 'GET';
 
             out[method.name] = {
                 responseType: toSchemaType(method.returnType),

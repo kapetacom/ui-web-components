@@ -31,16 +31,12 @@ describe('DSLWriter', () => {
                         {
                             type: 'string',
                             name: 'id',
-                            annotations: [
-                                { type: '@ID', arguments: ['value'] },
-                            ],
+                            annotations: [{ type: '@ID', arguments: ['value'] }],
                         },
                         {
                             type: { name: 'string', list: true },
                             name: 'tags',
-                            annotations: [
-                                { type: '@Tags', arguments: ['value'] },
-                            ],
+                            annotations: [{ type: '@Tags', arguments: ['value'] }],
                         },
                     ],
                 },
@@ -83,8 +79,7 @@ enum myType {
                 {
                     type: DSLEntityType.DATATYPE,
                     name: 'MyDataType',
-                    description:
-                        'Some info about my data type\nWith multiple lines',
+                    description: 'Some info about my data type\nWith multiple lines',
                     properties: [
                         {
                             name: 'id',
@@ -170,17 +165,13 @@ myType {
                             type: 'string',
                             name: 'id',
                             description: 'Some id',
-                            annotations: [
-                                { type: '@ID', arguments: ['value'] },
-                            ],
+                            annotations: [{ type: '@ID', arguments: ['value'] }],
                         },
                         {
                             type: { name: 'string', list: true },
                             name: 'tags',
                             description: 'Some tags',
-                            annotations: [
-                                { type: '@Tags', arguments: ['value'] },
-                            ],
+                            annotations: [{ type: '@Tags', arguments: ['value'] }],
                         },
                     ],
                 },
@@ -211,17 +202,13 @@ myType {
                             type: 'object',
                             name: 'parent',
                             description: 'Some parent',
-                            annotations: [
-                                { type: '@Entity', arguments: ['value'] },
-                            ],
+                            annotations: [{ type: '@Entity', arguments: ['value'] }],
                             properties: [
                                 {
                                     name: 'id',
                                     description: 'Parent id',
                                     type: 'string',
-                                    annotations: [
-                                        { type: '@ID', arguments: ['value'] },
-                                    ],
+                                    annotations: [{ type: '@ID', arguments: ['value'] }],
                                 },
                             ],
                         },
@@ -229,17 +216,13 @@ myType {
                             type: { name: 'object', list: true },
                             name: 'children',
                             description: 'Some children',
-                            annotations: [
-                                { type: '@Entity', arguments: ['value'] },
-                            ],
+                            annotations: [{ type: '@Entity', arguments: ['value'] }],
                             properties: [
                                 {
                                     name: 'id',
                                     description: 'Child id',
                                     type: 'string',
-                                    annotations: [
-                                        { type: '@ID', arguments: ['value'] },
-                                    ],
+                                    annotations: [{ type: '@ID', arguments: ['value'] }],
                                 },
                             ],
                         },

@@ -32,11 +32,7 @@ export function normaliseValidators(validation: any) {
     return validators;
 }
 
-export function applyValidation(
-    validation: any,
-    name: string,
-    value: any
-): string[] {
+export function applyValidation(validation: any, name: string, value: any): string[] {
     let validators = normaliseValidators(validation);
 
     return validators

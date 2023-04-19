@@ -38,11 +38,7 @@ export function roundPathCorners(pathString, radius, useFractionalRadius) {
 
         let distance = Math.sqrt(width * width + height * height);
 
-        return moveTowardsFractional(
-            movingPoint,
-            targetPoint,
-            Math.min(1, amount / distance)
-        );
+        return moveTowardsFractional(movingPoint, targetPoint, Math.min(1, amount / distance));
     }
     function moveTowardsFractional(movingPoint, targetPoint, fraction) {
         return {
@@ -113,10 +109,7 @@ export function roundPathCorners(pathString, radius, useFractionalRadius) {
             let curCmd = commands[cmdIndex];
 
             // Handle closing case
-            let nextCmd =
-                curCmd == virtualCloseLine
-                    ? commands[1]
-                    : commands[cmdIndex + 1];
+            let nextCmd = curCmd == virtualCloseLine ? commands[1] : commands[cmdIndex + 1];
 
             // Nasty logic to decide if this path is a candidite.
             if (
@@ -136,16 +129,8 @@ export function roundPathCorners(pathString, radius, useFractionalRadius) {
                 let curveStart, curveEnd;
 
                 if (useFractionalRadius) {
-                    curveStart = moveTowardsFractional(
-                        curPoint,
-                        prevCmd.origPoint || prevPoint,
-                        radius
-                    );
-                    curveEnd = moveTowardsFractional(
-                        curPoint,
-                        nextCmd.origPoint || nextPoint,
-                        radius
-                    );
+                    curveStart = moveTowardsFractional(curPoint, prevCmd.origPoint || prevPoint, radius);
+                    curveEnd = moveTowardsFractional(curPoint, nextCmd.origPoint || nextPoint, radius);
                 } else {
                     curveStart = moveTowardsLength(curPoint, prevPoint, radius);
                     curveEnd = moveTowardsLength(curPoint, nextPoint, radius);
@@ -158,11 +143,7 @@ export function roundPathCorners(pathString, radius, useFractionalRadius) {
 
                 // The curve control points are halfway between the start/end of the curve and
                 // the original point
-                let startControl = moveTowardsFractional(
-                    curveStart,
-                    curPoint,
-                    0.5
-                );
+                let startControl = moveTowardsFractional(curveStart, curPoint, 0.5);
                 let endControl = moveTowardsFractional(curPoint, curveEnd, 0.5);
 
                 // Create the curve
@@ -186,9 +167,7 @@ export function roundPathCorners(pathString, radius, useFractionalRadius) {
 
         // Fix up the starting point and restore the close path if the path was orignally closed
         if (virtualCloseLine) {
-            let newStartPoint = pointForCommand(
-                resultCommands[resultCommands.length - 1]
-            );
+            let newStartPoint = pointForCommand(resultCommands[resultCommands.length - 1]);
             resultCommands.push(['Z']);
             adjustCommand(resultCommands[0], newStartPoint);
         }

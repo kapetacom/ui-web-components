@@ -53,13 +53,7 @@ const InnerElement = (props: InnerElementProps) => {
             if (!props.options) {
                 throw new Error('Missing attribute: options');
             }
-            return (
-                <FormSelect
-                    multi={type === FormFieldType.ENUM_MULTI}
-                    options={props.options}
-                    {...innerProps}
-                />
-            );
+            return <FormSelect multi={type === FormFieldType.ENUM_MULTI} options={props.options} {...innerProps} />;
 
         case FormFieldType.STRING:
             return <FormInput type={Type.TEXT} {...innerProps} />;
@@ -92,13 +86,7 @@ export const FormField = (props: Props) => {
         <FormFieldHandler
             name={props.name}
             key={`$FormField${props.name}Handler`}
-            component={(props) => (
-                <InnerElement
-                    {...props}
-                    {...parentProps}
-                    key={`$FormField${props.name}Inner`}
-                />
-            )}
+            component={(props) => <InnerElement {...props} {...parentProps} key={`$FormField${props.name}Inner`} />}
         />
     );
 };

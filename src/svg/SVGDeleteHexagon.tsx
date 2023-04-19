@@ -9,18 +9,8 @@ const SVGDeleteHexagon = () => {
                     fill="#E35A4C"
                     fillOpacity="0.6"
                 />
-                <path
-                    d="M15.7891 6.3158L7.36905 14.7368"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                />
-                <path
-                    d="M7.36816 6.3158L15.7882 14.7368"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                />
+                <path d="M15.7891 6.3158L7.36905 14.7368" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                <path d="M7.36816 6.3158L15.7882 14.7368" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
         </div>
     );

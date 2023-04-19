@@ -30,10 +30,7 @@ export const asDelayed = async <T = any>(data: T, ms: number): Promise<T> => {
     return data;
 };
 
-export const withDelay = async <T = any>(
-    func: () => Promise<T>,
-    ms: number
-): Promise<T> => {
+export const withDelay = async <T = any>(func: () => Promise<T>, ms: number): Promise<T> => {
     const result: T = await func();
 
     return asDelayed(result, ms);

@@ -144,11 +144,7 @@ const ButtonInner = (props: ButtonProps) => {
 };
 
 export const Button = (props: ButtonProps) => {
-    const width = props.width
-        ? props.width
-        : props.shape === ButtonShape.ICON
-        ? ButtonSize.ICON
-        : ButtonSize.MEDIUM;
+    const width = props.width ? props.width : props.shape === ButtonShape.ICON ? ButtonSize.ICON : ButtonSize.MEDIUM;
 
     const style = props.style || ButtonStyle.DEFAULT;
     const type = props.type || ButtonType.BUTTON;
@@ -189,10 +185,7 @@ export const LogoButton = (props: LogoProps) => {
 
     return (
         <a className={'button logo'} href={props.href}>
-            <div
-                className={'inner'}
-                style={{ WebkitMaskImage: cssMask, maskImage: cssMask, width }}
-            >
+            <div className={'inner'} style={{ WebkitMaskImage: cssMask, maskImage: cssMask, width }}>
                 <div
                     className={'logo'}
                     style={{

@@ -7,14 +7,7 @@ export const SVGButtonWarning = (props: SVGButtonProps) => {
     const button = useMouseDown(props);
 
     return (
-        <svg
-            fill="none"
-            ref={button}
-            x={props.x}
-            opacity={props.opacity}
-            y={props.y}
-            style={props.style}
-        >
+        <svg fill="none" ref={button} x={props.x} opacity={props.opacity} y={props.y} style={props.style}>
             <g x={0} y={0} className="svg-button warning">
                 <path
                     className={'svg-button-background'}

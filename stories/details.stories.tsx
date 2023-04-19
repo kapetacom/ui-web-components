@@ -1,19 +1,6 @@
 import React, { useState } from 'react';
-import {
-    Detail,
-    DetailButtons,
-    DetailRow,
-    DetailRowListValue,
-    DetailRowValue,
-    DetailSize,
-} from '../src/detail/Detail';
-import {
-    Button,
-    ButtonShape,
-    ButtonStyle,
-    Dialog,
-    ToastContainer,
-} from '../src';
+import { Detail, DetailButtons, DetailRow, DetailRowListValue, DetailRowValue, DetailSize } from '../src/detail/Detail';
+import { Button, ButtonShape, ButtonStyle, Dialog, ToastContainer } from '../src';
 
 function minMaxAgeCheck(name: string, value: number) {
     if (value < 1) {
@@ -61,22 +48,9 @@ export const FullDetail = () => {
             <ToastContainer />
             <Dialog />
             <Detail data={user} editable={editable} onChange={onChange}>
-                <DetailRowValue
-                    fixed={true}
-                    label={'Full Name'}
-                    name={'name'}
-                    validation={['required']}
-                />
-                <DetailRowValue
-                    label={'Handle'}
-                    name={'handle'}
-                    validation={['required']}
-                />
-                <DetailRowValue
-                    label={'Age'}
-                    name={'age'}
-                    validation={['required', minMaxAgeCheck]}
-                />
+                <DetailRowValue fixed={true} label={'Full Name'} name={'name'} validation={['required']} />
+                <DetailRowValue label={'Handle'} name={'handle'} validation={['required']} />
+                <DetailRowValue label={'Age'} name={'age'} validation={['required', minMaxAgeCheck]} />
                 <DetailRowValue label={'Embedded'} name={'embedded.value'} />
                 <DetailRowListValue
                     label={'E-mails'}
@@ -98,22 +72,13 @@ export const FullDetail = () => {
                     validation={['required']}
                     name={'embedded.list'}
                 />
-                <DetailRow
-                    label={'Very long name that doesnt fit the normal size'}
-                >
+                <DetailRow label={'Very long name that doesnt fit the normal size'}>
                     Very long value that doesnt fit the normal size
                 </DetailRow>
 
                 <DetailButtons>
-                    <Button
-                        text={'Change password'}
-                        shape={ButtonShape.SQUARE}
-                    />
-                    <Button
-                        text={'Disable'}
-                        shape={ButtonShape.SQUARE}
-                        style={ButtonStyle.DANGER}
-                    />
+                    <Button text={'Change password'} shape={ButtonShape.SQUARE} />
+                    <Button text={'Disable'} shape={ButtonShape.SQUARE} style={ButtonStyle.DANGER} />
                 </DetailButtons>
             </Detail>
         </div>
@@ -143,28 +108,10 @@ export const SmallDetail = () => {
         <div style={{ width: '250px', background: 'white' }}>
             <ToastContainer />
             <Dialog />
-            <Detail
-                data={user}
-                editable={editable}
-                onChange={onChange}
-                size={DetailSize.SMALL}
-            >
-                <DetailRowValue
-                    fixed={true}
-                    label={'Full Name'}
-                    name={'name'}
-                    validation={['required']}
-                />
-                <DetailRowValue
-                    label={'Handle'}
-                    name={'handle'}
-                    validation={['required']}
-                />
-                <DetailRowValue
-                    label={'Age'}
-                    name={'age'}
-                    validation={['required', minMaxAgeCheck]}
-                />
+            <Detail data={user} editable={editable} onChange={onChange} size={DetailSize.SMALL}>
+                <DetailRowValue fixed={true} label={'Full Name'} name={'name'} validation={['required']} />
+                <DetailRowValue label={'Handle'} name={'handle'} validation={['required']} />
+                <DetailRowValue label={'Age'} name={'age'} validation={['required', minMaxAgeCheck]} />
                 <DetailRowListValue
                     label={'E-mails'}
                     typeName={'E-mail'}
@@ -178,22 +125,13 @@ export const SmallDetail = () => {
                     validation={['required']}
                     name={'phones'}
                 />
-                <DetailRow
-                    label={'Very long name that doesnt fit the normal size'}
-                >
+                <DetailRow label={'Very long name that doesnt fit the normal size'}>
                     Very long value that doesnt fit the normal size
                 </DetailRow>
 
                 <DetailButtons>
-                    <Button
-                        text={'Change password'}
-                        shape={ButtonShape.SQUARE}
-                    />
-                    <Button
-                        text={'Disable'}
-                        shape={ButtonShape.SQUARE}
-                        style={ButtonStyle.DANGER}
-                    />
+                    <Button text={'Change password'} shape={ButtonShape.SQUARE} />
+                    <Button text={'Disable'} shape={ButtonShape.SQUARE} style={ButtonStyle.DANGER} />
                 </DetailButtons>
             </Detail>
         </div>

@@ -17,9 +17,7 @@ export const AuthScopesList = (props: Props) => {
         editable: editable,
     });
 
-    const enabledScopes = props.scopes
-        .filter((s) => s.enabled)
-        .map((s) => s.id);
+    const enabledScopes = props.scopes.filter((s) => s.enabled).map((s) => s.id);
 
     /**
      * Determines if a scope is enabled as a consequence of other enabled scopes
@@ -37,9 +35,7 @@ export const AuthScopesList = (props: Props) => {
 
         return enabledScopes.some((enabledScope) => {
             if (enabledScope !== scope && enabledScope.endsWith('*')) {
-                return scope.startsWith(
-                    enabledScope.substring(0, enabledScope.length - 1)
-                );
+                return scope.startsWith(enabledScope.substring(0, enabledScope.length - 1));
             }
             return false;
         });

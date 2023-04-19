@@ -4,11 +4,7 @@ import { observer } from 'mobx-react';
 import { createHexagonPath, Orientation, toClass } from '@kapeta/ui-web-utils';
 
 import { DialogControl } from './DialogControl';
-import {
-    OverlayComponent,
-    OverlayContext,
-    OverlayContextType,
-} from '../overlay/OverlayContext';
+import { OverlayComponent, OverlayContext, OverlayContextType } from '../overlay/OverlayContext';
 import { PanelStructure } from '../helpers/PanelStructure';
 import { DialogTypes } from './DialogTypes';
 import { Draggable } from '../dnd/Draggable';
@@ -63,10 +59,7 @@ const CheckedIcon: React.FC = () => {
 };
 
 @observer
-export class Dialog
-    extends Component<DialogProps, any>
-    implements OverlayComponent
-{
+export class Dialog extends Component<DialogProps, any> implements OverlayComponent {
     static contextType = OverlayContext;
     context!: React.ContextType<OverlayContextType>;
 
@@ -140,9 +133,7 @@ export class Dialog
                 break;
         }
 
-        const height = this.props.height
-            ? this.props.height
-            : defaultValue.height!;
+        const height = this.props.height ? this.props.height : defaultValue.height!;
         const width = this.props.width ? this.props.width : defaultValue.width!;
         const top = window.innerHeight / 2 - height / 2;
         const left = window.innerWidth / 2 - width / 2;
@@ -166,33 +157,15 @@ export class Dialog
                 {/* TODO: add all info in dialog in a foreign object and use div and p elements  */}
 
                 <defs>
-                    <filter
-                        id="dialog-shadow"
-                        x="-50%"
-                        y="-50%"
-                        width="200%"
-                        height="200%"
-                    >
-                        <feDropShadow
-                            dx="0"
-                            dy="0"
-                            stdDeviation="15"
-                            floodColor="#000"
-                            floodOpacity="0.25"
-                        />
+                    <filter id="dialog-shadow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feDropShadow dx="0" dy="0" stdDeviation="15" floodColor="#000" floodOpacity="0.25" />
                     </filter>
                 </defs>
 
                 <path
                     className={'background'}
                     style={{ overflow: 'visible' }}
-                    d={createHexagonPath(
-                        initialSize.width,
-                        initialSize.height,
-                        10,
-                        Orientation.VERTICAL,
-                        60
-                    )}
+                    d={createHexagonPath(initialSize.width, initialSize.height, 10, Orientation.VERTICAL, 60)}
                 />
 
                 <text
@@ -215,11 +188,7 @@ export class Dialog
                     {DialogControl.text}
                 </text>
 
-                <foreignObject
-                    x={initialSize.width / 2 - 100}
-                    y={initialSize.height - 100}
-                    overflow="visible"
-                >
+                <foreignObject x={initialSize.width / 2 - 100} y={initialSize.height - 100} overflow="visible">
                     <Button
                         onClick={DialogControl.accept}
                         width={ButtonSize.SMALL}
@@ -228,11 +197,7 @@ export class Dialog
                     />
                 </foreignObject>
 
-                <foreignObject
-                    x={initialSize.width / 2 + 10}
-                    y={initialSize.height - 100}
-                    overflow="visible"
-                >
+                <foreignObject x={initialSize.width / 2 + 10} y={initialSize.height - 100} overflow="visible">
                     <Button
                         onClick={() => this.close()}
                         width={ButtonSize.SMALL}
@@ -246,34 +211,15 @@ export class Dialog
 
     private renderPromptOrConfirmationDialog = () => {
         return (
-            <PanelStructure
-                title={DialogControl.title}
-                onClose={() => this.close()}
-            >
+            <PanelStructure title={DialogControl.title} onClose={() => this.close()}>
                 <div className="close">
-                    <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        onClick={() => this.close()}
-                    >
-                        <path
-                            d="M11.1421 11L1.1424 1"
-                            stroke="#C4C4C4"
-                            strokeLinecap="round"
-                        />
-                        <path
-                            d="M1.14209 11L11.1418 1"
-                            stroke="#C4C4C4"
-                            strokeLinecap="round"
-                        />
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" onClick={() => this.close()}>
+                        <path d="M11.1421 11L1.1424 1" stroke="#C4C4C4" strokeLinecap="round" />
+                        <path d="M1.14209 11L11.1418 1" stroke="#C4C4C4" strokeLinecap="round" />
                     </svg>
                 </div>
 
-                {DialogControl.type === DialogTypes.CONFIRMATION && (
-                    <CheckedIcon></CheckedIcon>
-                )}
+                {DialogControl.type === DialogTypes.CONFIRMATION && <CheckedIcon></CheckedIcon>}
 
                 <div className="content-wrapper">
                     <div className="dialog-title">{DialogControl.title}</div>
@@ -290,9 +236,7 @@ export class Dialog
                                 label={''}
                                 validation={['required']}
                                 help={''}
-                                onChange={(name, input) =>
-                                    DialogControl.setPromptInputValue(input)
-                                }
+                                onChange={(name, input) => DialogControl.setPromptInputValue(input)}
                                 type={DialogControl.promptInputType}
                             />
                         )}
@@ -347,8 +291,7 @@ export class Dialog
                 >
                     {DialogControl.type === DialogTypes.DELETE
                         ? this.renderDeleteDialog(initialSize)
-                        : DialogControl.type === DialogTypes.CONFIRMATION ||
-                          DialogControl.type === DialogTypes.PROMPT
+                        : DialogControl.type === DialogTypes.CONFIRMATION || DialogControl.type === DialogTypes.PROMPT
                         ? this.renderPromptOrConfirmationDialog()
                         : null}
                 </div>

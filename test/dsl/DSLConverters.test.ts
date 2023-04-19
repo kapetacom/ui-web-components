@@ -1,11 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import { DSLConverters } from '../../src/dsl/DSLConverters';
-import {
-    DSLDataType,
-    DSLEntityType,
-    DSLEnum,
-    DSLMethod,
-} from '../../src/dsl/types';
+import { DSLDataType, DSLEntityType, DSLEnum, DSLMethod } from '../../src/dsl/types';
 import { HTTPMethod, RESTMethod } from '@kapeta/ui-web-types';
 import { EntityDTO, EntityEnum, EntityType } from '@kapeta/schemas';
 
@@ -23,19 +18,13 @@ describe('DSLConverters', () => {
         test('can convert from DSLTypes', () => {
             expect(DSLConverters.fromDSLType('')).toBe('void');
             expect(DSLConverters.fromDSLType('string')).toBe('string');
-            expect(
-                DSLConverters.fromDSLType({ name: 'string', list: true })
-            ).toEqual('string[]');
+            expect(DSLConverters.fromDSLType({ name: 'string', list: true })).toEqual('string[]');
         });
 
         test('can convert from SchemaType', () => {
             expect(DSLConverters.fromSchemaType({ type: '' })).toBe('void');
-            expect(DSLConverters.fromSchemaType({ type: 'string' })).toBe(
-                'string'
-            );
-            expect(DSLConverters.fromSchemaType({ ref: 'MyClass' })).toEqual(
-                'MyClass'
-            );
+            expect(DSLConverters.fromSchemaType({ type: 'string' })).toBe('string');
+            expect(DSLConverters.fromSchemaType({ ref: 'MyClass' })).toEqual('MyClass');
         });
 
         test('can convert to SchemaType', () => {
@@ -45,9 +34,7 @@ describe('DSLConverters', () => {
             expect(DSLConverters.toSchemaType('string')).toStrictEqual({
                 type: 'string',
             });
-            expect(
-                DSLConverters.toSchemaType({ name: 'MyClass', list: true })
-            ).toEqual({ ref: 'MyClass[]' });
+            expect(DSLConverters.toSchemaType({ name: 'MyClass', list: true })).toEqual({ ref: 'MyClass[]' });
         });
     });
 
@@ -93,6 +80,14 @@ describe('DSLConverters', () => {
                 name: 'MyDTO',
                 properties: [
                     {
+                        type: 'string',
+                        name: 'name',
+                        defaultValue: {
+                            type: 'literal',
+                            value: 'test',
+                        },
+                    },
+                    {
                         type: { name: 'string', list: true },
                         name: 'tags',
                         description: 'Tags',
@@ -126,12 +121,22 @@ describe('DSLConverters', () => {
                 name: entity.name,
                 description: entity.description,
                 properties: {
+                    name: {
+                        type: 'string',
+                        defaultValue: 'test',
+                        description: undefined,
+                        properties: null,
+                        required: false,
+                        secret: false,
+                    },
                     tags: {
                         description: 'Tags',
                         type: 'array',
                         items: {
                             type: 'string',
                             properties: null,
+                            required: false,
+                            secret: false,
                         },
                     },
                     children: {
@@ -139,23 +144,32 @@ describe('DSLConverters', () => {
                         type: 'array',
                         items: {
                             type: 'object',
+                            required: false,
+                            secret: false,
                             properties: {
                                 id: {
                                     type: 'string',
+                                    defaultValue: undefined,
                                     description: undefined,
                                     properties: null,
+                                    required: false,
+                                    secret: false,
                                 },
                             },
                         },
                     },
                     parent: {
+                        defaultValue: undefined,
                         description: 'Parent',
                         type: 'object',
                         properties: {
                             id: {
                                 type: 'string',
+                                defaultValue: undefined,
                                 description: undefined,
                                 properties: null,
+                                required: false,
+                                secret: false,
                             },
                         },
                     },
@@ -169,6 +183,10 @@ describe('DSLConverters', () => {
                 name: 'MyDTO',
                 description: 'Some description',
                 properties: {
+                    name: {
+                        type: 'string',
+                        defaultValue: '"test"',
+                    },
                     tags: {
                         description: 'Tags',
                         type: 'string[]',
@@ -180,6 +198,7 @@ describe('DSLConverters', () => {
                     parent: {
                         description: 'Parent',
                         type: 'Node',
+                        defaultValue: 'Node.ONE',
                     },
                 },
             };
@@ -189,6 +208,16 @@ describe('DSLConverters', () => {
                 description: entity.description,
                 name: entity.name,
                 properties: [
+                    {
+                        type: 'string',
+                        name: 'name',
+                        properties: undefined,
+                        description: undefined,
+                        defaultValue: {
+                            type: 'literal',
+                            value: '"test"',
+                        },
+                    },
                     {
                         type: { name: 'string', list: true },
                         name: 'tags',
@@ -202,7 +231,12 @@ describe('DSLConverters', () => {
                     {
                         type: 'Node',
                         name: 'parent',
+                        properties: undefined,
                         description: 'Parent',
+                        defaultValue: {
+                            type: 'reference',
+                            value: 'Node.ONE',
+                        },
                     },
                 ],
             });

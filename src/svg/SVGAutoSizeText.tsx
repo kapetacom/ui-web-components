@@ -1,10 +1,4 @@
-import React, {
-    KeyboardEvent,
-    useEffect,
-    useLayoutEffect,
-    useRef,
-    useState,
-} from 'react';
+import React, { KeyboardEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { toClass } from '@kapeta/ui-web-utils';
 
@@ -22,11 +16,7 @@ function wordwrap(str: string, width: number) {
         const limit = offset + width;
         let chunk = str.substr(offset, width);
         let nextStart = str.substr(limit, 1);
-        if (
-            limit < str.length &&
-            !/\s$/.test(chunk) &&
-            !/\s$/.test(nextStart)
-        ) {
+        if (limit < str.length && !/\s$/.test(chunk) && !/\s$/.test(nextStart)) {
             chunk += '-';
         }
 
@@ -74,8 +64,7 @@ export function SVGAutoSizeText(props: SVGTextProps) {
         textLines = textLines.slice(0, props.maxLines);
         getSelection();
         const lastIx = props.maxLines - 1;
-        textLines[lastIx] =
-            textLines[lastIx].substr(0, textLines[lastIx].length - 3) + '...';
+        textLines[lastIx] = textLines[lastIx].substr(0, textLines[lastIx].length - 3) + '...';
     }
 
     let usedRatio = Math.min(1, props.maxWidth / realWidth);
@@ -137,12 +126,7 @@ export function SVGAutoSizeText(props: SVGTextProps) {
         return textLines.map((textLine: string, ix: number) => {
             const lineY = yOffset + (ix + 1) * lineHeight - padding * 2;
             return (
-                <tspan
-                    key={textLine}
-                    x={halfWidth}
-                    y={lineY + 'px'}
-                    ref={ix === 0 ? textRef : undefined}
-                >
+                <tspan key={textLine} x={halfWidth} y={lineY + 'px'} ref={ix === 0 ? textRef : undefined}>
                     {textLine}
                 </tspan>
             );
@@ -163,37 +147,16 @@ export function SVGAutoSizeText(props: SVGTextProps) {
             width={props.maxWidth}
             onClick={onEditStart}
         >
-            <rect
-                className={'background'}
-                x={0}
-                y={0}
-                width={props.maxWidth}
-                height={fullHeight}
-            />
+            <rect className={'background'} x={0} y={0} width={props.maxWidth} height={fullHeight} />
 
-            <svg
-                x={0}
-                y={0}
-                height={fullHeight}
-                width={props.maxWidth}
-                viewBox={`0 0 ${realWidth} ${realHeight}`}
-            >
-                <text
-                    style={{ fontSize: fontSize + 'px' }}
-                    className={props.className}
-                >
+            <svg x={0} y={0} height={fullHeight} width={props.maxWidth} viewBox={`0 0 ${realWidth} ${realHeight}`}>
+                <text style={{ fontSize: fontSize + 'px' }} className={props.className}>
                     {renderTextLines()}
                 </text>
             </svg>
 
             {onChange && editing && (
-                <foreignObject
-                    x={0}
-                    y={0}
-                    width={props.maxWidth}
-                    height={fullHeight}
-                    className={'editing'}
-                >
+                <foreignObject x={0} y={0} width={props.maxWidth} height={fullHeight} className={'editing'}>
                     <input
                         type={'text'}
                         style={{ fontSize: inputFontSize + 'px' }}

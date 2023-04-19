@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-    applyValidation,
-    normaliseValidators,
-    Validators,
-} from '../validation/Validators';
+import { applyValidation, normaliseValidators, Validators } from '../validation/Validators';
 import { FormContext, FormContextType } from './FormContext';
 
 import './FormRow.less';
@@ -103,27 +99,19 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
 
     getChildProperties() {
         if (!this.props.children) {
-            throw new Error(
-                'Form row requires a input table element as a child to work'
-            );
+            throw new Error('Form row requires a input table element as a child to work');
         }
 
         if (Array.isArray(this.props.children)) {
-            throw new Error(
-                'Form row only works with a single child component'
-            );
+            throw new Error('Form row only works with a single child component');
         }
 
         if (!this.props.children.props.hasOwnProperty('data-value')) {
-            throw new Error(
-                'Form row requires a single child with a "data-value" property to work properly'
-            );
+            throw new Error('Form row requires a single child with a "data-value" property to work properly');
         }
 
         if (!this.props.children.props.hasOwnProperty('data-name')) {
-            throw new Error(
-                'Form row requires a single child with a "data-name" property to work properly'
-            );
+            throw new Error('Form row requires a single child with a "data-name" property to work properly');
         }
 
         return this.props.children.props;
@@ -157,22 +145,20 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
             return;
         }
 
-        this.disposer = this.context.container.onFormStateChanged(
-            (evt: FormStateChangeEvent) => {
-                switch (evt.type) {
-                    case 'submit':
-                        if (evt.value) {
-                            this.setTouched(false);
-                        } else {
-                            this.setTouched(true);
-                        }
-                        break;
-                    case 'reset':
+        this.disposer = this.context.container.onFormStateChanged((evt: FormStateChangeEvent) => {
+            switch (evt.type) {
+                case 'submit':
+                    if (evt.value) {
                         this.setTouched(false);
-                        break;
-                }
+                    } else {
+                        this.setTouched(true);
+                    }
+                    break;
+                case 'reset':
+                    this.setTouched(false);
+                    break;
             }
-        );
+        });
 
         this.updateReadyState();
     }
@@ -228,11 +214,7 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
                 disabled={this.props.disabled}
                 readOnly={this.props.readOnly}
                 disableZoom={this.props.disableZoom}
-                status={
-                    errorMessage && errorMessage.length > 0
-                        ? StatusType.ERROR
-                        : StatusType.OK
-                }
+                status={errorMessage && errorMessage.length > 0 ? StatusType.ERROR : StatusType.OK}
                 infoBox={''}
             >
                 {this.props.children}

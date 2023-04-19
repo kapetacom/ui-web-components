@@ -8,29 +8,10 @@ export function SVGButtonInspect(props: SVGButtonProps) {
     const button = useMouseDown(props);
 
     return (
-        <svg
-            ref={button}
-            opacity={props.opacity}
-            fill="none"
-            x={props.x}
-            y={props.y}
-            style={props.style}
-        >
+        <svg ref={button} opacity={props.opacity} fill="none" x={props.x} y={props.y} style={props.style}>
             <g x={0} y={0} className="svg-button inspect">
-                <circle
-                    className={'svg-button-background'}
-                    cx="12.9912"
-                    cy="12"
-                    r="11"
-                />
-                <svg
-                    viewBox="0 0 512 512"
-                    width="13"
-                    height="13"
-                    x="6"
-                    y="4.5"
-                    overflow="visible"
-                >
+                <circle className={'svg-button-background'} cx="12.9912" cy="12" r="11" />
+                <svg viewBox="0 0 512 512" width="13" height="13" x="6" y="4.5" overflow="visible">
                     <path
                         className={'svg-button-foreground'}
                         strokeWidth="1.5"

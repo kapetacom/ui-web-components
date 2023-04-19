@@ -2,13 +2,7 @@ import React from 'react';
 import { observable } from 'mobx';
 import { storiesOf } from '@storybook/react';
 import { Store, withState, State } from '@sambego/storybook-state';
-import {
-    EntityMapper,
-    EntityPicker,
-    EntityForm,
-    EntityFormModel,
-    SchemaEntityEdit,
-} from '../src';
+import { EntityMapper, EntityPicker, EntityForm, EntityFormModel, SchemaEntityEdit } from '../src';
 import { EntityList } from '../src/entities/EntityList';
 import { EntityProperty, EntityType, toDTO } from '@kapeta/schemas';
 
@@ -63,12 +57,7 @@ const EntityTo = {
     },
 };
 
-const entityList: string[] = observable([
-    'User',
-    'Ingredients',
-    'Student',
-    'PizzaTopping',
-]);
+const entityList: string[] = observable(['User', 'Ingredients', 'Student', 'PizzaTopping']);
 let pickerState = new Store({
     entities: entityList,
     value: '',
@@ -115,10 +104,7 @@ storiesOf('Entity Forms', module)
                         pickerState.state.handleValueUpdate(eventValue.type);
                     }}
                     onEntityCreated={(newEntity) => {
-                        let entities: string[] = [
-                            ...pickerState.state.entities,
-                            newEntity.name,
-                        ];
+                        let entities: string[] = [...pickerState.state.entities, newEntity.name];
 
                         pickerState.set({
                             entities,

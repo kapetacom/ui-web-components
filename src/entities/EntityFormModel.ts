@@ -1,11 +1,6 @@
 import { makeObservable, observable } from 'mobx';
 import { Guid } from 'guid-typescript';
-import {
-    EntityDTO,
-    EntityProperties,
-    EntityProperty,
-    EntityType,
-} from '@kapeta/schemas';
+import { EntityDTO, EntityProperties, EntityProperty, EntityType } from '@kapeta/schemas';
 
 export interface SchemaEntryEdit {
     uid: string;
@@ -23,19 +18,12 @@ export interface SchemaEntityEdit {
     properties: SchemaEntryEdit[];
 }
 
-function toEditEntry(
-    fieldId: string,
-    original: EntityProperty
-): SchemaEntryEdit {
+function toEditEntry(fieldId: string, original: EntityProperty): SchemaEntryEdit {
     const newEntry = { ...original };
     delete newEntry.items;
     delete newEntry.properties;
-    const items = original.items
-        ? toEditEntry(fieldId + '[]', original.items)
-        : undefined;
-    const props = original.properties
-        ? toEditProperties(original.properties)
-        : undefined;
+    const items = original.items ? toEditEntry(fieldId + '[]', original.items) : undefined;
+    const props = original.properties ? toEditProperties(original.properties) : undefined;
     return {
         uid: Guid.create().toString(),
         type: original,

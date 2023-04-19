@@ -106,10 +106,7 @@ export class FormContainer extends React.Component<Props, State> {
         }
 
         for (let propertyId in readyStates) {
-            if (
-                readyStates.hasOwnProperty(propertyId) &&
-                readyStates[propertyId] === false
-            ) {
+            if (readyStates.hasOwnProperty(propertyId) && readyStates[propertyId] === false) {
                 return false;
             }
         }
@@ -139,10 +136,7 @@ export class FormContainer extends React.Component<Props, State> {
         };
     }
 
-    private addResetListener(
-        name: string,
-        callback: ResetListener
-    ): () => void {
+    private addResetListener(name: string, callback: ResetListener): () => void {
         if (!this.resetListeners[name]) {
             this.resetListeners[name] = [];
         }
@@ -239,9 +233,7 @@ export class FormContainer extends React.Component<Props, State> {
         const originalData = this.props.initialValue || {};
         Object.entries(this.resetListeners).forEach(([name, listeners]) => {
             listeners.forEach((listener) => {
-                listener(
-                    _.has(originalData, name) ? _.get(originalData, name) : ''
-                );
+                listener(_.has(originalData, name) ? _.get(originalData, name) : '');
             });
         });
 
@@ -267,11 +259,7 @@ export class FormContainer extends React.Component<Props, State> {
     }
 
     private async handleSubmitClick(evt: MouseEvent): Promise<void> {
-        if (
-            this.props.onSubmit ||
-            this.props.onSubmitData ||
-            !this.state.valid
-        ) {
+        if (this.props.onSubmit || this.props.onSubmitData || !this.state.valid) {
             //Otherwise let the native form handle this
             evt.stopPropagation();
             evt.preventDefault();
@@ -284,9 +272,7 @@ export class FormContainer extends React.Component<Props, State> {
         await this.submit();
     }
 
-    private async handleKeyPress(
-        evt: React.KeyboardEvent<HTMLElement>
-    ): Promise<void> {
+    private async handleKeyPress(evt: React.KeyboardEvent<HTMLElement>): Promise<void> {
         evt.stopPropagation();
 
         if (evt.which !== 13) {
@@ -322,17 +308,13 @@ export class FormContainer extends React.Component<Props, State> {
             '.kapeta-button.submit:not([form-bound])',
         ];
 
-        const buttons = this.container.querySelectorAll(
-            buttonSelector.join(',')
-        );
+        const buttons = this.container.querySelectorAll(buttonSelector.join(','));
 
         if (buttons.length < 1) {
             return;
         }
 
-        const subContainers = this.container.querySelectorAll(
-            'div.form-container[form-container]'
-        );
+        const subContainers = this.container.querySelectorAll('div.form-container[form-container]');
 
         buttons.forEach((btn) => {
             for (let i = 0; i < subContainers.length; i++) {
@@ -344,10 +326,7 @@ export class FormContainer extends React.Component<Props, State> {
             const isReset = btn.matches('[type=reset],.kapeta-button.reset');
 
             btn.setAttribute('form-bound', 'true');
-            btn.addEventListener(
-                'click',
-                isReset ? this.resetClickHandler : this.submitClickHandler
-            );
+            btn.addEventListener('click', isReset ? this.resetClickHandler : this.submitClickHandler);
         });
     }
 
@@ -364,8 +343,9 @@ export class FormContainer extends React.Component<Props, State> {
             return;
         }
 
-        const firstUnready: HTMLInputElement | null =
-            this.container.querySelector('.form-row.unready input[type=text]');
+        const firstUnready: HTMLInputElement | null = this.container.querySelector(
+            '.form-row.unready input[type=text]'
+        );
         if (firstUnready) {
             firstUnready.focus();
         }
@@ -393,14 +373,10 @@ export class FormContainer extends React.Component<Props, State> {
                         valid: this.state.valid,
                         processing: this.state.processing,
                         container: this,
-                        onReadyStateChanged: (
-                            fieldName: string,
-                            ready: boolean
-                        ) => this.onReadyStateChanged(fieldName, ready),
-                        onValueChanged: (name, value) =>
-                            this.onValueChanged(name, value),
-                        onReset: (name: string, callback: (value) => void) =>
-                            this.addResetListener(name, callback),
+                        onReadyStateChanged: (fieldName: string, ready: boolean) =>
+                            this.onReadyStateChanged(fieldName, ready),
+                        onValueChanged: (name, value) => this.onValueChanged(name, value),
+                        onReset: (name: string, callback: (value) => void) => this.addResetListener(name, callback),
                     }}
                 >
                     {this.renderFormContainer()}

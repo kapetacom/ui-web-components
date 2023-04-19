@@ -17,10 +17,7 @@ interface OverlayContainerState {
 }
 
 @observer
-export class OverlayContainer extends React.Component<
-    OverlayContainerProps,
-    OverlayContainerState
-> {
+export class OverlayContainer extends React.Component<OverlayContainerProps, OverlayContainerState> {
     private modalContainer: HTMLElement | null = null;
 
     @observable
@@ -188,11 +185,7 @@ export class OverlayContainer extends React.Component<
                         container: this.state.container,
                     }}
                 >
-                    <div
-                        className={className}
-                        style={{ zIndex }}
-                        onClick={this.popLastModal}
-                    />
+                    <div className={className} style={{ zIndex }} onClick={this.popLastModal} />
 
                     {this.props.children}
                 </OverlayContext.Provider>

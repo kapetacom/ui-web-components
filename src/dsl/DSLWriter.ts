@@ -39,12 +39,7 @@ function toAnnotationsCode(data: DSLAnnotation[]) {
 
 function toParameterCode(data: DSLParameter) {
     const typeString = toTypeString(data.type);
-    return [
-        data.annotations
-            ? data.annotations.map(toAnnotationCode).join(' ')
-            : '',
-        data.name + ':' + typeString,
-    ]
+    return [data.annotations ? data.annotations.map(toAnnotationCode).join(' ') : '', data.name + ':' + typeString]
         .join(' ')
         .trim();
 }
@@ -53,20 +48,13 @@ function toParametersCode(parameters?: DSLParameter[]) {
     return parameters ? parameters.map(toParameterCode).join(', ').trim() : '';
 }
 
-function generateMetaCode(
-    data: DSLRichEntity | DSLDataTypeProperty,
-    prefix?: string
-) {
+function generateMetaCode(data: DSLRichEntity | DSLDataTypeProperty, prefix?: string) {
     if (!prefix) {
         prefix = '';
     }
     const out = [];
     if (data.description) {
-        out.push(
-            prefix +
-                '//' +
-                data.description.split(/\n/).join('\n' + prefix + '//')
-        );
+        out.push(prefix + '//' + data.description.split(/\n/).join('\n' + prefix + '//'));
     }
 
     if (data.annotations && data.annotations.length > 0) {
@@ -100,7 +88,7 @@ function toPropertyCode(data: DSLDataTypeProperty, indent = 0) {
         out.push(metaCode);
     }
 
-    let postfix = ''
+    let postfix = '';
     if (data.defaultValue?.value) {
         postfix = ' = ' + data.defaultValue.value;
     }
@@ -115,11 +103,7 @@ function toPropertiesCode(properties: DSLDataTypeProperty[], indent = 0) {
     const out = ['{\n'];
 
     if (properties) {
-        out.push(
-            properties
-                .map((property) => toPropertyCode(property, indent))
-                .join('\n') + '\n'
-        );
+        out.push(properties.map((property) => toPropertyCode(property, indent)).join('\n') + '\n');
     }
 
     out.push(prefix + '}');
@@ -138,11 +122,7 @@ function toDataTypeCode(data: DSLDataType) {
 function toMethodCode(data: DSLMethod) {
     const out = [generateMetaCode(data).trim()];
 
-    out.push(
-        `${data.name}(${toParametersCode(data.parameters)}):${toTypeString(
-            data.returnType
-        )}`
-    );
+    out.push(`${data.name}(${toParametersCode(data.parameters)}):${toTypeString(data.returnType)}`);
 
     return out.join('\n');
 }

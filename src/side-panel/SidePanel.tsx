@@ -1,10 +1,7 @@
 import React from 'react';
 import { toClass } from '@kapeta/ui-web-utils';
 import { PanelStructure } from '../helpers/PanelStructure';
-import {
-    OverlayComponent,
-    OverlayContextType,
-} from '../overlay/OverlayContext';
+import { OverlayComponent, OverlayContextType } from '../overlay/OverlayContext';
 import { OverlayContext } from '../overlay/OverlayContext';
 
 import './SidePanel.less';
@@ -47,10 +44,7 @@ export enum PanelSize {
     full = 'all',
 }
 
-export class SidePanel
-    extends React.Component<SidePanelProps, SidePanelState>
-    implements OverlayComponent
-{
+export class SidePanel extends React.Component<SidePanelProps, SidePanelState> implements OverlayComponent {
     static contextType = OverlayContext;
     context!: React.ContextType<OverlayContextType>;
 
@@ -161,11 +155,7 @@ export class SidePanel
 
         return (
             <RenderInBody className={this.props.className}>
-                <div
-                    onTransitionEndCapture={this.onTransitionEnd}
-                    style={{ zIndex }}
-                    className={toClass(classNames)}
-                >
+                <div onTransitionEndCapture={this.onTransitionEnd} style={{ zIndex }} className={toClass(classNames)}>
                     <PanelStructure
                         title={this.props.title || ''}
                         closable={this.props.closable}

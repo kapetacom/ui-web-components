@@ -17,9 +17,7 @@ interface SelectorContainerProps<T extends any> {
 }
 
 @observer
-export class SortableContainer<T extends any> extends React.Component<
-    SelectorContainerProps<T>
-> {
+export class SortableContainer<T extends any> extends React.Component<SelectorContainerProps<T>> {
     private elm: DOMElement | null = null;
 
     private items: SortableItem[] = [];
@@ -64,11 +62,7 @@ export class SortableContainer<T extends any> extends React.Component<
     }
 
     @action
-    private onDragMove(
-        dimensions: Dimensions,
-        dragRect: ClientRect,
-        drag: SortableItem
-    ) {
+    private onDragMove(dimensions: Dimensions, dragRect: ClientRect, drag: SortableItem) {
         for (let i = 0; i < this.items.length; i++) {
             const item = this.items[i];
             if (item.getItem() === drag.getItem()) {
@@ -86,11 +80,7 @@ export class SortableContainer<T extends any> extends React.Component<
                     if (newIx === 0) {
                         this.props.list.unshift(drag.getItem());
                     } else {
-                        this.props.list.splice(
-                            Math.max(0, newIx),
-                            0,
-                            drag.getItem()
-                        );
+                        this.props.list.splice(Math.max(0, newIx), 0, drag.getItem());
                     }
                     this.onUpdate();
                     return;
@@ -104,11 +94,7 @@ export class SortableContainer<T extends any> extends React.Component<
     }
 
     @action
-    private onDragEnd(
-        dimensions: Dimensions,
-        dragRect: ClientRect,
-        drag: SortableItem
-    ) {
+    private onDragEnd(dimensions: Dimensions, dragRect: ClientRect, drag: SortableItem) {
         this.dragging = undefined;
         if (this.changed && this.props.onChanged) {
             this.props.onChanged([...this.props.list]);
@@ -124,9 +110,7 @@ export class SortableContainer<T extends any> extends React.Component<
     }
 
     private calculateStyle(existingStyle?: CSSProperties) {
-        const style: CSSProperties = existingStyle
-            ? _.cloneDeep(existingStyle)
-            : {};
+        const style: CSSProperties = existingStyle ? _.cloneDeep(existingStyle) : {};
 
         if (!style.position) {
             style.position = 'relative';
@@ -157,10 +141,8 @@ export class SortableContainer<T extends any> extends React.Component<
                     onDragStart: this.onDragStart.bind(this),
                     onDragMove: this.onDragMove.bind(this),
                     onDragEnd: this.onDragEnd.bind(this),
-                    onSortableItemCreated:
-                        this.onSortableItemCreated.bind(this),
-                    onSortableItemRemoved:
-                        this.onSortableItemRemoved.bind(this),
+                    onSortableItemCreated: this.onSortableItemCreated.bind(this),
+                    onSortableItemRemoved: this.onSortableItemRemoved.bind(this),
                 }}
             >
                 {clone}

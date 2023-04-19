@@ -1,6 +1,6 @@
 {
     "name": "@kapeta/ui-web-components",
-    "version": "0.0.139",
+    "version": "0.0.140",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
     "types": "dist/index.d.ts",
@@ -101,6 +101,7 @@
     },
     "prettier": {
         "tabWidth": 4,
-        "singleQuote": true
+        "singleQuote": true,
+        "printWidth": 120
     }
 }

@@ -26,11 +26,7 @@ export function DataList<T = any>(props: Props<T>) {
             }
         },
         onRowSelected(evt) {
-            if (
-                !evt.node.isSelected() ||
-                !evt.data ||
-                !props.onDataRowSelected
-            ) {
+            if (!evt.node.isSelected() || !evt.data || !props.onDataRowSelected) {
                 if (evt.node.__objectId === selectedRow) {
                     setSelectedRow(-1);
                 }

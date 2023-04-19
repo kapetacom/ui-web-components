@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-    Button,
-    ButtonStyle,
-    ButtonType,
-    FormButtons,
-    FormContainer,
-} from '../src';
+import { Button, ButtonStyle, ButtonType, FormButtons, FormContainer } from '../src';
 import { FormField, FormFieldType } from '../src/form/inputs/FormField';
 
 function minMaxAgeCheck(name: string, value: number) {
@@ -50,11 +44,7 @@ export const SimpleForm = () => {
                 }}
             >
                 <FormField name={'name'} label={'Name'} />
-                <FormField
-                    name={'age'}
-                    label={'Age'}
-                    type={FormFieldType.NUMBER}
-                />
+                <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
                 <FormField
                     name={'enabled'}
                     label={'Enable?'}
@@ -99,18 +89,8 @@ export const SimpleForm = () => {
                         onClick={() => setInitialValue(InitialFormValue)}
                         type={ButtonType.BUTTON}
                     />
-                    <Button
-                        width={80}
-                        text={'Reset'}
-                        type={ButtonType.RESET}
-                        style={ButtonStyle.DANGER}
-                    />
-                    <Button
-                        width={80}
-                        text={'Save'}
-                        type={ButtonType.SUBMIT}
-                        style={ButtonStyle.PRIMARY}
-                    />
+                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
+                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -132,11 +112,7 @@ export const NestedDataForm = () => {
                 }}
             >
                 <FormField name={'author.name'} label={'Name'} />
-                <FormField
-                    name={'author.age'}
-                    label={'Age'}
-                    type={FormFieldType.NUMBER}
-                />
+                <FormField name={'author.age'} label={'Age'} type={FormFieldType.NUMBER} />
                 <FormField
                     name={'enabled'}
                     label={'Enable?'}
@@ -169,18 +145,8 @@ export const NestedDataForm = () => {
                 />
 
                 <FormButtons>
-                    <Button
-                        width={80}
-                        text={'Reset'}
-                        type={ButtonType.RESET}
-                        style={ButtonStyle.DANGER}
-                    />
-                    <Button
-                        width={80}
-                        text={'Save'}
-                        type={ButtonType.SUBMIT}
-                        style={ButtonStyle.PRIMARY}
-                    />
+                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
+                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -204,11 +170,7 @@ export const FormWithConditionals = () => {
                 }}
             >
                 <FormField name={'name'} label={'Name'} />
-                <FormField
-                    name={'age'}
-                    label={'Age'}
-                    type={FormFieldType.NUMBER}
-                />
+                <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
                 <FormField
                     name={'enabled'}
                     label={'Enable?'}
@@ -245,18 +207,8 @@ export const FormWithConditionals = () => {
                 )}
 
                 <FormButtons>
-                    <Button
-                        width={80}
-                        text={'Reset'}
-                        type={ButtonType.RESET}
-                        style={ButtonStyle.DANGER}
-                    />
-                    <Button
-                        width={80}
-                        text={'Save'}
-                        type={ButtonType.SUBMIT}
-                        style={ButtonStyle.PRIMARY}
-                    />
+                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
+                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -276,21 +228,9 @@ export const FormWithValidation = () => {
                     setFormData(data);
                 }}
             >
-                <FormField
-                    name={'name'}
-                    label={'Name'}
-                    validation={['required']}
-                />
-                <FormField
-                    name={'email'}
-                    label={'E-mail'}
-                    validation={['required', 'email']}
-                />
-                <FormField
-                    name={'enabled'}
-                    label={'Enable?'}
-                    type={FormFieldType.CHECKBOX}
-                />
+                <FormField name={'name'} label={'Name'} validation={['required']} />
+                <FormField name={'email'} label={'E-mail'} validation={['required', 'email']} />
+                <FormField name={'enabled'} label={'Enable?'} type={FormFieldType.CHECKBOX} />
 
                 <FormField
                     name={'age'}
@@ -307,18 +247,8 @@ export const FormWithValidation = () => {
                 />
 
                 <FormButtons>
-                    <Button
-                        width={80}
-                        text={'Reset'}
-                        type={ButtonType.RESET}
-                        style={ButtonStyle.DANGER}
-                    />
-                    <Button
-                        width={80}
-                        text={'Save'}
-                        type={ButtonType.SUBMIT}
-                        style={ButtonStyle.PRIMARY}
-                    />
+                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
+                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -340,11 +270,7 @@ export const AsyncForm = () => {
                 }}
             >
                 <FormField name={'name'} label={'Name'} />
-                <FormField
-                    name={'age'}
-                    label={'Age'}
-                    type={FormFieldType.NUMBER}
-                />
+                <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
                 <FormField
                     name={'enabled'}
                     label={'Enable?'}
@@ -353,18 +279,8 @@ export const AsyncForm = () => {
                 />
 
                 <FormButtons>
-                    <Button
-                        width={80}
-                        text={'Reset'}
-                        type={ButtonType.RESET}
-                        style={ButtonStyle.DANGER}
-                    />
-                    <Button
-                        width={80}
-                        text={'Save'}
-                        type={ButtonType.SUBMIT}
-                        style={ButtonStyle.PRIMARY}
-                    />
+                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
+                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -379,11 +295,7 @@ export const FormNavigationOnSubmit = () => {
             <form method={'GET'}>
                 <FormContainer initialValue={InitialFormValue}>
                     <FormField name={'name'} label={'Name'} />
-                    <FormField
-                        name={'age'}
-                        label={'Age'}
-                        type={FormFieldType.NUMBER}
-                    />
+                    <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
                     <FormField
                         name={'enabled'}
                         label={'Enable?'}
@@ -392,18 +304,8 @@ export const FormNavigationOnSubmit = () => {
                     />
 
                     <FormButtons>
-                        <Button
-                            width={80}
-                            text={'Reset'}
-                            type={ButtonType.RESET}
-                            style={ButtonStyle.DANGER}
-                        />
-                        <Button
-                            width={80}
-                            text={'Save'}
-                            type={ButtonType.SUBMIT}
-                            style={ButtonStyle.PRIMARY}
-                        />
+                        <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
+                        <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
                     </FormButtons>
                 </FormContainer>
             </form>

@@ -34,5 +34,4 @@ const defaultValue: OverlayContextData = {
     },
 };
 
-export const OverlayContext: OverlayContextType =
-    React.createContext(defaultValue);
+export const OverlayContext: OverlayContextType = React.createContext(defaultValue);

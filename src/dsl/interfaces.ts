@@ -13,31 +13,31 @@ export interface DSLTypeComplex {
 export type DSLType = DSLTypeComplex | string;
 
 export interface DSLDefaultValue {
-    type: 'reference'|'literal';
-    value: string|number|boolean|null;
+    type: 'reference' | 'literal';
+    value: string | number | boolean | null;
 }
 
 export interface PEGLocationCoord {
-    offset: number
-    line: number
-    column: number
+    offset: number;
+    line: number;
+    column: number;
 }
 
 export interface PEGLocation {
-    start: PEGLocationCoord
-    end: PEGLocationCoord
+    start: PEGLocationCoord;
+    end: PEGLocationCoord;
 }
 
 export interface PEGValidationEntity<T = any> {
-    type: string
-    location: PEGLocation
-    data: T
+    type: string;
+    location: PEGLocation;
+    data: T;
 }
 
 export interface DSLDataTypeProperty {
     type: DSLType;
     name: string;
-    defaultValue?: DSLDefaultValue|null;
+    defaultValue?: DSLDefaultValue | null;
     properties?: DSLDataTypeProperty[];
     annotations?: DSLAnnotation[];
     description?: string;

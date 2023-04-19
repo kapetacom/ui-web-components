@@ -71,10 +71,7 @@ export const AssetNameInput = (props: Props) => {
     }
 
     return (
-        <div
-            style={{ display: 'flex', alignItems: 'flex-start' }}
-            className="asset-name-input"
-        >
+        <div style={{ display: 'flex', alignItems: 'flex-start' }} className="asset-name-input">
             <FormSelect
                 label="Namespace"
                 name="asset-namespace"
@@ -86,11 +83,7 @@ export const AssetNameInput = (props: Props) => {
                 options={namespaces}
                 noTransform
             />
-            <span
-                style={{ flexGrow: 0, margin: '15px 10px', lineHeight: '30px' }}
-            >
-                /
-            </span>
+            <span style={{ flexGrow: 0, margin: '15px 10px', lineHeight: '30px' }}>/</span>
             <FormInput
                 onChange={(_name, value) => {
                     callback(namespace, value);

@@ -38,13 +38,12 @@ const language: ILanguage = {
     // Set defaultToken to invalid to see what you do not tokenize yet
     defaultToken: 'invalid',
 
-    keywords: ['enum','true','false', 'null'],
+    keywords: ['enum', 'true', 'false', 'null'],
     operators: [],
     typeKeywords: BUILT_IN_TYPES,
 
     symbols: /[=><!~?:&,|+\-*\/\^%]+/,
-    escapes:
-        /\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/,
+    escapes: /\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/,
     digits: /\d+(_+\d+)*/,
 
     // The main tokenizer for our languages
@@ -69,22 +68,13 @@ const language: ILanguage = {
             ],
 
             //Keywords
-            [
-                /\b(true|false|null)\b/,
-                ['keyword'],
-            ],
+            [/\b(true|false|null)\b/, ['keyword']],
 
             //Enum name
-            [
-                /(enum)(\s*)([a-zA-Z_][\w$]*)(?=\s*\{)/,
-                ['keyword', '', 'entity'],
-            ],
+            [/(enum)(\s*)([a-zA-Z_][\w$]*)(?=\s*\{)/, ['keyword', '', 'entity']],
 
             //Enum value
-            [
-                /([a-zA-Z_][\w$]*)(\.)([a-zA-Z_][\w$]*)/,
-                ['type','', 'variable.name'],
-            ],
+            [/([a-zA-Z_][\w$]*)(\.)([a-zA-Z_][\w$]*)/, ['type', '', 'variable.name']],
 
             //Method name
             [/([a-zA-Z_][\w$]*)(?=\s*\()/, 'entity'],
@@ -174,10 +164,7 @@ const language: ILanguage = {
 const completionItemProvider = new DSLCompletionItemProvider();
 const documentFormattingEditProvider = new DSLDocumentFormattingEditProvider();
 
-export const withAdditionalTypes = (
-    model: editor.ITextModel,
-    types: string[]
-) => {
+export const withAdditionalTypes = (model: editor.ITextModel, types: string[]) => {
     completionItemProvider.setAdditionalTypes(model, types);
 };
 
@@ -191,15 +178,9 @@ loader.init().then((monaco) => {
         languages.setLanguageConfiguration(DSL_LANGUAGE_ID, configuration);
 
         //Auto-formatting:
-        languages.registerDocumentFormattingEditProvider(
-            DSL_LANGUAGE_ID,
-            documentFormattingEditProvider
-        );
+        languages.registerDocumentFormattingEditProvider(DSL_LANGUAGE_ID, documentFormattingEditProvider);
 
         //Auto-complete:
-        languages.registerCompletionItemProvider(
-            DSL_LANGUAGE_ID,
-            completionItemProvider
-        );
+        languages.registerCompletionItemProvider(DSL_LANGUAGE_ID, completionItemProvider);
     });
 });

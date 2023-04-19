@@ -71,17 +71,9 @@ export class FormCheckbox extends React.Component<Props, State> {
                 focused={this.state.inputFocused}
                 disabled={this.props.disabled}
             >
-                <div
-                    className={className}
-                    data-name={this.props.name}
-                    data-value={this.props.value}
-                >
+                <div className={className} data-name={this.props.name} data-value={this.props.value}>
                     <label>
-                        <Checkbox
-                            value={checked}
-                            onChange={this.onChange}
-                            disabled={this.props.disabled}
-                        />
+                        <Checkbox value={checked} onChange={this.onChange} disabled={this.props.disabled} />
 
                         <span className={'name'}>{this.props.label}</span>
                     </label>

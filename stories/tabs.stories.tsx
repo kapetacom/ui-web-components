@@ -11,10 +11,7 @@ export const Controlled = () => {
 
     return (
         <div style={{ width: '700px', padding: '10px' }}>
-            <TabContainer
-                currentTabId={currentTabId}
-                onTabChange={setCurrentTabId}
-            >
+            <TabContainer currentTabId={currentTabId} onTabChange={setCurrentTabId}>
                 <TabPage id={'first'} title={'First Tab'}>
                     First tab page
                 </TabPage>

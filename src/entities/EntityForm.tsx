@@ -90,11 +90,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
     }
 
     @action
-    private updateFieldId(
-        properties: SchemaEntryEdit[],
-        field: SchemaEntryEdit,
-        newId: string
-    ) {
+    private updateFieldId(properties: SchemaEntryEdit[], field: SchemaEntryEdit, newId: string) {
         this.validateField(properties, field, newId);
 
         field.id = newId;
@@ -103,11 +99,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
     }
 
     @action
-    private addField(
-        properties: SchemaEntryEdit[],
-        index: number,
-        isSubElement?: boolean
-    ): void {
+    private addField(properties: SchemaEntryEdit[], index: number, isSubElement?: boolean): void {
         const field = {
             uid: Guid.create().toString(),
             id: 'field_' + properties.length,
@@ -144,18 +136,12 @@ export class EntityForm extends React.Component<EntityFormProps> {
     }
 
     private hasConflicts(properties: SchemaEntryEdit[], newId: string) {
-        const conflicts = properties.filter(
-            (otherField) => otherField.id === newId
-        );
+        const conflicts = properties.filter((otherField) => otherField.id === newId);
 
         return conflicts.length > 0;
     }
 
-    private validateField(
-        properties: SchemaEntryEdit[],
-        field: SchemaEntryEdit,
-        newId: string
-    ) {
+    private validateField(properties: SchemaEntryEdit[], field: SchemaEntryEdit, newId: string) {
         if (this.hasConflicts(properties, newId)) {
             //ID already in use by sibling
             field.error = 'Field ID must be unique';
@@ -170,11 +156,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
         return !!this.openedObjects[key];
     }
 
-    private renderAddFirst(
-        properties: SchemaEntryEdit[],
-        depth: number,
-        index: number
-    ) {
+    private renderAddFirst(properties: SchemaEntryEdit[], depth: number, index: number) {
         return (
             <div
                 className={'add-first'}
@@ -188,39 +170,23 @@ export class EntityForm extends React.Component<EntityFormProps> {
         );
     }
 
-    private renderAddField(
-        properties: SchemaEntryEdit[],
-        depth: number,
-        index: number
-    ) {
+    private renderAddField(properties: SchemaEntryEdit[], depth: number, index: number) {
         return (
             <div style={{ marginLeft: depth * 24 }}>
-                <div
-                    className="single-plus"
-                    onClick={() => this.addField(properties, index)}
-                >
+                <div className="single-plus" onClick={() => this.addField(properties, index)}>
                     <PlusHexagon />
                 </div>
             </div>
         );
     }
 
-    private renderProperties(
-        properties: SchemaEntryEdit[],
-        depth: number,
-        parentId?: string
-    ): JSX.Element {
+    private renderProperties(properties: SchemaEntryEdit[], depth: number, parentId?: string): JSX.Element {
         return (
-            <SortableContainer
-                list={properties}
-                onUpdate={() => this.handleChange()}
-            >
+            <SortableContainer list={properties} onUpdate={() => this.handleChange()}>
                 <div className={'field-list-container'}>
                     {properties.map((field, index) => {
                         const objectType = isObject(field);
-                        let key = parentId
-                            ? parentId + '.' + field.id
-                            : field.id;
+                        let key = parentId ? parentId + '.' + field.id : field.id;
 
                         const openerClass = toClass({
                             open: this.isOpen(key),
@@ -237,10 +203,8 @@ export class EntityForm extends React.Component<EntityFormProps> {
                         });
 
                         const isFirstAttribute =
-                            (field.type.type === 'object' ||
-                                field.type.type === 'object[]') &&
-                            (!field.properties ||
-                                field.properties.length === 0);
+                            (field.type.type === 'object' || field.type.type === 'object[]') &&
+                            (!field.properties || field.properties.length === 0);
 
                         return (
                             <div
@@ -256,10 +220,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                 }}
                             >
                                 <SortableItem item={field} handle={'.mover'}>
-                                    <div
-                                        className={'field-row data'}
-                                        style={{ marginLeft: depth * 24 }}
-                                    >
+                                    <div className={'field-row data'} style={{ marginLeft: depth * 24 }}>
                                         <div className={'mover'}>
                                             <SVGGrabber />
                                         </div>
@@ -271,9 +232,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                                     height="13"
                                                     viewBox="0 0 7 13"
                                                     fill="none"
-                                                    onClick={() =>
-                                                        this.toggleOpen(key)
-                                                    }
+                                                    onClick={() => this.toggleOpen(key)}
                                                 >
                                                     <path
                                                         d="M0.75 12.25L6.25 6.75L0.75 1.25"
@@ -293,59 +252,29 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                                 type={Type.TEXT}
                                                 value={field.id}
                                                 onChange={(_, value) => {
-                                                    this.updateFieldId(
-                                                        properties,
-                                                        field,
-                                                        value
-                                                    );
+                                                    this.updateFieldId(properties, field, value);
                                                 }}
                                             />
                                         </div>
-                                        <div
-                                            className={'field-type'}
-                                            onClick={(evt) =>
-                                                evt.stopPropagation()
-                                            }
-                                        >
+                                        <div className={'field-type'} onClick={(evt) => evt.stopPropagation()}>
                                             <EntityPicker
                                                 name={'fieldType'}
                                                 value={field.type}
                                                 allowObject={true}
-                                                onChange={(
-                                                    value: EntityProperty
-                                                ) => {
-                                                    this.updateType(
-                                                        field,
-                                                        EntityType.Dto
-                                                    );
+                                                onChange={(value: EntityProperty) => {
+                                                    this.updateType(field, EntityType.Dto);
                                                 }}
                                             />
 
-                                            <div
-                                                className={
-                                                    'object-attribute-count'
-                                                }
-                                            >
-                                                {isObject(field) &&
-                                                    field.properties && (
-                                                        <>
-                                                            {' '}
-                                                            (
-                                                            {
-                                                                field.properties
-                                                                    .length
-                                                            }
-                                                            )
-                                                        </>
-                                                    )}
+                                            <div className={'object-attribute-count'}>
+                                                {isObject(field) && field.properties && (
+                                                    <> ({field.properties.length})</>
+                                                )}
                                             </div>
                                         </div>
                                         <div
                                             onClick={() => {
-                                                this.removeEntry(
-                                                    properties,
-                                                    field
-                                                );
+                                                this.removeEntry(properties, field);
                                             }}
                                             className={'remover'}
                                         >
@@ -353,29 +282,13 @@ export class EntityForm extends React.Component<EntityFormProps> {
                                         </div>
                                     </div>
                                 </SortableItem>
-                                <div className={addClassNames}>
-                                    {this.renderAddField(
-                                        properties,
-                                        depth,
-                                        index
-                                    )}
-                                </div>
+                                <div className={addClassNames}>{this.renderAddField(properties, depth, index)}</div>
                                 {objectType &&
                                     this.isOpen(key) &&
-                                    this.renderProperties(
-                                        field.properties
-                                            ? field.properties
-                                            : [],
-                                        depth + 1,
-                                        key
-                                    )}
+                                    this.renderProperties(field.properties ? field.properties : [], depth + 1, key)}
                                 {this.isOpen(key) &&
                                     isFirstAttribute &&
-                                    this.renderAddFirst(
-                                        properties,
-                                        depth + 1,
-                                        index
-                                    )}
+                                    this.renderAddFirst(properties, depth + 1, index)}
                             </div>
                         );
                     })}
@@ -415,11 +328,7 @@ export class EntityForm extends React.Component<EntityFormProps> {
                     </div>
                     {this.props.entity.properties.length > 0
                         ? this.renderProperties(this.props.entity.properties, 0)
-                        : this.renderAddFirst(
-                              this.props.entity.properties,
-                              0,
-                              0
-                          )}
+                        : this.renderAddFirst(this.props.entity.properties, 0, 0)}
                 </FormContainer>
             </div>
         );

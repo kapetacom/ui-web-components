@@ -106,11 +106,7 @@ export class FormRadioGroup extends React.Component<Props> {
                 focused={this.inputFocused}
                 disabled={this.props.disabled}
             >
-                <div
-                    className={className}
-                    data-name={this.props.name}
-                    data-value={this.props.value}
-                >
+                <div className={className} data-name={this.props.name} data-value={this.props.value}>
                     {Object.entries(options).map(([value, label], ix) => {
                         return (
                             <label key={`radio_${ix}`}>

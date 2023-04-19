@@ -2,12 +2,7 @@ import React, { Context, createContext, useContext, useState } from 'react';
 import _ from 'lodash';
 import './Detail.less';
 import { toClass } from '@kapeta/ui-web-utils';
-import {
-    Button,
-    ButtonShape,
-    ButtonStyle,
-    StandardIcons,
-} from '../button/buttons';
+import { Button, ButtonShape, ButtonStyle, StandardIcons } from '../button/buttons';
 import { applyValidation } from '../validation/Validators';
 import { showToasty, ToastType } from '../toast/ToastComponent';
 import { DialogControl } from '../dialog/DialogControl';
@@ -188,11 +183,7 @@ export const DetailRowValue = (props: DetailRowValueProps) => {
     const isEditable = context.editable && !props.fixed;
 
     return (
-        <DetailRow
-            label={props.label}
-            name={props.name}
-            rowType={RowType.SIMPLE}
-        >
+        <DetailRow label={props.label} name={props.name} rowType={RowType.SIMPLE}>
             <span className={'inner'}>
                 {isEditing && (
                     <>
@@ -205,9 +196,7 @@ export const DetailRowValue = (props: DetailRowValueProps) => {
                                 setValue(evt.target.value);
                             }}
                         />
-                        {errors.length > 0 && (
-                            <div className={'error'}>{errors[0]}</div>
-                        )}
+                        {errors.length > 0 && <div className={'error'}>{errors[0]}</div>}
                     </>
                 )}
 
@@ -248,17 +237,13 @@ interface DetailRowListValueProps extends DetailRowValueProps {
 export const DetailRowListValue = (props: DetailRowListValueProps) => {
     let context = useContext(DetailContext);
 
-    const originalValue: any[] = _.has(context.data, props.name)
-        ? _.get(context.data, props.name)
-        : [];
+    const originalValue: any[] = _.has(context.data, props.name) ? _.get(context.data, props.name) : [];
 
     const isAdding = context.isEditing(props.name);
     const isProcessing = context.isProcessing(props.name);
     const [listEntryValue, setListEntryValue] = useState('');
     const [newListEntry, setNewListEntry] = useState('');
-    const errors = isAdding
-        ? applyValidation(props.validation, props.name, newListEntry)
-        : [];
+    const errors = isAdding ? applyValidation(props.validation, props.name, newListEntry) : [];
     const invalid = errors.length > 0;
 
     const doCancel = () => {
@@ -274,13 +259,7 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
                     const fieldId = `${props.name}[${ix}]`;
                     const isEditing = context.isEditing(fieldId);
 
-                    const errors = isEditing
-                        ? applyValidation(
-                              props.validation,
-                              props.name,
-                              listEntryValue
-                          )
-                        : [];
+                    const errors = isEditing ? applyValidation(props.validation, props.name, listEntryValue) : [];
                     const invalid = errors.length > 0;
                     return (
                         <li key={`elm_${ix}`}>
@@ -294,17 +273,13 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
                                             readOnly={isProcessing}
                                             autoFocus={true}
                                             onChange={(evt) => {
-                                                setListEntryValue(
-                                                    evt.target.value
-                                                );
+                                                setListEntryValue(evt.target.value);
                                             }}
                                         />
                                     </>
                                 )}
                             </span>
-                            {isEditing && errors.length > 0 && (
-                                <div className={'error'}>{errors[0]}</div>
-                            )}
+                            {isEditing && errors.length > 0 && <div className={'error'}>{errors[0]}</div>}
 
                             {isEditable && (
                                 <span className={'actions'}>
@@ -315,9 +290,7 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
                                                 shape={ButtonShape.ICON}
                                                 style={ButtonStyle.PRIMARY}
                                                 onClick={() => {
-                                                    setListEntryValue(
-                                                        entryValue
-                                                    );
+                                                    setListEntryValue(entryValue);
                                                     context.setEditing(fieldId);
                                                 }}
                                             />
@@ -334,17 +307,9 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
                                                             if (!ok) {
                                                                 return;
                                                             }
-                                                            const newValue = [
-                                                                ...originalValue,
-                                                            ];
-                                                            newValue.splice(
-                                                                ix,
-                                                                1
-                                                            );
-                                                            context.onValueChanged(
-                                                                props.name,
-                                                                newValue
-                                                            );
+                                                            const newValue = [...originalValue];
+                                                            newValue.splice(ix, 1);
+                                                            context.onValueChanged(props.name, newValue);
                                                         }
                                                     );
                                                 }}
@@ -355,14 +320,9 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
                                         <SaveCancelButtons
                                             invalid={invalid}
                                             onSave={async () => {
-                                                const newValue = [
-                                                    ...originalValue,
-                                                ];
+                                                const newValue = [...originalValue];
                                                 newValue[ix] = listEntryValue;
-                                                await context.onValueChanged(
-                                                    props.name,
-                                                    newValue
-                                                );
+                                                await context.onValueChanged(props.name, newValue);
                                             }}
                                             onCancel={doCancel}
                                         />
@@ -396,22 +356,14 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
                                         setNewListEntry(evt.target.value);
                                     }}
                                 />
-                                {errors.length > 0 && (
-                                    <div className={'error'}>{errors[0]}</div>
-                                )}
+                                {errors.length > 0 && <div className={'error'}>{errors[0]}</div>}
 
                                 {!isProcessing && (
                                     <SaveCancelButtons
                                         invalid={invalid}
                                         onSave={async () => {
-                                            const newValue = [
-                                                ...originalValue,
-                                                newListEntry,
-                                            ];
-                                            await context.onValueChanged(
-                                                props.name,
-                                                newValue
-                                            );
+                                            const newValue = [...originalValue, newListEntry];
+                                            await context.onValueChanged(props.name, newValue);
                                         }}
                                         onCancel={doCancel}
                                     />
@@ -446,11 +398,7 @@ const Spinner = () => (
     </div>
 );
 
-const SaveCancelButtons = (props: {
-    invalid: boolean;
-    onSave: () => any;
-    onCancel: () => any;
-}) => {
+const SaveCancelButtons = (props: { invalid: boolean; onSave: () => any; onCancel: () => any }) => {
     return (
         <>
             <Button

@@ -63,9 +63,7 @@ export class FormTextarea extends React.Component<Props> {
     }
 
     @action
-    private setUserInput = (
-        evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
+    private setUserInput = (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         let val = evt.target.value;
         this.userInput = val;
         if (this.props.onChange) {
@@ -87,11 +85,7 @@ export class FormTextarea extends React.Component<Props> {
                 disabled={this.props.disabled}
                 readOnly={this.props.readOnly}
             >
-                <div
-                    className={'textarea-wrapper'}
-                    data-name={this.props.name}
-                    data-value={this.userInput}
-                >
+                <div className={'textarea-wrapper'} data-name={this.props.name} data-value={this.userInput}>
                     <textarea
                         name={this.props.name}
                         onChange={(event) => {
@@ -106,10 +100,7 @@ export class FormTextarea extends React.Component<Props> {
                         disabled={this.props.disabled}
                         autoComplete="off"
                     ></textarea>
-                    <div
-                        ref={this.textHeightElementRef}
-                        className={'text-height'}
-                    ></div>
+                    <div ref={this.textHeightElementRef} className={'text-height'}></div>
                 </div>
             </FormRow>
         );

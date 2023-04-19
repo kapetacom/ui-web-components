@@ -26,10 +26,7 @@ const defaultValue: FormContextData = {
 
 export const FormContext: FormContextType = React.createContext(defaultValue);
 
-export function useFormContextField<T = any>(
-    fieldName: string,
-    resetHandler?: ResetListener
-) {
+export function useFormContextField<T = any>(fieldName: string, resetHandler?: ResetListener) {
     const context = useContext(FormContext);
 
     if (resetHandler) {

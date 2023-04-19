@@ -61,20 +61,11 @@ export class DialogControlImpl {
     @action
     setCallback = (callback: (result?: any) => void) => {
         this.accept = () => {
-            if (
-                DialogControl.type &&
-                DialogControl.type === DialogTypes.PROMPT
-            ) {
+            if (DialogControl.type && DialogControl.type === DialogTypes.PROMPT) {
                 callback(this.promptInputValue);
-            } else if (
-                DialogControl.type &&
-                DialogControl.type === DialogTypes.DELETE
-            ) {
+            } else if (DialogControl.type && DialogControl.type === DialogTypes.DELETE) {
                 callback(true);
-            } else if (
-                DialogControl.type &&
-                DialogControl.type === DialogTypes.CONFIRMATION
-            ) {
+            } else if (DialogControl.type && DialogControl.type === DialogTypes.CONFIRMATION) {
                 callback(true);
             } else {
                 callback();
@@ -83,15 +74,9 @@ export class DialogControlImpl {
         };
 
         this.reject = () => {
-            if (
-                DialogControl.type &&
-                DialogControl.type === DialogTypes.CONFIRMATION
-            ) {
+            if (DialogControl.type && DialogControl.type === DialogTypes.CONFIRMATION) {
                 callback(false);
-            } else if (
-                DialogControl.type &&
-                DialogControl.type === DialogTypes.DELETE
-            ) {
+            } else if (DialogControl.type && DialogControl.type === DialogTypes.DELETE) {
                 callback(false);
             }
         };
@@ -152,12 +137,7 @@ export class DialogControlImpl {
     }
 
     @action
-    prompt(
-        title: string,
-        text: string,
-        callback: (result: any) => void,
-        fieldType: Type = Type.TEXT
-    ) {
+    prompt(title: string, text: string, callback: (result: any) => void, fieldType: Type = Type.TEXT) {
         this.show(title, text, callback, DialogTypes.PROMPT, fieldType);
     }
 
@@ -180,11 +160,7 @@ export class DialogControlImpl {
 
 export const DialogControl = DialogControlImpl.fetchInstance();
 
-export const showPrompt = (
-    title: string,
-    text: string,
-    fieldType: Type = Type.TEXT
-): Promise<any> => {
+export const showPrompt = (title: string, text: string, fieldType: Type = Type.TEXT): Promise<any> => {
     return new Promise((resolve) => {
         DialogControl.prompt(title, text, resolve, fieldType);
     });

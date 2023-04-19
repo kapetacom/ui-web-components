@@ -27,10 +27,7 @@ interface StackContainerState {
     pages: StackPageInfo[];
 }
 
-export class StackContainer extends React.Component<
-    StackContainerProps,
-    StackContainerState
-> {
+export class StackContainer extends React.Component<StackContainerProps, StackContainerState> {
     private container: DOMElement | null = null;
 
     constructor(props: StackContainerProps) {
@@ -103,21 +100,11 @@ export class StackContainer extends React.Component<
                     onStackUpdated: this.handlePageUpdated,
                 }}
             >
-                <div
-                    className={'stack-container'}
-                    ref={(ref) => (this.container = asHTMLElement(ref))}
-                >
-                    <div
-                        className={'stack-breadcrumbs'}
-                        style={{ width: fullStackWidth + 'px' }}
-                    >
-                        <svg
-                            height={containerSize.height}
-                            width={fullStackWidth}
-                        >
+                <div className={'stack-container'} ref={(ref) => (this.container = asHTMLElement(ref))}>
+                    <div className={'stack-breadcrumbs'} style={{ width: fullStackWidth + 'px' }}>
+                        <svg height={containerSize.height} width={fullStackWidth}>
                             {pages.map((page, ix) => {
-                                const current =
-                                    page.id === this.props.currentPageId;
+                                const current = page.id === this.props.currentPageId;
                                 const className = toClass({
                                     'stack-breadcrumb': true,
                                     current,
@@ -140,23 +127,14 @@ export class StackContainer extends React.Component<
 
                                 return (
                                     <g className={className} key={page.id}>
-                                        <rect
-                                            {...position}
-                                            className={'background'}
-                                        />
-                                        <text
-                                            className={'title'}
-                                            {...textPosition}
-                                        >
+                                        <rect {...position} className={'background'} />
+                                        <text className={'title'} {...textPosition}>
                                             {page.title}
                                         </text>
                                         <rect
                                             className={'mouse-trap'}
                                             onClick={() => {
-                                                !current &&
-                                                    this.props.onPageRequest(
-                                                        page.id
-                                                    );
+                                                !current && this.props.onPageRequest(page.id);
                                             }}
                                             {...position}
                                         />

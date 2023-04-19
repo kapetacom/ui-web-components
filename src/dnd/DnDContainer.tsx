@@ -20,10 +20,7 @@ interface DnDContainerState {
     zoom?: number;
 }
 
-export class DnDContainer extends React.Component<
-    DnDContainerProps,
-    DnDContainerState
-> {
+export class DnDContainer extends React.Component<DnDContainerProps, DnDContainerState> {
     private elm: DOMElement | null = null;
 
     private dropZones: DnDDrop[] = [];
@@ -70,10 +67,7 @@ export class DnDContainer extends React.Component<
         this.currentDropZones.forEach((dropZone) => {
             dropZone.clearMoveState();
 
-            if (
-                !foundDropZone &&
-                dropZone.onDragMove(dimensions, dragRect, drag)
-            ) {
+            if (!foundDropZone && dropZone.onDragMove(dimensions, dragRect, drag)) {
                 foundDropZone = true;
             }
         });
@@ -84,10 +78,7 @@ export class DnDContainer extends React.Component<
         this.currentDropZones.forEach((dropZone) => {
             dropZone.clearState();
 
-            if (
-                !foundDropZone &&
-                dropZone.onDragEnd(dimensions, dragRect, drag)
-            ) {
+            if (!foundDropZone && dropZone.onDragEnd(dimensions, dragRect, drag)) {
                 foundDropZone = true;
             }
         });
@@ -119,9 +110,7 @@ export class DnDContainer extends React.Component<
     }
 
     calculateStyle(existingStyle?: CSSProperties) {
-        const style: CSSProperties = existingStyle
-            ? _.cloneDeep(existingStyle)
-            : {};
+        const style: CSSProperties = existingStyle ? _.cloneDeep(existingStyle) : {};
 
         if (!style.position) {
             style.position = 'relative';

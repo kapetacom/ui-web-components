@@ -8,9 +8,7 @@ type ITextModel = editor.ITextModel;
 type TextEdit = languages.TextEdit;
 type ProviderResult<T> = languages.ProviderResult<T>;
 
-export class DSLDocumentFormattingEditProvider
-    implements DocumentFormattingEditProvider
-{
+export class DSLDocumentFormattingEditProvider implements DocumentFormattingEditProvider {
     provideDocumentFormattingEdits(
         model: ITextModel,
         options: FormattingOptions,

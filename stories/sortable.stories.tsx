@@ -26,23 +26,13 @@ export const SortableList = () => {
                 <div className={'sortable-list'}>
                     {accounts.map((account, ix) => {
                         return (
-                            <SortableItem
-                                item={account}
-                                key={`account_${account.name}`}
-                                handle={'h3 > .handle'}
-                            >
+                            <SortableItem item={account} key={`account_${account.name}`} handle={'h3 > .handle'}>
                                 <div className={'sortable-item'}>
                                     <h3>
                                         <div className={'handle'}>
-                                            <i
-                                                className={
-                                                    'fa fa-grip-vertical'
-                                                }
-                                            />
+                                            <i className={'fa fa-grip-vertical'} />
                                         </div>
-                                        <span className={'name'}>
-                                            {account.name}
-                                        </span>
+                                        <span className={'name'}>{account.name}</span>
                                     </h3>
                                     <div className={'description'}>
                                         Employees: {account.employees} <br />

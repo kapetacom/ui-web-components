@@ -2,13 +2,7 @@ import Peggy, { ParserTracer } from 'peggy';
 
 // @ts-ignore
 import parser from './grammars/grammar_dsl.pegjs';
-import {
-    BUILT_IN_TYPES,
-    DSLLanguageOptions,
-    DSLResult,
-    METHOD_ANNOTATIONS,
-    PARAMETER_ANNOTATIONS,
-} from './types';
+import { BUILT_IN_TYPES, DSLLanguageOptions, DSLResult, METHOD_ANNOTATIONS, PARAMETER_ANNOTATIONS } from './types';
 
 interface SoftError {
     type: string;

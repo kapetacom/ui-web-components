@@ -4,7 +4,7 @@ import './DSLEditor.less';
 
 import Monaco from '@monaco-editor/react';
 import { editor } from 'monaco-editor';
-import {DSL_LANGUAGE_ID, DSLLanguageOptions, DSLOptions, DSLResult} from './types';
+import { DSL_LANGUAGE_ID, DSLLanguageOptions, DSLOptions, DSLResult } from './types';
 
 import './DSLLanguage';
 import { DSLValidator } from './DSLValidator';
@@ -25,9 +25,7 @@ export const DSLEditor = (props: DSLEditorProps) => {
         let value: string;
         const result = props.value as DSLResult;
         if (typeof result === 'object') {
-            value = result.code
-                ? result.code
-                : DSLWriter.write(result.entities);
+            value = result.code ? result.code : DSLWriter.write(result.entities);
         } else {
             value = props.value as string;
         }
@@ -75,9 +73,7 @@ export const DSLEditor = (props: DSLEditorProps) => {
                     setCurrent(code);
                     if (props.onChange) {
                         try {
-                            props.onChange(
-                                DSLParser.parse(code, parsingOptions)
-                            );
+                            props.onChange(DSLParser.parse(code, parsingOptions));
                         } catch (e) {
                             //Ignore
                         }
@@ -86,17 +82,11 @@ export const DSLEditor = (props: DSLEditorProps) => {
                 language={DSL_LANGUAGE_ID}
                 onMount={(editor, m) => {
                     //Syntax and semantic validation
-                    const validator = new DSLValidator(
-                        m.editor,
-                        parsingOptions
-                    );
+                    const validator = new DSLValidator(m.editor, parsingOptions);
                     validator.bind(editor.getModel());
 
                     if (props.validTypes && props.validTypes.length > 0) {
-                        withAdditionalTypes(
-                            editor.getModel(),
-                            props.validTypes
-                        );
+                        withAdditionalTypes(editor.getModel(), props.validTypes);
                     } else {
                         withAdditionalTypes(editor.getModel(), []);
                     }

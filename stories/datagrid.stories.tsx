@@ -1,13 +1,7 @@
 import React from 'react';
 
 import './styles.less';
-import {
-    DataGrid,
-    DataGridTheme,
-    DataList,
-    DataListDetails,
-    OverlayContainer,
-} from '../src';
+import { DataGrid, DataGridTheme, DataList, DataListDetails, OverlayContainer } from '../src';
 
 const RAW_DATA = [
     {

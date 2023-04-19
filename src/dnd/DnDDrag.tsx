@@ -52,8 +52,7 @@ export class DnDDrag extends React.Component<DnDDragProps> {
             elm: this.elm,
             target: this.target,
             container: container,
-            dragCopy:
-                this.props.dragCopy !== undefined ? this.props.dragCopy : true,
+            dragCopy: this.props.dragCopy !== undefined ? this.props.dragCopy : true,
             context: this.context,
             zoom: this.props.zoom ? this.props.zoom : this.context.zoom,
             overflowX: this.context ? this.context.overflowX : false,
@@ -91,8 +90,7 @@ export class DnDDrag extends React.Component<DnDDragProps> {
             elm: this.elm,
             target: this.target,
             container: container,
-            dragCopy:
-                this.props.dragCopy !== undefined ? this.props.dragCopy : true,
+            dragCopy: this.props.dragCopy !== undefined ? this.props.dragCopy : true,
             context: this.context,
             zoom: this.props.zoom ? this.props.zoom : this.context.zoom,
             overflowX: this.context ? this.context.overflowX : false,
@@ -122,9 +120,7 @@ export class DnDDrag extends React.Component<DnDDragProps> {
             return (
                 <>
                     {clone}
-                    <div style={{ position: 'absolute', left: '-99999px' }}>
-                        {copyElm}
-                    </div>
+                    <div style={{ position: 'absolute', left: '-99999px' }}>{copyElm}</div>
                 </>
             );
         }

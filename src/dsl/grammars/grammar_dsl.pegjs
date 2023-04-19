@@ -170,7 +170,7 @@ fields =
 number = value:('-'? [0-9]+ ('.' [0-9]+)?) { return parseFloat(text()) }
 variable_name = value:([a-zA-Z][_a-zA-Z0-9]*) { return value }
 literal = value:(number / string_quotes / 'true' / 'false' / 'null') {
-    let val = typeof value === 'string' ? JSON.stringify(value) : value;
+    let val = value;
     if (value === 'true') {
         val = true;
     } else if (value === 'false') {

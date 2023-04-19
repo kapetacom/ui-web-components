@@ -26,11 +26,7 @@ export const List = (props: Props) => {
                 );
             })}
 
-            {props.data.length === 0 && (
-                <div className={'empty'}>
-                    {props.emptyText || 'No elements found'}
-                </div>
-            )}
+            {props.data.length === 0 && <div className={'empty'}>{props.emptyText || 'No elements found'}</div>}
         </div>
     );
 };

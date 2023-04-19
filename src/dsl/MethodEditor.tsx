@@ -2,7 +2,7 @@ import React from 'react';
 
 import { DSLEditor } from './DSLEditor';
 import { DSLResult } from './types';
-import {restPathVariableValidator} from "./helpers/restPathVariableValidator";
+import { restPathVariableValidator } from './helpers/restPathVariableValidator';
 
 export interface MethodEditorProps {
     value?: DSLResult | string;

@@ -27,10 +27,7 @@ interface TabContainerState {
     pages: TabPageInfo[];
 }
 
-export class TabContainer extends React.Component<
-    TabContainerProps,
-    TabContainerState
-> {
+export class TabContainer extends React.Component<TabContainerProps, TabContainerState> {
     constructor(props: TabContainerProps) {
         super(props);
 
@@ -117,12 +114,7 @@ export class TabContainer extends React.Component<
 
                             return (
                                 <li key={page.id} className={className}>
-                                    <button
-                                        type={'button'}
-                                        onClick={() =>
-                                            this.setCurrentPage(page.id)
-                                        }
-                                    >
+                                    <button type={'button'} onClick={() => this.setCurrentPage(page.id)}>
                                         {page.title}
                                     </button>
                                 </li>

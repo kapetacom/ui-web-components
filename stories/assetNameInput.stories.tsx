@@ -1,10 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react';
-import {
-    AssetNameInput,
-    FormContainer,
-    FormContext,
-    useFormContextField,
-} from '../src';
+import { AssetNameInput, FormContainer, FormContext, useFormContextField } from '../src';
 
 export default {
     title: 'Asset Name Input',
@@ -29,27 +24,17 @@ const createStory =
     (description, props, initialState = defaultState) =>
     () => {
         const [state, setState] = useState(initialState);
-        const onChange = useCallback(
-            (name, value) => setState((state) => ({ ...state, [name]: value })),
-            [setState]
-        );
+        const onChange = useCallback((name, value) => setState((state) => ({ ...state, [name]: value })), [setState]);
         return (
             <FormContainer initialValue={initialState}>
                 <p>{description}</p>
-                <AssetNameInput
-                    label={'Name'}
-                    name={'name'}
-                    namespaces={state.namespaces}
-                ></AssetNameInput>
+                <AssetNameInput label={'Name'} name={'name'} namespaces={state.namespaces}></AssetNameInput>
                 <FormState />
             </FormContainer>
         );
     };
 
-export const SingleOption = createStory(
-    'Single namespace should force select the namespace',
-    {}
-);
+export const SingleOption = createStory('Single namespace should force select the namespace', {});
 export const MultiOption = createStory(
     'Should allow selecions when multiple namespaces are available',
     {},

@@ -45,9 +45,7 @@ export function DataListDetails<T = any>(props: Props<T>) {
                 }}
                 dataLoader={props.dataLoader}
                 rowData={props.rowData}
-                columnDefs={props.columnDefs.filter(
-                    (colDef) => colDef.showInTable !== false
-                )}
+                columnDefs={props.columnDefs.filter((colDef) => colDef.showInTable !== false)}
             />
 
             <SidePanel
@@ -63,13 +61,7 @@ export function DataListDetails<T = any>(props: Props<T>) {
                 {details && (
                     <Detail data={details}>
                         {props.columnDefs.map((colDef, ix) => {
-                            return (
-                                <DetailRowValue
-                                    key={`row_${ix}`}
-                                    label={colDef.headerName}
-                                    name={colDef.field}
-                                />
-                            );
+                            return <DetailRowValue key={`row_${ix}`} label={colDef.headerName} name={colDef.field} />;
                         })}
                     </Detail>
                 )}

@@ -17,20 +17,12 @@ const EditIcon: React.FC = () => (
             d="M10.0267 1.68511C10.5163 1.09062 11.3951 1.00557 11.9896 1.49513C12.584 1.98469 12.6691 2.86348 12.1795 3.45796L5.12465 12.0248L2.97185 10.252L10.0267 1.68511Z"
             fill="white"
         />
-        <path
-            d="M2.25052 11.1285L4.40333 12.9014L1.28112 14.4992L2.25052 11.1285Z"
-            fill="white"
-        />
+        <path d="M2.25052 11.1285L4.40333 12.9014L1.28112 14.4992L2.25052 11.1285Z" fill="white" />
     </svg>
 );
 
 const DeleteIcon: React.FC = () => (
-    <svg
-        width="17.5"
-        height="17.5"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="17.5" height="17.5" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -48,16 +40,10 @@ export const EntityList = (props: EntityListProps) => {
             <div className={'entity-row'} key={entity.name}>
                 <div className={'entity-name'}> {entity.name}</div>
                 <div className={'entity-icons'}>
-                    <div
-                        className="edit-icon"
-                        onClick={() => props.handleEditEntity(entity)}
-                    >
+                    <div className="edit-icon" onClick={() => props.handleEditEntity(entity)}>
                         <EditIcon />
                     </div>
-                    <div
-                        className="delete-icon"
-                        onClick={() => props.handleRemoveEntity(entity)}
-                    >
+                    <div className="delete-icon" onClick={() => props.handleRemoveEntity(entity)}>
                         <DeleteIcon />
                     </div>
                 </div>
@@ -66,10 +52,7 @@ export const EntityList = (props: EntityListProps) => {
     });
     return (
         <div className="entity-list">
-            <div
-                className="add-entity-box"
-                onClick={() => props.handleCreateEntity()}
-            >
+            <div className="add-entity-box" onClick={() => props.handleCreateEntity()}>
                 <span className="add-entity-text">+ Add New Entity</span>
             </div>
             <div className="entities-items">{listItems}</div>

@@ -1,4 +1,4 @@
-import {DSLMethod, DSLParameter, PEGValidationEntity, toStandardType} from '../interfaces';
+import { DSLMethod, DSLParameter, PEGValidationEntity, toStandardType } from '../interfaces';
 import { REST_METHOD_ANNOTATIONS, STRINGABLE_TYPES } from '../types';
 import { isStringableType } from '@kapeta/schemas';
 
@@ -18,9 +18,7 @@ export const restPathVariableValidator = (entity: PEGValidationEntity<DSLMethod>
         return;
     }
 
-    const restAnnotation = method.annotations.find(
-        (a) => REST_METHOD_ANNOTATIONS.indexOf(a.type) > -1
-    );
+    const restAnnotation = method.annotations.find((a) => REST_METHOD_ANNOTATIONS.indexOf(a.type) > -1);
     if (!restAnnotation) {
         return;
     }
@@ -37,15 +35,12 @@ export const restPathVariableValidator = (entity: PEGValidationEntity<DSLMethod>
     }
 
     function getPathVariableId(parameter: DSLParameter) {
-        const pathAnnotation = parameter.annotations?.find(
-            (a) => a.type === '@Path'
-        );
+        const pathAnnotation = parameter.annotations?.find((a) => a.type === '@Path');
         if (!pathAnnotation) {
             return null;
         }
 
-        return pathAnnotation.arguments?.length > 0 &&
-            pathAnnotation.arguments[0]
+        return pathAnnotation.arguments?.length > 0 && pathAnnotation.arguments[0]
             ? pathAnnotation.arguments[0]
             : parameter.name;
     }
@@ -75,18 +70,14 @@ export const restPathVariableValidator = (entity: PEGValidationEntity<DSLMethod>
         });
 
         if (!parameter) {
-            reportError(
-                `Path variable not found in parameters ${variableName}`
-            );
+            reportError(`Path variable not found in parameters ${variableName}`);
         }
 
         if (pattern) {
             try {
                 new RegExp(pattern, 'ig');
             } catch (e) {
-                reportError(
-                    `Invalid regular expression provided as pattern: ${pattern}. Error: ${e.message}`
-                );
+                reportError(`Invalid regular expression provided as pattern: ${pattern}. Error: ${e.message}`);
             }
         }
     }
@@ -94,9 +85,7 @@ export const restPathVariableValidator = (entity: PEGValidationEntity<DSLMethod>
     //2. Validate that all path variable parameters has a corresponding variable in the path
 
     method.parameters?.forEach((parameter) => {
-        const pathAnnotation = parameter.annotations?.find(
-            (a) => a.type === '@Path'
-        );
+        const pathAnnotation = parameter.annotations?.find((a) => a.type === '@Path');
         if (!pathAnnotation) {
             return;
         }

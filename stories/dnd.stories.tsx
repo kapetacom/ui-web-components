@@ -15,56 +15,38 @@ storiesOf('Drag and Drop', module)
                 <DnDContainer overflowX={true} overflowY={true}>
                     <div>
                         <DnDDrag type={'test'} value={true}>
-                            <div
-                                className={'draggable test'}
-                                style={{ left: 20, top: 10 }}
-                            >
+                            <div className={'draggable test'} style={{ left: 20, top: 10 }}>
                                 Drag TEST
                             </div>
                         </DnDDrag>
 
                         <DnDDrag type={'other'} value={true}>
-                            <div
-                                className={'draggable other'}
-                                style={{ left: 20, top: 100 }}
-                            >
+                            <div className={'draggable other'} style={{ left: 20, top: 100 }}>
                                 Drag OTHER
                             </div>
                         </DnDDrag>
 
                         <div className={'dnd-scrolling'}>
                             <DnDDrop type={'test'} onDrop={dropHandler}>
-                                <div
-                                    className={'droppable'}
-                                    style={{ left: 200, top: 10 }}
-                                >
+                                <div className={'droppable'} style={{ left: 200, top: 10 }}>
                                     Drop TEST here
                                 </div>
                             </DnDDrop>
 
                             <DnDDrop type={'other'} onDrop={dropHandler}>
-                                <div
-                                    className={'droppable'}
-                                    style={{ left: 200, top: 200 }}
-                                >
+                                <div className={'droppable'} style={{ left: 200, top: 200 }}>
                                     Drop OTHER here
                                 </div>
                             </DnDDrop>
 
                             <DnDDrop type={'test'} onDrop={dropHandler}>
-                                <div
-                                    className={'droppable'}
-                                    style={{ left: 500, top: 310 }}
-                                >
+                                <div className={'droppable'} style={{ left: 500, top: 310 }}>
                                     Drop TEST here
                                 </div>
                             </DnDDrop>
 
                             <DnDDrop type={'other'} onDrop={dropHandler}>
-                                <div
-                                    className={'droppable'}
-                                    style={{ left: 500, top: 500 }}
-                                >
+                                <div className={'droppable'} style={{ left: 500, top: 500 }}>
                                     Drop OTHER here
                                 </div>
                             </DnDDrop>
@@ -80,29 +62,20 @@ storiesOf('Drag and Drop', module)
                 <DnDContainer overflowX={true} overflowY={true}>
                     <div>
                         <DnDDrag type={'test'} value={true}>
-                            <div
-                                className={'draggable test'}
-                                style={{ left: 20, top: 10 }}
-                            >
+                            <div className={'draggable test'} style={{ left: 20, top: 10 }}>
                                 Drag TEST
                             </div>
                         </DnDDrag>
 
                         <DnDDrag type={'other'} value={true}>
-                            <div
-                                className={'draggable other'}
-                                style={{ left: 20, top: 100 }}
-                            >
+                            <div className={'draggable other'} style={{ left: 20, top: 100 }}>
                                 Drag OTHER
                             </div>
                         </DnDDrag>
 
                         <DnDDrop type={'test'} onDrop={dropHandler}>
                             <div className={'dnd-scrolling'}>
-                                <div
-                                    className={'droppable big'}
-                                    style={{ left: 100, top: 10 }}
-                                >
+                                <div className={'droppable big'} style={{ left: 100, top: 10 }}>
                                     Drop TEST here
                                 </div>
                             </div>
@@ -119,35 +92,15 @@ storiesOf('Drag and Drop', module)
                     <DnDContainer overflowX={true} overflowY={true}>
                         <div>
                             <DnDDrop type={'test'} onDrop={dropHandler}>
-                                <div
-                                    className={
-                                        'drag-container dnd-scrolling droppable big'
-                                    }
-                                >
-                                    <DnDDrag
-                                        type={'test'}
-                                        value={true}
-                                        dragCopy={false}
-                                        container={'.drag-container'}
-                                    >
-                                        <div
-                                            className={'draggable test'}
-                                            style={{ left: 20, top: 10 }}
-                                        >
+                                <div className={'drag-container dnd-scrolling droppable big'}>
+                                    <DnDDrag type={'test'} value={true} dragCopy={false} container={'.drag-container'}>
+                                        <div className={'draggable test'} style={{ left: 20, top: 10 }}>
                                             Drag TEST
                                         </div>
                                     </DnDDrag>
 
-                                    <DnDDrag
-                                        type={'other'}
-                                        value={true}
-                                        dragCopy={false}
-                                        container={'.drag-container'}
-                                    >
-                                        <div
-                                            className={'draggable other'}
-                                            style={{ left: 20, top: 100 }}
-                                        >
+                                    <DnDDrag type={'other'} value={true} dragCopy={false} container={'.drag-container'}>
+                                        <div className={'draggable other'} style={{ left: 20, top: 100 }}>
                                             Drag OTHER
                                         </div>
                                     </DnDDrag>
@@ -165,12 +118,7 @@ storiesOf('Drag and Drop', module)
                 <DnDContainer overflowX={true} overflowY={true}>
                     <div>
                         <DnDDrag type={'test'} value={true}>
-                            <svg
-                                className={'draggable test'}
-                                style={{ top: 10, left: 20 }}
-                                width={50}
-                                height={50}
-                            >
+                            <svg className={'draggable test'} style={{ top: 10, left: 20 }} width={50} height={50}>
                                 <rect width={50} height={50} />
                                 <text y={25} x={0}>
                                     TEST
@@ -179,12 +127,7 @@ storiesOf('Drag and Drop', module)
                         </DnDDrag>
 
                         <DnDDrag type={'other'} value={true}>
-                            <svg
-                                className={'draggable other'}
-                                style={{ top: 100, left: 20 }}
-                                width={50}
-                                height={50}
-                            >
+                            <svg className={'draggable other'} style={{ top: 100, left: 20 }} width={50} height={50}>
                                 <rect width={50} height={50} />
                                 <text y={25} x={0}>
                                     OTHER
@@ -195,13 +138,7 @@ storiesOf('Drag and Drop', module)
                         <div className={'dnd-scrolling'}>
                             <svg width={600} height={600}>
                                 <DnDDrop type={'test'} onDrop={dropHandler}>
-                                    <svg
-                                        className={'droppable'}
-                                        x={20}
-                                        y={10}
-                                        width={100}
-                                        height={100}
-                                    >
+                                    <svg className={'droppable'} x={20} y={10} width={100} height={100}>
                                         <rect width={100} height={100} />
                                         <text y={50} x={0}>
                                             Drag TEST here
@@ -210,13 +147,7 @@ storiesOf('Drag and Drop', module)
                                 </DnDDrop>
 
                                 <DnDDrop type={'other'} onDrop={dropHandler}>
-                                    <svg
-                                        className={'droppable'}
-                                        x={20}
-                                        y={200}
-                                        width={100}
-                                        height={100}
-                                    >
+                                    <svg className={'droppable'} x={20} y={200} width={100} height={100}>
                                         <rect width={100} height={100} />
                                         <text y={50} x={0}>
                                             Drag OTHER here
@@ -225,13 +156,7 @@ storiesOf('Drag and Drop', module)
                                 </DnDDrop>
 
                                 <DnDDrop type={'test'} onDrop={dropHandler}>
-                                    <svg
-                                        className={'droppable'}
-                                        x={500}
-                                        y={310}
-                                        width={100}
-                                        height={100}
-                                    >
+                                    <svg className={'droppable'} x={500} y={310} width={100} height={100}>
                                         <rect width={100} height={100} />
                                         <text y={50} x={0}>
                                             Drag TEST here
@@ -240,13 +165,7 @@ storiesOf('Drag and Drop', module)
                                 </DnDDrop>
 
                                 <DnDDrop type={'other'} onDrop={dropHandler}>
-                                    <svg
-                                        className={'droppable'}
-                                        x={500}
-                                        y={500}
-                                        width={100}
-                                        height={100}
-                                    >
+                                    <svg className={'droppable'} x={500} y={500} width={100} height={100}>
                                         <rect width={100} height={100} />
                                         <text y={50} x={0}>
                                             Drag OTHER here
@@ -273,22 +192,9 @@ storiesOf('Drag and Drop', module)
                     >
                         <DnDDrop type={'test'} onDrop={dropHandler}>
                             <div className={'dnd-scrolling droppable big'}>
-                                <svg
-                                    width={750}
-                                    height={600}
-                                    className={'drag-container'}
-                                >
-                                    <DnDDrag
-                                        type={'test'}
-                                        value={true}
-                                        dragCopy={false}
-                                        container={'.drag-container'}
-                                    >
-                                        <svg
-                                            className={'draggable test'}
-                                            x={20}
-                                            y={10}
-                                        >
+                                <svg width={750} height={600} className={'drag-container'}>
+                                    <DnDDrag type={'test'} value={true} dragCopy={false} container={'.drag-container'}>
+                                        <svg className={'draggable test'} x={20} y={10}>
                                             <rect width={50} height={50} />
                                             <text y={25} x={0}>
                                                 TEST
@@ -296,17 +202,8 @@ storiesOf('Drag and Drop', module)
                                         </svg>
                                     </DnDDrag>
 
-                                    <DnDDrag
-                                        type={'other'}
-                                        value={true}
-                                        dragCopy={false}
-                                        container={'.drag-container'}
-                                    >
-                                        <svg
-                                            className={'draggable other'}
-                                            x={20}
-                                            y={100}
-                                        >
+                                    <DnDDrag type={'other'} value={true} dragCopy={false} container={'.drag-container'}>
+                                        <svg className={'draggable other'} x={20} y={100}>
                                             <rect width={50} height={50} />
                                             <text y={25} x={0}>
                                                 OTHER
@@ -328,21 +225,9 @@ storiesOf('Drag and Drop', module)
                     <div className={'dnd-container-inner'} style={{ zoom: 2 }}>
                         <DnDDrop type={'test'} onDrop={dropHandler}>
                             <div className={'dnd-scrolling droppable big'}>
-                                <svg
-                                    width={750}
-                                    height={600}
-                                    className={'drag-container'}
-                                >
-                                    <DnDDrag
-                                        type={'test'}
-                                        value={true}
-                                        dragCopy={false}
-                                        container={'.drag-container'}
-                                    >
-                                        <g
-                                            className={'draggable test'}
-                                            transform="translate(20,10)"
-                                        >
+                                <svg width={750} height={600} className={'drag-container'}>
+                                    <DnDDrag type={'test'} value={true} dragCopy={false} container={'.drag-container'}>
+                                        <g className={'draggable test'} transform="translate(20,10)">
                                             <rect width={50} height={50} />
                                             <text y={25} x={0}>
                                                 TEST
@@ -350,16 +235,8 @@ storiesOf('Drag and Drop', module)
                                         </g>
                                     </DnDDrag>
 
-                                    <DnDDrag
-                                        type={'other'}
-                                        value={true}
-                                        dragCopy={false}
-                                        container={'.drag-container'}
-                                    >
-                                        <g
-                                            className={'draggable other'}
-                                            transform="translate(20,100)"
-                                        >
+                                    <DnDDrag type={'other'} value={true} dragCopy={false} container={'.drag-container'}>
+                                        <g className={'draggable other'} transform="translate(20,100)">
                                             <rect width={50} height={50} />
                                             <text y={25} x={0}>
                                                 OTHER

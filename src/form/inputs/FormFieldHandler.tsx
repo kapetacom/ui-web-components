@@ -15,9 +15,7 @@ interface Props {
 
 export const FormFieldHandler = (props: Props) => {
     const formContext = useContext(FormContext);
-    const [fieldValue, setFieldValue] = useState(
-        formContext.container.getValue(props.name)
-    );
+    const [fieldValue, setFieldValue] = useState(formContext.container.getValue(props.name));
 
     const fieldProps: FieldProps = {
         name: props.name,

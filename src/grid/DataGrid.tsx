@@ -2,10 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 
 import './DataGrid.less';
-import {
-    AgGridReactProps,
-    AgReactUiProps,
-} from 'ag-grid-react/lib/shared/interfaces';
+import { AgGridReactProps, AgReactUiProps } from 'ag-grid-react/lib/shared/interfaces';
 import { SimpleLoader } from '../helpers/SimpleLoader';
 
 export enum DataGridTheme {
@@ -16,9 +13,7 @@ export enum DataGridTheme {
     MATERIAL = 'material',
 }
 
-export interface DataGridProps<T>
-    extends AgGridReactProps<T>,
-        AgReactUiProps<T> {
+export interface DataGridProps<T> extends AgGridReactProps<T>, AgReactUiProps<T> {
     theme?: DataGridTheme;
     dataLoader?: () => Promise<any[]>;
 }

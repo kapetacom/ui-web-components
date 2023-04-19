@@ -33,11 +33,7 @@ describe('DSLParser', () => {
     test('can parse normal method', () => {
         expect(
             DSLParser.parse(
-                [
-                    '//Some',
-                    '//description',
-                    'myMethod(id:string, tags:string[], entity:MyClass):void',
-                ].join('\n'),
+                ['//Some', '//description', 'myMethod(id:string, tags:string[], entity:MyClass):void'].join('\n'),
                 {
                     methods: true,
                     validTypes: ['MyClass'],
@@ -174,7 +170,7 @@ describe('DSLParser', () => {
                                 type: 'string',
                                 defaultValue: {
                                     type: 'literal',
-                                    value: "\"test\"",
+                                    value: '"test"',
                                 },
                                 description: null,
                                 annotations: [],
@@ -205,16 +201,9 @@ describe('DSLParser', () => {
     test('can parse enum type', () => {
         expect(
             DSLParser.parse(
-                [
-                    '//Some',
-                    '//description',
-                    '@Test(ok)',
-                    'enum myType {',
-                    '\tONE,',
-                    '\tTWO,',
-                    '\tTHREE',
-                    '}',
-                ].join('\n'),
+                ['//Some', '//description', '@Test(ok)', 'enum myType {', '\tONE,', '\tTWO,', '\tTHREE', '}'].join(
+                    '\n'
+                ),
                 {
                     types: true,
                     typeAnnotations: ['@Test'],
@@ -234,30 +223,19 @@ describe('DSLParser', () => {
     test('throws if invalid annotation', () => {
         expect(
             () =>
-                DSLParser.parse(
-                    [
-                        '//Some',
-                        '//description',
-                        '@NotExist(ok)',
-                        'enum myType {}',
-                    ].join('\n'),
-                    {
-                        types: true,
-                        typeAnnotations: ['@Test'],
-                    }
-                ).entities
+                DSLParser.parse(['//Some', '//description', '@NotExist(ok)', 'enum myType {}'].join('\n'), {
+                    types: true,
+                    typeAnnotations: ['@Test'],
+                }).entities
         ).toThrow('Invalid type annotation - must be one of @Test');
     });
 
     test('throws if missing character', () => {
         expect(
             () =>
-                DSLParser.parse(
-                    ['//Some', '//description', 'enum myType {'].join('\n'),
-                    {
-                        types: true,
-                    }
-                ).entities
+                DSLParser.parse(['//Some', '//description', 'enum myType {'].join('\n'), {
+                    types: true,
+                }).entities
         ).toThrow('Expected "}" or character but end of input found.');
     });
 
@@ -268,9 +246,7 @@ describe('DSLParser', () => {
                     methods: true,
                     rest: true,
                 }).entities
-        ).toThrow(
-            'Invalid path specified. Must start with "/" and be well formed: "invalid path"'
-        );
+        ).toThrow('Invalid path specified. Must start with "/" and be well formed: "invalid path"');
     });
 
     test('throws if method is defined and not allowed', () => {
@@ -311,13 +287,10 @@ describe('DSLParser', () => {
 
     test('can get soft errors as array for semantic errors', () => {
         const errors = [];
-        DSLParser.parse(
-            `@DoesntExist doGet():MyType\notherMethod(@NotReal id:Unknown):void\n`,
-            {
-                methods: true,
-                softErrorHandler: (error) => errors.push(error),
-            }
-        );
+        DSLParser.parse(`@DoesntExist doGet():MyType\notherMethod(@NotReal id:Unknown):void\n`, {
+            methods: true,
+            softErrorHandler: (error) => errors.push(error),
+        });
 
         expect(errors.map((e) => e.type + ':' + e.message)).toEqual([
             'error:Invalid method annotation - must be one of @GET, @POST, @PUT, @PATCH, @DELETE, @HEAD',

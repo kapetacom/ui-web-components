@@ -3,9 +3,7 @@ import { TokenParser } from '../../src/dsl/TokenParser';
 
 describe('TokenParser', () => {
     test('can parse incomplete and invalid tokens', () => {
-        const tokens = TokenParser.parse(
-            `\n//Some comment \nmethod()\n enum test{`
-        );
+        const tokens = TokenParser.parse(`\n//Some comment \nmethod()\n enum test{`);
 
         expect(tokens).toEqual([
             {
@@ -56,9 +54,7 @@ describe('TokenParser', () => {
     });
 
     test('can parse valid tokens into types', () => {
-        const tokens = TokenParser.parse(
-            `@Annotate("this")\nmethod():void\nenum test{}`
-        );
+        const tokens = TokenParser.parse(`@Annotate("this")\nmethod():void\nenum test{}`);
 
         expect(tokens).toEqual([
             {

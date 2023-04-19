@@ -56,9 +56,7 @@ export const SelectInModal = () => {
                         name={'text'}
                         label={'Text Value'}
                         value={input1}
-                        onChange={(inputName, userInput) =>
-                            setInput1(userInput)
-                        }
+                        onChange={(inputName, userInput) => setInput1(userInput)}
                         options={['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX']}
                     />
 
@@ -68,9 +66,7 @@ export const SelectInModal = () => {
                             name={'text'}
                             label={'Text Value (w/ deselect)'}
                             value={input2}
-                            onChange={(inputName, userInput) =>
-                                setInput2(userInput)
-                            }
+                            onChange={(inputName, userInput) => setInput2(userInput)}
                             options={['ONE', 'TWO', 'THREE']}
                             enableDeselect
                         />
@@ -87,42 +83,12 @@ export const FormInputs = () => {
     return (
         <div style={{ padding: '15px' }}>
             <FormContainer>
-                <FormInput
-                    help={helpText}
-                    name={'text'}
-                    label={'Text Value'}
-                    type={Type.TEXT}
-                />
-                <FormInput
-                    help={helpText}
-                    name={'email'}
-                    label={'Email Value'}
-                    type={Type.EMAIL}
-                />
-                <FormInput
-                    help={helpText}
-                    name={'num'}
-                    label={'Number Value'}
-                    type={Type.NUMBER}
-                />
-                <FormInput
-                    help={helpText}
-                    name={'pw'}
-                    label={'Password Value'}
-                    type={Type.PASSWORD}
-                />
-                <FormInput
-                    help={helpText}
-                    name={'date'}
-                    label={'Date Value'}
-                    type={Type.DATE}
-                />
-                <FormInput
-                    help={helpText}
-                    name={'checker'}
-                    label={'Boolean Value'}
-                    type={Type.CHECKBOX}
-                />
+                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
+                <FormInput help={helpText} name={'email'} label={'Email Value'} type={Type.EMAIL} />
+                <FormInput help={helpText} name={'num'} label={'Number Value'} type={Type.NUMBER} />
+                <FormInput help={helpText} name={'pw'} label={'Password Value'} type={Type.PASSWORD} />
+                <FormInput help={helpText} name={'date'} label={'Date Value'} type={Type.DATE} />
+                <FormInput help={helpText} name={'checker'} label={'Boolean Value'} type={Type.CHECKBOX} />
             </FormContainer>
         </div>
     );
@@ -134,24 +100,9 @@ export const FormTextareas = () => {
     return (
         <div style={{ padding: '15px' }}>
             <FormContainer>
-                <FormInput
-                    help={helpText}
-                    name={'text'}
-                    label={'Text Value'}
-                    type={Type.TEXT}
-                />
-                <FormTextarea
-                    help={helpText}
-                    name={'multi'}
-                    label={'Multi line'}
-                    validation={['required']}
-                />
-                <FormInput
-                    help={helpText}
-                    name={'text'}
-                    label={'Text Value'}
-                    type={Type.TEXT}
-                />
+                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
+                <FormTextarea help={helpText} name={'multi'} label={'Multi line'} validation={['required']} />
+                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
             </FormContainer>
         </div>
     );
@@ -169,24 +120,9 @@ export const FormSelects = () => {
     return (
         <div style={{ padding: '15px' }}>
             <FormContainer>
-                <FormInput
-                    help={helpText}
-                    name={'text'}
-                    label={'Text Value'}
-                    type={Type.TEXT}
-                />
-                <FormSelect
-                    help={helpText}
-                    name={'multi'}
-                    label={'Multi line'}
-                    options={options}
-                />
-                <FormInput
-                    help={helpText}
-                    name={'text'}
-                    label={'Text Value'}
-                    type={Type.TEXT}
-                />
+                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
+                <FormSelect help={helpText} name={'multi'} label={'Multi line'} options={options} />
+                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
             </FormContainer>
         </div>
     );
@@ -305,10 +241,9 @@ export const CountrySelects = () => {
                             validation={['required']}
                             help={'this is another message'}
                             options={countryList}
-                            onChange={(
-                                name: string,
-                                valueIn: string | string[]
-                            ) => dropdownState.set({ [name]: valueIn })}
+                            onChange={(name: string, valueIn: string | string[]) =>
+                                dropdownState.set({ [name]: valueIn })
+                            }
                         />,
 
                         <br></br>,
@@ -320,10 +255,9 @@ export const CountrySelects = () => {
                             validation={['required']}
                             help={'this is another message'}
                             options={countryList}
-                            onChange={(
-                                name: string,
-                                valueIn: string | string[]
-                            ) => dropdownState.set({ [name]: valueIn })}
+                            onChange={(name: string, valueIn: string | string[]) =>
+                                dropdownState.set({ [name]: valueIn })
+                            }
                             multi={true}
                         />,
 
@@ -336,10 +270,9 @@ export const CountrySelects = () => {
                             validation={['required']}
                             help={'this is another message'}
                             options={countryCodeList2}
-                            onChange={(
-                                name: string,
-                                valueIn: string | string[]
-                            ) => dropdownState.set({ [name]: valueIn })}
+                            onChange={(name: string, valueIn: string | string[]) =>
+                                dropdownState.set({ [name]: valueIn })
+                            }
                             multi={true}
                         />,
 
@@ -352,10 +285,9 @@ export const CountrySelects = () => {
                             validation={['required']}
                             help={'this is another message'}
                             options={countryCodeList2}
-                            onChange={(
-                                name: string,
-                                valueIn: string | string[]
-                            ) => dropdownState.set({ [name]: valueIn })}
+                            onChange={(name: string, valueIn: string | string[]) =>
+                                dropdownState.set({ [name]: valueIn })
+                            }
                         />,
 
                         <br></br>,

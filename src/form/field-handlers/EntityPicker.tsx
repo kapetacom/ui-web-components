@@ -140,11 +140,7 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
         };
 
         let currentType = parsedValue.type;
-        if (
-            typeof this.props.value !== 'string' &&
-            this.props.value &&
-            this.props.value.ref
-        ) {
+        if (typeof this.props.value !== 'string' && this.props.value && this.props.value.ref) {
             currentType = 'ref:' + currentType;
         }
 
@@ -200,16 +196,10 @@ export class EntityPicker extends React.Component<EntityPickerProps> {
                         title={'Create entity'}
                     >
                         <FormContainer onSubmit={this.saveEntity}>
-                            <EntityForm
-                                name={'new-entity'}
-                                entity={this.newEntity}
-                            />
+                            <EntityForm name={'new-entity'} entity={this.newEntity} />
 
                             <FormButtons>
-                                <button
-                                    type={'button'}
-                                    onClick={this.closeModal}
-                                >
+                                <button type={'button'} onClick={this.closeModal}>
                                     Cancel
                                 </button>
                                 <button type={'submit'}>Create</button>

@@ -15,13 +15,7 @@ interface Props {
 
 export const AuthScopesField = (props: Props) => {
     return (
-        <FormElementContainer
-            label={props.label}
-            focused={false}
-            hasValue={true}
-            touched={false}
-            errorMessage={''}
-        >
+        <FormElementContainer label={props.label} focused={false} hasValue={true} touched={false} errorMessage={''}>
             <div className={'auth-scopes-field'}>
                 <FormFieldHandler
                     name={props.name}
@@ -31,19 +25,14 @@ export const AuthScopesField = (props: Props) => {
                                 editable={true}
                                 scopes={props.scopes.map((scope) => {
                                     return {
-                                        enabled:
-                                            fieldProps.value?.indexOf(
-                                                scope.id
-                                            ) > -1,
+                                        enabled: fieldProps.value?.indexOf(scope.id) > -1,
                                         ...scope,
                                     };
                                 })}
                                 onChange={(scopes) => {
                                     fieldProps.onChange(
                                         fieldProps.name,
-                                        scopes
-                                            .filter((scope) => scope.enabled)
-                                            .map((scope) => scope.id)
+                                        scopes.filter((scope) => scope.enabled).map((scope) => scope.id)
                                     );
                                 }}
                             />

@@ -29,13 +29,7 @@ interface Props {
 
 const renderStatusIcon = (status: string): JSX.Element => {
     return (
-        <svg
-            className={'status-icon'}
-            width="22"
-            height="19"
-            viewBox="0 0 22 19"
-            fill="none"
-        >
+        <svg className={'status-icon'} width="22" height="19" viewBox="0 0 22 19" fill="none">
             <path
                 d="M0.676375 10.5692C0.263313 9.91625 0.263313 9.08376 0.676374 8.43079L5.42082 0.930792C5.7874 0.351295 6.42531 1.62649e-06 7.11102 1.59652e-06L14.889 1.25653e-06C15.5747 1.22656e-06 16.2126 0.351295 16.5792 0.930789L21.3236 8.43079C21.7367 9.08375 21.7367 9.91624 21.3236 10.5692L16.5792 18.0692C16.2126 18.6487 15.5747 19 14.889 19L7.11102 19C6.42531 19 5.7874 18.6487 5.42082 18.0692L0.676375 10.5692Z"
                 fill={status === StatusType.WARNING ? '#FCC024' : '#E35A4C'}
@@ -73,8 +67,7 @@ export function FormElementContainer(props) {
         message: true,
     });
 
-    const helpMessage =
-        props.errorMessage && props.touched ? props.errorMessage : props.help;
+    const helpMessage = props.errorMessage && props.touched ? props.errorMessage : props.help;
 
     return (
         <div className={classFormElemContainer}>
@@ -93,16 +86,14 @@ export function FormElementContainer(props) {
 
             {!props.focused && showStatusIcon && renderStatusIcon(props.status)}
 
-            {(props.status === StatusType.WARNING ||
-                props.status === StatusType.ERROR) &&
-                props.infoBox && (
-                    <span className="tooltip">
-                        <div className="right">
-                            <p>{props.infoBox}</p>
-                            <i></i>
-                        </div>
-                    </span>
-                )}
+            {(props.status === StatusType.WARNING || props.status === StatusType.ERROR) && props.infoBox && (
+                <span className="tooltip">
+                    <div className="right">
+                        <p>{props.infoBox}</p>
+                        <i></i>
+                    </div>
+                </span>
+            )}
         </div>
     );
 }

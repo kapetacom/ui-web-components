@@ -1,16 +1,8 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import {
-    DataTypeEditor,
-    DSLDataType,
-    DSLEntity,
-    DSLEntityType,
-    DSLMethod,
-    DSLRichEntity,
-    MethodEditor,
-} from '../src';
+import { DataTypeEditor, DSLDataType, DSLEntity, DSLEntityType, DSLMethod, DSLRichEntity, MethodEditor } from '../src';
 import { DSLEditor } from '../src/dsl/DSLEditor';
-import {ConfigurationEditor} from "../src/dsl/ConfigurationEditor";
+import { ConfigurationEditor } from '../src/dsl/ConfigurationEditor';
 
 const REST_METHODS = `
 #Get todo 
@@ -94,107 +86,103 @@ CoreConfig {
 
 const CONFIGURATION_ENTITIES: DSLEntity[] = [
     {
-        "type": DSLEntityType.ENUM,
-        "name": "Status",
-        "description": "Enum values for status",
-        "annotations": [],
-        "values": [
-            "ENABLED",
-            "DISABLED",
-            "UNKNOWN"
-        ]
+        type: DSLEntityType.ENUM,
+        name: 'Status',
+        description: 'Enum values for status',
+        annotations: [],
+        values: ['ENABLED', 'DISABLED', 'UNKNOWN'],
     },
     {
-        "type": DSLEntityType.DATATYPE,
-        "name": "SomeServiceCredentials",
-        "description": "Credentials for some service",
-        "annotations": [],
-        "properties": [
+        type: DSLEntityType.DATATYPE,
+        name: 'SomeServiceCredentials',
+        description: 'Credentials for some service',
+        annotations: [],
+        properties: [
             {
-                "name": "apiKey",
-                "annotations": [
+                name: 'apiKey',
+                annotations: [
                     {
-                        "type": "@secret",
-                        "arguments": []
-                    }
+                        type: '@secret',
+                        arguments: [],
+                    },
                 ],
-                "description": "Api Key for some service",
-                "type": "string",
-                "defaultValue": null
+                description: 'Api Key for some service',
+                type: 'string',
+                defaultValue: null,
             },
             {
-                "name": "name",
-                "annotations": [
+                name: 'name',
+                annotations: [
                     {
-                        "type": "@required",
-                        "arguments": []
-                    }
+                        type: '@required',
+                        arguments: [],
+                    },
                 ],
-                "description": "Name for service",
-                "type": "string",
-                "defaultValue": {
-                    "type": "literal",
-                    "value": '"My API"'
-                }
+                description: 'Name for service',
+                type: 'string',
+                defaultValue: {
+                    type: 'literal',
+                    value: '"My API"',
+                },
             },
             {
-                "name": "state",
-                "annotations": [],
-                "description": null,
-                "type": "Status",
-                "defaultValue": {
-                    "type": "enum",
-                    "value": "Status.ENABLED"
-                }
-            }
-        ]
+                name: 'state',
+                annotations: [],
+                description: null,
+                type: 'Status',
+                defaultValue: {
+                    type: 'enum',
+                    value: 'Status.ENABLED',
+                },
+            },
+        ],
     },
     {
-        "type": DSLEntityType.DATATYPE,
-        "name": "CoreConfig",
-        "description": "An object representing a todo in a todo list",
-        "annotations": [],
-        "properties": [
+        type: DSLEntityType.DATATYPE,
+        name: 'CoreConfig',
+        description: 'An object representing a todo in a todo list',
+        annotations: [],
+        properties: [
             {
-                "name": "appName",
-                "annotations": [],
-                "description": "Set name of app",
-                "type": "string",
-                "defaultValue": {
-                    "type": "literal",
-                    "value": "\"My App\""
-                }
+                name: 'appName',
+                annotations: [],
+                description: 'Set name of app',
+                type: 'string',
+                defaultValue: {
+                    type: 'literal',
+                    value: '"My App"',
+                },
             },
             {
-                "name": "color",
-                "annotations": [],
-                "description": "Set color of app",
-                "type": "string",
-                "defaultValue": {
-                    "type": "literal",
-                    "value": "\"#123\""
-                }
+                name: 'color',
+                annotations: [],
+                description: 'Set color of app',
+                type: 'string',
+                defaultValue: {
+                    type: 'literal',
+                    value: '"#123"',
+                },
             },
             {
-                "name": "ttl",
-                "annotations": [],
-                "description": "Timeout for some service",
-                "type": "integer",
-                "defaultValue": {
-                    "type": "literal",
-                    "value": 1000
-                }
+                name: 'ttl',
+                annotations: [],
+                description: 'Timeout for some service',
+                type: 'integer',
+                defaultValue: {
+                    type: 'literal',
+                    value: 1000,
+                },
             },
             {
-                "name": "enabled",
-                "type": "boolean",
-                "defaultValue": {
-                    "type": "literal",
-                    "value": true
-                }
-            }
-        ]
-    }
+                name: 'enabled',
+                type: 'boolean',
+                defaultValue: {
+                    type: 'literal',
+                    value: true,
+                },
+            },
+        ],
+    },
 ];
 
 const DATA_TYPE_ENTITIES: DSLEntity[] = [
@@ -393,12 +381,7 @@ storiesOf('DSL Editors', module)
                 methods={true}
                 rest={true}
                 onChange={(result) => console.log('result', result)}
-                value={
-                    '## Types\n' +
-                    DATA_TYPES +
-                    '\n\n## REST methods\n' +
-                    REST_METHODS
-                }
+                value={'## Types\n' + DATA_TYPES + '\n\n## REST methods\n' + REST_METHODS}
             />
         </div>
     ))
@@ -459,10 +442,7 @@ storiesOf('DSL Editors', module)
     ))
     .add('Data Type Editor', () => (
         <div>
-            <DataTypeEditor
-                value={DATA_TYPES}
-                onChange={(result) => console.log('result', result)}
-            />
+            <DataTypeEditor value={DATA_TYPES} onChange={(result) => console.log('result', result)} />
         </div>
     ))
     .add('Data Type Editor (Object)', () => (
@@ -475,10 +455,7 @@ storiesOf('DSL Editors', module)
     ))
     .add('Configuration Editor', () => (
         <div>
-            <ConfigurationEditor
-                value={CONFIGURATION}
-                onChange={(result) => console.log('result', result)}
-            />
+            <ConfigurationEditor value={CONFIGURATION} onChange={(result) => console.log('result', result)} />
         </div>
     ))
     .add('Configuration Editor (Object)', () => (

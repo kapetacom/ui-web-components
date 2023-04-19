@@ -27,60 +27,24 @@ export const ToastContainer = () => {
 const CloseButton = (props: any) => {
     return (
         <div onClick={props.closeToast} className="close-button">
-            <svg
-                width="10"
-                height="10"
-                viewBox="0 0 7 7"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <path
-                    d="M6 6.00005L1 1.00005"
-                    stroke="white"
-                    strokeLinecap="round"
-                />
-                <path
-                    d="M1 6.00005L6 1.00005"
-                    stroke="white"
-                    strokeLinecap="round"
-                />
+            <svg width="10" height="10" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 6.00005L1 1.00005" stroke="white" strokeLinecap="round" />
+                <path d="M1 6.00005L6 1.00005" stroke="white" strokeLinecap="round" />
             </svg>
         </div>
     );
 };
 
 const DangerIcon: React.FC = () => (
-    <svg
-        width="42"
-        height="42"
-        viewBox="0 0 32 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="42" height="42" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="16" cy="16" r="16" fill="white" fillOpacity="0.4" />
-        <path
-            d="M21.5146 10L9.99989 21.5148"
-            stroke="white"
-            strokeWidth="2"
-            strokeLinecap="round"
-        />
-        <path
-            d="M10 10L21.5148 21.5148"
-            stroke="white"
-            strokeWidth="2"
-            strokeLinecap="round"
-        />
+        <path d="M21.5146 10L9.99989 21.5148" stroke="white" strokeWidth="2" strokeLinecap="round" />
+        <path d="M10 10L21.5148 21.5148" stroke="white" strokeWidth="2" strokeLinecap="round" />
     </svg>
 );
 
 const AlertIcon: React.FC = () => (
-    <svg
-        width="42"
-        height="42"
-        viewBox="0 0 32 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="42" height="42" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="16" cy="16" r="16" fill="white" fillOpacity="0.4" />
         <circle cx="16" cy="22" r="2" fill="white" />
         <path
@@ -91,13 +55,7 @@ const AlertIcon: React.FC = () => (
 );
 
 const SuccessIcon: React.FC = () => (
-    <svg
-        width="42"
-        height="42"
-        viewBox="0 0 32 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="42" height="42" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="16" cy="16" r="16" fill="white" fillOpacity="0.4" />
         <path
             d="M9.77783 16L14.2223 20.4444L23.1112 11.5556"
@@ -146,17 +104,10 @@ export const Toast = (props: ToastProps) => {
 };
 
 export const showToasty = (props: ToastProps) => {
-    toast(
-        <ToastComp
-            title={props.title}
-            message={props.message}
-            type={props.type}
-        />,
-        {
-            closeButton: <CloseButton />,
-            progressClassName: 'progress-bar',
-            progressStyle: {},
-            closeOnClick: false,
-        }
-    );
+    toast(<ToastComp title={props.title} message={props.message} type={props.type} />, {
+        closeButton: <CloseButton />,
+        progressClassName: 'progress-bar',
+        progressStyle: {},
+        closeOnClick: false,
+    });
 };

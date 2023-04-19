@@ -1,8 +1,4 @@
-export function createHexagon(
-    width: number,
-    height: number,
-    pointSize: number
-) {
+export function createHexagon(width: number, height: number, pointSize: number) {
     const points = [];
 
     if (width < pointSize * 2) {
