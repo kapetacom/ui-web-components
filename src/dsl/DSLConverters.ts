@@ -217,9 +217,12 @@ export namespace DSLConverters {
             const required = property.annotations?.some((annotation) => annotation.type === 'required') || false;
 
             if (typeof property.type === 'string' || !property.type.list) {
+                const defaultValue =
+                    property.defaultValue?.value !== undefined ? `${property.defaultValue?.value}` : undefined;
+
                 out[property.name] = {
                     ...typeLike,
-                    defaultValue: property.defaultValue?.value,
+                    defaultValue,
                     description: property.description,
                     properties: property.properties ? toSchemaProperties(property.properties) : null,
                 };

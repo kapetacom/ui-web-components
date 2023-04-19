@@ -84,7 +84,7 @@ describe('DSLConverters', () => {
                         name: 'name',
                         defaultValue: {
                             type: 'literal',
-                            value: 'test',
+                            value: '"test"',
                         },
                     },
                     {
@@ -123,7 +123,7 @@ describe('DSLConverters', () => {
                 properties: {
                     name: {
                         type: 'string',
-                        defaultValue: 'test',
+                        defaultValue: '"test"',
                         description: undefined,
                         properties: null,
                         required: false,
