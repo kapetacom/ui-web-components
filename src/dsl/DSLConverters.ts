@@ -213,8 +213,8 @@ export namespace DSLConverters {
 
         properties.forEach((property) => {
             let typeLike = toSchemaType(property.type);
-            const secret = property.annotations?.some((annotation) => annotation.type === 'secret') || false;
-            const required = property.annotations?.some((annotation) => annotation.type === 'required') || false;
+            const secret = property.annotations?.some((annotation) => annotation.type === '@secret') || false;
+            const required = property.annotations?.some((annotation) => annotation.type === '@required') || false;
 
             if (typeof property.type === 'string' || !property.type.list) {
                 const defaultValue =

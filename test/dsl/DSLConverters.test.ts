@@ -82,6 +82,7 @@ describe('DSLConverters', () => {
                     {
                         type: 'string',
                         name: 'name',
+                        annotations: [{ type: '@secret' }],
                         defaultValue: {
                             type: 'literal',
                             value: '"test"',
@@ -127,7 +128,7 @@ describe('DSLConverters', () => {
                         description: undefined,
                         properties: null,
                         required: false,
-                        secret: false,
+                        secret: true,
                     },
                     tags: {
                         description: 'Tags',
