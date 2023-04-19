@@ -167,8 +167,25 @@ dataTypeBodyList = '[' _ body:dataTypeBody _ ']' { return body }
 fields =
 	head:field tail:(_ field)* { return buildList(head, tail, 1) }
 
-field = description:comments? annotations:field_annotation* name:id _ ':' _ type:fieldType {
-    return {name,annotations,description, ...type}
+number = value:('-'? [0-9]+ ('.' [0-9]+)?) { return parseFloat(text()) }
+variable_name = value:([a-zA-Z][_a-zA-Z0-9]*) { return value }
+literal = value:('true' / 'false' / 'null' / number / string) {
+    let val = typeof value === 'number' ? value : JSON.stringify(value);
+    if (value === 'true') {
+        val = true;
+    } else if (value === 'false') {
+        val = false;
+    } else if (value === 'null') {
+        val = null;
+    }
+    return {type: 'literal', value: val}
+}
+enum_value = value:(variable_name '.' variable_name) { return {type: 'enum', value: text()} }
+
+default_value = _ '=' _ value:(literal / enum_value) { return value }
+
+field = description:comments? annotations:field_annotation* name:id _ ':' _ type:fieldType defaultValue:default_value? {
+    return {name,annotations,description, ...type, defaultValue}
 }
 
 fieldType

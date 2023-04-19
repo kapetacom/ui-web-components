@@ -38,7 +38,7 @@ const language: ILanguage = {
     // Set defaultToken to invalid to see what you do not tokenize yet
     defaultToken: 'invalid',
 
-    keywords: ['enum'],
+    keywords: ['enum','true','false', 'null'],
     operators: [],
     typeKeywords: BUILT_IN_TYPES,
 
@@ -68,10 +68,22 @@ const language: ILanguage = {
                 ],
             ],
 
+            //Keywords
+            [
+                /\b(true|false|null)\b/,
+                ['keyword'],
+            ],
+
             //Enum name
             [
                 /(enum)(\s*)([a-zA-Z_][\w$]*)(?=\s*\{)/,
                 ['keyword', '', 'entity'],
+            ],
+
+            //Enum value
+            [
+                /([a-zA-Z_][\w$]*)(\.)([a-zA-Z_][\w$]*)/,
+                ['type','', 'variable.name'],
             ],
 
             //Method name

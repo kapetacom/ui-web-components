@@ -40,6 +40,7 @@ expression
     / variable_definition
     / field_definition
     / method
+    / enum_value
     / id
     / name
     / path
@@ -75,6 +76,8 @@ comma
 
 number
 	= [0-9]+ ( '.' [0-9]+ )?   { return {type: 'number', value: text()} }
+
+enum_value = value:(name '.' name) { return {type: 'enum_value', value} }
 
 char
 	= [<{\[] { return {type: 'special_start', value: text()} }

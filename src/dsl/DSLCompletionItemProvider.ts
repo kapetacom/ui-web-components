@@ -6,7 +6,7 @@ import {
     editor,
 } from 'monaco-editor';
 import {
-    BUILT_IN_TYPES,
+    BUILT_IN_TYPES, FIELD_ANNOTATIONS,
     METHOD_ANNOTATIONS,
     PARAMETER_ANNOTATIONS,
 } from './types';
@@ -115,6 +115,21 @@ export class DSLCompletionItemProvider
                     kind: languages.CompletionItemKind.TypeParameter,
                     insertTextRules:
                         languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                    range: null,
+                };
+            })
+        );
+
+
+
+        suggestions.push(
+            ...FIELD_ANNOTATIONS.map((type) => {
+                return {
+                    label: 'Annotate: ' + type,
+                    insertText: type,
+                    kind: languages.CompletionItemKind.TypeParameter,
+                    insertTextRules:
+                    languages.CompletionItemInsertTextRule.InsertAsSnippet,
                     range: null,
                 };
             })
