@@ -1,4 +1,12 @@
-import { DSLDataTypeProperty, DSLEntity, DSLEntityType, DSLMethod, DSLType } from './interfaces';
+import {
+    DSLAnnotation,
+    DSLDataTypeProperty,
+    DSLDefaultValue,
+    DSLEntity,
+    DSLEntityType,
+    DSLMethod,
+    DSLType
+} from './interfaces';
 import { HTTPMethod, HTTPTransport, RESTMethod, TypeLike } from '@kapeta/ui-web-types';
 
 import { Entity, EntityProperties, EntityType, EntityProperty, isList } from '@kapeta/schemas';
@@ -6,6 +14,48 @@ import { Entity, EntityProperties, EntityType, EntityProperty, isList } from '@k
 import { BUILT_IN_TYPES } from './types';
 
 type SchemaMethods = { [p: string]: RESTMethod };
+
+function fromSchemaDefaultValue(value: EntityProperty):DSLDefaultValue|null {
+    if (value.defaultValue === undefined) {
+        return null;
+    }
+
+    if (/^[0-9]+(\.[0-9]+)?$/.test(value.defaultValue)) {
+        return {
+            type: 'literal',
+            value: parseFloat(value.defaultValue),
+        };
+    }
+    if ('null' === value.defaultValue.toLowerCase()) {
+        return {
+            type: 'literal',
+            value: null,
+        };
+    }
+
+    if (/^(false|true)$/i.test(value.defaultValue)) {
+        return {
+            type: 'literal',
+            value: value.defaultValue.toLowerCase() === 'true',
+        };
+    }
+
+    if (
+        !value.defaultValue.startsWith('"') &&
+        !value.defaultValue.startsWith("'") &&
+        value.defaultValue.indexOf('.') > -1
+    ) {
+        return {
+            type: 'reference',
+            value: value.defaultValue,
+        };
+    }
+
+    return {
+        type: 'literal',
+        value: value.defaultValue,
+    };
+}
 
 export namespace DSLConverters {
     export function asDSLType(type: string): DSLType {
@@ -118,11 +168,27 @@ export namespace DSLConverters {
         return Object.entries(properties).map(([name, value]: [string, EntityProperty]): DSLDataTypeProperty => {
             const stringType = fromSchemaType(value);
 
+            let annotations:DSLAnnotation[] = [];
+
+            if (value.required) {
+                annotations.push({
+                    type: 'required'
+                });
+            }
+
+            if (value.secret) {
+                annotations.push({
+                    type: 'secret'
+                });
+            }
+
+
             if (isList(value)) {
                 const typeName = stringType.substring(0, stringType.length - 2);
                 return {
                     name,
                     description: value.description,
+                    annotations,
                     type: {
                         name: typeName,
                         list: true,
@@ -130,44 +196,12 @@ export namespace DSLConverters {
                 };
             }
 
-            let defaultValue;
-
-            if (value.defaultValue !== undefined) {
-                if (/^[0-9]+(\.[0-9]+)?$/.test(value.defaultValue)) {
-                    defaultValue = {
-                        type: 'literal',
-                        value: parseFloat(value.defaultValue),
-                    };
-                } else if ('null' === value.defaultValue.toLowerCase()) {
-                    defaultValue = {
-                        type: 'literal',
-                        value: null,
-                    };
-                } else if (/^(false|true)$/i.test(value.defaultValue)) {
-                    defaultValue = {
-                        type: 'literal',
-                        value: value.defaultValue.toLowerCase() === 'true',
-                    };
-                } else if (
-                    !value.defaultValue.startsWith('"') &&
-                    !value.defaultValue.startsWith("'") &&
-                    value.defaultValue.indexOf('.') > -1
-                ) {
-                    defaultValue = {
-                        type: 'reference',
-                        value: value.defaultValue,
-                    };
-                } else {
-                    defaultValue = {
-                        type: 'literal',
-                        value: value.defaultValue,
-                    };
-                }
-            }
+            let defaultValue = fromSchemaDefaultValue(value);
 
             return {
                 name,
                 type: asDSLType(stringType),
+                annotations,
                 description: value.description,
                 defaultValue,
                 properties: value.properties ? fromSchemaProperties(value.properties) : undefined,

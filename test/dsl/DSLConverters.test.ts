@@ -186,10 +186,13 @@ describe('DSLConverters', () => {
                     name: {
                         type: 'string',
                         defaultValue: '"test"',
+                        required: true,
                     },
                     tags: {
                         description: 'Tags',
                         type: 'string[]',
+                        required: true,
+                        secret: true
                     },
                     children: {
                         description: 'Children',
@@ -213,6 +216,9 @@ describe('DSLConverters', () => {
                         name: 'name',
                         properties: undefined,
                         description: undefined,
+                        annotations: [{
+                            type: 'required',
+                        }],
                         defaultValue: {
                             type: 'literal',
                             value: '"test"',
@@ -221,15 +227,22 @@ describe('DSLConverters', () => {
                     {
                         type: { name: 'string', list: true },
                         name: 'tags',
+                        annotations: [{
+                            type: 'required',
+                        },{
+                            type: 'secret',
+                        }],
                         description: 'Tags',
                     },
                     {
                         type: { name: 'Node', list: true },
+                        annotations:[],
                         name: 'children',
                         description: 'Children',
                     },
                     {
                         type: 'Node',
+                        annotations:[],
                         name: 'parent',
                         properties: undefined,
                         description: 'Parent',
