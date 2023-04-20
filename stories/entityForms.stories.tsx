@@ -71,7 +71,7 @@ let entityFormState = new Store({
     entity: new EntityFormModel(toDTO(entity)),
 });
 
-storiesOf('Entity Forms', module)
+storiesOf('Entity Forms (Deprecated)', module)
     // @ts-ignore
     .addDecorator(withState(pickerState))
     .addDecorator(withState(entityFormState))

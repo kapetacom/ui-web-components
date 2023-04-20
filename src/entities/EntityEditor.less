@@ -1,0 +1,57 @@
+@import '../../styles/values';
+@import '../../styles/functions';
+
+.entity-editor {
+    background-color: @gray-xxdark;
+    padding:25px;
+    color: white;
+    line-height: 20px;
+    .comment {
+        color: @gray-light;
+        font-size: 0.8em;
+        display: block;
+    }
+    .field-name {
+        color: #d67616;
+        font-weight: 500;
+    }
+    .entity {
+        margin: 0 0 10px;
+    }
+    .field {
+        margin-left: 20px;
+    }
+
+    .value {
+        border: 1px solid #444;
+        padding: 0 0 0 5px;
+        display: inline-block;
+        outline: none;
+        flex: 1;
+        font-size: 12px;
+        color: @blue-xlight;
+        overflow-x: auto;
+        white-space: pre;
+        -webkit-user-modify: read-write-plaintext-only;
+        -moz-user-modify: read-write-plaintext-only;
+        user-modify: read-write-plaintext-only;
+        background-color: transparent;
+        height: 20px;
+        min-height: 20px;
+        resize: none;
+        line-height: inherit;
+        &:focus {
+            border: 1px solid @blue-xlight;
+        }
+
+        &:hover {
+            background-color: #393939;
+        }
+
+    }
+
+    .field-value {
+        display: flex;
+        flex-direction: row;
+    }
+}
