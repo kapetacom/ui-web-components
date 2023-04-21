@@ -1,7 +1,8 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import {Entity, EntityType, EntityProperty} from "@kapeta/schemas";
 import './EntityEditor.less';
 import _ from "lodash";
+import {useFormContextField} from "../form/FormContext";
 
 type Value = { [key: string]: any };
 
@@ -28,6 +29,16 @@ function toDefaultValue(field: EntityProperty) {
 
     if (field.ref) {
         return toRefValue(field.ref, field.defaultValue);
+    }
+
+    if (field.defaultValue.startsWith('"') &&
+        field.defaultValue.endsWith('"')) {
+        return field.defaultValue.substring(1, field.defaultValue.length - 1);
+    }
+
+    if (field.defaultValue.startsWith("'") &&
+        field.defaultValue.endsWith("'")) {
+        return field.defaultValue.substring(1, field.defaultValue.length - 1);
     }
 
     return field.defaultValue;
@@ -203,5 +214,22 @@ export const EntityEditor = (props: Props) => {
                     )
                 })}
         </div>
+    )
+}
+
+interface FormProps {
+    entities: Entity[]
+    name: string
+}
+
+export const EntityEditorForm = (props: FormProps) => {
+    const valueField = useFormContextField(props.name, (value) => {
+        valueField.set(value);
+    });
+
+    return (
+        <EntityEditor entities={props.entities}
+                      value={valueField.get({})}
+                      onChange={value => valueField.set(value)} />
     )
 }

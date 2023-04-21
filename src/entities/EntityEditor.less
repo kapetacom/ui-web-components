@@ -2,12 +2,10 @@
 @import '../../styles/functions';
 
 .entity-editor {
-    background-color: @gray-xxdark;
-    padding:25px;
     color: white;
     line-height: 20px;
     .comment {
-        color: @gray-light;
+        color: @gray-xdark;
         font-size: 0.8em;
         display: block;
     }
@@ -23,7 +21,7 @@
     }
 
     .value {
-        border: 1px solid #444;
+        border: 1px solid @gray;
         padding: 0 0 0 5px;
         display: inline-block;
         outline: none;
@@ -45,7 +43,7 @@
         }
 
         &:hover {
-            background-color: #393939;
+            background-color: @gray-xlight;
         }
 
     }

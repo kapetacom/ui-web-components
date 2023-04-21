@@ -53,7 +53,7 @@ const ENTITIES:Entity[] = [
             url: {
                 type: 'string',
                 description: 'Enable core service?',
-                defaultValue: 'https://api.some-service.com/',
+                defaultValue: '"https://api.some-service.com/"',
                 required: true,
             }
         }

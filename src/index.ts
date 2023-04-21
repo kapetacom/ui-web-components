@@ -16,6 +16,7 @@ export * from './entities/EntityForm';
 export * from './entities/EntityFormModel';
 export * from './entities/EntityMapper';
 export * from './entities/EntityList';
+export * from './entities/EntityEditor';
 
 export * from './form/Checkbox';
 export * from './form/field-handlers/EntityPicker';
