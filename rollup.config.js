@@ -1,7 +1,6 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
-import { terser } from 'rollup-plugin-terser';
 import external from 'rollup-plugin-peer-deps-external';
 import styles from 'rollup-plugin-styles';
 import dts from 'rollup-plugin-dts';
@@ -19,13 +18,15 @@ export default [
             {
                 file: packageJson.main,
                 format: 'cjs',
-                sourcemap: true,
                 name: packageJson.name,
+                generatedCode: 'es2015',
+                compact: false
             },
             {
                 file: packageJson.module,
                 format: 'esm',
-                sourcemap: true,
+                generatedCode: 'es2015',
+                compact: false
             },
         ],
         plugins: [
@@ -37,7 +38,6 @@ export default [
                 tsconfig: './tsconfig.build.json',
             }),
             styles(),
-            terser(),
             visualizer(),
             bundleSize(),
         ],
