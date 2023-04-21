@@ -61,8 +61,34 @@ const ENTITIES:Entity[] = [
 ]
 
 
-export const EditMultipleEntities = () => {
+export const CreateMultipleEntities = () => {
     const [value, setValue] =  useState({})
+
+    return (
+        <div style={{width: '450px'}}>
+            <EntityEditor entities={ENTITIES}
+                          value={value}
+                          onChange={val => {
+                              setValue(val);
+                              console.log(val);
+                          }} />
+        </div>
+    );
+}
+
+export const EditMultipleEntities = () => {
+    const [value, setValue] =  useState({
+        Core: {
+            version: 'V1_4',
+            enabled: false,
+            apiKey: 'some-key'
+        },
+        ExternalService: {
+            apiKey: 'other-key',
+            ttl: 1000,
+            url: 'https://api.other-service.com/'
+        }
+    })
 
     return (
         <div style={{width: '450px'}}>
