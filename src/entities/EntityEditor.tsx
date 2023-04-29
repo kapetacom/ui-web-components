@@ -1,48 +1,10 @@
 import React, {useMemo} from 'react';
-import {Entity, EntityType, EntityProperty} from "@kapeta/schemas";
+import {Entity, EntityType, EntityProperty, createDefaultValue, toRefValue, isNumber} from "@kapeta/schemas";
 import './EntityEditor.less';
 import _ from "lodash";
 import {useFormContextField} from "../form/FormContext";
 
 type Value = { [key: string]: any };
-
-function isNumber(type: string) {
-    return ['integer', 'number', 'double', 'float', 'bigint'].includes(type)
-}
-
-function toRefValue(ref, value) {
-    let out = value;
-    if (out.startsWith(ref + '.')) {
-        out = out.substring(ref.length + 1);
-    }
-    return out;
-}
-
-function toDefaultValue(field: EntityProperty) {
-    if (field.type === 'boolean') {
-        return field.defaultValue === 'true';
-    }
-
-    if (isNumber(field.type)) {
-        return parseFloat(field.defaultValue);
-    }
-
-    if (field.ref) {
-        return toRefValue(field.ref, field.defaultValue);
-    }
-
-    if (field.defaultValue.startsWith('"') &&
-        field.defaultValue.endsWith('"')) {
-        return field.defaultValue.substring(1, field.defaultValue.length - 1);
-    }
-
-    if (field.defaultValue.startsWith("'") &&
-        field.defaultValue.endsWith("'")) {
-        return field.defaultValue.substring(1, field.defaultValue.length - 1);
-    }
-
-    return field.defaultValue;
-}
 
 interface FieldProps {
     entities: Entity[]
@@ -142,12 +104,7 @@ export const EntityEditor = (props: Props) => {
                 return;
             }
 
-            Object.entries(entity.properties).forEach(([fieldId, field]: [string, EntityProperty]) => {
-                const fullId = `${entity.name}.${fieldId}`;
-                if (field.defaultValue !== undefined) {
-                    _.set(out, fullId, toDefaultValue(field));
-                }
-            })
+            Object.assign(out, createDefaultValue(entity));
         })
         return out;
     }, [props.entities]);
