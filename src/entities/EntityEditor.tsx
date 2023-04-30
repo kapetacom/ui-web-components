@@ -1,5 +1,13 @@
 import React, {useMemo} from 'react';
-import {Entity, EntityType, EntityProperty, createDefaultValue, toRefValue, isNumber} from "@kapeta/schemas";
+import {
+    Entity,
+    EntityType,
+    EntityProperty,
+    createDefaultValue,
+    toRefValue,
+    isNumber,
+    toDefaultValue
+} from "@kapeta/schemas";
 import './EntityEditor.less';
 import _ from "lodash";
 import {useFormContextField} from "../form/FormContext";
