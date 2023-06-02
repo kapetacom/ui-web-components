@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Button, ButtonStyle, ButtonType, FormButtons, FormContainer } from '../src';
+import {
+    AsyncValidatorFunction,
+    Button,
+    ButtonStyle,
+    ButtonType, debouncedValidator,
+    FormButtons,
+    FormContainer
+} from '../src';
 import { FormField, FormFieldType } from '../src/form/inputs/FormField';
 
 function minMaxAgeCheck(name: string, value: number) {
@@ -229,6 +236,73 @@ export const FormWithValidation = () => {
                 }}
             >
                 <FormField name={'name'} label={'Name'} validation={['required']} />
+                <FormField name={'email'} label={'E-mail'} validation={['required', 'email']} />
+                <FormField name={'enabled'} label={'Enable?'} type={FormFieldType.CHECKBOX} />
+
+                <FormField
+                    name={'age'}
+                    label={'Age'}
+                    validation={['required', minMaxAgeCheck]}
+                    type={FormFieldType.NUMBER}
+                />
+
+                <FormField
+                    name={'select_one'}
+                    label={'Select'}
+                    type={FormFieldType.RADIO}
+                    options={{ one: 'One', two: 'Two', three: 'Three' }}
+                />
+
+                <FormButtons>
+                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
+                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                </FormButtons>
+            </FormContainer>
+            <b>Submitted data</b>
+            <pre>{JSON.stringify(formData, null, 2)}</pre>
+        </div>
+    );
+};
+
+export const FormWithAsyncValidation = () => {
+    const [formData, setFormData] = useState({});
+
+    const asyncValidation:AsyncValidatorFunction = debouncedValidator(500, (name, value) => {
+
+        console.log('Start async validation', value);
+        let doResolve, timer;
+        const promise = new Promise((resolve, reject) => {
+            doResolve = resolve;
+            timer = setTimeout(() => {
+                console.log('Do async validation', value);
+                if (value === 'fail') {
+                    reject('This is not a valid value');
+                } else {
+                    resolve(null);
+                }
+            }, 1000);
+        });
+
+        return {
+            promise,
+            cancel: () => {
+                clearTimeout(timer);
+                doResolve && doResolve();
+            }
+        };
+    });
+
+    return (
+        <div style={{ width: '550px' }}>
+            <FormContainer
+                initialValue={InitialFormValue}
+                onSubmitData={(data) => {
+                    setFormData(data);
+                }}
+            >
+                <FormField name={'name'} label={'Name'}
+                           help={'This will fail if you type "fail"'}
+                           validation={[asyncValidation]} />
                 <FormField name={'email'} label={'E-mail'} validation={['required', 'email']} />
                 <FormField name={'enabled'} label={'Enable?'} type={FormFieldType.CHECKBOX} />
 

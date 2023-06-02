@@ -12,6 +12,7 @@ enum StatusType {
 }
 interface Props {
     required?: boolean;
+    processing?: boolean;
     hasValue: boolean;
     touched: boolean;
     disabled?: boolean;
@@ -42,8 +43,8 @@ const renderStatusIcon = (status: string): JSX.Element => {
     );
 };
 
-export function FormElementContainer(props) {
-    const showStatusIcon = props.touched && props.status !== StatusType.OK;
+export const FormElementContainer = (props: Props) => {
+
 
     const inputType = props.type || 'text';
 
@@ -69,6 +70,8 @@ export function FormElementContainer(props) {
 
     const helpMessage = props.errorMessage && props.touched ? props.errorMessage : props.help;
 
+    const showStatusIcon = props.touched && props.status !== StatusType.OK;
+
     return (
         <div className={classFormElemContainer}>
             <div className={'input-container'}>
@@ -85,6 +88,8 @@ export function FormElementContainer(props) {
             )}
 
             {!props.focused && showStatusIcon && renderStatusIcon(props.status)}
+
+            {props.touched && props.processing && <i className={'processing fa fa-spin fa-spinner'} />}
 
             {(props.status === StatusType.WARNING || props.status === StatusType.ERROR) && props.infoBox && (
                 <span className="tooltip">

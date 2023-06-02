@@ -1,6 +1,15 @@
 import _ from 'lodash';
+import {useEffect, useState} from "react";
+import {useAsync} from "react-use";
+export type AsyncValidationContext = {cancel: () => void, promise: Promise<any>}
+export type ValidationContext = {cancel: () => void, errors: Promise<string[]>}
+export type AsyncValidatorFunction = (fieldName: string, value: any) => AsyncValidationContext;
+export type SyncValidatorFunction = (fieldName: string, value: any) => void;
+export type ValidatorFunction = AsyncValidatorFunction|SyncValidatorFunction|string;
+export type ValidatorList = ValidatorFunction[]
+export type ValidatorListUnresolved = ValidatorList|string|ValidatorFunction;
 
-let validators: any = {};
+let validators: {[key:string]:ValidatorFunction} = {};
 
 validators.required = (fieldName: string, value: any) => {
     if (value === '' || value === undefined || value === null) {
@@ -20,7 +29,7 @@ validators.email = (fieldName: string, value: any) => {
 
 export const Validators = validators;
 
-export function normaliseValidators(validation: any) {
+export function normaliseValidators(validation: ValidatorListUnresolved): ValidatorList {
     let validators = [];
     if (validation) {
         if (Array.isArray(validation)) {
@@ -32,11 +41,71 @@ export function normaliseValidators(validation: any) {
     return validators;
 }
 
-export function applyValidation(validation: any, name: string, value: any): string[] {
-    let validators = normaliseValidators(validation);
+export function useValidation(active:boolean, validation: ValidatorListUnresolved, name: string, value: any) {
+    const [validationContext, setValidationContext] = useState<ValidationContext>();
+    useEffect(() => {
+        if (!active) {
+            return () => {};
+        }
 
-    return validators
-        .map((validator: any) => {
+        const context= applyValidation(validation, name, value);
+        setValidationContext(context);
+        return () => {
+            context.cancel();
+            setValidationContext(undefined);
+        }
+    }, [active, validation, name, value]);
+
+    return useAsync(() => {
+        return validationContext?.errors ?? Promise.resolve([]);
+    }, [validationContext]);
+}
+
+/**
+ * Debounce an async validator - e.g. if you want to wait for the user to stop typing before validating
+ *
+ * @param delay
+ * @param func
+ */
+export function debouncedValidator(delay:number, func: AsyncValidatorFunction):AsyncValidatorFunction {
+    return (fieldName: string, value: any) => {
+        let resolver, timer;
+        let realContext: AsyncValidationContext|undefined;
+        const promise = new Promise((resolve, reject) => {
+            resolver = resolve;
+            timer = setTimeout(() => {
+                realContext = func(fieldName, value);
+                resolve(realContext.promise);
+            }, delay);
+        });
+
+        return {
+            promise,
+            cancel: () => {
+                clearTimeout(timer);
+                resolver && resolver();
+                if (realContext) {
+                    realContext.cancel();
+                }
+            }
+        };
+    }
+}
+
+
+export function applyValidation(validation: ValidatorListUnresolved, name: string, value: any): ValidationContext {
+    let validators = normaliseValidators(validation);
+    let cancelled = false;
+    let doResolve;
+    let currentAsyncContext: AsyncValidationContext|undefined;
+    const promise = new Promise<string[]>(async (resolve) => {
+        doResolve = resolve;
+        const errors = [];
+        for (let validator of validators) {
+            if (cancelled) {
+                resolve(errors);
+                return;
+            }
             if (typeof validator === 'string') {
                 if (!Validators[validator]) {
                     throw new Error(`Unknown validator: ${validator}`);
@@ -46,15 +115,35 @@ export function applyValidation(validation: any, name: string, value: any): stri
             }
 
             try {
-                validator.call(Validators, name, value);
-                return null;
+                if (typeof validator === 'function') {
+                    const result = validator.call(Validators, name, value);
+                    if (result && result.promise) {
+                        //Handle async validators
+                        currentAsyncContext = result;
+                        await result.promise;
+                        currentAsyncContext = undefined;
+                    }
+                }
             } catch (err) {
                 if (typeof err === 'string') {
-                    return err;
+                    errors.push(err);
+                } else {
+                    errors.push(err.message);
                 }
-
-                return err.message;
             }
-        })
-        .filter((error: string) => !!error);
+        }
+
+        resolve(errors);
+    })
+
+    return {
+        errors: promise,
+        cancel: () => {
+            cancelled = true;
+            doResolve([]);
+            if (currentAsyncContext) {
+                currentAsyncContext.cancel();
+            }
+        }
+    }
 }

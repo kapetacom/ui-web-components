@@ -1,8 +1,6 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './FormRadioGroup.less';
-import { observable, action, makeObservable } from 'mobx';
 import { toClass } from '@kapeta/ui-web-utils';
-import { observer } from 'mobx-react';
 import { FormRow } from '../FormRow';
 import _ from 'lodash';
 
@@ -17,61 +15,47 @@ interface Props {
     onChange?: (inputName: string, userInput: any) => void;
 }
 
-@observer
-export class FormRadioGroup extends React.Component<Props> {
-    @observable
-    private inputFocused: boolean = false;
+export const FormRadioGroup  = (props:Props) => {
 
-    private inputRef: React.RefObject<HTMLInputElement> = React.createRef();
+    const [inputFocused, setInputFocused] = useState(false);
 
-    private formRowRef: React.RefObject<FormRow> = React.createRef();
+    const inputRef = useRef<HTMLInputElement>();
 
-    constructor(props: Props) {
-        super(props);
-        makeObservable(this);
-    }
-
-    @action
-    private inputOnBlur = () => {
-        this.inputFocused = false;
+    const inputOnBlur = () => {
+        setInputFocused(false);
     };
 
-    @action
-    private inputOnFocus = () => {
-        this.inputFocused = true;
+    const inputOnFocus = () => {
+        setInputFocused(true);
     };
 
-    @action
-    private onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-        this.emitChange(evt.target.value);
+    const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+        emitChange(evt.target.value);
     };
 
-    private emitChange(value: any) {
-        if (this.props.onChange) {
-            this.props.onChange(this.props.name, value);
+    function emitChange(value: any) {
+        if (props.onChange) {
+            props.onChange(props.name, value);
         }
 
-        this.formRowRef.current?.updateReadyState(value);
     }
 
-    componentDidMount() {
-        const value = this.getCurrentValue();
-        if (this.props.value !== value) {
-            this.emitChange(value);
-        } else {
-            this.formRowRef.current?.updateReadyState(value);
+    useEffect(() => {
+        const value = getCurrentValue();
+        if (props.value !== value) {
+            emitChange(value);
         }
-    }
+    }, []);
 
-    private getOptions() {
+    function getOptions() {
         let options: { [key: string]: string } = {};
 
-        if (Array.isArray(this.props.options)) {
-            this.props.options.forEach((val) => {
+        if (Array.isArray(props.options)) {
+            props.options.forEach((val) => {
                 options[val] = val;
             });
         } else {
-            options = this.props.options;
+            options = props.options;
         }
 
         if (_.isEmpty(options)) {
@@ -81,52 +65,49 @@ export class FormRadioGroup extends React.Component<Props> {
         return options;
     }
 
-    getCurrentValue() {
-        let options = this.getOptions();
+    function getCurrentValue() {
+        let options = getOptions();
 
-        return this.props.value || Object.keys(options)[0];
+        return props.value || Object.keys(options)[0];
     }
 
-    render() {
-        let className = toClass({
-            'form-radiogroup': true,
-        });
+    let className = toClass({
+        'form-radiogroup': true,
+    });
 
-        const options = this.getOptions();
-        const currentValue = this.getCurrentValue();
+    const options = getOptions();
+    const currentValue = getCurrentValue();
 
-        return (
-            <FormRow
-                ref={this.formRowRef}
-                label={this.props.label}
-                help={this.props.help}
-                validation={this.props.validation}
-                type={'radiogroup'}
-                disableZoom={true}
-                focused={this.inputFocused}
-                disabled={this.props.disabled}
-            >
-                <div className={className} data-name={this.props.name} data-value={this.props.value}>
-                    {Object.entries(options).map(([value, label], ix) => {
-                        return (
-                            <label key={`radio_${ix}`}>
-                                <input
-                                    type={'radio'}
-                                    name={this.props.name}
-                                    onChange={this.onChange}
-                                    onFocus={this.inputOnFocus}
-                                    onBlur={this.inputOnBlur}
-                                    value={value}
-                                    checked={value === currentValue}
-                                    disabled={this.props.disabled}
-                                    ref={this.inputRef}
-                                />
-                                <span className={'name'}>{label}</span>
-                            </label>
-                        );
-                    })}
-                </div>
-            </FormRow>
-        );
-    }
+    return (
+        <FormRow
+            label={props.label}
+            help={props.help}
+            validation={props.validation}
+            type={'radiogroup'}
+            disableZoom={true}
+            focused={inputFocused}
+            disabled={props.disabled}
+        >
+            <div className={className} data-name={props.name} data-value={props.value}>
+                {Object.entries(options).map(([value, label], ix) => {
+                    return (
+                        <label key={`radio_${ix}`}>
+                            <input
+                                type={'radio'}
+                                name={props.name}
+                                onChange={onChange}
+                                onFocus={inputOnFocus}
+                                onBlur={inputOnBlur}
+                                value={value}
+                                checked={value === currentValue}
+                                disabled={props.disabled}
+                                ref={inputRef}
+                            />
+                            <span className={'name'}>{label}</span>
+                        </label>
+                    );
+                })}
+            </div>
+        </FormRow>
+    );
 }

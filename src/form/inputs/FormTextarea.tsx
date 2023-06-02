@@ -1,7 +1,5 @@
-import React, { RefObject } from 'react';
+import React, {RefObject, useState} from 'react';
 import './FormTextarea.less';
-import { observable, action, makeObservable } from 'mobx';
-import { observer } from 'mobx-react';
 import { FormRow } from '../FormRow';
 
 interface Props {
@@ -18,38 +16,27 @@ interface Props {
 const MIN_HEIGHT: number = 22;
 const MAX_HEIGHT: number = 200;
 
-@observer
-export class FormTextarea extends React.Component<Props> {
-    @observable
-    private inputFocused: boolean = false;
 
-    private textHeightElementRef: RefObject<HTMLDivElement> = React.createRef();
+export const FormTextarea = (props:Props) => {
+    const [inputFocused, setInputFocused] = useState(false);
 
-    private formRowRef: React.RefObject<FormRow> = React.createRef();
+    const textHeightElementRef: RefObject<HTMLDivElement> = React.createRef();
 
-    @observable
-    private userInput: string = this.props.value ? this.props.value : '';
+    const [userInput, setUserInput] = useState(props.value ?? '');
 
-    constructor(props: Props) {
-        super(props);
-        makeObservable(this);
-    }
-
-    @action
-    private inputOnBlur = () => {
-        this.inputFocused = false;
+    const inputOnBlur = () => {
+        setInputFocused(false);
     };
 
-    @action
-    private inputOnFocus = () => {
-        this.inputFocused = true;
+    const inputOnFocus = () => {
+        setInputFocused(true);
     };
 
-    private calculateHeight() {
+    function calculateHeight() {
         let currentHeight = MIN_HEIGHT;
-        if (this.textHeightElementRef.current) {
-            this.textHeightElementRef.current.innerHTML = this.userInput + 'X';
-            currentHeight = this.textHeightElementRef.current.offsetHeight;
+        if (textHeightElementRef.current) {
+            textHeightElementRef.current.innerHTML = userInput + 'X';
+            currentHeight = textHeightElementRef.current.offsetHeight;
             if (MIN_HEIGHT > currentHeight) {
                 currentHeight = MIN_HEIGHT;
             }
@@ -62,47 +49,40 @@ export class FormTextarea extends React.Component<Props> {
         return currentHeight;
     }
 
-    @action
-    private setUserInput = (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const onChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
         let val = evt.target.value;
-        this.userInput = val;
-        if (this.props.onChange) {
-            this.props.onChange(this.props.name, this.userInput);
+        setUserInput(val);
+        if (props.onChange) {
+            props.onChange(props.name, userInput);
         }
-        this.formRowRef.current?.updateReadyState(this.userInput);
     };
 
-    render() {
-        let currentHeight = this.calculateHeight();
+    let currentHeight = calculateHeight();
 
-        return (
-            <FormRow
-                ref={this.formRowRef}
-                label={this.props.label}
-                help={this.props.help}
-                validation={this.props.validation}
-                focused={this.inputFocused}
-                disabled={this.props.disabled}
-                readOnly={this.props.readOnly}
-            >
-                <div className={'textarea-wrapper'} data-name={this.props.name} data-value={this.userInput}>
+    return (
+        <FormRow
+            label={props.label}
+            help={props.help}
+            validation={props.validation}
+            focused={inputFocused}
+            disabled={props.disabled}
+            readOnly={props.readOnly}
+        >
+            <div className={'textarea-wrapper'} data-name={props.name} data-value={userInput}>
                     <textarea
-                        name={this.props.name}
-                        onChange={(event) => {
-                            this.setUserInput(event);
-                        }}
+                        name={props.name}
+                        onChange={onChange}
                         style={{ height: currentHeight + 'px' }}
-                        onFocus={this.inputOnFocus}
-                        onBlur={this.inputOnBlur}
+                        onFocus={inputOnFocus}
+                        onBlur={inputOnBlur}
                         className={'textarea'}
-                        value={this.userInput}
-                        readOnly={this.props.readOnly}
-                        disabled={this.props.disabled}
+                        value={userInput}
+                        readOnly={props.readOnly}
+                        disabled={props.disabled}
                         autoComplete="off"
                     ></textarea>
-                    <div ref={this.textHeightElementRef} className={'text-height'}></div>
-                </div>
-            </FormRow>
-        );
-    }
+                <div ref={textHeightElementRef} className={'text-height'}></div>
+            </div>
+        </FormRow>
+    );
 }
