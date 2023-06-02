@@ -15,8 +15,7 @@ interface Props {
     onChange?: (inputName: string, userInput: any) => void;
 }
 
-export const FormCheckbox  = (props:Props) => {
-    
+export const FormCheckbox = (props: Props) => {
     const onChange = (value: boolean) => {
         if (props.onChange) {
             props.onChange(props.name, value);
@@ -48,4 +47,4 @@ export const FormCheckbox  = (props:Props) => {
             </div>
         </FormRow>
     );
-}
+};

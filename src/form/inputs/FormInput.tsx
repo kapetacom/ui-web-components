@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import './FormInput.less';
 import { observable, action, makeObservable } from 'mobx';
 import { toClass } from '@kapeta/ui-web-utils';
@@ -27,8 +27,7 @@ interface Props {
     onChange?: (inputName: string, userInput: any) => void;
     type?: Type;
 }
-export const FormInput  = (props:Props) => {
-
+export const FormInput = (props: Props) => {
     const [inputFocused, setInputFocused] = useState(false);
 
     const inputRef = useRef<HTMLInputElement>();
@@ -178,4 +177,4 @@ export const FormInput  = (props:Props) => {
             </div>
         </FormRow>
     );
-}
+};

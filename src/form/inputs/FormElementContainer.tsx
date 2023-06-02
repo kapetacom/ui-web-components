@@ -44,8 +44,6 @@ const renderStatusIcon = (status: string): JSX.Element => {
 };
 
 export const FormElementContainer = (props: Props) => {
-
-
     const inputType = props.type || 'text';
 
     let classFormElemContainer = toClass({
@@ -101,4 +99,4 @@ export const FormElementContainer = (props: Props) => {
             )}
         </div>
     );
-}
+};

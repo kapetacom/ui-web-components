@@ -3,9 +3,10 @@ import {
     AsyncValidatorFunction,
     Button,
     ButtonStyle,
-    ButtonType, debouncedValidator,
+    ButtonType,
+    debouncedValidator,
     FormButtons,
-    FormContainer
+    FormContainer,
 } from '../src';
 import { FormField, FormFieldType } from '../src/form/inputs/FormField';
 
@@ -267,8 +268,7 @@ export const FormWithValidation = () => {
 export const FormWithAsyncValidation = () => {
     const [formData, setFormData] = useState({});
 
-    const asyncValidation:AsyncValidatorFunction = debouncedValidator(500, (name, value) => {
-
+    const asyncValidation: AsyncValidatorFunction = debouncedValidator(500, (name, value) => {
         console.log('Start async validation', value);
         let doResolve, timer;
         const promise = new Promise((resolve, reject) => {
@@ -288,7 +288,7 @@ export const FormWithAsyncValidation = () => {
             cancel: () => {
                 clearTimeout(timer);
                 doResolve && doResolve();
-            }
+            },
         };
     });
 
@@ -300,9 +300,12 @@ export const FormWithAsyncValidation = () => {
                     setFormData(data);
                 }}
             >
-                <FormField name={'name'} label={'Name'}
-                           help={'This will fail if you type "fail"'}
-                           validation={[asyncValidation]} />
+                <FormField
+                    name={'name'}
+                    label={'Name'}
+                    help={'This will fail if you type "fail"'}
+                    validation={[asyncValidation]}
+                />
                 <FormField name={'email'} label={'E-mail'} validation={['required', 'email']} />
                 <FormField name={'enabled'} label={'Enable?'} type={FormFieldType.CHECKBOX} />
 

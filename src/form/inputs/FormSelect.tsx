@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { toClass } from '@kapeta/ui-web-utils';
 import * as _ from 'lodash';
 import { FormRow } from '../FormRow';
@@ -29,10 +29,10 @@ interface State {
     inputFocus: boolean;
 }
 
-export const FormSelect = (props:Props) =>  {
+export const FormSelect = (props: Props) => {
     const inputElement = useRef<HTMLInputElement>();
     const dropDownList = useRef<HTMLUListElement>();
-    
+
     const [userInputDisplay, setUserInputDisplay] = useState('');
     const [inputSuggestion, setInputSuggestion] = useState('');
     const [inputFocus, setInputFocus] = useState(false);
@@ -63,11 +63,7 @@ export const FormSelect = (props:Props) =>  {
         }
 
         // Select value if it is equal to suggestion
-        if (
-            userInputDisplay &&
-            inputSuggestion &&
-            inputSuggestion.toUpperCase() === userInputDisplay.toUpperCase()
-        ) {
+        if (userInputDisplay && inputSuggestion && inputSuggestion.toUpperCase() === userInputDisplay.toUpperCase()) {
             emitChange(_.invert(optionListFiltered())[inputSuggestion]);
         }
 
@@ -76,7 +72,6 @@ export const FormSelect = (props:Props) =>  {
             inputElement.current.blur();
         }
         setInputFocus(false);
-
     };
 
     function emitChange(value) {
@@ -221,9 +216,9 @@ export const FormSelect = (props:Props) =>  {
     const onChange = (evt: ChangeEvent<HTMLInputElement>) => {
         setUserInputDisplay(evt.target.value);
     };
-    
+
     useEffect(() => {
-        calculateInputSuggestion()
+        calculateInputSuggestion();
     }, [userInputDisplay]);
 
     const boldQuery = (str: string, query: string) => {
@@ -244,7 +239,6 @@ export const FormSelect = (props:Props) =>  {
     };
 
     useEffect(() => {
-
         if (!dropDownList.current || !inputElement.current) {
             return;
         }
@@ -270,10 +264,7 @@ export const FormSelect = (props:Props) =>  {
         'focus-icon': !!inputFocus,
     });
 
-    let inputValue =
-        userInputDisplay || inputFocus
-            ? userInputDisplay
-            : renderKeysAsValues(props.value);
+    let inputValue = userInputDisplay || inputFocus ? userInputDisplay : renderKeysAsValues(props.value);
 
     const inputClassName = [props.noTransform ? 'no-transform' : ''].filter(Boolean).join(' ');
 
@@ -311,7 +302,7 @@ export const FormSelect = (props:Props) =>  {
                 </div>
                 {props.value
                     ? props.value.length > 0 &&
-                    props.multi && <span className="selected-number">({props.value.length})</span>
+                      props.multi && <span className="selected-number">({props.value.length})</span>
                     : null}
                 <RenderInBody>
                     <ul ref={dropDownList} className={classNameList}>
@@ -321,4 +312,4 @@ export const FormSelect = (props:Props) =>  {
             </div>
         </FormRow>
     );
-}
+};

@@ -20,13 +20,13 @@ export default [
                 format: 'cjs',
                 name: packageJson.name,
                 generatedCode: 'es2015',
-                compact: false
+                compact: false,
             },
             {
                 file: packageJson.module,
                 format: 'esm',
                 generatedCode: 'es2015',
-                compact: false
+                compact: false,
             },
         ],
         plugins: [

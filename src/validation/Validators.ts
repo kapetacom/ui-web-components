@@ -1,15 +1,15 @@
 import _ from 'lodash';
-import {useEffect, useState} from "react";
-import {useAsync} from "react-use";
-export type AsyncValidationContext = {cancel: () => void, promise: Promise<any>}
-export type ValidationContext = {cancel: () => void, errors: Promise<string[]>}
+import { useEffect, useState } from 'react';
+import { useAsync } from 'react-use';
+export type AsyncValidationContext = { cancel: () => void; promise: Promise<any> };
+export type ValidationContext = { cancel: () => void; errors: Promise<string[]> };
 export type AsyncValidatorFunction = (fieldName: string, value: any) => AsyncValidationContext;
 export type SyncValidatorFunction = (fieldName: string, value: any) => void;
-export type ValidatorFunction = AsyncValidatorFunction|SyncValidatorFunction|string;
-export type ValidatorList = ValidatorFunction[]
-export type ValidatorListUnresolved = ValidatorList|string|ValidatorFunction;
+export type ValidatorFunction = AsyncValidatorFunction | SyncValidatorFunction | string;
+export type ValidatorList = ValidatorFunction[];
+export type ValidatorListUnresolved = ValidatorList | string | ValidatorFunction;
 
-let validators: {[key:string]:ValidatorFunction} = {};
+let validators: { [key: string]: ValidatorFunction } = {};
 
 validators.required = (fieldName: string, value: any) => {
     if (value === '' || value === undefined || value === null) {
@@ -41,19 +41,19 @@ export function normaliseValidators(validation: ValidatorListUnresolved): Valida
     return validators;
 }
 
-export function useValidation(active:boolean, validation: ValidatorListUnresolved, name: string, value: any) {
+export function useValidation(active: boolean, validation: ValidatorListUnresolved, name: string, value: any) {
     const [validationContext, setValidationContext] = useState<ValidationContext>();
     useEffect(() => {
         if (!active) {
             return () => {};
         }
 
-        const context= applyValidation(validation, name, value);
+        const context = applyValidation(validation, name, value);
         setValidationContext(context);
         return () => {
             context.cancel();
             setValidationContext(undefined);
-        }
+        };
     }, [active, validation, name, value]);
 
     return useAsync(() => {
@@ -67,10 +67,10 @@ export function useValidation(active:boolean, validation: ValidatorListUnresolve
  * @param delay
  * @param func
  */
-export function debouncedValidator(delay:number, func: AsyncValidatorFunction):AsyncValidatorFunction {
+export function debouncedValidator(delay: number, func: AsyncValidatorFunction): AsyncValidatorFunction {
     return (fieldName: string, value: any) => {
         let resolver, timer;
-        let realContext: AsyncValidationContext|undefined;
+        let realContext: AsyncValidationContext | undefined;
         const promise = new Promise((resolve, reject) => {
             resolver = resolve;
             timer = setTimeout(() => {
@@ -87,17 +87,16 @@ export function debouncedValidator(delay:number, func: AsyncValidatorFunction):A
                 if (realContext) {
                     realContext.cancel();
                 }
-            }
+            },
         };
-    }
+    };
 }
-
 
 export function applyValidation(validation: ValidatorListUnresolved, name: string, value: any): ValidationContext {
     let validators = normaliseValidators(validation);
     let cancelled = false;
     let doResolve;
-    let currentAsyncContext: AsyncValidationContext|undefined;
+    let currentAsyncContext: AsyncValidationContext | undefined;
     const promise = new Promise<string[]>(async (resolve) => {
         doResolve = resolve;
         const errors = [];
@@ -134,7 +133,7 @@ export function applyValidation(validation: ValidatorListUnresolved, name: strin
         }
 
         resolve(errors);
-    })
+    });
 
     return {
         errors: promise,
@@ -144,6 +143,6 @@ export function applyValidation(validation: ValidatorListUnresolved, name: strin
             if (currentAsyncContext) {
                 currentAsyncContext.cancel();
             }
-        }
-    }
+        },
+    };
 }

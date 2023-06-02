@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './FormRadioGroup.less';
 import { toClass } from '@kapeta/ui-web-utils';
 import { FormRow } from '../FormRow';
@@ -15,8 +15,7 @@ interface Props {
     onChange?: (inputName: string, userInput: any) => void;
 }
 
-export const FormRadioGroup  = (props:Props) => {
-
+export const FormRadioGroup = (props: Props) => {
     const [inputFocused, setInputFocused] = useState(false);
 
     const inputRef = useRef<HTMLInputElement>();
@@ -37,7 +36,6 @@ export const FormRadioGroup  = (props:Props) => {
         if (props.onChange) {
             props.onChange(props.name, value);
         }
-
     }
 
     useEffect(() => {
@@ -110,4 +108,4 @@ export const FormRadioGroup  = (props:Props) => {
             </div>
         </FormRow>
     );
-}
+};

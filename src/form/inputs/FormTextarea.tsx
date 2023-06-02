@@ -1,4 +1,4 @@
-import React, {RefObject, useState} from 'react';
+import React, { RefObject, useState } from 'react';
 import './FormTextarea.less';
 import { FormRow } from '../FormRow';
 
@@ -16,8 +16,7 @@ interface Props {
 const MIN_HEIGHT: number = 22;
 const MAX_HEIGHT: number = 200;
 
-
-export const FormTextarea = (props:Props) => {
+export const FormTextarea = (props: Props) => {
     const [inputFocused, setInputFocused] = useState(false);
 
     const textHeightElementRef: RefObject<HTMLDivElement> = React.createRef();
@@ -69,20 +68,20 @@ export const FormTextarea = (props:Props) => {
             readOnly={props.readOnly}
         >
             <div className={'textarea-wrapper'} data-name={props.name} data-value={userInput}>
-                    <textarea
-                        name={props.name}
-                        onChange={onChange}
-                        style={{ height: currentHeight + 'px' }}
-                        onFocus={inputOnFocus}
-                        onBlur={inputOnBlur}
-                        className={'textarea'}
-                        value={userInput}
-                        readOnly={props.readOnly}
-                        disabled={props.disabled}
-                        autoComplete="off"
-                    ></textarea>
+                <textarea
+                    name={props.name}
+                    onChange={onChange}
+                    style={{ height: currentHeight + 'px' }}
+                    onFocus={inputOnFocus}
+                    onBlur={inputOnBlur}
+                    className={'textarea'}
+                    value={userInput}
+                    readOnly={props.readOnly}
+                    disabled={props.disabled}
+                    autoComplete="off"
+                ></textarea>
                 <div ref={textHeightElementRef} className={'text-height'}></div>
             </div>
         </FormRow>
     );
-}
+};

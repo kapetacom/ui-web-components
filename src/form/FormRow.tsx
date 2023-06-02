@@ -1,11 +1,11 @@
-import React, {useContext, useEffect, useMemo, useState} from 'react';
-import {applyValidation, normaliseValidators, useValidation, Validators} from '../validation/Validators';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { applyValidation, normaliseValidators, useValidation, Validators } from '../validation/Validators';
 import { FormContext, FormContextType } from './FormContext';
 
 import './FormRow.less';
 import { FormStateChangeEvent } from './FormContainer';
 import { FormElementContainer } from './inputs/FormElementContainer';
-import {useAsync} from "react-use";
+import { useAsync } from 'react-use';
 
 interface FormRowProps {
     label: string;
@@ -25,9 +25,7 @@ enum StatusType {
     OK = 'ok',
 }
 
-
-export const FormRow  = (props:FormRowProps) => {
-
+export const FormRow = (props: FormRowProps) => {
     function getChildValue() {
         let value = getChildProperties()['data-value'];
 
@@ -83,7 +81,7 @@ export const FormRow  = (props:FormRowProps) => {
         return getChildValue();
     }, []);
 
-    const [touchedState, setTouchedState] = useState(false)
+    const [touchedState, setTouchedState] = useState(false);
 
     const validators = useMemo(() => normaliseValidators(props.validation), [props.validation]);
 
@@ -101,7 +99,6 @@ export const FormRow  = (props:FormRowProps) => {
     const required = useMemo(() => {
         return validators.indexOf('required') > -1;
     }, [validators]);
-
 
     function setReadyState(ready: boolean) {
         context.onReadyStateChanged(getChildName(), ready);
@@ -145,12 +142,10 @@ export const FormRow  = (props:FormRowProps) => {
         } else {
             setReadyState(errorList.value?.length === 0);
         }
-    }, [errorList.loading, errorList.value])
+    }, [errorList.loading, errorList.value]);
 
     let errorMessage = null;
-    if (!errorList.loading &&
-        touched &&
-        errorList.value?.length > 0) {
+    if (!errorList.loading && touched && errorList.value?.length > 0) {
         errorMessage = errorList.value[0];
     }
 
@@ -174,4 +169,4 @@ export const FormRow  = (props:FormRowProps) => {
             {props.children}
         </FormElementContainer>
     );
-}
+};

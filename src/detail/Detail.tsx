@@ -1,12 +1,12 @@
-import React, {Context, createContext, useContext, useState} from 'react';
+import React, { Context, createContext, useContext, useState } from 'react';
 import _ from 'lodash';
 import './Detail.less';
-import {toClass} from '@kapeta/ui-web-utils';
-import {Button, ButtonShape, ButtonStyle, StandardIcons} from '../button/buttons';
-import {applyValidation, useValidation} from '../validation/Validators';
-import {showToasty, ToastType} from '../toast/ToastComponent';
-import {DialogControl} from '../dialog/DialogControl';
-import {useAsync} from "react-use";
+import { toClass } from '@kapeta/ui-web-utils';
+import { Button, ButtonShape, ButtonStyle, StandardIcons } from '../button/buttons';
+import { applyValidation, useValidation } from '../validation/Validators';
+import { showToasty, ToastType } from '../toast/ToastComponent';
+import { DialogControl } from '../dialog/DialogControl';
+import { useAsync } from 'react-use';
 
 interface DetailContextData {
     onValueChanged: (name: string, value: any) => void;
@@ -17,15 +17,12 @@ interface DetailContextData {
     isProcessing: (field: string) => boolean;
 }
 
-export interface DetailContextType extends Context<DetailContextData> {
-}
+export interface DetailContextType extends Context<DetailContextData> {}
 
 const DetailContext: DetailContextType = createContext({
-    onValueChanged: () => {
-    },
+    onValueChanged: () => {},
     isEditing: () => false,
-    setEditing: () => {
-    },
+    setEditing: () => {},
     isProcessing: () => false,
     data: {},
     editable: false,
@@ -226,13 +223,13 @@ export const DetailRowValue = (props: DetailRowValueProps) => {
                 />
             )}
 
-            {isProcessing && <Spinner/>}
+            {isProcessing && <Spinner />}
         </DetailRow>
     );
 };
 
 interface DetailRowListValueEntryProps {
-    name: string
+    name: string;
     typeName: string;
     validation?: any;
     originalValue: any;
@@ -321,8 +318,7 @@ export const DetailRowListValueEntry = (props: DetailRowListValueEntryProps) => 
             )}
         </li>
     );
-}
-
+};
 
 interface DetailRowListValueProps extends DetailRowValueProps {
     typeName: string;
@@ -364,7 +360,7 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
                             processing={isProcessing}
                             onCancel={doCancel}
                         />
-                    )
+                    );
                 })}
                 {isEditable && (
                     <li className={'adder'}>
@@ -408,7 +404,7 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
                 )}
             </ul>
 
-            {isProcessing && <Spinner/>}
+            {isProcessing && <Spinner />}
         </DetailRow>
     );
 };
@@ -427,7 +423,7 @@ export const DetailButtons = (props: DetailButtonsProps) => {
 
 const Spinner = () => (
     <div className={'spinner'}>
-        <i className={'fad fa-cog fa-spin'}/>
+        <i className={'fad fa-cog fa-spin'} />
         <span className={'inner'}>Saving...</span>
     </div>
 );
