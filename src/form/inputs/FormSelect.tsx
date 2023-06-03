@@ -19,23 +19,124 @@ interface Props {
     enableDeselect?: boolean;
     noTransform?: boolean;
     onChange?: (inputName: string, userInput: any) => void;
-
     optionProps?: React.HTMLProps<any>;
 }
 
-interface State {
-    userInputDisplay: string;
-    inputSuggestion: string;
-    inputFocus: boolean;
-}
 
 export const FormSelect = (props: Props) => {
+
+    const [inputFocus, setInputFocus] = useState(false);
+
+
+    return (
+        <FormRow
+            name={props.name}
+            value={props.value}
+            label={props.label}
+            help={props.help}
+            validation={props.validation}
+            focused={inputFocus}
+            disabled={props.disabled}
+            readOnly={props.readOnly} >
+            <FormSelectInput {...props}
+                             data-name={props.name}
+                             data-value={props.value}
+                             onFocusChange={setInputFocus}
+                             focused={inputFocus} />
+        </FormRow>
+    );
+};
+
+interface InputProps {
+    options: string[] | { [key: string]: string };
+    name?: string;
+    value?: any;
+    readOnly?: boolean;
+    disabled?: boolean;
+    multi?: boolean;
+    enableDeselect?: boolean;
+    noTransform?: boolean;
+    onChange?: (inputName: string, userInput: any) => void;
+    optionProps?: React.HTMLProps<any>;
+    focused?: boolean;
+    onFocusChange?: (focused: boolean) => void;
+}
+
+export const FormSelectInput = (props:InputProps) => {
     const inputElement = useRef<HTMLInputElement>();
     const dropDownList = useRef<HTMLUListElement>();
-
     const [userInputDisplay, setUserInputDisplay] = useState('');
     const [inputSuggestion, setInputSuggestion] = useState('');
     const [inputFocus, setInputFocus] = useState(false);
+
+    function isFocusControlled() {
+        return props.onFocusChange !== undefined;
+    }
+    function isFocused() {
+        return isFocusControlled() ? props.focused : inputFocus;
+    }
+
+    function setFocus(focus:boolean) {
+        return isFocusControlled() ? props.onFocusChange(focus) : setInputFocus(focus);
+    }
+
+
+    function calculateInputSuggestion() {
+        let inputSuggestion = '';
+        if (userInputDisplay && userInputDisplay.length > 0) {
+            const filteredOptions = optionListFiltered();
+            if (_.isObject(filteredOptions)) {
+                inputSuggestion = Object.values(filteredOptions)[0];
+            } else if (_.isString(filteredOptions)) {
+                inputSuggestion = filteredOptions;
+            }
+        }
+        setInputSuggestion(inputSuggestion);
+    }
+
+
+    const optionListFiltered = () => {
+        return _.pickBy(getOptions(), (value) => {
+            return value.toUpperCase().startsWith(userInputDisplay.toUpperCase());
+        });
+    };
+
+    const getOptions = (): { [key: string]: string } => {
+        if (props.options === null || props.options === undefined) {
+            throw new Error('Provide an array of strings or an object of options.');
+        }
+
+        let options: { [key: string]: string } = {};
+        if (_.isArray(props.options)) {
+            props.options.forEach((item) => (options[item] = item));
+            return options;
+        }
+
+        if (_.isObject(props.options)) {
+            return props.options;
+        }
+        return options;
+    };
+
+
+    useEffect(() => {
+        calculateInputSuggestion();
+    }, [userInputDisplay]);
+
+
+    useEffect(() => {
+        if (!dropDownList.current || !inputElement.current) {
+            return;
+        }
+
+        const position = inputElement.current.getBoundingClientRect();
+
+        if (isFocused()) {
+            dropDownList.current.style.top = position.bottom + 'px';
+            dropDownList.current.style.left = position.left + 'px';
+            dropDownList.current.style.width = position.width + 'px';
+        }
+    }, [inputElement.current, dropDownList.current, isFocused()]);
 
     const userSelection = (): string[] => {
         let keys = props.value;
@@ -49,11 +150,18 @@ export const FormSelect = (props: Props) => {
         return !props.disabled && !props.readOnly;
     }
 
+
+    function emitChange(value) {
+        if (props.onChange) {
+            props.onChange(props.name, value);
+        }
+    }
+
     const onInputFocus = () => {
         if (!isEnabled()) {
             return;
         }
-        setInputFocus(true);
+        setFocus(true);
         setUserInputDisplay('');
     };
 
@@ -71,15 +179,8 @@ export const FormSelect = (props: Props) => {
             setUserInputDisplay('');
             inputElement.current.blur();
         }
-        setInputFocus(false);
+        setFocus(false);
     };
-
-    function emitChange(value) {
-        if (props.onChange) {
-            props.onChange(props.name, value);
-        }
-    }
-
     const renderKeysAsValues = (keys: string | string[]) => {
         const options = getOptions();
         if (!Array.isArray(keys)) {
@@ -90,26 +191,13 @@ export const FormSelect = (props: Props) => {
 
     const onInputToggle = () => {
         if (isEnabled()) {
-            if (inputFocus) {
+            if (isFocused()) {
                 onInputBlur();
             } else {
                 onInputFocus();
             }
         }
     };
-
-    function calculateInputSuggestion() {
-        let inputSuggestion = '';
-        if (userInputDisplay && userInputDisplay.length > 0) {
-            const filteredOptions = optionListFiltered();
-            if (_.isObject(filteredOptions)) {
-                inputSuggestion = Object.values(filteredOptions)[0];
-            } else if (_.isString(filteredOptions)) {
-                inputSuggestion = filteredOptions;
-            }
-        }
-        setInputSuggestion(inputSuggestion);
-    }
 
     function selectHandler(selection: string) {
         if (inputElement.current) {
@@ -145,28 +233,21 @@ export const FormSelect = (props: Props) => {
             onInputBlur();
         }
     }
-
-    const optionListFiltered = () => {
-        return _.pickBy(getOptions(), (value) => {
-            return value.toUpperCase().startsWith(userInputDisplay.toUpperCase());
-        });
-    };
-
-    const getOptions = (): { [key: string]: string } => {
-        if (props.options === null || props.options === undefined) {
-            throw new Error('Provide an array of strings or an object of options.');
+    const boldQuery = (str: string, query: string) => {
+        let optionString = str.toUpperCase();
+        let userInput = query.toUpperCase();
+        const queryIndex = optionString.indexOf(userInput);
+        if (!userInput || queryIndex === -1) {
+            return str;
         }
-
-        let options: { [key: string]: string } = {};
-        if (_.isArray(props.options)) {
-            props.options.forEach((item) => (options[item] = item));
-            return options;
-        }
-
-        if (_.isObject(props.options)) {
-            return props.options;
-        }
-        return options;
+        const queryLength = query.length;
+        return (
+            <span>
+                {str.substr(0, queryIndex)}
+                <b>{str.substr(queryIndex, queryLength)}</b>
+                {str.substr(queryIndex + queryLength)}
+            </span>
+        );
     };
 
     const renderOptions = () => {
@@ -217,42 +298,11 @@ export const FormSelect = (props: Props) => {
         setUserInputDisplay(evt.target.value);
     };
 
-    useEffect(() => {
-        calculateInputSuggestion();
-    }, [userInputDisplay]);
 
-    const boldQuery = (str: string, query: string) => {
-        let optionString = str.toUpperCase();
-        let userInput = query.toUpperCase();
-        const queryIndex = optionString.indexOf(userInput);
-        if (!userInput || queryIndex === -1) {
-            return str;
-        }
-        const queryLength = query.length;
-        return (
-            <span>
-                {str.substr(0, queryIndex)}
-                <b>{str.substr(queryIndex, queryLength)}</b>
-                {str.substr(queryIndex + queryLength)}
-            </span>
-        );
-    };
+    const showList = isFocused();
+    let inputValue = userInputDisplay || isFocused() ? userInputDisplay : renderKeysAsValues(props.value);
 
-    useEffect(() => {
-        if (!dropDownList.current || !inputElement.current) {
-            return;
-        }
-
-        const position = inputElement.current.getBoundingClientRect();
-
-        if (inputFocus) {
-            dropDownList.current.style.top = position.bottom + 'px';
-            dropDownList.current.style.left = position.left + 'px';
-            dropDownList.current.style.width = position.width + 'px';
-        }
-    }, [inputElement.current, dropDownList.current, inputFocus]);
-
-    const showList = inputFocus;
+    const inputClassName = [props.noTransform ? 'no-transform' : ''].filter(Boolean).join(' ');
 
     let classNameList = toClass({
         'form-select-list': true,
@@ -261,55 +311,42 @@ export const FormSelect = (props: Props) => {
 
     let classNameArrowIcon = toClass({
         'arrow-icon': true,
-        'focus-icon': !!inputFocus,
+        'focus-icon': !!isFocused(),
     });
 
-    let inputValue = userInputDisplay || inputFocus ? userInputDisplay : renderKeysAsValues(props.value);
-
-    const inputClassName = [props.noTransform ? 'no-transform' : ''].filter(Boolean).join(' ');
-
     return (
-        <FormRow
-            label={props.label}
-            help={props.help}
-            validation={props.validation}
-            focused={inputFocus}
-            disabled={props.disabled}
-            readOnly={props.readOnly}
-        >
-            <div className={`form-select`} data-name={props.name} data-value={inputValue}>
-                {inputFocus && userInputDisplay.length > 0 && (
-                    <span className={'user-suggestion'}>{inputSuggestion}</span>
-                )}
+        <div className={`form-select`}>
+            {isFocused() && userInputDisplay.length > 0 && (
+                <span className={'user-suggestion'}>{inputSuggestion}</span>
+            )}
 
-                <input
-                    className={inputClassName}
-                    name={props.name}
-                    type={'text'}
-                    onChange={onChange}
-                    onFocus={onInputFocus}
-                    onBlur={onInputBlur}
-                    ref={inputElement}
-                    value={inputValue}
-                    autoComplete="off"
-                    readOnly={props.readOnly}
-                    disabled={props.disabled}
-                />
-                <div className={classNameArrowIcon}>
-                    <svg width="13" height="5" fill="none" onClick={onInputToggle}>
-                        <path d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z" fill="#908988" />
-                    </svg>
-                </div>
-                {props.value
-                    ? props.value.length > 0 &&
-                      props.multi && <span className="selected-number">({props.value.length})</span>
-                    : null}
-                <RenderInBody>
-                    <ul ref={dropDownList} className={classNameList}>
-                        {renderOptions()}
-                    </ul>
-                </RenderInBody>
+            <input
+                className={inputClassName}
+                name={props.name}
+                type={'text'}
+                onChange={onChange}
+                onFocus={onInputFocus}
+                onBlur={onInputBlur}
+                ref={inputElement}
+                value={inputValue}
+                autoComplete="off"
+                readOnly={props.readOnly}
+                disabled={props.disabled}
+            />
+            <div className={classNameArrowIcon}>
+                <svg width="13" height="5" fill="none" onClick={onInputToggle}>
+                    <path d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z" fill="#908988" />
+                </svg>
             </div>
-        </FormRow>
-    );
-};
+            {props.value
+                ? props.value.length > 0 &&
+                props.multi && <span className="selected-number">({props.value.length})</span>
+                : null}
+            <RenderInBody>
+                <ul ref={dropDownList} className={classNameList}>
+                    {renderOptions()}
+                </ul>
+            </RenderInBody>
+        </div>
+    )
+}

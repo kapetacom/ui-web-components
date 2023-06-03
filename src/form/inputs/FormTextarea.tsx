@@ -60,6 +60,8 @@ export const FormTextarea = (props: Props) => {
 
     return (
         <FormRow
+            name={props.name}
+            value={userInput}
             label={props.label}
             help={props.help}
             validation={props.validation}
@@ -67,7 +69,7 @@ export const FormTextarea = (props: Props) => {
             disabled={props.disabled}
             readOnly={props.readOnly}
         >
-            <div className={'textarea-wrapper'} data-name={props.name} data-value={userInput}>
+            <div className={'textarea-wrapper'} >
                 <textarea
                     name={props.name}
                     onChange={onChange}

@@ -150,6 +150,8 @@ export const FormInput = (props: Props) => {
 
     return (
         <FormRow
+            name={props.name}
+            value={props.value}
             label={props.label}
             help={props.help}
             validation={props.validation}
@@ -159,7 +161,7 @@ export const FormInput = (props: Props) => {
             disabled={props.disabled}
             readOnly={props.readOnly}
         >
-            <div className={className} data-name={props.name} data-value={props.value}>
+            <div className={className}>
                 <input
                     type={props.type ? props.type : Type.TEXT}
                     name={props.name}
