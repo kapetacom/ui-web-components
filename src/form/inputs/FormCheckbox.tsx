@@ -30,6 +30,8 @@ export const FormCheckbox = (props: Props) => {
 
     return (
         <FormRow
+            name={props.name}
+            value={props.value}
             help={props.help}
             label={''}
             validation={props.validation}
@@ -38,7 +40,7 @@ export const FormCheckbox = (props: Props) => {
             focused={false}
             disabled={props.disabled}
         >
-            <div className={className} data-name={props.name} data-value={props.value}>
+            <div className={className}>
                 <label>
                     <Checkbox value={checked} onChange={onChange} disabled={props.disabled} />
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { AssetNameInput, FormContainer, FormContext, useFormContextField } from '../src';
+import {AssetNameInput, AsyncValidatorFunction, FormContainer, FormContext, useFormContextField} from '../src';
 
 export default {
     title: 'Asset Name Input',
@@ -25,10 +25,37 @@ const createStory =
     () => {
         const [state, setState] = useState(initialState);
         const onChange = useCallback((name, value) => setState((state) => ({ ...state, [name]: value })), [setState]);
+
+        const checkUnique:AsyncValidatorFunction = (name:string, value:string) => {
+            let timeout;
+            const promise = new Promise((resolve, reject) => {
+                timeout = setTimeout(() => {
+                    if (value === 'kapeta/exists') {
+                        reject('Name already exists');
+                    } else {
+                        resolve(null);
+                    }
+                }, 1000);
+            });
+
+            return {
+                promise,
+                cancel: () => {
+                    clearTimeout(timeout);
+                }
+            }
+        };
+
         return (
             <FormContainer initialValue={initialState}>
                 <p>{description}</p>
-                <AssetNameInput label={'Name'} name={'name'} namespaces={state.namespaces}></AssetNameInput>
+                <AssetNameInput
+                    label={'Name'}
+                    name={'name'}
+                    help={'Select a name for your asset. Use kapeta/exists to test unique validation'}
+                    namespaces={state.namespaces}
+                    validation={checkUnique}
+                />
                 <FormState />
             </FormContainer>
         );

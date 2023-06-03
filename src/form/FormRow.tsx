@@ -1,5 +1,11 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { applyValidation, normaliseValidators, useValidation, Validators } from '../validation/Validators';
+import {
+    applyValidation,
+    normaliseValidators,
+    useValidation,
+    ValidatorListUnresolved,
+    Validators
+} from '../validation/Validators';
 import { FormContext, FormContextType } from './FormContext';
 
 import './FormRow.less';
@@ -8,9 +14,12 @@ import { FormElementContainer } from './inputs/FormElementContainer';
 import { useAsync } from 'react-use';
 
 interface FormRowProps {
+    name: string;
+    value: any
+    defaultValue?: any;
     label: string;
     help?: string;
-    validation?: any;
+    validation?: ValidatorListUnresolved;
     children: any;
     type?: string;
     focused: boolean;
@@ -27,10 +36,10 @@ enum StatusType {
 
 export const FormRow = (props: FormRowProps) => {
     function getChildValue() {
-        let value = getChildProperties()['data-value'];
+        let value = props.value
 
         if (value === undefined) {
-            return getDefaultValue();
+            return props.defaultValue;
         }
 
         return value;
@@ -48,31 +57,11 @@ export const FormRow = (props: FormRowProps) => {
     }
 
     function getDefaultValue() {
-        return getChildProperties().defaultValue || '';
+        return props.defaultValue ?? '';
     }
 
     function getChildName() {
-        return getChildProperties()['data-name'];
-    }
-
-    function getChildProperties() {
-        if (!props.children) {
-            throw new Error('Form row requires a input table element as a child to work');
-        }
-
-        if (Array.isArray(props.children)) {
-            throw new Error('Form row only works with a single child component');
-        }
-
-        if (!props.children.props.hasOwnProperty('data-value')) {
-            throw new Error('Form row requires a single child with a "data-value" property to work properly');
-        }
-
-        if (!props.children.props.hasOwnProperty('data-name')) {
-            throw new Error('Form row requires a single child with a "data-name" property to work properly');
-        }
-
-        return props.children.props;
+        return props.name
     }
 
     const context = useContext(FormContext);

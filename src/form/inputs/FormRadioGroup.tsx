@@ -78,6 +78,8 @@ export const FormRadioGroup = (props: Props) => {
 
     return (
         <FormRow
+            name={props.name}
+            value={props.value}
             label={props.label}
             help={props.help}
             validation={props.validation}
@@ -86,7 +88,7 @@ export const FormRadioGroup = (props: Props) => {
             focused={inputFocused}
             disabled={props.disabled}
         >
-            <div className={className} data-name={props.name} data-value={props.value}>
+            <div className={className} >
                 {Object.entries(options).map(([value, label], ix) => {
                     return (
                         <label key={`radio_${ix}`}>

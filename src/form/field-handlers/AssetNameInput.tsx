@@ -1,7 +1,9 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { FormSelect } from '../inputs/FormSelect';
-import { FormInput, Type } from '../inputs/FormInput';
-import { FormContext, useFormContextField } from '../FormContext';
+import React, {useCallback, useContext, useEffect, useMemo, useState} from 'react';
+import {FormSelectInput} from '../inputs/FormSelect';
+import {Type} from '../inputs/FormInput';
+import {FormContext, useFormContextField} from '../FormContext';
+import {normaliseValidators, ValidatorListUnresolved} from "../../validation/Validators";
+import {FormRow} from "../FormRow";
 
 interface SharedProps {
     name?: string;
@@ -9,16 +11,21 @@ interface SharedProps {
     help?: string;
     disabled?: boolean;
     readOnly?: boolean;
+    validation?: ValidatorListUnresolved;
 }
 
 interface Props extends SharedProps {
     namespaces: string[];
 }
 
+import './AssetNameInput.less';
+
 export const AssetNameInput = (props: Props) => {
     const formContext = useContext(FormContext);
     const formField = useFormContextField<string>(props.name);
 
+    const [focusName, setFocusName] = useState(false);
+    const [focusNamespace, setFocusNamespace] = useState(false);
     const [namespace, setNamespace] = useState('');
     const [assetName, setAssetName] = useState('');
 
@@ -42,12 +49,15 @@ export const AssetNameInput = (props: Props) => {
             const value =
                 namespace || assetName
                     ? [
-                          namespace.toLowerCase(),
-                          assetName
-                              .toLowerCase()
-                              .replace(/[^a-z0-9_-]/g, '-')
-                              .replace(/^[^a-z]/, ''),
-                      ].join('/')
+                        namespace.toLowerCase(),
+                        assetName
+                            .toLowerCase()
+                            .replace(/[^a-z0-9_-]/g, '-')
+                            .replace(/-{2,}/g, '-')
+                            .replace(/_{2,}/g, '_')
+                            .replace(/[_-]{2,}/g, '-')
+                            .replace(/^[^a-z]+/, ''),
+                    ].join('/')
                     : '';
 
             formField.set(
@@ -59,43 +69,59 @@ export const AssetNameInput = (props: Props) => {
     );
 
     // Add a fake option for unknown namespaces (e.g. loading an asset that you can no longer access)
-    const canAccessNamespace = (...args) => {
+    const validateNamespace = useMemo(() => (name, value) => {
+        const [namespace] = value.split('/');
         if (!(props.namespaces || []).includes(namespace)) {
-            throw new Error('Namespace not available');
+            throw 'Namespace not available';
         }
-    };
+    }, [props.namespaces]);
 
     let namespaces = [...(props.namespaces || [])];
     if (!namespaces.includes(namespace)) {
         namespaces.push(namespace);
     }
 
+    const validators = useMemo(() => {
+        const validators = normaliseValidators(props.validation);
+        validators.push(validateNamespace);
+        return validators;
+    }, [props.validation, validateNamespace]);
+
+
     return (
-        <div style={{ display: 'flex', alignItems: 'flex-start' }} className="asset-name-input">
-            <FormSelect
-                label="Namespace"
-                name="asset-namespace"
-                value={namespace}
-                readOnly={props.readOnly}
-                onChange={(_name, value) => callback(value, assetName)}
-                disabled={props.namespaces?.length < 2}
-                validation={[canAccessNamespace]}
-                options={namespaces}
-                noTransform
-            />
-            <span style={{ flexGrow: 0, margin: '15px 10px', lineHeight: '30px' }}>/</span>
-            <FormInput
-                onChange={(_name, value) => {
-                    callback(namespace, value);
-                }}
-                label={props.label}
-                name="asset-name"
-                value={assetName}
-                validation={['required']}
-                type={Type.TEXT}
-                readOnly={props.readOnly}
-                help={props.help}
-            />
-        </div>
+        <FormRow label={props.label}
+                 help={props.help}
+                 focused={focusNamespace || focusName}
+                 disabled={props.disabled}
+                 readOnly={props.readOnly}
+                 validation={validators}
+                 name={props.name}
+                 value={value}
+                 type={Type.TEXT} >
+            <div className="form-input asset-name-input" >
+                <FormSelectInput
+                    name="asset-namespace"
+                    value={namespace}
+                    readOnly={props.readOnly}
+                    onChange={(_name, value) => callback(value, assetName)}
+                    disabled={props.namespaces?.length < 2 || props.disabled}
+                    options={namespaces}
+                    onFocusChange={setFocusNamespace}
+                    focused={focusNamespace}
+                    noTransform
+                />
+                <span className={'separator'} >/</span>
+                <input
+                    type={Type.TEXT}
+                    name={'asset-name'}
+                    value={assetName}
+                    onBlur={() => setFocusName(false)}
+                    onFocus={() => setFocusName(true)}
+                    onChange={(evt) => callback(namespace, evt.target.value)}
+                    readOnly={props.readOnly}
+                    disabled={props.disabled}
+                />
+            </div>
+        </FormRow>
     );
 };
