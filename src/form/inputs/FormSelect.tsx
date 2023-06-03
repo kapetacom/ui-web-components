@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { toClass } from '@kapeta/ui-web-utils';
 import * as _ from 'lodash';
 import { FormRow } from '../FormRow';
@@ -29,181 +29,157 @@ interface State {
     inputFocus: boolean;
 }
 
-export class FormSelect extends React.Component<Props, State> {
-    private inputElement = React.createRef<HTMLInputElement>();
-    private dropDownList = React.createRef<HTMLUListElement>();
+export const FormSelect = (props: Props) => {
+    const inputElement = useRef<HTMLInputElement>();
+    const dropDownList = useRef<HTMLUListElement>();
 
-    private formRowRef: React.RefObject<FormRow> = React.createRef();
+    const [userInputDisplay, setUserInputDisplay] = useState('');
+    const [inputSuggestion, setInputSuggestion] = useState('');
+    const [inputFocus, setInputFocus] = useState(false);
 
-    constructor(props: Props) {
-        super(props);
-
-        this.state = {
-            userInputDisplay: '',
-            inputSuggestion: '',
-            inputFocus: false,
-        };
-    }
-
-    private userSelection = (): string[] => {
-        let keys = this.props.value;
+    const userSelection = (): string[] => {
+        let keys = props.value;
         if (!Array.isArray(keys)) {
             keys = keys ? [keys] : [];
         }
         return [].concat(keys);
     };
 
-    private isEnabled() {
-        return !this.props.disabled && !this.props.readOnly;
+    function isEnabled() {
+        return !props.disabled && !props.readOnly;
     }
 
-    private onInputFocus = () => {
-        if (!this.isEnabled()) {
+    const onInputFocus = () => {
+        if (!isEnabled()) {
             return;
         }
-        this.setState({
-            inputFocus: true,
-            userInputDisplay: '',
-        });
+        setInputFocus(true);
+        setUserInputDisplay('');
     };
 
-    private onInputBlur = () => {
-        if (!this.isEnabled()) {
+    const onInputBlur = () => {
+        if (!isEnabled()) {
             return;
         }
 
         // Select value if it is equal to suggestion
-        if (
-            this.state.userInputDisplay &&
-            this.state.inputSuggestion &&
-            this.state.inputSuggestion.toUpperCase() === this.state.userInputDisplay.toUpperCase()
-        ) {
-            this.emitChange(_.invert(this.optionListFiltered())[this.state.inputSuggestion]);
+        if (userInputDisplay && inputSuggestion && inputSuggestion.toUpperCase() === userInputDisplay.toUpperCase()) {
+            emitChange(_.invert(optionListFiltered())[inputSuggestion]);
         }
 
-        this.setState((state) => {
-            let userInputDisplay = state.userInputDisplay;
-
-            if (this.inputElement.current) {
-                userInputDisplay = '';
-                this.inputElement.current.blur();
-            }
-            return {
-                inputFocus: false,
-                userInputDisplay,
-            };
-        });
+        if (inputElement.current) {
+            setUserInputDisplay('');
+            inputElement.current.blur();
+        }
+        setInputFocus(false);
     };
 
-    private emitChange(value) {
-        if (this.props.onChange) {
-            this.props.onChange(this.props.name, value);
+    function emitChange(value) {
+        if (props.onChange) {
+            props.onChange(props.name, value);
         }
-        this.formRowRef.current?.updateReadyState(value);
     }
 
-    private renderKeysAsValues = (keys: string | string[]) => {
-        const options = this.getOptions();
+    const renderKeysAsValues = (keys: string | string[]) => {
+        const options = getOptions();
         if (!Array.isArray(keys)) {
             keys = keys ? [keys] : [];
         }
         return keys.map((key) => options[key]).join(', ');
     };
 
-    private onInputToggle = () => {
-        if (this.isEnabled()) {
-            if (this.state.inputFocus) {
-                this.onInputBlur();
+    const onInputToggle = () => {
+        if (isEnabled()) {
+            if (inputFocus) {
+                onInputBlur();
             } else {
-                this.onInputFocus();
+                onInputFocus();
             }
         }
     };
 
-    private setInputSuggestion() {
+    function calculateInputSuggestion() {
         let inputSuggestion = '';
-        if (this.state.userInputDisplay && this.state.userInputDisplay.length > 0) {
-            const filteredOptions = this.optionListFiltered();
+        if (userInputDisplay && userInputDisplay.length > 0) {
+            const filteredOptions = optionListFiltered();
             if (_.isObject(filteredOptions)) {
                 inputSuggestion = Object.values(filteredOptions)[0];
             } else if (_.isString(filteredOptions)) {
                 inputSuggestion = filteredOptions;
             }
         }
-        this.setState({
-            inputSuggestion,
-        });
+        setInputSuggestion(inputSuggestion);
     }
 
-    private selectHandler(selection: string) {
-        if (this.inputElement.current) {
-            this.inputElement.current.focus();
+    function selectHandler(selection: string) {
+        if (inputElement.current) {
+            inputElement.current.focus();
         }
 
-        let tempUserSelection: string[] = this.userSelection();
+        let tempUserSelection: string[] = userSelection();
         const isSelected: number = tempUserSelection.indexOf(selection);
         // For multi-select, allow full deselection unless explicitly disabled:
-        const allowDeselect = this.props.multi ? this.props.enableDeselect !== false : this.props.enableDeselect;
+        const allowDeselect = props.multi ? props.enableDeselect !== false : props.enableDeselect;
 
         if (tempUserSelection.length > 0) {
             if (isSelected > -1) {
                 // Toggle a selected item if its allowed (not last item, or we allow deselect)
                 if (allowDeselect || tempUserSelection.length > 1) {
                     tempUserSelection.splice(isSelected, 1);
-                    this.emitChange(this.props.multi ? tempUserSelection : tempUserSelection[0]);
+                    emitChange(props.multi ? tempUserSelection : tempUserSelection[0]);
                     return;
                 }
             }
         }
 
-        if (!this.props.multi && tempUserSelection.length > 0) {
+        if (!props.multi && tempUserSelection.length > 0) {
             tempUserSelection = [];
         }
 
         tempUserSelection.push(selection);
-        this.setState({ userInputDisplay: '' }, () => this.setInputSuggestion());
+        setUserInputDisplay('');
 
-        this.emitChange(this.props.multi ? tempUserSelection : tempUserSelection[0]);
+        emitChange(props.multi ? tempUserSelection : tempUserSelection[0]);
 
-        if (!this.props.multi) {
-            this.onInputBlur();
+        if (!props.multi) {
+            onInputBlur();
         }
     }
 
-    private optionListFiltered = () => {
-        return _.pickBy(this.getOptions(), (value) => {
-            return value.toUpperCase().startsWith(this.state.userInputDisplay.toUpperCase());
+    const optionListFiltered = () => {
+        return _.pickBy(getOptions(), (value) => {
+            return value.toUpperCase().startsWith(userInputDisplay.toUpperCase());
         });
     };
 
-    private getOptions = (): { [key: string]: string } => {
-        if (this.props.options === null || this.props.options === undefined) {
+    const getOptions = (): { [key: string]: string } => {
+        if (props.options === null || props.options === undefined) {
             throw new Error('Provide an array of strings or an object of options.');
         }
 
         let options: { [key: string]: string } = {};
-        if (_.isArray(this.props.options)) {
-            this.props.options.forEach((item) => (options[item] = item));
+        if (_.isArray(props.options)) {
+            props.options.forEach((item) => (options[item] = item));
             return options;
         }
 
-        if (_.isObject(this.props.options)) {
-            return this.props.options;
+        if (_.isObject(props.options)) {
+            return props.options;
         }
         return options;
     };
 
-    private renderOptions = () => {
-        let filteredList = this.optionListFiltered();
+    const renderOptions = () => {
+        let filteredList = optionListFiltered();
 
         return _.map(filteredList, (value, key) => {
             //   Allow overriding classNames and adding props
             const optionProps = {
-                ...(this.props.optionProps || {}),
+                ...(props.optionProps || {}),
                 className: [
-                    this.props.optionProps?.className || '',
-                    `option ${this.userSelection().indexOf(key) > -1 ? ' selected' : ''}`,
-                    this.props.noTransform ? 'no-transform' : '',
+                    props.optionProps?.className || '',
+                    `option ${userSelection().indexOf(key) > -1 ? ' selected' : ''}`,
+                    props.noTransform ? 'no-transform' : '',
                 ].join(' '),
             };
 
@@ -215,12 +191,12 @@ export class FormSelect extends React.Component<Props, State> {
                         evt.nativeEvent.stopImmediatePropagation();
                         evt.preventDefault();
 
-                        this.selectHandler(key);
+                        selectHandler(key);
                     }}
                 >
-                    {this.boldQuery(value, this.state.userInputDisplay)}
+                    {boldQuery(value, userInputDisplay)}
 
-                    {this.userSelection().indexOf(key) < 0 ? null : (
+                    {userSelection().indexOf(key) < 0 ? null : (
                         <span className={'selected-icon'}>
                             <svg width="14" height="10" fill="none">
                                 <path
@@ -237,11 +213,15 @@ export class FormSelect extends React.Component<Props, State> {
         });
     };
 
-    private setUserInputDisplay = (evt: ChangeEvent<HTMLInputElement>) => {
-        this.setState({ userInputDisplay: evt.target.value }, () => this.setInputSuggestion());
+    const onChange = (evt: ChangeEvent<HTMLInputElement>) => {
+        setUserInputDisplay(evt.target.value);
     };
 
-    private boldQuery = (str: string, query: string) => {
+    useEffect(() => {
+        calculateInputSuggestion();
+    }, [userInputDisplay]);
+
+    const boldQuery = (str: string, query: string) => {
         let optionString = str.toUpperCase();
         let userInput = query.toUpperCase();
         const queryIndex = optionString.indexOf(userInput);
@@ -258,87 +238,78 @@ export class FormSelect extends React.Component<Props, State> {
         );
     };
 
-    componentDidUpdate() {
-        this.formRowRef.current?.updateReadyState();
-        if (!this.dropDownList.current || !this.inputElement.current) {
+    useEffect(() => {
+        if (!dropDownList.current || !inputElement.current) {
             return;
         }
 
-        const position = this.inputElement.current.getBoundingClientRect();
+        const position = inputElement.current.getBoundingClientRect();
 
-        if (this.state.inputFocus) {
-            this.dropDownList.current.style.top = position.bottom + 'px';
-            this.dropDownList.current.style.left = position.left + 'px';
-            this.dropDownList.current.style.width = position.width + 'px';
+        if (inputFocus) {
+            dropDownList.current.style.top = position.bottom + 'px';
+            dropDownList.current.style.left = position.left + 'px';
+            dropDownList.current.style.width = position.width + 'px';
         }
-    }
+    }, [inputElement.current, dropDownList.current, inputFocus]);
 
-    render() {
-        const showList = this.state.inputFocus;
+    const showList = inputFocus;
 
-        let classNameList = toClass({
-            'form-select-list': true,
-            visible: showList,
-        });
+    let classNameList = toClass({
+        'form-select-list': true,
+        visible: showList,
+    });
 
-        let classNameArrowIcon = toClass({
-            'arrow-icon': true,
-            'focus-icon': !!this.state.inputFocus,
-        });
+    let classNameArrowIcon = toClass({
+        'arrow-icon': true,
+        'focus-icon': !!inputFocus,
+    });
 
-        let inputValue =
-            this.state.userInputDisplay || this.state.inputFocus
-                ? this.state.userInputDisplay
-                : this.renderKeysAsValues(this.props.value);
+    let inputValue = userInputDisplay || inputFocus ? userInputDisplay : renderKeysAsValues(props.value);
 
-        const inputClassName = [this.props.noTransform ? 'no-transform' : ''].filter(Boolean).join(' ');
+    const inputClassName = [props.noTransform ? 'no-transform' : ''].filter(Boolean).join(' ');
 
-        return (
-            <FormRow
-                ref={this.formRowRef}
-                label={this.props.label}
-                help={this.props.help}
-                validation={this.props.validation}
-                focused={this.state.inputFocus}
-                disabled={this.props.disabled}
-                readOnly={this.props.readOnly}
-            >
-                <div className={`form-select`} data-name={this.props.name} data-value={inputValue}>
-                    {this.state.inputFocus && this.state.userInputDisplay.length > 0 && (
-                        <span className={'user-suggestion'}>{this.state.inputSuggestion}</span>
-                    )}
+    return (
+        <FormRow
+            label={props.label}
+            help={props.help}
+            validation={props.validation}
+            focused={inputFocus}
+            disabled={props.disabled}
+            readOnly={props.readOnly}
+        >
+            <div className={`form-select`} data-name={props.name} data-value={inputValue}>
+                {inputFocus && userInputDisplay.length > 0 && (
+                    <span className={'user-suggestion'}>{inputSuggestion}</span>
+                )}
 
-                    <input
-                        className={inputClassName}
-                        name={this.props.name}
-                        type={'text'}
-                        onChange={(event) => {
-                            this.setUserInputDisplay(event);
-                        }}
-                        onFocus={this.onInputFocus}
-                        onBlur={this.onInputBlur}
-                        ref={this.inputElement}
-                        value={inputValue}
-                        autoComplete="off"
-                        readOnly={this.props.readOnly}
-                        disabled={this.props.disabled}
-                    />
-                    <div className={classNameArrowIcon}>
-                        <svg width="13" height="5" fill="none" onClick={this.onInputToggle}>
-                            <path d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z" fill="#908988" />
-                        </svg>
-                    </div>
-                    {this.props.value
-                        ? this.props.value.length > 0 &&
-                          this.props.multi && <span className="selected-number">({this.props.value.length})</span>
-                        : null}
-                    <RenderInBody>
-                        <ul ref={this.dropDownList} className={classNameList}>
-                            {this.renderOptions()}
-                        </ul>
-                    </RenderInBody>
+                <input
+                    className={inputClassName}
+                    name={props.name}
+                    type={'text'}
+                    onChange={onChange}
+                    onFocus={onInputFocus}
+                    onBlur={onInputBlur}
+                    ref={inputElement}
+                    value={inputValue}
+                    autoComplete="off"
+                    readOnly={props.readOnly}
+                    disabled={props.disabled}
+                />
+                <div className={classNameArrowIcon}>
+                    <svg width="13" height="5" fill="none" onClick={onInputToggle}>
+                        <path d="M6.5 5L0.870835 0.5L12.1292 0.5L6.5 5Z" fill="#908988" />
+                    </svg>
                 </div>
-            </FormRow>
-        );
-    }
-}
+                {props.value
+                    ? props.value.length > 0 &&
+                      props.multi && <span className="selected-number">({props.value.length})</span>
+                    : null}
+                <RenderInBody>
+                    <ul ref={dropDownList} className={classNameList}>
+                        {renderOptions()}
+                    </ul>
+                </RenderInBody>
+            </div>
+        </FormRow>
+    );
+};

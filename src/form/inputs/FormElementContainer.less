@@ -8,6 +8,7 @@
     min-width: 150px;
     max-width: 700px;
     box-sizing: border-box;
+    border: 1px solid transparent;
     background-color: inherit;
 
     .label {
@@ -34,11 +35,17 @@
         }
     }
 
-    .status-icon {
+    .status-icon,
+    .processing {
         position: absolute;
         right: 5px;
         top: 8px;
         height: 17px;
+    }
+
+    .processing {
+        right: 8px;
+        color: @gray-dark;
     }
 
     .tooltip {
@@ -97,8 +104,10 @@
     }
 
     input,
+    .form-input,
     .textarea-wrapper {
         border: 0;
+        .border-radius(3px);
     }
 
     .message {
@@ -136,8 +145,7 @@
 
     &.focused {
         .input-container {
-            border: 1.5px solid @cyan-dark;
-            margin: -0.5px;
+            border: 1px solid @cyan-dark;
 
             .label.zoom-out {
                 color: @cyan-dark;
@@ -157,8 +165,7 @@
 
     &.warning-status {
         .input-container {
-            border: 1.5px solid @btn-regular-active-bg;
-            margin: -0.5px;
+            border: 1px solid @btn-regular-active-bg;
 
             .arrows {
                 right: 30px;
@@ -188,8 +195,7 @@
 
     &.error-status {
         .input-container {
-            border: 1.5px solid @btn-cancel-bg;
-            margin: -0.5px;
+            border: 1px solid @btn-cancel-bg;
 
             .arrows {
                 right: 30px;

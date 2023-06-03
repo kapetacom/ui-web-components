@@ -1,10 +1,11 @@
-import React from 'react';
-import { applyValidation, normaliseValidators, Validators } from '../validation/Validators';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { applyValidation, normaliseValidators, useValidation, Validators } from '../validation/Validators';
 import { FormContext, FormContextType } from './FormContext';
 
 import './FormRow.less';
 import { FormStateChangeEvent } from './FormContainer';
 import { FormElementContainer } from './inputs/FormElementContainer';
+import { useAsync } from 'react-use';
 
 interface FormRowProps {
     label: string;
@@ -24,62 +25,19 @@ enum StatusType {
     OK = 'ok',
 }
 
-interface FormRowState {
-    touched: boolean;
-    forceError?: string;
-}
-
-export class FormRow extends React.Component<FormRowProps, FormRowState> {
-    static contextType = FormContext;
-    context!: React.ContextType<FormContextType>;
-
-    private readyState?: boolean;
-
-    private disposer?: Function;
-    private touched: boolean = false;
-
-    constructor(props: FormRowProps) {
-        super(props);
-
-        this.state = {
-            touched: false,
-        };
-    }
-
-    getValidators() {
-        return normaliseValidators(this.props.validation);
-    }
-
-    setReadyState(ready: boolean) {
-        if (this.readyState !== ready) {
-            this.readyState = ready;
-            this.context.onReadyStateChanged(this.getChildName(), ready);
-        }
-    }
-
-    isTouched() {
-        if (this.touched || this.state.touched) {
-            return true;
-        }
-        if (this.getDefaultValue() !== this.getChildValue()) {
-            this.touched = true;
-        }
-
-        return this.touched;
-    }
-
-    getChildValue() {
-        let value = this.getChildProperties()['data-value'];
+export const FormRow = (props: FormRowProps) => {
+    function getChildValue() {
+        let value = getChildProperties()['data-value'];
 
         if (value === undefined) {
-            return this.getDefaultValue();
+            return getDefaultValue();
         }
 
         return value;
     }
 
-    hasValue() {
-        const value = this.getChildValue();
+    function hasValue() {
+        const value = getChildValue();
         if (value === undefined || value === null) {
             return false;
         }
@@ -89,136 +47,126 @@ export class FormRow extends React.Component<FormRowProps, FormRowState> {
         return true;
     }
 
-    getDefaultValue() {
-        return this.getChildProperties().defaultValue || '';
+    function getDefaultValue() {
+        return getChildProperties().defaultValue || '';
     }
 
-    getChildName() {
-        return this.getChildProperties()['data-name'];
+    function getChildName() {
+        return getChildProperties()['data-name'];
     }
 
-    getChildProperties() {
-        if (!this.props.children) {
+    function getChildProperties() {
+        if (!props.children) {
             throw new Error('Form row requires a input table element as a child to work');
         }
 
-        if (Array.isArray(this.props.children)) {
+        if (Array.isArray(props.children)) {
             throw new Error('Form row only works with a single child component');
         }
 
-        if (!this.props.children.props.hasOwnProperty('data-value')) {
+        if (!props.children.props.hasOwnProperty('data-value')) {
             throw new Error('Form row requires a single child with a "data-value" property to work properly');
         }
 
-        if (!this.props.children.props.hasOwnProperty('data-name')) {
+        if (!props.children.props.hasOwnProperty('data-name')) {
             throw new Error('Form row requires a single child with a "data-name" property to work properly');
         }
 
-        return this.props.children.props;
+        return props.children.props;
     }
 
-    isRequired() {
-        return this.getValidators().indexOf('required') > -1;
-    }
+    const context = useContext(FormContext);
 
-    applyValidation(value?: any) {
-        if (value === undefined) {
-            value = this.getChildValue();
+    const initialValue = useMemo(() => {
+        return getChildValue();
+    }, []);
+
+    const [touchedState, setTouchedState] = useState(false);
+
+    const validators = useMemo(() => normaliseValidators(props.validation), [props.validation]);
+
+    const touched = useMemo(() => {
+        if (touchedState) {
+            return true;
+        }
+        if (getDefaultValue() !== getChildValue() && initialValue !== getChildValue()) {
+            return true;
         }
 
-        const name = this.getChildName();
+        return touchedState;
+    }, [touchedState, getDefaultValue(), getChildValue()]);
 
-        if (this.state.forceError) {
-            return [this.state.forceError];
-        }
+    const required = useMemo(() => {
+        return validators.indexOf('required') > -1;
+    }, [validators]);
 
-        return applyValidation(this.getValidators(), name, value);
+    function setReadyState(ready: boolean) {
+        context.onReadyStateChanged(getChildName(), ready);
     }
 
-    private setTouched(touched: boolean) {
-        this.setState({ touched });
-        this.touched = touched;
+    function setTouched(touched: boolean) {
+        setTouchedState(touched);
     }
 
-    componentDidMount() {
-        if (!this.context.container) {
+    useEffect(() => {
+        if (!context.container) {
             return;
         }
 
-        this.disposer = this.context.container.onFormStateChanged((evt: FormStateChangeEvent) => {
+        const disposer = context.container.onFormStateChanged((evt: FormStateChangeEvent) => {
             switch (evt.type) {
                 case 'submit':
                     if (evt.value) {
-                        this.setTouched(false);
+                        setTouched(false);
                     } else {
-                        this.setTouched(true);
+                        setTouched(true);
                     }
                     break;
                 case 'reset':
-                    this.setTouched(false);
+                    setTouched(false);
                     break;
             }
         });
 
-        this.updateReadyState();
-    }
+        return () => {
+            disposer();
+            setReadyState(true); //Tell the form to not worry about this
+        };
+    }, [context.container]);
 
-    public setError(errorMessage?: string) {
-        this.setState({
-            forceError: errorMessage,
-            touched: this.state.touched,
-        });
-    }
+    const errorList = useValidation(true, validators, getChildName(), getChildValue());
 
-    componentWillUnmount() {
-        if (this.disposer) {
-            this.disposer();
-            this.disposer = undefined;
+    useEffect(() => {
+        if (errorList.loading) {
+            setReadyState(false);
+        } else {
+            setReadyState(errorList.value?.length === 0);
         }
+    }, [errorList.loading, errorList.value]);
 
-        this.setReadyState(true); //Tell the form to not worry about this
+    let errorMessage = null;
+    if (!errorList.loading && touched && errorList.value?.length > 0) {
+        errorMessage = errorList.value[0];
     }
 
-    public updateReadyState(value?: any) {
-        if (value === undefined) {
-            value = this.getChildValue();
-        }
-
-        const errors = this.applyValidation(value);
-
-        this.setReadyState(errors.length === 0);
-    }
-
-    render() {
-        let errorMessage = null;
-
-        if (this.isTouched()) {
-            const errors = this.applyValidation();
-            if (errors.length > 0) {
-                errorMessage = errors[0];
-            }
-        }
-
-        const required = this.isRequired();
-
-        return (
-            <FormElementContainer
-                required={required}
-                hasValue={this.hasValue()}
-                touched={this.isTouched()}
-                help={this.props.help}
-                errorMessage={errorMessage}
-                label={this.props.label}
-                type={this.props.type}
-                focused={this.props.focused}
-                disabled={this.props.disabled}
-                readOnly={this.props.readOnly}
-                disableZoom={this.props.disableZoom}
-                status={errorMessage && errorMessage.length > 0 ? StatusType.ERROR : StatusType.OK}
-                infoBox={''}
-            >
-                {this.props.children}
-            </FormElementContainer>
-        );
-    }
-}
+    return (
+        <FormElementContainer
+            required={required}
+            processing={errorList.loading}
+            hasValue={hasValue()}
+            touched={touched}
+            help={props.help}
+            errorMessage={errorMessage}
+            label={props.label}
+            type={props.type}
+            focused={props.focused}
+            disabled={props.disabled}
+            readOnly={props.readOnly}
+            disableZoom={props.disableZoom}
+            status={errorMessage && errorMessage.length > 0 ? StatusType.ERROR : StatusType.OK}
+            infoBox={''}
+        >
+            {props.children}
+        </FormElementContainer>
+    );
+};

@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
-import {EntityEditor} from "../src/entities/EntityEditor";
-import {Entity, EntityType} from "@kapeta/schemas";
+import React, { useState } from 'react';
+import { EntityEditor } from '../src/entities/EntityEditor';
+import { Entity, EntityType } from '@kapeta/schemas';
 
 export default {
     title: 'Entity Editor',
 };
 
-const ENTITIES:Entity[] = [
+const ENTITIES: Entity[] = [
     {
         name: 'CoreVersions',
         type: EntityType.Enum,
-        values: ['V1_2','V1_3','V1_4']
+        values: ['V1_2', 'V1_3', 'V1_4'],
     },
     {
         name: 'Core',
@@ -32,8 +32,8 @@ const ENTITIES:Entity[] = [
                 ref: 'CoreVersions',
                 description: 'Core version',
                 defaultValue: 'CoreVersions.V1_3',
-            }
-        }
+            },
+        },
     },
     {
         name: 'ExternalService',
@@ -48,56 +48,59 @@ const ENTITIES:Entity[] = [
             },
             ttl: {
                 type: 'integer',
-                description: 'How long to live'
+                description: 'How long to live',
             },
             url: {
                 type: 'string',
                 description: 'Enable core service?',
                 defaultValue: '"https://api.some-service.com/"',
                 required: true,
-            }
-        }
-    }
-]
-
+            },
+        },
+    },
+];
 
 export const CreateMultipleEntities = () => {
-    const [value, setValue] =  useState({})
+    const [value, setValue] = useState({});
 
     return (
-        <div style={{width: '450px'}}>
-            <EntityEditor entities={ENTITIES}
-                          value={value}
-                          onChange={val => {
-                              setValue(val);
-                              console.log(val);
-                          }} />
+        <div style={{ width: '450px' }}>
+            <EntityEditor
+                entities={ENTITIES}
+                value={value}
+                onChange={(val) => {
+                    setValue(val);
+                    console.log(val);
+                }}
+            />
         </div>
     );
-}
+};
 
 export const EditMultipleEntities = () => {
-    const [value, setValue] =  useState({
+    const [value, setValue] = useState({
         Core: {
             version: 'V1_4',
             enabled: false,
-            apiKey: 'some-key'
+            apiKey: 'some-key',
         },
         ExternalService: {
             apiKey: 'other-key',
             ttl: 1000,
-            url: 'https://api.other-service.com/'
-        }
-    })
+            url: 'https://api.other-service.com/',
+        },
+    });
 
     return (
-        <div style={{width: '450px'}}>
-            <EntityEditor entities={ENTITIES}
-                          value={value}
-                          onChange={val => {
-                              setValue(val);
-                              console.log(val);
-                          }} />
+        <div style={{ width: '450px' }}>
+            <EntityEditor
+                entities={ENTITIES}
+                value={value}
+                onChange={(val) => {
+                    setValue(val);
+                    console.log(val);
+                }}
+            />
         </div>
     );
-}
+};

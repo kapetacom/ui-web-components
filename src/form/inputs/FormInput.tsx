@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import './FormInput.less';
 import { observable, action, makeObservable } from 'mobx';
 import { toClass } from '@kapeta/ui-web-utils';
@@ -27,48 +27,28 @@ interface Props {
     onChange?: (inputName: string, userInput: any) => void;
     type?: Type;
 }
-@observer
-export class FormInput extends React.Component<Props> {
-    @observable
-    private inputFocused: boolean = false;
+export const FormInput = (props: Props) => {
+    const [inputFocused, setInputFocused] = useState(false);
 
-    private inputRef: React.RefObject<HTMLInputElement> = React.createRef();
+    const inputRef = useRef<HTMLInputElement>();
 
-    private formRowRef: React.RefObject<FormRow> = React.createRef();
+    const inputOnBlur = () => {
+        setInputFocused(false);
+    };
 
-    constructor(props: Props) {
-        super(props);
-        makeObservable(this);
-    }
+    const inputOnFocus = () => {
+        setInputFocused(true);
+    };
 
-    public setError(errorMessage?: string) {
-        if (!this.formRowRef.current) {
+    const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+        if (props.type === Type.CHECKBOX) {
+            emitChange(evt.target.checked);
             return;
         }
-
-        this.formRowRef.current.setError(errorMessage);
-    }
-
-    @action
-    private inputOnBlur = () => {
-        this.inputFocused = false;
+        emitChange(evt.target.value);
     };
 
-    @action
-    private inputOnFocus = () => {
-        this.inputFocused = true;
-    };
-
-    @action
-    private onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-        if (this.props.type === Type.CHECKBOX) {
-            this.emitChange(evt.target.checked);
-            return;
-        }
-        this.emitChange(evt.target.value);
-    };
-
-    private toValueType(value: any) {
+    function toValueType(value: any) {
         if (!value) {
             return value;
         }
@@ -77,7 +57,7 @@ export class FormInput extends React.Component<Props> {
             return value;
         }
 
-        switch (this.props.type) {
+        switch (props.type) {
             case Type.NUMBER:
                 return parseFloat(value);
             case Type.CHECKBOX:
@@ -87,41 +67,39 @@ export class FormInput extends React.Component<Props> {
         return value;
     }
 
-    private emitChange(value: any) {
-        const typedValue = this.toValueType(value);
-        if (this.props.onChange) {
-            this.props.onChange(this.props.name, typedValue);
+    function emitChange(value: any) {
+        const typedValue = toValueType(value);
+        if (props.onChange) {
+            props.onChange(props.name, typedValue);
         }
-
-        this.formRowRef.current?.updateReadyState(typedValue);
     }
 
-    private upperArrowHandler = () => {
-        if (this.inputRef.current) {
-            this.inputRef.current.stepUp();
-            this.emitChange(this.inputRef.current.value);
+    const upperArrowHandler = () => {
+        if (inputRef.current) {
+            inputRef.current.stepUp();
+            emitChange(inputRef.current.value);
         }
     };
 
-    private lowerArrowHandler = () => {
-        if (this.inputRef.current) {
-            this.inputRef.current.stepDown();
-            this.emitChange(this.inputRef.current.value);
+    const lowerArrowHandler = () => {
+        if (inputRef.current) {
+            inputRef.current.stepDown();
+            emitChange(inputRef.current.value);
         }
     };
 
-    private eventPreventDefault(evt: React.MouseEvent) {
+    function eventPreventDefault(evt: React.MouseEvent) {
         evt.nativeEvent.stopImmediatePropagation();
         evt.preventDefault();
     }
 
-    private renderNumberFeatures() {
+    function renderNumberFeatures() {
         return (
             <>
                 <svg
                     onMouseDown={(evt: React.MouseEvent) => {
-                        this.eventPreventDefault(evt);
-                        this.upperArrowHandler();
+                        eventPreventDefault(evt);
+                        upperArrowHandler();
                     }}
                     className={`upper-arrow arrows `}
                     width="15"
@@ -134,8 +112,8 @@ export class FormInput extends React.Component<Props> {
                 </svg>
                 <svg
                     onMouseDown={(evt: React.MouseEvent) => {
-                        this.eventPreventDefault(evt);
-                        this.lowerArrowHandler();
+                        eventPreventDefault(evt);
+                        lowerArrowHandler();
                     }}
                     className={`lower-arrow arrows `}
                     width="15"
@@ -157,57 +135,46 @@ export class FormInput extends React.Component<Props> {
         );
     }
 
-    componentDidMount() {
-        this.formRowRef.current?.updateReadyState();
+    let className = toClass({
+        'form-input': true,
+    });
+
+    const nonTextType = props.type && NON_TEXT_TYPES.indexOf(props.type) > -1;
+
+    let value = props.value;
+    let checked;
+
+    if (props.type === Type.CHECKBOX) {
+        checked = value === true;
     }
 
-    componentDidUpdate() {
-        this.formRowRef.current?.updateReadyState();
-    }
+    return (
+        <FormRow
+            label={props.label}
+            help={props.help}
+            validation={props.validation}
+            type={props.type}
+            disableZoom={nonTextType}
+            focused={inputFocused}
+            disabled={props.disabled}
+            readOnly={props.readOnly}
+        >
+            <div className={className} data-name={props.name} data-value={props.value}>
+                <input
+                    type={props.type ? props.type : Type.TEXT}
+                    name={props.name}
+                    onChange={onChange}
+                    onFocus={inputOnFocus}
+                    onBlur={inputOnBlur}
+                    value={value}
+                    checked={checked}
+                    readOnly={props.readOnly}
+                    disabled={props.disabled}
+                    ref={inputRef}
+                />
 
-    render() {
-        let className = toClass({
-            'form-input': true,
-        });
-
-        const nonTextType = this.props.type && NON_TEXT_TYPES.indexOf(this.props.type) > -1;
-
-        let value = this.props.value;
-        let checked;
-
-        if (this.props.type === Type.CHECKBOX) {
-            checked = value === true;
-        }
-
-        return (
-            <FormRow
-                ref={this.formRowRef}
-                label={this.props.label}
-                help={this.props.help}
-                validation={this.props.validation}
-                type={this.props.type}
-                disableZoom={nonTextType}
-                focused={this.inputFocused}
-                disabled={this.props.disabled}
-                readOnly={this.props.readOnly}
-            >
-                <div className={className} data-name={this.props.name} data-value={this.props.value}>
-                    <input
-                        type={this.props.type ? this.props.type : Type.TEXT}
-                        name={this.props.name}
-                        onChange={this.onChange}
-                        onFocus={this.inputOnFocus}
-                        onBlur={this.inputOnBlur}
-                        value={value}
-                        checked={checked}
-                        readOnly={this.props.readOnly}
-                        disabled={this.props.disabled}
-                        ref={this.inputRef}
-                    />
-
-                    {this.props.type === Type.NUMBER && this.renderNumberFeatures()}
-                </div>
-            </FormRow>
-        );
-    }
-}
+                {props.type === Type.NUMBER && renderNumberFeatures()}
+            </div>
+        </FormRow>
+    );
+};

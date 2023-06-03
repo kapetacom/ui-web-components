@@ -3,9 +3,10 @@ import _ from 'lodash';
 import './Detail.less';
 import { toClass } from '@kapeta/ui-web-utils';
 import { Button, ButtonShape, ButtonStyle, StandardIcons } from '../button/buttons';
-import { applyValidation } from '../validation/Validators';
+import { applyValidation, useValidation } from '../validation/Validators';
 import { showToasty, ToastType } from '../toast/ToastComponent';
 import { DialogControl } from '../dialog/DialogControl';
+import { useAsync } from 'react-use';
 
 interface DetailContextData {
     onValueChanged: (name: string, value: any) => void;
@@ -174,12 +175,9 @@ export const DetailRowValue = (props: DetailRowValueProps) => {
         context.setEditing('');
     };
 
-    let errors = [];
-    if (isEditing) {
-        errors = applyValidation(props.validation, props.name, value);
-    }
+    const errorList = useValidation(isEditing, props.validation, props.name, value);
 
-    const invalid = errors.length > 0;
+    const invalid = !errorList.loading && errorList.value?.length > 0;
     const isEditable = context.editable && !props.fixed;
 
     return (
@@ -196,7 +194,7 @@ export const DetailRowValue = (props: DetailRowValueProps) => {
                                 setValue(evt.target.value);
                             }}
                         />
-                        {errors.length > 0 && <div className={'error'}>{errors[0]}</div>}
+                        {errorList.value?.length > 0 && <div className={'error'}>{errorList.value[0]}</div>}
                     </>
                 )}
 
@@ -230,6 +228,98 @@ export const DetailRowValue = (props: DetailRowValueProps) => {
     );
 };
 
+interface DetailRowListValueEntryProps {
+    name: string;
+    typeName: string;
+    validation?: any;
+    originalValue: any;
+    entryValue: any;
+    index: number;
+    processing: boolean;
+    editable: boolean;
+    onCancel: () => void;
+}
+
+export const DetailRowListValueEntry = (props: DetailRowListValueEntryProps) => {
+    let context = useContext(DetailContext);
+    const [listEntryValue, setListEntryValue] = useState('');
+    const fieldId = `${props.name}[${props.index}]`;
+    const isEditing = context.isEditing(fieldId);
+    const errorList = useValidation(isEditing, props.validation, props.name, listEntryValue);
+
+    const invalid = !errorList.loading && errorList.value?.length > 0;
+    return (
+        <li>
+            <span className={'name'}>
+                {!isEditing && props.entryValue}
+                {isEditing && (
+                    <>
+                        <input
+                            type={'text'}
+                            value={listEntryValue}
+                            readOnly={props.processing}
+                            autoFocus={true}
+                            onChange={(evt) => {
+                                setListEntryValue(evt.target.value);
+                            }}
+                        />
+                    </>
+                )}
+            </span>
+            {isEditing && errorList.value?.length > 0 && <div className={'error'}>{errorList.value[0]}</div>}
+
+            {props.editable && (
+                <span className={'actions'}>
+                    {!isEditing && (
+                        <>
+                            <Button
+                                text={StandardIcons.EDIT}
+                                shape={ButtonShape.ICON}
+                                style={ButtonStyle.PRIMARY}
+                                onClick={() => {
+                                    setListEntryValue(props.entryValue);
+                                    context.setEditing(fieldId);
+                                }}
+                            />
+
+                            <Button
+                                text={StandardIcons.DELETE}
+                                shape={ButtonShape.ICON}
+                                style={ButtonStyle.DANGER}
+                                onClick={() => {
+                                    DialogControl.delete(
+                                        `Delete ${props.typeName}?`,
+                                        'This action can not be undone. Continue?',
+                                        async (ok) => {
+                                            if (!ok) {
+                                                return;
+                                            }
+                                            const newValue = [...props.originalValue];
+                                            newValue.splice(props.index, 1);
+                                            context.onValueChanged(props.name, newValue);
+                                        }
+                                    );
+                                }}
+                            />
+                        </>
+                    )}
+                    {isEditing && !props.processing && (
+                        <SaveCancelButtons
+                            invalid={invalid}
+                            onSave={async () => {
+                                const newValue = [...props.originalValue];
+                                newValue[props.index] = listEntryValue;
+                                await context.onValueChanged(props.name, newValue);
+                            }}
+                            onCancel={props.onCancel}
+                        />
+                    )}
+                </span>
+            )}
+        </li>
+    );
+};
+
 interface DetailRowListValueProps extends DetailRowValueProps {
     typeName: string;
 }
@@ -241,10 +331,12 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
 
     const isAdding = context.isEditing(props.name);
     const isProcessing = context.isProcessing(props.name);
-    const [listEntryValue, setListEntryValue] = useState('');
+
     const [newListEntry, setNewListEntry] = useState('');
-    const errors = isAdding ? applyValidation(props.validation, props.name, newListEntry) : [];
-    const invalid = errors.length > 0;
+
+    const errorList = useValidation(isAdding, props.validation, props.name, newListEntry);
+
+    const invalid = !errorList.loading && errorList.value?.length > 0;
 
     const doCancel = () => {
         context.setEditing('');
@@ -256,80 +348,18 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
         <DetailRow label={props.label} name={props.name} rowType={RowType.LIST}>
             <ul className={'detail-list-value'}>
                 {originalValue.map((entryValue, ix) => {
-                    const fieldId = `${props.name}[${ix}]`;
-                    const isEditing = context.isEditing(fieldId);
-
-                    const errors = isEditing ? applyValidation(props.validation, props.name, listEntryValue) : [];
-                    const invalid = errors.length > 0;
                     return (
-                        <li key={`elm_${ix}`}>
-                            <span className={'name'}>
-                                {!isEditing && entryValue}
-                                {isEditing && (
-                                    <>
-                                        <input
-                                            type={'text'}
-                                            value={listEntryValue}
-                                            readOnly={isProcessing}
-                                            autoFocus={true}
-                                            onChange={(evt) => {
-                                                setListEntryValue(evt.target.value);
-                                            }}
-                                        />
-                                    </>
-                                )}
-                            </span>
-                            {isEditing && errors.length > 0 && <div className={'error'}>{errors[0]}</div>}
-
-                            {isEditable && (
-                                <span className={'actions'}>
-                                    {!isEditing && (
-                                        <>
-                                            <Button
-                                                text={StandardIcons.EDIT}
-                                                shape={ButtonShape.ICON}
-                                                style={ButtonStyle.PRIMARY}
-                                                onClick={() => {
-                                                    setListEntryValue(entryValue);
-                                                    context.setEditing(fieldId);
-                                                }}
-                                            />
-
-                                            <Button
-                                                text={StandardIcons.DELETE}
-                                                shape={ButtonShape.ICON}
-                                                style={ButtonStyle.DANGER}
-                                                onClick={() => {
-                                                    DialogControl.delete(
-                                                        `Delete ${props.typeName}?`,
-                                                        'This action can not be undone. Continue?',
-                                                        async (ok) => {
-                                                            if (!ok) {
-                                                                return;
-                                                            }
-                                                            const newValue = [...originalValue];
-                                                            newValue.splice(ix, 1);
-                                                            context.onValueChanged(props.name, newValue);
-                                                        }
-                                                    );
-                                                }}
-                                            />
-                                        </>
-                                    )}
-                                    {isEditing && !isProcessing && (
-                                        <SaveCancelButtons
-                                            invalid={invalid}
-                                            onSave={async () => {
-                                                const newValue = [...originalValue];
-                                                newValue[ix] = listEntryValue;
-                                                await context.onValueChanged(props.name, newValue);
-                                            }}
-                                            onCancel={doCancel}
-                                        />
-                                    )}
-                                </span>
-                            )}
-                        </li>
+                        <DetailRowListValueEntry
+                            name={props.name}
+                            validation={props.validation}
+                            entryValue={entryValue}
+                            originalValue={originalValue}
+                            editable={isEditable}
+                            typeName={props.typeName}
+                            index={ix}
+                            processing={isProcessing}
+                            onCancel={doCancel}
+                        />
                     );
                 })}
                 {isEditable && (
@@ -356,7 +386,7 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
                                         setNewListEntry(evt.target.value);
                                     }}
                                 />
-                                {errors.length > 0 && <div className={'error'}>{errors[0]}</div>}
+                                {errorList.value?.length > 0 && <div className={'error'}>{errorList.value[0]}</div>}
 
                                 {!isProcessing && (
                                     <SaveCancelButtons

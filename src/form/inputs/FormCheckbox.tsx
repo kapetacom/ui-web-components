@@ -15,70 +15,36 @@ interface Props {
     onChange?: (inputName: string, userInput: any) => void;
 }
 
-interface State {
-    inputFocused: boolean;
-}
-
-export class FormCheckbox extends React.Component<Props, State> {
-    private formRowRef: React.RefObject<FormRow> = React.createRef();
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            inputFocused: false,
-        };
-    }
-
-    private inputOnBlur = () => {
-        this.setState({ inputFocused: false });
-    };
-
-    private inputOnFocus = () => {
-        this.setState({ inputFocused: true });
-    };
-
-    private onChange = (value: boolean) => {
-        if (this.props.onChange) {
-            this.props.onChange(this.props.name, value);
+export const FormCheckbox = (props: Props) => {
+    const onChange = (value: boolean) => {
+        if (props.onChange) {
+            props.onChange(props.name, value);
         }
-
-        this.formRowRef.current?.updateReadyState(value);
     };
 
-    componentDidMount() {
-        this.formRowRef.current?.updateReadyState();
-    }
+    let className = toClass({
+        'form-checkbox': true,
+    });
 
-    componentDidUpdate() {
-        this.formRowRef.current?.updateReadyState();
-    }
+    let checked = props.value === true;
 
-    render() {
-        let className = toClass({
-            'form-checkbox': true,
-        });
+    return (
+        <FormRow
+            help={props.help}
+            label={''}
+            validation={props.validation}
+            type={'checkbox'}
+            disableZoom={true}
+            focused={false}
+            disabled={props.disabled}
+        >
+            <div className={className} data-name={props.name} data-value={props.value}>
+                <label>
+                    <Checkbox value={checked} onChange={onChange} disabled={props.disabled} />
 
-        let checked = this.props.value === true;
-
-        return (
-            <FormRow
-                ref={this.formRowRef}
-                help={this.props.help}
-                label={''}
-                validation={this.props.validation}
-                type={'checkbox'}
-                disableZoom={true}
-                focused={this.state.inputFocused}
-                disabled={this.props.disabled}
-            >
-                <div className={className} data-name={this.props.name} data-value={this.props.value}>
-                    <label>
-                        <Checkbox value={checked} onChange={this.onChange} disabled={this.props.disabled} />
-
-                        <span className={'name'}>{this.props.label}</span>
-                    </label>
-                </div>
-            </FormRow>
-        );
-    }
-}
+                    <span className={'name'}>{props.label}</span>
+                </label>
+            </div>
+        </FormRow>
+    );
+};
