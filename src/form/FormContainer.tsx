@@ -93,6 +93,10 @@ export class FormContainer extends React.Component<Props, State> {
     }
 
     private onReadyStateChanged(fieldName: string, ready: boolean) {
+        if (this.state.readyStates[fieldName] === ready) {
+            //If state didnt change - do nothing
+            return;
+        }
         this.setState((state: State) => {
             state.readyStates[fieldName] = ready;
             state.valid = this.isValid(state.readyStates);
