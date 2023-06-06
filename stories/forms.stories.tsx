@@ -9,6 +9,7 @@ import {
     FormContainer,
 } from '../src';
 import { FormField, FormFieldType } from '../src/form/inputs/FormField';
+import {useFormContextField} from "../src/form/FormContext";
 
 function minMaxAgeCheck(name: string, value: number) {
     if (value < 1) {
@@ -225,8 +226,26 @@ export const FormWithConditionals = () => {
     );
 };
 
+function failValidation(name, value) {
+    if (value === 'fail')
+        throw new Error('Cannot be "fail"')
+}
+
+const CustomFormComponent = () => {
+    const simpleHook = useFormContextField('simplehook');
+
+    return (
+        <FormField
+            name={'simple'}
+            label={'Simple'}
+            validation={['required', failValidation]}
+        />
+    );
+}
+
 export const FormWithValidation = () => {
     const [formData, setFormData] = useState({});
+
 
     return (
         <div style={{ width: '550px' }}>
@@ -236,9 +255,10 @@ export const FormWithValidation = () => {
                     setFormData(data);
                 }}
             >
-                <FormField name={'name'} label={'Name'} validation={['required']} />
+                <FormField name={'name'} label={'Name'} validation={['required', failValidation]} />
                 <FormField name={'email'} label={'E-mail'} validation={['required', 'email']} />
                 <FormField name={'enabled'} label={'Enable?'} type={FormFieldType.CHECKBOX} />
+                <CustomFormComponent />
 
                 <FormField
                     name={'age'}
