@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import { useEffect, useState } from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import { useAsync } from 'react-use';
 export type AsyncValidationContext = { cancel: () => void; promise: Promise<any> };
-export type ValidationContext = { cancel: () => void; errors: Promise<string[]> };
+export type ValidationContext = { cancel: () => void; errors: Promise<string[]>, async: boolean };
 export type AsyncValidatorFunction = (fieldName: string, value: any) => AsyncValidationContext;
 export type SyncValidatorFunction = (fieldName: string, value: any) => void;
 export type ValidatorFunction = AsyncValidatorFunction | SyncValidatorFunction | string;
@@ -43,6 +43,8 @@ export function normaliseValidators(validation: ValidatorListUnresolved): Valida
 
 export function useValidation(active: boolean, validation: ValidatorListUnresolved, name: string, value: any) {
     const [validationContext, setValidationContext] = useState<ValidationContext>();
+
+
     useEffect(() => {
         if (!active) {
             return () => {};
@@ -56,9 +58,14 @@ export function useValidation(active: boolean, validation: ValidatorListUnresolv
         };
     }, [active, validation, name, value]);
 
-    return useAsync(() => {
-        return validationContext?.errors ?? Promise.resolve([]);
+    const errors = useAsync(() => {
+        return validationContext?.errors ?? Promise.resolve([]) as Promise<string[]>;
     }, [validationContext]);
+
+    return {
+        errors: errors,
+        async: validationContext?.async ?? false,
+    }
 }
 
 /**
@@ -96,6 +103,7 @@ export function applyValidation(validation: ValidatorListUnresolved, name: strin
     let validators = normaliseValidators(validation);
     let cancelled = false;
     let doResolve;
+    let anyAsync = false;
     let currentAsyncContext: AsyncValidationContext | undefined;
     const promise = new Promise<string[]>(async (resolve) => {
         doResolve = resolve;
@@ -118,6 +126,7 @@ export function applyValidation(validation: ValidatorListUnresolved, name: strin
                     const result = validator.call(Validators, name, value);
                     if (result && result.promise) {
                         //Handle async validators
+                        anyAsync = true;
                         currentAsyncContext = result;
                         await result.promise;
                         currentAsyncContext = undefined;
@@ -137,6 +146,7 @@ export function applyValidation(validation: ValidatorListUnresolved, name: strin
 
     return {
         errors: promise,
+        async: anyAsync,
         cancel: () => {
             cancelled = true;
             doResolve([]);

@@ -1,4 +1,4 @@
-import React, { Context, useContext, useEffect } from 'react';
+import React, {Context, useContext, useEffect, useMemo} from 'react';
 import { FormContainer } from './FormContainer';
 
 export type ResetListener = (value: any) => void;
@@ -29,11 +29,12 @@ export const FormContext: FormContextType = React.createContext(defaultValue);
 export function useFormContextField<T = any>(fieldName: string, resetHandler?: ResetListener) {
     const context = useContext(FormContext);
 
-    if (resetHandler) {
-        useEffect(() => {
-            return context.onReset(fieldName, resetHandler);
-        }, [fieldName]);
-    }
+    useEffect(() => {
+        if (!resetHandler) {
+            return () => {};
+        }
+        return context.onReset(fieldName, resetHandler);
+    }, [fieldName, resetHandler]);
 
     useEffect(() => {
         return () => {
@@ -42,18 +43,20 @@ export function useFormContextField<T = any>(fieldName: string, resetHandler?: R
         };
     }, []);
 
-    return {
-        get(defaultValue?: T): T {
-            return context.container?.getValue(fieldName) ?? defaultValue;
-        },
-        set(value: T) {
-            context.onValueChanged(fieldName, value);
-        },
-        valid() {
-            context.onReadyStateChanged(fieldName, true);
-        },
-        invalid() {
-            context.onReadyStateChanged(fieldName, false);
-        },
-    };
+    return useMemo(() => {
+        return {
+            get(defaultValue?: T): T {
+                return context.container?.getValue(fieldName) ?? defaultValue;
+            },
+            set(value: T) {
+                context.onValueChanged(fieldName, value);
+            },
+            valid() {
+                context.onReadyStateChanged(fieldName, true);
+            },
+            invalid() {
+                context.onReadyStateChanged(fieldName, false);
+            },
+        };
+    },[fieldName, context.container]);
 }

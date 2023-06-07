@@ -66,14 +66,19 @@ export const FormElementContainer = (props: Props) => {
         message: true,
     });
 
-    const helpMessage = props.errorMessage && props.touched ? props.errorMessage : props.help;
+    let helpMessage = props.errorMessage && props.touched ? props.errorMessage : props.help;
+    if (!helpMessage && props.required) {
+        helpMessage = 'This value is required';
+    }
 
     const showStatusIcon = props.touched && props.status !== StatusType.OK;
 
     return (
         <div className={classFormElemContainer}>
             <div className={'input-container'}>
-                <span className={classNameLabel}>{props.label}</span>
+                <span className={classNameLabel}>
+                    {props.label}
+                </span>
 
                 {props.children}
             </div>

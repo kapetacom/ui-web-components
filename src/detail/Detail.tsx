@@ -175,9 +175,9 @@ export const DetailRowValue = (props: DetailRowValueProps) => {
         context.setEditing('');
     };
 
-    const errorList = useValidation(isEditing, props.validation, props.name, value);
+    const {errors} = useValidation(isEditing, props.validation, props.name, value);
 
-    const invalid = !errorList.loading && errorList.value?.length > 0;
+    const invalid = !errors.loading && errors.value?.length > 0;
     const isEditable = context.editable && !props.fixed;
 
     return (
@@ -194,7 +194,7 @@ export const DetailRowValue = (props: DetailRowValueProps) => {
                                 setValue(evt.target.value);
                             }}
                         />
-                        {errorList.value?.length > 0 && <div className={'error'}>{errorList.value[0]}</div>}
+                        {errors.value?.length > 0 && <div className={'error'}>{errors.value[0]}</div>}
                     </>
                 )}
 
@@ -245,9 +245,9 @@ export const DetailRowListValueEntry = (props: DetailRowListValueEntryProps) => 
     const [listEntryValue, setListEntryValue] = useState('');
     const fieldId = `${props.name}[${props.index}]`;
     const isEditing = context.isEditing(fieldId);
-    const errorList = useValidation(isEditing, props.validation, props.name, listEntryValue);
+    const {errors} = useValidation(isEditing, props.validation, props.name, listEntryValue);
 
-    const invalid = !errorList.loading && errorList.value?.length > 0;
+    const invalid = !errors.loading && errors.value?.length > 0;
     return (
         <li>
             <span className={'name'}>
@@ -266,7 +266,7 @@ export const DetailRowListValueEntry = (props: DetailRowListValueEntryProps) => 
                     </>
                 )}
             </span>
-            {isEditing && errorList.value?.length > 0 && <div className={'error'}>{errorList.value[0]}</div>}
+            {isEditing && errors.value?.length > 0 && <div className={'error'}>{errors.value[0]}</div>}
 
             {props.editable && (
                 <span className={'actions'}>
@@ -334,9 +334,9 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
 
     const [newListEntry, setNewListEntry] = useState('');
 
-    const errorList = useValidation(isAdding, props.validation, props.name, newListEntry);
+    const {errors} = useValidation(isAdding, props.validation, props.name, newListEntry);
 
-    const invalid = !errorList.loading && errorList.value?.length > 0;
+    const invalid = !errors.loading && errors.value?.length > 0;
 
     const doCancel = () => {
         context.setEditing('');
@@ -386,7 +386,7 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
                                         setNewListEntry(evt.target.value);
                                     }}
                                 />
-                                {errorList.value?.length > 0 && <div className={'error'}>{errorList.value[0]}</div>}
+                                {errors.value?.length > 0 && <div className={'error'}>{errors.value[0]}</div>}
 
                                 {!isProcessing && (
                                     <SaveCancelButtons
