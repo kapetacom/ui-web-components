@@ -64,7 +64,6 @@ const FieldEditor = (props: FieldProps) => {
 
         if (props.field.ref === TYPE_INSTANCE_PROVIDER) {
             //Render instance and provider selector
-            console.log('Render instance provider selector', props);
             const instance = props.instances?.find((v) => v.id === props.value?.id);
             return (
                 <div className={'instance-provider'}>
