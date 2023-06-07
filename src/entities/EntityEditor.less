@@ -38,6 +38,7 @@
         min-height: 20px;
         resize: none;
         line-height: inherit;
+        cursor: pointer;
         &:focus {
             border: 1px solid @blue-xlight;
         }
@@ -45,10 +46,40 @@
         &:hover {
             background-color: @gray-xlight;
         }
+
+        &[disabled] {
+            color: @gray-dark;
+            border: 1px solid @gray-dark;
+            background-color: @gray-light;
+            cursor: not-allowed;
+        }
     }
 
     .field-value {
         display: flex;
         flex-direction: row;
+    }
+
+    label > span {
+        color: @gray-dark;
+        font-size: 0.8em;
+        padding-right: 3px;
+    }
+
+    .instance-provider {
+        display: flex;
+        width: 100%;
+        & > * {
+            flex: 1;
+        }
+        label {
+            display: flex;
+            &:nth-child(1) {
+                margin-right: 10px;
+            }
+        }
+        select {
+            flex: 1
+        }
     }
 }

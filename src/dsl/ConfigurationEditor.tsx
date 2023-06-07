@@ -4,6 +4,9 @@ import { DSLEditor } from './DSLEditor';
 import { DSLDataTypeProperty, DSLResult, FIELD_ANNOTATIONS, PEGValidationEntity } from './types';
 import { isBuiltInType, isStringableType, TypeLike } from '@kapeta/schemas';
 
+export const TYPE_INSTANCE = 'Instance';
+export const TYPE_INSTANCE_PROVIDER = 'InstanceProvider';
+
 export interface ConfigurationEditorProps {
     value?: DSLResult | string;
     onChange?: (structure: DSLResult) => any;
@@ -59,7 +62,7 @@ export const ConfigurationEditor = (props: ConfigurationEditorProps) => {
         <DSLEditor
             types={true}
             fieldAnnotations={FIELD_ANNOTATIONS}
-            validTypes={props.validTypes}
+            validTypes={[TYPE_INSTANCE,TYPE_INSTANCE_PROVIDER,...(props.validTypes ?? [])]}
             validator={fieldValidator}
             onChange={props.onChange}
             methods={false}
