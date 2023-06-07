@@ -88,7 +88,7 @@ export const FormRadioGroup = (props: Props) => {
             focused={inputFocused}
             disabled={props.disabled}
         >
-            <div className={className} >
+            <div className={className}>
                 {Object.entries(options).map(([value, label], ix) => {
                     return (
                         <label key={`radio_${ix}`}>

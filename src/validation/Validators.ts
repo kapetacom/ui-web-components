@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import {useEffect, useMemo, useState} from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useAsync } from 'react-use';
 export type AsyncValidationContext = { cancel: () => void; promise: Promise<any> };
-export type ValidationContext = { cancel: () => void; errors: Promise<string[]>, async: boolean };
+export type ValidationContext = { cancel: () => void; errors: Promise<string[]>; async: boolean };
 export type AsyncValidatorFunction = (fieldName: string, value: any) => AsyncValidationContext;
 export type SyncValidatorFunction = (fieldName: string, value: any) => void;
 export type ValidatorFunction = AsyncValidatorFunction | SyncValidatorFunction | string;
@@ -44,7 +44,6 @@ export function normaliseValidators(validation: ValidatorListUnresolved): Valida
 export function useValidation(active: boolean, validation: ValidatorListUnresolved, name: string, value: any) {
     const [validationContext, setValidationContext] = useState<ValidationContext>();
 
-
     useEffect(() => {
         if (!active) {
             return () => {};
@@ -59,13 +58,13 @@ export function useValidation(active: boolean, validation: ValidatorListUnresolv
     }, [active, validation, name, value]);
 
     const errors = useAsync(() => {
-        return validationContext?.errors ?? Promise.resolve([]) as Promise<string[]>;
+        return validationContext?.errors ?? (Promise.resolve([]) as Promise<string[]>);
     }, [validationContext]);
 
     return {
         errors: errors,
         async: validationContext?.async ?? false,
-    }
+    };
 }
 
 /**

@@ -22,11 +22,8 @@ interface Props {
     optionProps?: React.HTMLProps<any>;
 }
 
-
 export const FormSelect = (props: Props) => {
-
     const [inputFocus, setInputFocus] = useState(false);
-
 
     return (
         <FormRow
@@ -37,12 +34,15 @@ export const FormSelect = (props: Props) => {
             validation={props.validation}
             focused={inputFocus}
             disabled={props.disabled}
-            readOnly={props.readOnly} >
-            <FormSelectInput {...props}
-                             data-name={props.name}
-                             data-value={props.value}
-                             onFocusChange={setInputFocus}
-                             focused={inputFocus} />
+            readOnly={props.readOnly}
+        >
+            <FormSelectInput
+                {...props}
+                data-name={props.name}
+                data-value={props.value}
+                onFocusChange={setInputFocus}
+                focused={inputFocus}
+            />
         </FormRow>
     );
 };
@@ -62,7 +62,7 @@ interface InputProps {
     onFocusChange?: (focused: boolean) => void;
 }
 
-export const FormSelectInput = (props:InputProps) => {
+export const FormSelectInput = (props: InputProps) => {
     const inputElement = useRef<HTMLInputElement>();
     const dropDownList = useRef<HTMLUListElement>();
     const [userInputDisplay, setUserInputDisplay] = useState('');
@@ -76,10 +76,9 @@ export const FormSelectInput = (props:InputProps) => {
         return isFocusControlled() ? props.focused : inputFocus;
     }
 
-    function setFocus(focus:boolean) {
+    function setFocus(focus: boolean) {
         return isFocusControlled() ? props.onFocusChange(focus) : setInputFocus(focus);
     }
-
 
     function calculateInputSuggestion() {
         let inputSuggestion = '';
@@ -93,7 +92,6 @@ export const FormSelectInput = (props:InputProps) => {
         }
         setInputSuggestion(inputSuggestion);
     }
-
 
     const optionListFiltered = () => {
         return _.pickBy(getOptions(), (value) => {
@@ -118,11 +116,9 @@ export const FormSelectInput = (props:InputProps) => {
         return options;
     };
 
-
     useEffect(() => {
         calculateInputSuggestion();
     }, [userInputDisplay]);
-
 
     useEffect(() => {
         if (!dropDownList.current || !inputElement.current) {
@@ -149,7 +145,6 @@ export const FormSelectInput = (props:InputProps) => {
     function isEnabled() {
         return !props.disabled && !props.readOnly;
     }
-
 
     function emitChange(value) {
         if (props.onChange) {
@@ -298,7 +293,6 @@ export const FormSelectInput = (props:InputProps) => {
         setUserInputDisplay(evt.target.value);
     };
 
-
     const showList = isFocused();
     let inputValue = userInputDisplay || isFocused() ? userInputDisplay : renderKeysAsValues(props.value);
 
@@ -316,9 +310,7 @@ export const FormSelectInput = (props:InputProps) => {
 
     return (
         <div className={`form-select`}>
-            {isFocused() && userInputDisplay.length > 0 && (
-                <span className={'user-suggestion'}>{inputSuggestion}</span>
-            )}
+            {isFocused() && userInputDisplay.length > 0 && <span className={'user-suggestion'}>{inputSuggestion}</span>}
 
             <input
                 className={inputClassName}
@@ -340,7 +332,7 @@ export const FormSelectInput = (props:InputProps) => {
             </div>
             {props.value
                 ? props.value.length > 0 &&
-                props.multi && <span className="selected-number">({props.value.length})</span>
+                  props.multi && <span className="selected-number">({props.value.length})</span>
                 : null}
             <RenderInBody>
                 <ul ref={dropDownList} className={classNameList}>
@@ -348,5 +340,5 @@ export const FormSelectInput = (props:InputProps) => {
                 </ul>
             </RenderInBody>
         </div>
-    )
-}
+    );
+};

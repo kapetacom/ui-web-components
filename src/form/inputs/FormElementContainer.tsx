@@ -76,9 +76,7 @@ export const FormElementContainer = (props: Props) => {
     return (
         <div className={classFormElemContainer}>
             <div className={'input-container'}>
-                <span className={classNameLabel}>
-                    {props.label}
-                </span>
+                <span className={classNameLabel}>{props.label}</span>
 
                 {props.children}
             </div>

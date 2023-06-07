@@ -4,7 +4,7 @@ import {
     normaliseValidators,
     useValidation,
     ValidatorListUnresolved,
-    Validators
+    Validators,
 } from '../validation/Validators';
 import { FormContext, FormContextType } from './FormContext';
 
@@ -15,7 +15,7 @@ import { useAsync } from 'react-use';
 
 interface FormRowProps {
     name: string;
-    value: any
+    value: any;
     defaultValue?: any;
     label: string;
     help?: string;
@@ -36,7 +36,7 @@ enum StatusType {
 
 export const FormRow = (props: FormRowProps) => {
     function getChildValue() {
-        let value = props.value
+        let value = props.value;
 
         if (value === undefined) {
             return props.defaultValue;
@@ -61,7 +61,7 @@ export const FormRow = (props: FormRowProps) => {
     }
 
     function getChildName() {
-        return props.name
+        return props.name;
     }
 
     const context = useContext(FormContext);
@@ -124,7 +124,7 @@ export const FormRow = (props: FormRowProps) => {
         };
     }, [context.container]);
 
-    const {errors, async} = useValidation(true, validators, getChildName(), getChildValue());
+    const { errors, async } = useValidation(true, validators, getChildName(), getChildValue());
 
     useEffect(() => {
         if (!async) {
@@ -150,7 +150,6 @@ export const FormRow = (props: FormRowProps) => {
                 setErrorMessage('');
             }
         }
-
     }, [errors.loading, errors.value, touched]);
 
     return (

@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react';
-import {AssetNameInput, AsyncValidatorFunction, FormContainer, FormContext, useFormContextField} from '../src';
+import { AssetNameInput, AsyncValidatorFunction, FormContainer, FormContext, useFormContextField } from '../src';
 
 export default {
     title: 'Asset Name Input',
@@ -26,7 +26,7 @@ const createStory =
         const [state, setState] = useState(initialState);
         const onChange = useCallback((name, value) => setState((state) => ({ ...state, [name]: value })), [setState]);
 
-        const checkUnique:AsyncValidatorFunction = (name:string, value:string) => {
+        const checkUnique: AsyncValidatorFunction = (name: string, value: string) => {
             let timeout;
             const promise = new Promise((resolve, reject) => {
                 timeout = setTimeout(() => {
@@ -42,8 +42,8 @@ const createStory =
                 promise,
                 cancel: () => {
                     clearTimeout(timeout);
-                }
-            }
+                },
+            };
         };
 
         return (

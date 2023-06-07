@@ -175,7 +175,7 @@ export const DetailRowValue = (props: DetailRowValueProps) => {
         context.setEditing('');
     };
 
-    const {errors} = useValidation(isEditing, props.validation, props.name, value);
+    const { errors } = useValidation(isEditing, props.validation, props.name, value);
 
     const invalid = !errors.loading && errors.value?.length > 0;
     const isEditable = context.editable && !props.fixed;
@@ -245,7 +245,7 @@ export const DetailRowListValueEntry = (props: DetailRowListValueEntryProps) => 
     const [listEntryValue, setListEntryValue] = useState('');
     const fieldId = `${props.name}[${props.index}]`;
     const isEditing = context.isEditing(fieldId);
-    const {errors} = useValidation(isEditing, props.validation, props.name, listEntryValue);
+    const { errors } = useValidation(isEditing, props.validation, props.name, listEntryValue);
 
     const invalid = !errors.loading && errors.value?.length > 0;
     return (
@@ -334,7 +334,7 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
 
     const [newListEntry, setNewListEntry] = useState('');
 
-    const {errors} = useValidation(isAdding, props.validation, props.name, newListEntry);
+    const { errors } = useValidation(isAdding, props.validation, props.name, newListEntry);
 
     const invalid = !errors.loading && errors.value?.length > 0;
 

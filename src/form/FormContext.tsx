@@ -1,4 +1,4 @@
-import React, {Context, useContext, useEffect, useMemo} from 'react';
+import React, { Context, useContext, useEffect, useMemo } from 'react';
 import { FormContainer } from './FormContainer';
 
 export type ResetListener = (value: any) => void;
@@ -58,5 +58,5 @@ export function useFormContextField<T = any>(fieldName: string, resetHandler?: R
                 context.onReadyStateChanged(fieldName, false);
             },
         };
-    },[fieldName, context.container]);
+    }, [fieldName, context.container]);
 }

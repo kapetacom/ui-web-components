@@ -1,9 +1,9 @@
-import React, {useCallback, useContext, useEffect, useMemo, useState} from 'react';
-import {FormSelectInput} from '../inputs/FormSelect';
-import {Type} from '../inputs/FormInput';
-import {FormContext, useFormContextField} from '../FormContext';
-import {normaliseValidators, ValidatorListUnresolved} from "../../validation/Validators";
-import {FormRow} from "../FormRow";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { FormSelectInput } from '../inputs/FormSelect';
+import { Type } from '../inputs/FormInput';
+import { FormContext, useFormContextField } from '../FormContext';
+import { normaliseValidators, ValidatorListUnresolved } from '../../validation/Validators';
+import { FormRow } from '../FormRow';
 
 interface SharedProps {
     name?: string;
@@ -49,15 +49,15 @@ export const AssetNameInput = (props: Props) => {
             const value =
                 namespace || assetName
                     ? [
-                        namespace.toLowerCase(),
-                        assetName
-                            .toLowerCase()
-                            .replace(/[^a-z0-9_-]/g, '-')
-                            .replace(/-{2,}/g, '-')
-                            .replace(/_{2,}/g, '_')
-                            .replace(/[_-]{2,}/g, '-')
-                            .replace(/^[^a-z]+/, ''),
-                    ].join('/')
+                          namespace.toLowerCase(),
+                          assetName
+                              .toLowerCase()
+                              .replace(/[^a-z0-9_-]/g, '-')
+                              .replace(/-{2,}/g, '-')
+                              .replace(/_{2,}/g, '_')
+                              .replace(/[_-]{2,}/g, '-')
+                              .replace(/^[^a-z]+/, ''),
+                      ].join('/')
                     : '';
 
             formField.set(
@@ -69,12 +69,15 @@ export const AssetNameInput = (props: Props) => {
     );
 
     // Add a fake option for unknown namespaces (e.g. loading an asset that you can no longer access)
-    const validateNamespace = useMemo(() => (name, value) => {
-        const [namespace] = value.split('/');
-        if (!(props.namespaces || []).includes(namespace)) {
-            throw 'Namespace not available';
-        }
-    }, [props.namespaces]);
+    const validateNamespace = useMemo(
+        () => (name, value) => {
+            const [namespace] = value.split('/');
+            if (!(props.namespaces || []).includes(namespace)) {
+                throw 'Namespace not available';
+            }
+        },
+        [props.namespaces]
+    );
 
     let namespaces = [...(props.namespaces || [])];
     if (!namespaces.includes(namespace)) {
@@ -87,18 +90,19 @@ export const AssetNameInput = (props: Props) => {
         return validators;
     }, [props.validation, validateNamespace]);
 
-
     return (
-        <FormRow label={props.label}
-                 help={props.help}
-                 focused={focusNamespace || focusName}
-                 disabled={props.disabled}
-                 readOnly={props.readOnly}
-                 validation={validators}
-                 name={props.name}
-                 value={value}
-                 type={Type.TEXT} >
-            <div className="form-input asset-name-input" >
+        <FormRow
+            label={props.label}
+            help={props.help}
+            focused={focusNamespace || focusName}
+            disabled={props.disabled}
+            readOnly={props.readOnly}
+            validation={validators}
+            name={props.name}
+            value={value}
+            type={Type.TEXT}
+        >
+            <div className="form-input asset-name-input">
                 <FormSelectInput
                     name="asset-namespace"
                     value={namespace}
@@ -110,7 +114,7 @@ export const AssetNameInput = (props: Props) => {
                     focused={focusNamespace}
                     noTransform
                 />
-                <span className={'separator'} >/</span>
+                <span className={'separator'}>/</span>
                 <input
                     type={Type.TEXT}
                     name={'asset-name'}
