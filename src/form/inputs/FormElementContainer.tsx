@@ -66,7 +66,10 @@ export const FormElementContainer = (props: Props) => {
         message: true,
     });
 
-    const helpMessage = props.errorMessage && props.touched ? props.errorMessage : props.help;
+    let helpMessage = props.errorMessage && props.touched ? props.errorMessage : props.help;
+    if (!helpMessage && props.required) {
+        helpMessage = 'This value is required';
+    }
 
     const showStatusIcon = props.touched && props.status !== StatusType.OK;
 

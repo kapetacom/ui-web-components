@@ -4,7 +4,7 @@ import {
     normaliseValidators,
     useValidation,
     ValidatorListUnresolved,
-    Validators
+    Validators,
 } from '../validation/Validators';
 import { FormContext, FormContextType } from './FormContext';
 
@@ -15,7 +15,7 @@ import { useAsync } from 'react-use';
 
 interface FormRowProps {
     name: string;
-    value: any
+    value: any;
     defaultValue?: any;
     label: string;
     help?: string;
@@ -36,7 +36,7 @@ enum StatusType {
 
 export const FormRow = (props: FormRowProps) => {
     function getChildValue() {
-        let value = props.value
+        let value = props.value;
 
         if (value === undefined) {
             return props.defaultValue;
@@ -61,7 +61,7 @@ export const FormRow = (props: FormRowProps) => {
     }
 
     function getChildName() {
-        return props.name
+        return props.name;
     }
 
     const context = useContext(FormContext);
@@ -71,6 +71,7 @@ export const FormRow = (props: FormRowProps) => {
     }, []);
 
     const [touchedState, setTouchedState] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const validators = useMemo(() => normaliseValidators(props.validation), [props.validation]);
 
@@ -123,25 +124,38 @@ export const FormRow = (props: FormRowProps) => {
         };
     }, [context.container]);
 
-    const errorList = useValidation(true, validators, getChildName(), getChildValue());
+    const { errors, async } = useValidation(true, validators, getChildName(), getChildValue());
 
     useEffect(() => {
-        if (errorList.loading) {
+        if (!async) {
+            //If nothing's async then we can just set the ready state when loading is done.
+            if (!errors.loading && errors.value) {
+                setReadyState(errors.value?.length === 0);
+                if (touched && errors.value?.length > 0) {
+                    setErrorMessage(errors.value[0]);
+                } else {
+                    setErrorMessage('');
+                }
+            }
+            return;
+        }
+
+        if (errors.loading) {
             setReadyState(false);
         } else {
-            setReadyState(errorList.value?.length === 0);
+            setReadyState(errors.value?.length === 0);
+            if (touched && errors.value?.length > 0) {
+                setErrorMessage(errors.value[0]);
+            } else {
+                setErrorMessage('');
+            }
         }
-    }, [errorList.loading, errorList.value]);
-
-    let errorMessage = null;
-    if (!errorList.loading && touched && errorList.value?.length > 0) {
-        errorMessage = errorList.value[0];
-    }
+    }, [errors.loading, errors.value, touched]);
 
     return (
         <FormElementContainer
             required={required}
-            processing={errorList.loading}
+            processing={errors.loading}
             hasValue={hasValue()}
             touched={touched}
             help={props.help}

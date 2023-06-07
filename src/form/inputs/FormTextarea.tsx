@@ -69,7 +69,7 @@ export const FormTextarea = (props: Props) => {
             disabled={props.disabled}
             readOnly={props.readOnly}
         >
-            <div className={'textarea-wrapper'} >
+            <div className={'textarea-wrapper'}>
                 <textarea
                     name={props.name}
                     onChange={onChange}

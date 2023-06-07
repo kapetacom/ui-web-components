@@ -97,6 +97,7 @@ export class FormContainer extends React.Component<Props, State> {
             //If state didnt change - do nothing
             return;
         }
+
         this.setState((state: State) => {
             state.readyStates[fieldName] = ready;
             state.valid = this.isValid(state.readyStates);
@@ -240,7 +241,6 @@ export class FormContainer extends React.Component<Props, State> {
                 listener(_.has(originalData, name) ? _.get(originalData, name) : '');
             });
         });
-
         this.setState({ formData: { ...originalData } }, () => {
             this.emitChange();
 
