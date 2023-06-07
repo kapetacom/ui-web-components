@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { EntityEditor } from '../src/entities/EntityEditor';
 import { Entity, EntityType } from '@kapeta/schemas';
-import {TYPE_INSTANCE, TYPE_INSTANCE_PROVIDER} from "../src";
+import { TYPE_INSTANCE, TYPE_INSTANCE_PROVIDER } from '../src';
 
 export default {
     title: 'Entity Editor',
@@ -36,7 +36,7 @@ const ENTITIES: Entity[] = [
             },
             gateway: {
                 ref: TYPE_INSTANCE,
-                description: 'Gateway'
+                description: 'Gateway',
             },
             gatewayResource: {
                 ref: TYPE_INSTANCE_PROVIDER,
@@ -117,8 +117,8 @@ export const EditMultipleEntities = () => {
                             {
                                 name: 'tasks',
                                 portType: 'web',
-                            }
-                        ]
+                            },
+                        ],
                     },
                     {
                         name: 'Users UI',
@@ -127,8 +127,8 @@ export const EditMultipleEntities = () => {
                             {
                                 name: 'users',
                                 portType: 'web',
-                            }
-                        ]
+                            },
+                        ],
                     },
                     {
                         name: 'User Service',
@@ -137,9 +137,9 @@ export const EditMultipleEntities = () => {
                             {
                                 name: 'users',
                                 portType: 'rest',
-                            }
-                        ]
-                    }
+                            },
+                        ],
+                    },
                 ]}
                 value={value}
                 onChange={(val) => {

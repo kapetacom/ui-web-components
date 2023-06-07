@@ -11,7 +11,7 @@ import {
 import './EntityEditor.less';
 import _ from 'lodash';
 import { useFormContextField } from '../form/FormContext';
-import {TYPE_INSTANCE, TYPE_INSTANCE_PROVIDER} from "../dsl/ConfigurationEditor";
+import { TYPE_INSTANCE, TYPE_INSTANCE_PROVIDER } from '../dsl/ConfigurationEditor';
 
 type Value = { [key: string]: any };
 
@@ -22,7 +22,7 @@ export interface EntityBlockInstanceResource {
 export interface EntityBlockInstance {
     id: string;
     name: string;
-    providers: EntityBlockInstanceResource[]
+    providers: EntityBlockInstanceResource[];
 }
 
 interface FieldProps {
@@ -45,7 +45,7 @@ const FieldEditor = (props: FieldProps) => {
                     value={props.value?.id}
                     disabled={!props.instances?.length}
                     onChange={(event) => {
-                        props.onChange({id:event.currentTarget.value});
+                        props.onChange({ id: event.currentTarget.value });
                     }}
                 >
                     <option value={''}>
@@ -66,62 +66,60 @@ const FieldEditor = (props: FieldProps) => {
             //Render instance and provider selector
             console.log('Render instance provider selector', props);
             const instance = props.instances?.find((v) => v.id === props.value?.id);
-            return <div className={'instance-provider'}>
-                <label>
-                    <select
-                        className={'value instance'}
-                        value={props.value?.id}
-                        disabled={!props.instances?.length}
-                        onChange={(event) => {
-                            if (event.currentTarget.value !== props.value?.id) {
-                                props.onChange({id:event.currentTarget.value});
-                            }
-                        }}
-                    >
-                        <option value={''}>
-                            {props.instances?.length ? 'Select instance...' : 'No instances available'}
-                        </option>
-                        {props.instances?.map((v) => {
-                            return (
-                                <option key={v.id} value={v.id}>
-                                    {v.name}
-                                </option>
-                            );
-                        })}
-                    </select>
-                </label>
-                <label>
-                    <span>
-                    Provider:
-                    </span>
-                    <select
-                        className={'value resource'}
-                        disabled={!instance}
-                        value={props.value?.resourceName}
-                        onChange={(event) => {
-                            const resourceName = event.currentTarget.value;
-                            const provider = instance?.providers.find((v) => v.name === resourceName);
-                            props.onChange({
-                                resourceName,
-                                portType: provider?.portType,
-                                id: props.value.id
-                            });
-                        }}
-                    >
-                        {instance?.providers?.map((v) => {
-                            return (
-                                <option key={v.name} value={v.name}>
-                                    {v.name} ({v.portType})
-                                </option>
-                            );
-                        })}
-                        {!instance && <option value={''}>Waiting...</option>}
-                    </select>
-                </label>
-            </div>;
-
+            return (
+                <div className={'instance-provider'}>
+                    <label>
+                        <select
+                            className={'value instance'}
+                            value={props.value?.id}
+                            disabled={!props.instances?.length}
+                            onChange={(event) => {
+                                if (event.currentTarget.value !== props.value?.id) {
+                                    props.onChange({ id: event.currentTarget.value });
+                                }
+                            }}
+                        >
+                            <option value={''}>
+                                {props.instances?.length ? 'Select instance...' : 'No instances available'}
+                            </option>
+                            {props.instances?.map((v) => {
+                                return (
+                                    <option key={v.id} value={v.id}>
+                                        {v.name}
+                                    </option>
+                                );
+                            })}
+                        </select>
+                    </label>
+                    <label>
+                        <span>Provider:</span>
+                        <select
+                            className={'value resource'}
+                            disabled={!instance}
+                            value={props.value?.resourceName}
+                            onChange={(event) => {
+                                const resourceName = event.currentTarget.value;
+                                const provider = instance?.providers.find((v) => v.name === resourceName);
+                                props.onChange({
+                                    resourceName,
+                                    portType: provider?.portType,
+                                    id: props.value.id,
+                                });
+                            }}
+                        >
+                            {instance?.providers?.map((v) => {
+                                return (
+                                    <option key={v.name} value={v.name}>
+                                        {v.name} ({v.portType})
+                                    </option>
+                                );
+                            })}
+                            {!instance && <option value={''}>Waiting...</option>}
+                        </select>
+                    </label>
+                </div>
+            );
         }
-
 
         let value = toRefValue(props.field.ref, props.value);
         return (
