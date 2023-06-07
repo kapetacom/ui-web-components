@@ -4,7 +4,7 @@ import './DataGrid.less';
 import { DataGridTheme } from './DataGrid';
 import { DataList } from './DataList';
 
-import { ColDef } from 'ag-grid-community/dist/lib/entities/colDef';
+import { ColDef } from 'ag-grid-community';
 import { GridApi } from 'ag-grid-community';
 import { PanelAlignment, PanelSize, SidePanel } from '../side-panel/SidePanel';
 import { Detail, DetailRowValue } from '../detail/Detail';
