@@ -4,19 +4,16 @@ import { createContext } from 'react';
 
 export const BlockContext = createContext<{
     readOnly?: boolean;
-    definition?: BlockDefinition | null;
-    instance?: BlockInstance | null;
+    definition?: BlockDefinition;
+    instance?: BlockInstance;
     status?: InstanceStatus;
     callbacks: {
-        onInstanceNameChange: (name: string) => void;
+        onInstanceNameChange?: (name: string) => void;
     };
 }>({
-    readOnly: true,
-    definition: null,
-    instance: null,
-    status: null,
+    readOnly: false,
     callbacks: {
-        onInstanceNameChange: () => {},
+        onInstanceNameChange: undefined,
     },
 });
 export const BlockContextProvider = BlockContext.Provider;

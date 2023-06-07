@@ -86,12 +86,12 @@ export const BlockVersion = () => {
 };
 
 export const BlockLayout = (props: {
-    status: InstanceStatus;
-    readOnly: boolean;
+    status?: InstanceStatus;
+    readOnly?: boolean;
     instance: BlockInstance;
     definition: BlockDefinition;
     children: React.ReactNode;
-    onInstanceNameChange: (instanceName: string) => void;
+    onInstanceNameChange?: (instanceName: string) => void;
 }) => {
     const { status, readOnly, instance, definition, onInstanceNameChange, children } = props;
     // Provider for block layout
