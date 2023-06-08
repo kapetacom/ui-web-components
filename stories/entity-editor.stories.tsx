@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { EntityEditor } from '../src/entities/EntityEditor';
 import { Entity, EntityType } from '@kapeta/schemas';
+import { TYPE_INSTANCE, TYPE_INSTANCE_PROVIDER } from '../src';
 
 export default {
     title: 'Entity Editor',
@@ -32,6 +33,15 @@ const ENTITIES: Entity[] = [
                 ref: 'CoreVersions',
                 description: 'Core version',
                 defaultValue: 'CoreVersions.V1_3',
+            },
+            gateway: {
+                ref: TYPE_INSTANCE,
+                description: 'Gateway',
+            },
+            gatewayResource: {
+                ref: TYPE_INSTANCE_PROVIDER,
+                description: 'Gateway resource',
+                required: true,
             },
         },
     },
@@ -78,7 +88,7 @@ export const CreateMultipleEntities = () => {
 };
 
 export const EditMultipleEntities = () => {
-    const [value, setValue] = useState({
+    const [value, setValue] = useState<any>({
         Core: {
             version: 'V1_4',
             enabled: false,
@@ -95,6 +105,42 @@ export const EditMultipleEntities = () => {
         <div style={{ width: '450px' }}>
             <EntityEditor
                 entities={ENTITIES}
+                instances={[
+                    {
+                        name: 'Gateway',
+                        id: 'gateway',
+                        providers: [
+                            {
+                                name: 'users',
+                                portType: 'web',
+                            },
+                            {
+                                name: 'tasks',
+                                portType: 'web',
+                            },
+                        ],
+                    },
+                    {
+                        name: 'Users UI',
+                        id: 'user-ui',
+                        providers: [
+                            {
+                                name: 'users',
+                                portType: 'web',
+                            },
+                        ],
+                    },
+                    {
+                        name: 'User Service',
+                        id: 'users',
+                        providers: [
+                            {
+                                name: 'users',
+                                portType: 'rest',
+                            },
+                        ],
+                    },
+                ]}
                 value={value}
                 onChange={(val) => {
                     setValue(val);
