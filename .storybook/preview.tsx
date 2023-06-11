@@ -1,5 +1,6 @@
 import { Preview } from '@storybook/react';
 import { configure } from 'mobx';
+import '../styles/index.less';
 
 configure({
     enforceActions: 'always',

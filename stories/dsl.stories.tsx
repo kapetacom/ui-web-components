@@ -356,7 +356,7 @@ export default {
 };
 
 export const DslEditor = () => (
-    <div style={{ height: '100%' }}>
+    <div>
         <DSLEditor
             types={true}
             methods={true}

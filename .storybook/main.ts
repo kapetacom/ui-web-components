@@ -9,10 +9,6 @@ const config: StorybookConfig = {
         options: {},
     },
 
-    docs: {
-        autodocs: true,
-    },
-
     addons: [
         '@storybook/addon-essentials',
         {
