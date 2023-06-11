@@ -1,5 +1,4 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react';
 import { DataTypeEditor, DSLDataType, DSLEntity, DSLEntityType, DSLMethod, DSLRichEntity, MethodEditor } from '../src';
 import { DSLEditor } from '../src/dsl/DSLEditor';
 import { ConfigurationEditor } from '../src/dsl/ConfigurationEditor';
@@ -352,121 +351,162 @@ const METHOD_ENTITIES: DSLMethod[] = [
     },
 ];
 
-storiesOf('DSL Editors', module)
-    .add('DSL Editor', () => (
-        <div>
-            <DSLEditor
-                types={true}
-                methods={true}
-                onChange={(result) => console.log('result', result)}
-                value={'## Types\n' + DATA_TYPES + '\n\n## Methods\n' + METHODS}
-            />
-        </div>
-    ))
+export default {
+    title: 'DSL Editors',
+};
 
-    .add('DSL Editor (Object)', () => (
-        <div>
-            <DSLEditor
-                types={true}
-                methods={true}
-                onChange={(result) => console.log('result', result)}
-                value={{
-                    code: '',
-                    entities: [...DATA_TYPE_ENTITIES, ...METHOD_ENTITIES],
-                }}
-            />
-        </div>
-    ))
+export const DslEditor = () => (
+    <div>
+        <DSLEditor
+            types={true}
+            methods={true}
+            onChange={(result) => console.log('result', result)}
+            value={'## Types\n' + DATA_TYPES + '\n\n## Methods\n' + METHODS}
+        />
+    </div>
+);
 
-    .add('DSL Editor (REST)', () => (
-        <div>
-            <DSLEditor
-                types={true}
-                methods={true}
-                rest={true}
-                onChange={(result) => console.log('result', result)}
-                value={'## Types\n' + DATA_TYPES + '\n\n## REST methods\n' + REST_METHODS}
-            />
-        </div>
-    ))
+DslEditor.story = {
+    name: 'DSL Editor',
+};
 
-    .add('DSL Editor (REST - Object)', () => (
-        <div>
-            <DSLEditor
-                types={true}
-                methods={true}
-                rest={true}
-                onChange={(result) => console.log('result', result)}
-                value={{
-                    code: '',
-                    entities: [...DATA_TYPE_ENTITIES, ...REST_METHOD_ENTITIES],
-                }}
-            />
-        </div>
-    ))
+export const DslEditorObject = () => (
+    <div>
+        <DSLEditor
+            types={true}
+            methods={true}
+            onChange={(result) => console.log('result', result)}
+            value={{
+                code: '',
+                entities: [...DATA_TYPE_ENTITIES, ...METHOD_ENTITIES],
+            }}
+        />
+    </div>
+);
 
-    .add('REST Method Editor', () => (
-        <div>
-            <MethodEditor
-                value={REST_METHODS}
-                validTypes={['Todo']}
-                onChange={(result) => console.log('result', result)}
-                restMethods={true}
-            />
-        </div>
-    ))
+DslEditorObject.story = {
+    name: 'DSL Editor (Object)',
+};
 
-    .add('REST Method Editor (Object)', () => (
-        <div>
-            <MethodEditor
-                value={{ code: '', entities: REST_METHOD_ENTITIES }}
-                validTypes={['Todo']}
-                onChange={(result) => console.log('result', result)}
-                restMethods={true}
-            />
-        </div>
-    ))
-    .add('Method Editor', () => (
-        <div>
-            <MethodEditor
-                value={METHODS}
-                onChange={(result) => console.log('result', result)}
-                validTypes={['TreeNode']}
-            />
-        </div>
-    ))
-    .add('Method Editor (Object)', () => (
-        <div>
-            <MethodEditor
-                value={{ code: '', entities: METHOD_ENTITIES }}
-                onChange={(result) => console.log('result', result)}
-                validTypes={['TreeNode']}
-            />
-        </div>
-    ))
-    .add('Data Type Editor', () => (
-        <div>
-            <DataTypeEditor value={DATA_TYPES} onChange={(result) => console.log('result', result)} />
-        </div>
-    ))
-    .add('Data Type Editor (Object)', () => (
-        <div>
-            <DataTypeEditor
-                value={{ entities: DATA_TYPE_ENTITIES, code: '' }}
-                onChange={(result) => console.log('result', result)}
-            />
-        </div>
-    ))
-    .add('Configuration Editor', () => (
-        <div>
-            <ConfigurationEditor value={CONFIGURATION} onChange={(result) => console.log('result', result)} />
-        </div>
-    ))
-    .add('Configuration Editor (Object)', () => (
-        <div>
-            <ConfigurationEditor
-                value={{ entities: CONFIGURATION_ENTITIES, code: '' }}
-                onChange={(result) => console.log('result', result)}
-            />
-        </div>
-    ));
+export const DslEditorRest = () => (
+    <div>
+        <DSLEditor
+            types={true}
+            methods={true}
+            rest={true}
+            onChange={(result) => console.log('result', result)}
+            value={'## Types\n' + DATA_TYPES + '\n\n## REST methods\n' + REST_METHODS}
+        />
+    </div>
+);
+
+DslEditorRest.story = {
+    name: 'DSL Editor (REST)',
+};
+
+export const DslEditorRestObject = () => (
+    <div>
+        <DSLEditor
+            types={true}
+            methods={true}
+            rest={true}
+            onChange={(result) => console.log('result', result)}
+            value={{
+                code: '',
+                entities: [...DATA_TYPE_ENTITIES, ...REST_METHOD_ENTITIES],
+            }}
+        />
+    </div>
+);
+
+DslEditorRestObject.story = {
+    name: 'DSL Editor (REST - Object)',
+};
+
+export const RestMethodEditor = () => (
+    <div>
+        <MethodEditor
+            value={REST_METHODS}
+            validTypes={['Todo']}
+            onChange={(result) => console.log('result', result)}
+            restMethods={true}
+        />
+    </div>
+);
+
+RestMethodEditor.story = {
+    name: 'REST Method Editor',
+};
+
+export const RestMethodEditorObject = () => (
+    <div>
+        <MethodEditor
+            value={{ code: '', entities: REST_METHOD_ENTITIES }}
+            validTypes={['Todo']}
+            onChange={(result) => console.log('result', result)}
+            restMethods={true}
+        />
+    </div>
+);
+
+RestMethodEditorObject.story = {
+    name: 'REST Method Editor (Object)',
+};
+
+export const _MethodEditor = () => (
+    <div>
+        <MethodEditor value={METHODS} onChange={(result) => console.log('result', result)} validTypes={['TreeNode']} />
+    </div>
+);
+
+export const MethodEditorObject = () => (
+    <div>
+        <MethodEditor
+            value={{ code: '', entities: METHOD_ENTITIES }}
+            onChange={(result) => console.log('result', result)}
+            validTypes={['TreeNode']}
+        />
+    </div>
+);
+
+MethodEditorObject.story = {
+    name: 'Method Editor (Object)',
+};
+
+export const _DataTypeEditor = () => (
+    <div>
+        <DataTypeEditor value={DATA_TYPES} onChange={(result) => console.log('result', result)} />
+    </div>
+);
+
+export const DataTypeEditorObject = () => (
+    <div>
+        <DataTypeEditor
+            value={{ entities: DATA_TYPE_ENTITIES, code: '' }}
+            onChange={(result) => console.log('result', result)}
+        />
+    </div>
+);
+
+DataTypeEditorObject.story = {
+    name: 'Data Type Editor (Object)',
+};
+
+export const _ConfigurationEditor = () => (
+    <div>
+        <ConfigurationEditor value={CONFIGURATION} onChange={(result) => console.log('result', result)} />
+    </div>
+);
+
+export const ConfigurationEditorObject = () => (
+    <div>
+        <ConfigurationEditor
+            value={{ entities: CONFIGURATION_ENTITIES, code: '' }}
+            onChange={(result) => console.log('result', result)}
+        />
+    </div>
+);
+
+ConfigurationEditorObject.story = {
+    name: 'Configuration Editor (Object)',
+};
