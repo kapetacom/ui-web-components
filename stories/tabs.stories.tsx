@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { storiesOf } from '@storybook/react';
 import { TabContainer, TabPage } from '../src';
 
 export default {

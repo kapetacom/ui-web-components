@@ -1,6 +1,5 @@
 import React from 'react';
 import { observable } from 'mobx';
-import { storiesOf } from '@storybook/react';
 import { Store, withState, State } from '@sambego/storybook-state';
 import { EntityMapper, EntityPicker, EntityForm, EntityFormModel, SchemaEntityEdit } from '../src';
 import { EntityList } from '../src/entities/EntityList';
@@ -71,12 +70,57 @@ let entityFormState = new Store({
     entity: new EntityFormModel(toDTO(entity)),
 });
 
-storiesOf('Entity Forms (Deprecated)', module)
-    // @ts-ignore
-    .addDecorator(withState(pickerState))
-    .addDecorator(withState(entityFormState))
+export default {
+    title: 'Entity Forms (Deprecated)',
+    decorators: [withState(pickerState), withState(entityFormState)],
+};
 
-    .add('Entity Mapper', () => (
+export const _EntityMapper = () => (
+    <div
+        style={{
+            width: '700px',
+            padding: '10px',
+            backgroundColor: '#e0ecff',
+        }}
+    >
+        <EntityMapper
+            fromEntities={[]}
+            toEntities={[]}
+            from={EntityFrom}
+            to={EntityTo}
+            onChange={(mapping) => console.log('mapping', mapping)}
+        />
+    </div>
+);
+
+export const _EntityPicker = (props: any) => {
+    return (
+        <State store={pickerState}>
+            <EntityPicker
+                name={'test'}
+                value={props.value}
+                onChange={(eventValue: EntityProperty) => {
+                    pickerState.state.handleValueUpdate(eventValue.type);
+                }}
+                onEntityCreated={(newEntity) => {
+                    let entities: string[] = [...pickerState.state.entities, newEntity.name];
+
+                    pickerState.set({
+                        entities,
+                    });
+                }}
+                entities={pickerState.state.entities}
+            />
+        </State>
+    );
+};
+
+_EntityPicker.story = {
+    name: 'Entity Picker ',
+};
+
+export const _EntityForm = () => {
+    return (
         <div
             style={{
                 width: '700px',
@@ -84,101 +128,65 @@ storiesOf('Entity Forms (Deprecated)', module)
                 backgroundColor: '#e0ecff',
             }}
         >
-            <EntityMapper
-                fromEntities={[]}
-                toEntities={[]}
-                from={EntityFrom}
-                to={EntityTo}
-                onChange={(mapping) => console.log('mapping', mapping)}
-            />
-        </div>
-    ))
-
-    .add('Entity Picker ', (props: any) => {
-        return (
-            <State store={pickerState}>
-                <EntityPicker
+            <State store={entityFormState}>
+                <EntityForm
                     name={'test'}
-                    value={props.value}
-                    onChange={(eventValue: EntityProperty) => {
-                        pickerState.state.handleValueUpdate(eventValue.type);
+                    entity={entityFormState.state.entity}
+                    onChange={(entity) => {
+                        entityFormState.set({ entity });
                     }}
-                    onEntityCreated={(newEntity) => {
-                        let entities: string[] = [...pickerState.state.entities, newEntity.name];
-
-                        pickerState.set({
-                            entities,
-                        });
-                    }}
-                    entities={pickerState.state.entities}
                 />
             </State>
-        );
-    })
+        </div>
+    );
+};
 
-    .add('Entity Form ', () => {
-        return (
-            <div
-                style={{
-                    width: '700px',
-                    padding: '10px',
-                    backgroundColor: '#e0ecff',
-                }}
-            >
-                <State store={entityFormState}>
-                    <EntityForm
-                        name={'test'}
-                        entity={entityFormState.state.entity}
-                        onChange={(entity) => {
-                            entityFormState.set({ entity });
-                        }}
-                    />
-                </State>
-            </div>
-        );
-    })
-    .add('Entity List', () => {
-        const demoEntities: any[] = [
-            {
-                name: 'Entity 1',
-                properties: {},
-                status: true,
-            },
-            {
-                name: 'Entity 2',
-                properties: {},
-                status: true,
-            },
-            {
-                name: 'Entity 3',
-                properties: {},
-                status: false,
-            },
-            {
-                name: 'Entity 4',
-                properties: {},
-                status: false,
-            },
-            {
-                name: 'Entity 5',
-                properties: {},
-                status: true,
-            },
-            {
-                name: 'Entity 6',
-                properties: {},
-                status: false,
-            },
-        ];
+_EntityForm.story = {
+    name: 'Entity Form ',
+};
 
-        return (
-            <div style={{ width: '400px', height: '600px' }}>
-                <EntityList
-                    entities={demoEntities}
-                    handleEditEntity={() => {}}
-                    handleRemoveEntity={() => {}}
-                    handleCreateEntity={() => {}}
-                />
-            </div>
-        );
-    });
+export const _EntityList = () => {
+    const demoEntities: any[] = [
+        {
+            name: 'Entity 1',
+            properties: {},
+            status: true,
+        },
+        {
+            name: 'Entity 2',
+            properties: {},
+            status: true,
+        },
+        {
+            name: 'Entity 3',
+            properties: {},
+            status: false,
+        },
+        {
+            name: 'Entity 4',
+            properties: {},
+            status: false,
+        },
+        {
+            name: 'Entity 5',
+            properties: {},
+            status: true,
+        },
+        {
+            name: 'Entity 6',
+            properties: {},
+            status: false,
+        },
+    ];
+
+    return (
+        <div style={{ width: '400px', height: '600px' }}>
+            <EntityList
+                entities={demoEntities}
+                handleEditEntity={() => {}}
+                handleRemoveEntity={() => {}}
+                handleCreateEntity={() => {}}
+            />
+        </div>
+    );
+};

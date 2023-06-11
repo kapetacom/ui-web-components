@@ -1,8 +1,11 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react';
 import { showToasty, ToastType, ToastContainer } from '../src';
 
-storiesOf('Toasts', module).add('Toasts', () => (
+export default {
+    title: 'Toasts',
+};
+
+export const Toasts = () => (
     <div style={{ width: '390px', padding: '10px' }}>
         <ToastContainer />
         <button
@@ -39,4 +42,4 @@ storiesOf('Toasts', module).add('Toasts', () => (
             Show danger
         </button>
     </div>
-));
+);

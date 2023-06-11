@@ -106,3 +106,9 @@ dist
 .tern-port
 
 stats.html
+
+# Storybook build outputs
+storybook-static
+
+# VSCode
+.vscode/*
