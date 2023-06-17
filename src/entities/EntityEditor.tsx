@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
     Entity,
     EntityType,
@@ -45,7 +45,7 @@ const FieldEditor = (props: FieldProps) => {
                     value={props.value?.id}
                     disabled={!props.instances?.length}
                     onChange={(event) => {
-                        props.onChange({ id: event.currentTarget.value });
+                        props.onChange(event.currentTarget.value ? { id: event.currentTarget.value } : null);
                     }}
                 >
                     <option value={''}>
@@ -64,7 +64,8 @@ const FieldEditor = (props: FieldProps) => {
 
         if (props.field.ref === TYPE_INSTANCE_PROVIDER) {
             //Render instance and provider selector
-            const instance = props.instances?.find((v) => v.id === props.value?.id);
+            const [currentInstanceId, setCurrentInstanceId] = useState(props.value?.id);
+            const instance = props.instances?.find((v) => v.id === currentInstanceId);
             return (
                 <div className={'instance-provider'}>
                     <label>
@@ -73,8 +74,23 @@ const FieldEditor = (props: FieldProps) => {
                             value={props.value?.id}
                             disabled={!props.instances?.length}
                             onChange={(event) => {
+                                if (!event.currentTarget.value) {
+                                    setCurrentInstanceId(undefined);
+                                    props.onChange(null);
+                                    return;
+                                }
+
                                 if (event.currentTarget.value !== props.value?.id) {
-                                    props.onChange({ id: event.currentTarget.value });
+                                    setCurrentInstanceId(event.currentTarget.value);
+                                    const instance = props.instances?.find((v) => v.id === event.currentTarget.value);
+                                    if (instance && instance?.providers?.length > 0) {
+                                        const resource = instance?.providers[0];
+                                        props.onChange({
+                                            resourceName: resource.name,
+                                            portType: resource.portType,
+                                            id: event.currentTarget.value,
+                                        });
+                                    }
                                 }
                             }}
                         >
@@ -98,11 +114,16 @@ const FieldEditor = (props: FieldProps) => {
                             value={props.value?.resourceName}
                             onChange={(event) => {
                                 const resourceName = event.currentTarget.value;
+                                if (!resourceName || !instance) {
+                                    props.onChange(null);
+                                    return;
+                                }
+
                                 const provider = instance?.providers.find((v) => v.name === resourceName);
                                 props.onChange({
                                     resourceName,
                                     portType: provider?.portType,
-                                    id: props.value.id,
+                                    id: currentInstanceId,
                                 });
                             }}
                         >
@@ -284,6 +305,7 @@ export const EntityEditor = (props: Props) => {
 
 interface FormProps {
     entities: Entity[];
+    instances?: EntityBlockInstance[];
     name: string;
 }
 
@@ -295,6 +317,7 @@ export const EntityEditorForm = (props: FormProps) => {
     return (
         <EntityEditor
             entities={props.entities}
+            instances={props.instances}
             value={valueField.get({})}
             onChange={(value) => valueField.set(value)}
         />
