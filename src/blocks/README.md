@@ -32,8 +32,7 @@ export const MyBlock: React.FC<ShapeComponent> = (props) => {
 };
 ```
 
-If the block needs to have different dimensions, it needs to define `shapeWidth` and `getShapeHeight`.
-Those values will be reflected in the width and height passed to the `shapeComponent` function.
+If the block needs to have different dimensions, it needs to define `shapeWidth` and `getShapeHeight`. Those values will be reflected in the width and height passed to the `shapeComponent` function.
 
 ```tsx
 import { IBlockTypeProvider } from '@kapeta/ui-web-types'; // re-export this from block-utils?
