@@ -1,6 +1,8 @@
 import { Preview } from '@storybook/react';
 import { configure } from 'mobx';
+import { withThemeByDataAttribute } from '@storybook/addon-styling';
 import '../styles/index.less';
+import '../styles/tailwind.css';
 
 configure({
     enforceActions: 'always',
@@ -16,3 +18,14 @@ const preview: Preview = {
     },
 };
 export default preview;
+
+export const decorators = [
+    withThemeByDataAttribute({
+        themes: {
+            light: 'light',
+            dark: 'dark',
+        },
+        defaultTheme: 'light',
+        attributeName: 'data-mode',
+    }),
+];
