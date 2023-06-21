@@ -8,7 +8,7 @@
         "declaration": true,
         "declarationDir": "types",
         "outDir": "dist",
-        "strict": false,
+        "strict": true,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,

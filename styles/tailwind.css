@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --primary: 259 100% 56%;
+        --primary-foreground: 0 0% 100%;
+
+        --primary-dark: 258 58% 42%;
+        --primary-dark-foreground: 0 0% 100%;
+
+        --secondary: 218 100% 58%;
+        --secondary-foreground: 0 0% 100%;
+
+        --secondary-dark: 211 100% 35%;
+        --secondary-dark-foreground: 0 0% 100%;
+
+        --error: 0 65% 51%;
+        --error-foreground: 0 0% 100%;
+
+        --error-dark: 0 66% 47%;
+        --error-dark-foreground: 0 0% 100%;
+
+        --warning: 27 98% 47%;
+        --warning-foreground: 0 0% 100%;
+
+        --warning-dark: 21 100% 45%;
+        --warning-dark-foreground: 0 0% 100%;
+
+        --info: 201.2 98.1% 41.4%;
+        --info-foreground: 0 0% 100%;
+
+        --info-dark: 206.5 98.7% 30.6%;
+        --info-dark-foreground: 0 0% 100%;
+
+        --success: 123 46.2% 33.5%;
+        --success-foreground: 0 0% 100%;
+
+        --success-dark: 124.5 55.4% 23.7%;
+        --success-dark-foreground: 0 0% 100%;
+
+        --disabled: 0 0% 0%;
+        --disabled-foreground: 0 0% 0%;
+    }
+
+    .dark {
+        --primary: 259 100% 56%;
+        --primary-foreground: 0 0% 100%;
+
+        --primary-dark: 258 58% 42%;
+        --primary-dark-foreground: 0 0% 100%;
+
+        --secondary: 218 100% 58%;
+        --secondary-foreground: 0 0% 100%;
+
+        --secondary-dark: 211 100% 35%;
+        --secondary-dark-foreground: 0 0% 100%;
+
+        --error: 0 65% 51%;
+        --error-foreground: 0 0% 100%;
+
+        --error-dark: 0 66% 47%;
+        --error-dark-foreground: 0 0% 100%;
+
+        --warning: 27 98% 47%;
+        --warning-foreground: 0 0% 100%;
+
+        --warning-dark: 21 100% 45%;
+        --warning-dark-foreground: 0 0% 100%;
+
+        --info: 201.2 98.1% 41.4%;
+        --info-foreground: 0 0% 100%;
+
+        --info-dark: 206.5 98.7% 30.6%;
+        --info-dark-foreground: 0 0% 100%;
+
+        --success: 123 46.2% 33.5%;
+        --success-foreground: 0 0% 100%;
+
+        --success-dark: 124.5 55.4% 23.7%;
+        --success-dark-foreground: 0 0% 100%;
+    }
+}

@@ -2,7 +2,7 @@ import type { StorybookConfig } from '@storybook/react-webpack5';
 import lessPreprocessor from 'less';
 
 const config: StorybookConfig = {
-    stories: ['../stories/**/*.stories.tsx'],
+    stories: ['../stories/**/*.stories.tsx', '../src/**/*.stories.tsx'],
 
     framework: {
         name: '@storybook/react-webpack5',
@@ -14,11 +14,13 @@ const config: StorybookConfig = {
         {
             name: '@storybook/addon-styling',
             options: {
+                postCss: true,
                 less: {
                     implementation: lessPreprocessor,
                 },
             },
         },
+        'storybook-tailwind-dark-mode',
     ],
 
     webpackFinal: async (config, { configType }) => {
