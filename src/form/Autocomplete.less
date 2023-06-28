@@ -1,0 +1,166 @@
+@import '../../styles/values';
+
+.autocomplete-container {
+    position: relative;
+    z-index: 0;
+
+    &::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-bottom: 1px solid #ccc; // TODO: Color
+        transition-property: all;
+        transition-duration: 200ms;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+    }
+
+    &:hover::before {
+        border-bottom-width: 2px;
+    }
+
+    &.focused::before {
+        border-bottom-width: 2px;
+        border-bottom-color: @blue-light;
+    }
+
+    /* Input */
+    .autocomplete-input {
+        display: block;
+        width: 100%;
+        appearance: none;
+        border: none;
+        background-color: transparent;
+        padding: 10px 0;
+        font-size: 0.875rem;
+        color: #000; // TODO: Color
+
+        &:focus {
+            outline: none;
+        }
+
+        &::placeholder {
+            color: #000; // TODO: Color
+        }
+    }
+
+    /* Label */
+    .autocomplete-label {
+        position: absolute;
+        top: 0.75rem;
+        z-index: -10;
+        transform-origin: 0;
+        transform: translateY(-1.5rem) scale(0.75);
+        font-size: 0.875rem;
+        font-weight: normal;
+        color: #888; // TODO: Color
+        transition-duration: 300ms;
+    }
+
+    .autocomplete-input:placeholder-shown + .autocomplete-label {
+        transform: translateY(0) scale(1);
+    }
+
+    .autocomplete-input:focus + .autocomplete-label {
+        left: 0;
+        transform: translateY(-1.5rem) scale(0.75);
+        color: #0055ff; // TODO: Color
+    }
+
+    /* Button Container */
+    .autocomplete-button-container {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        gap: 0.35rem;
+
+        .autocomplete-clear-button,
+        .autocomplete-dropdown-button {
+            cursor: pointer;
+            display: flex;
+            height: 1.5rem;
+            width: 1.5rem;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #888; // TODO: Color
+            transition-property: background-color, color;
+            transition-duration: 200ms;
+            border: none;
+
+            &:hover {
+                background-color: #f2f2f2; // TODO: Color
+                color: #444; // TODO: Color
+            }
+
+            &:focus {
+                outline: none;
+            }
+
+            &.hidden {
+                display: none;
+            }
+
+            &.flip-dropdown-arrow {
+                transform: rotate(180deg);
+            }
+        }
+    }
+
+    .svg-icon {
+        display: inline-block;
+        height: 1rem;
+        width: 1rem;
+        user-select: none;
+        fill: currentColor;
+    }
+
+    .svg-icon:focus {
+        outline: none;
+    }
+}
+
+.autocomplete-popper-container {
+    width: 20rem; // The width will be changed to match the width of the input by the popper modifier
+    overflow: auto;
+    border-radius: 0.375rem;
+    background-color: #fff; // TODO: Color
+    font-size: 0.875rem;
+    font-weight: 300;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    ul.autocomplete-listbox {
+        max-height: 230px;
+        overflow-y: auto;
+        margin: 0;
+        margin-top: 0.25rem;
+        padding: 0;
+        padding-top: 0.5rem;
+        list-style: none;
+
+        li.autocomplete-option {
+            cursor: pointer;
+            padding: 0.75rem 1rem;
+            &:hover {
+                background-color: #f2f2f2; // TODO: Color
+            }
+            &[aria-selected='true'] {
+                background-color: #93c5fd; // TODO: Color
+            }
+            &.Mui-focusVisible {
+                background-color: #bfdbfe; // TODO: Color
+            }
+        }
+
+        li.autocomplete-no-option {
+            padding: 0.75rem 1rem;
+        }
+    }
+}
