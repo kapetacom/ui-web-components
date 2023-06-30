@@ -39,6 +39,8 @@ export * from './form/inputs/FormInput';
 export * from './form/inputs/FormField';
 export * from './form/inputs/FormCheckbox';
 export * from './form/inputs/FormRadioGroup';
+export * from './form/inputs/FormAutocomplete';
+export * from './form/inputs/Autocomplete';
 
 export * from './modal/Modal';
 
