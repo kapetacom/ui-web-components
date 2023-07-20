@@ -104,3 +104,5 @@ export * from './special/mfa/OTPCode';
 export * from './special/oauth/AuthScopesField';
 export * from './special/oauth/AuthScopesList';
 export * from './special/oauth/scopes';
+
+export * from './icons/AssetIcon';
