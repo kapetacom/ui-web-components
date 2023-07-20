@@ -1,25 +1,25 @@
-import React from "react";
-import {IconValue, Kind} from "@kapeta/schemas";
-import './AssetIcon.less'
+import React from 'react';
+import { IconValue, Kind } from '@kapeta/schemas';
+import './AssetIcon.less';
 
 interface Props {
-    asset: Kind
-    size?: number
+    asset: Kind;
+    size?: number;
 }
 
-export const AssetKindIcon = (props:Props) => {
+export const AssetKindIcon = (props: Props) => {
     const size = props.size || 16;
     const style = {
         fontSize: size + 'px',
         height: size + 'px',
-    }
+    };
     if ('icon' in props.asset.spec) {
         const icon = props.asset.spec.icon as IconValue;
         switch (icon.type) {
             case 'fontawesome5':
                 return <i style={style} className={`asset-icon ${icon.value}`} />;
             case 'url':
-                return <img style={style} className='asset-icon' src={icon.value} alt={props.asset.metadata.title} />;
+                return <img style={style} className="asset-icon" src={icon.value} alt={props.asset.metadata.title} />;
         }
     }
 
@@ -47,17 +47,17 @@ export const AssetKindIcon = (props:Props) => {
     }
 
     return <i style={style} className="asset-icon fa fa-cog" />;
-}
+};
 
-export const AssetKindIconText = (props:Props) => {
+export const AssetKindIconText = (props: Props) => {
     let text = props.asset.metadata.title ?? props.asset.metadata.name;
     if (props.asset.kind === 'core/plan') {
         text = 'Plan';
     }
     return (
-        <span className='asset-icon-text'>
+        <span className="asset-icon-text">
             <AssetKindIcon asset={props.asset} size={props.size} />
             <span className={'title'}>{text}</span>
         </span>
-    )
-}
+    );
+};
