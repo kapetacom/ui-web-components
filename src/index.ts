@@ -106,3 +106,4 @@ export * from './special/oauth/AuthScopesList';
 export * from './special/oauth/scopes';
 
 export * from './icons/AssetIcon';
+export * from './avatars/AvatarEditor';
