@@ -1,11 +1,30 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Avatar, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Fab, Paper, Zoom} from "@mui/material";
+import {
+    Avatar,
+    Box,
+    CircularProgress,
+    Fab,
+    Zoom
+} from "@mui/material";
+import {FormRow} from "../form/FormRow";
+import {IconType, IconValue} from "@kapeta/schemas";
+import {ValidatorListUnresolved} from "../validation/Validators";
+import {useFormContextField} from "../form/FormContext";
+import {showToasty, ToastType} from "../toast/ToastComponent";
+
+export enum AvatarResultType {
+    RAW,
+    DATA_URL,
+}
 
 interface Props {
     url: string;
     onSave: (file: AvatarFileInfo) => Promise<void> | void;
     fallbackIcon?: string;
     size?: number
+    resultType?: AvatarResultType;
+    sync?: boolean;
+    maxFileSize?: number;
 }
 
 enum UploadStatus {
@@ -16,11 +35,12 @@ enum UploadStatus {
     ERROR
 }
 
-async function readFile(file: File): Promise<AvatarFileInfo> {
-    const url = getUrl(file);
+async function readFile(file: File, type:AvatarResultType): Promise<AvatarFileInfo> {
+
     return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = (e) => {
+            const url = type === AvatarResultType.DATA_URL ? e.target.result as string : URL.createObjectURL(file);
             const fileInfo: AvatarFileInfo = {
                 name: file.name,
                 size: file.size,
@@ -30,12 +50,17 @@ async function readFile(file: File): Promise<AvatarFileInfo> {
             }
             resolve(fileInfo);
         };
-        reader.readAsArrayBuffer(file);
-    });
-}
 
-function getUrl(file: File): string {
-    return URL.createObjectURL(file);
+        switch (type) {
+            case AvatarResultType.DATA_URL:
+                reader.readAsDataURL(file);
+                break;
+            case AvatarResultType.RAW:
+                reader.readAsArrayBuffer(file);
+                break;
+        }
+
+    });
 }
 
 export interface AvatarFileInfo {
@@ -56,23 +81,52 @@ export const AvatarEditor = (props: Props) => {
 
     const size = props.size ?? 100;
 
+    const idleAfterTimeout = () => setTimeout(() => {
+        setState(UploadStatus.IDLE);
+    }, 1000);
+
     const onFileChange = useCallback(async (evt) => {
         const files = evt.target.files;
         if (files && files.length > 0) {
             const file = files[0];
             setState(UploadStatus.PREPARING);
 
-            const fileInfo = await readFile(file);
+            const fileInfo = await readFile(file, props.resultType ?? AvatarResultType.RAW);
+            if (props.maxFileSize > 0 && fileInfo.size > props.maxFileSize) {
+                setState(UploadStatus.ERROR);
+
+                showToasty({
+                    type: ToastType.DANGER,
+                    message: `File size is too big. Max size is ${props.maxFileSize} bytes.`,
+                    title: 'File too big'
+                });
+
+                idleAfterTimeout();
+                return;
+            }
             setSelectedValue(fileInfo);
             setFilePickerKey(filePickerKey + 1);
             setCurrentUrl(fileInfo.url);
+            if (props.sync) {
+                try {
+                    setState(UploadStatus.UPLOADING);
+                    await props.onSave(fileInfo);
+                    setState(UploadStatus.IDLE);
+                } catch (e) {
+                    console.log('Fails here?', e);
+                    setSelectedValue(undefined);
+                    setCurrentUrl(props.url);
+                    setState(UploadStatus.ERROR);
+                    idleAfterTimeout();
+                }
+            }
         } else {
             setCurrentUrl(props.url);
             setState(UploadStatus.IDLE);
         }
     }, [inputRef.current]);
 
-    const showButtons = state !== UploadStatus.IDLE;
+    const showButtons = state !== UploadStatus.IDLE && !props.sync;
 
     const buttonSx = {
         ...(state === UploadStatus.DONE && {
@@ -113,6 +167,17 @@ export const AvatarEditor = (props: Props) => {
                    accept={'image/*'}
                    onChange={onFileChange}/>
 
+            {props.sync && state === UploadStatus.UPLOADING && (
+                <CircularProgress
+                    size={50}
+                    sx={{
+                        position: 'absolute',
+                        top: (size / 2) - 25,
+                        left: (size / 2) - 25,
+                        zIndex: 1,
+                    }}
+                />
+            )}
 
             <Avatar
                 variant='rounded'
@@ -121,7 +186,8 @@ export const AvatarEditor = (props: Props) => {
                     height: size,
                     fontSize: size / 2,
                     backgroundColor: currentUrl ? 'transparent' : 'text.secondary',
-                }} src={currentUrl} >
+                    opacity: props.sync && state === UploadStatus.UPLOADING ? 0.3 : 1
+                }} src={currentUrl}>
                 <i className={props.fallbackIcon ?? 'fa fa-image'}/>
             </Avatar>
             {showButtons && <Box sx={{
@@ -137,7 +203,7 @@ export const AvatarEditor = (props: Props) => {
 
             }}>
                 <Zoom in={true}>
-                    <Box sx={{ m: 0, position: 'relative' }}>
+                    <Box sx={{m: 0, position: 'relative'}}>
                         {state === UploadStatus.UPLOADING && (
                             <CircularProgress
                                 size={46}
@@ -155,25 +221,28 @@ export const AvatarEditor = (props: Props) => {
                              disabled={state === UploadStatus.UPLOADING}
                              aria-label="save"
                              onClick={async () => {
-                            if (!selectedValue) {
-                                setState(UploadStatus.IDLE);
-                                return;
-                            }
-                            setState(UploadStatus.UPLOADING);
-                            try {
-                                await props.onSave(selectedValue);
-                                setState(UploadStatus.DONE);
-                            } catch (e) {
-                                setSelectedValue(undefined);
-                                setCurrentUrl(props.url);
-                                setState(UploadStatus.ERROR);
-                            } finally {
-                                setTimeout(() => {
-                                    setState(UploadStatus.IDLE);
-                                }, 1000);
-                            }
-                        }}>
-                            {state === UploadStatus.DONE && <i className={'fas fa-check'} />}
+                                 if (!selectedValue) {
+                                     setState(UploadStatus.IDLE);
+                                     return;
+                                 }
+                                 setState(UploadStatus.UPLOADING);
+                                 try {
+                                     await props.onSave(selectedValue);
+                                     setState(UploadStatus.DONE);
+                                 } catch (e) {
+                                     setSelectedValue(undefined);
+                                     setCurrentUrl(props.url);
+                                     setState(UploadStatus.ERROR);
+                                     showToasty({
+                                         type: ToastType.DANGER,
+                                         message: e.message,
+                                         title: 'Failed to upload file'
+                                     });
+                                 } finally {
+                                     idleAfterTimeout();
+                                 }
+                             }}>
+                            {state === UploadStatus.DONE && <i className={'fas fa-check'}/>}
                             {state === UploadStatus.ERROR && <i className="fas fa-exclamation"></i>}
                             {state === UploadStatus.PREPARING && <i className="fa fa-save"></i>}
                             {state === UploadStatus.UPLOADING && <i className="fa fa-save"></i>}
@@ -195,5 +264,80 @@ export const AvatarEditor = (props: Props) => {
             </Box>}
 
         </Box>
+    )
+}
+
+interface FormProps {
+    name: string;
+    label: string;
+    help?: string;
+    fallbackIcon?: string;
+    value?: IconValue;
+    validation?: ValidatorListUnresolved;
+    disabled?: boolean;
+    onChange?: (inputName: string, userInput: IconValue) => void | Promise<void>;
+    maxFileSize?: number;
+}
+
+export const FormAvatarEditor = (props: FormProps) => {
+
+    return (
+        <Box sx={{
+            bgcolor: 'inherit',
+            '& .type-avatar .input-container': {
+                padding: '10px',
+                width: '122px'
+            }
+        }}>
+            <FormRow name={props.name}
+                     type={'avatar'}
+                     help={props.help}
+                     disabled={props.disabled}
+                     defaultValue={{
+                         type: IconType.Fontawesome5,
+                         value: props.fallbackIcon
+                     }}
+                     value={props.value}
+                     validation={props.validation}
+                     label={'Icon'}
+                     focused={true}>
+
+                <AvatarEditor url={props.value?.type === IconType.URL ? props.value.value : ''}
+                              resultType={AvatarResultType.DATA_URL}
+                              size={100}
+                              sync={true}
+                              maxFileSize={props.maxFileSize}
+                              fallbackIcon={props.value?.type === IconType.Fontawesome5 ? props.value.value : props.fallbackIcon}
+                              onSave={async (file) => {
+                                  await props.onChange?.(props.name, {
+                                      type: IconType.URL,
+                                      value: file.url
+                                  });
+                              }}/>
+            </FormRow>
+        </Box>
+    )
+}
+
+interface FieldProps {
+    name: string;
+    label: string;
+    help?: string;
+    fallbackIcon?: string;
+    validation?: ValidatorListUnresolved;
+    disabled?: boolean;
+    maxFileSize?: number;
+}
+
+export const FormAvatarEditorField = (props: FieldProps) => {
+
+    const field = useFormContextField(props.name);
+
+    return (
+        <FormAvatarEditor {...props}
+                          value={field.get()}
+                          onChange={(name, value) => {
+                              field.set(value);
+                          }} />
     )
 }

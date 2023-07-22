@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 
 import './styles.less';
-import {AvatarEditor} from "../src/avatars/AvatarEditor";
+import {AvatarEditor, AvatarResultType} from "../src/avatars/AvatarEditor";
+import {ToastContainer} from "../src";
 
 export default {
     title: 'Avatar Editor',
@@ -22,7 +23,7 @@ export const AvatarEditorFilled = () => {
                         resolve();
                     }, 5000);
                 });
-            }} />
+            }}/>
         </div>
     );
 };
@@ -42,7 +43,32 @@ export const AvatarEditorEmpty = () => {
                         resolve();
                     }, 5000);
                 });
-            }} />
+            }}/>
+        </div>
+    );
+};
+
+
+export const AvatarEditorSync = () => {
+
+    const [url, setUrl] = useState('');
+
+    return (
+        <div>
+            <ToastContainer />
+            <AvatarEditor url={url}
+                          resultType={AvatarResultType.DATA_URL}
+                          sync={true}
+                          maxFileSize={1024 * 50}
+                          onSave={(file) => {
+                              return new Promise<void>((resolve) => {
+                                  setTimeout(() => {
+                                      console.log('OK', file);
+                                      setUrl(file.url);
+                                      resolve();
+                                  }, 1000);
+                              });
+                          }}/>
         </div>
     );
 };
@@ -54,6 +80,7 @@ export const AvatarEditorFail = () => {
 
     return (
         <div>
+            <ToastContainer />
             <AvatarEditor url={url} onSave={(file) => {
                 return new Promise<void>((resolve, reject) => {
                     setTimeout(() => {
@@ -61,7 +88,7 @@ export const AvatarEditorFail = () => {
                         reject(new Error('Failed to save'));
                     }, 5000);
                 });
-            }} />
+            }}/>
         </div>
     );
 };
