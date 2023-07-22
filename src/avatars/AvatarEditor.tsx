@@ -3,7 +3,7 @@ import {Avatar, Box, Button, CircularProgress, Dialog, DialogActions, DialogCont
 
 interface Props {
     url: string;
-    onSave: (file: FileInfo) => Promise<void> | void;
+    onSave: (file: AvatarFileInfo) => Promise<void> | void;
     fallbackIcon?: string;
     size?: number
 }
@@ -16,20 +16,12 @@ enum UploadStatus {
     ERROR
 }
 
-export interface FileInfo {
-    name: string;
-    url: string;
-    size: number;
-    mimeType: string;
-    data: string | ArrayBuffer;
-}
-
-async function readFile(file: File): Promise<FileInfo> {
+async function readFile(file: File): Promise<AvatarFileInfo> {
     const url = getUrl(file);
     return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = (e) => {
-            const fileInfo: FileInfo = {
+            const fileInfo: AvatarFileInfo = {
                 name: file.name,
                 size: file.size,
                 mimeType: file.type,
@@ -46,11 +38,19 @@ function getUrl(file: File): string {
     return URL.createObjectURL(file);
 }
 
+export interface AvatarFileInfo {
+    name: string;
+    url: string;
+    size: number;
+    mimeType: string;
+    data: string | ArrayBuffer;
+}
+
 export const AvatarEditor = (props: Props) => {
     const [state, setState] = useState<UploadStatus>(UploadStatus.IDLE);
     const [currentUrl, setCurrentUrl] = useState(props.url);
     const [filePickerKey, setFilePickerKey] = useState(1);
-    const [selectedValue, setSelectedValue] = useState<FileInfo>();
+    const [selectedValue, setSelectedValue] = useState<AvatarFileInfo>();
 
     const inputRef = useRef<HTMLInputElement>()
 

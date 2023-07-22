@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import './styles.less';
-import {AvatarEditor} from "../src/icon-uploader/AvatarEditor";
+import {AvatarEditor} from "../src/avatars/AvatarEditor";
 
 export default {
     title: 'Avatar Editor',
