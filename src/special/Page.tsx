@@ -1,23 +1,30 @@
 import React from 'react';
-
-import { toClass } from '@kapeta/ui-web-utils';
-
-import './Page.less';
+import { Box, Typography } from '@mui/material';
 
 export interface PageProps {
+    /**
+     * @deprecated The `type` prop is deprecated (not used anymore)
+     */
     type: string;
     title?: string;
     introduction?: string;
     children: any;
 }
 
-export const Page = (props: PageProps) => {
+export const Page = ({ title, introduction, children }: PageProps) => {
     return (
-        <div className={toClass({ page: true, [props.type]: true })}>
-            {props.title && <h2>{props.title}</h2>}
-            {props.introduction && <p className={'introduction'}>{props.introduction}</p>}
-
-            {props.children}
-        </div>
+        <Box sx={{ p: 8, bgcolor: 'primary.contrast' }}>
+            {title && (
+                <Typography variant="h4" component="h2" sx={{ py: 2 }}>
+                    {title}
+                </Typography>
+            )}
+            {introduction && (
+                <Typography variant="body1" component="p">
+                    {introduction}
+                </Typography>
+            )}
+            {children}
+        </Box>
     );
 };
