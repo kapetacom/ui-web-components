@@ -2,13 +2,13 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 
 export interface PageProps {
-    /**
-     * @deprecated The `type` prop is deprecated (not used anymore)
-     */
-    type: string;
     title?: string;
     introduction?: string;
     children: any;
+    /**
+     * @deprecated The `type` prop is deprecated (not used anymore)
+     */
+    type?: string;
 }
 
 export const Page = ({ title, introduction, children }: PageProps) => {
