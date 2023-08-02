@@ -107,3 +107,5 @@ export * from './special/oauth/scopes';
 
 export * from './icons/AssetIcon';
 export * from './avatars/AvatarEditor';
+
+export * from './terminal/XTerm';
