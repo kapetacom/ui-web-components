@@ -208,9 +208,9 @@ export function BlockhubTile(props: BlockhubTileProps) {
                             // https://css-tricks.com/almanac/properties/l/line-clamp/
                             display: '-webkit-box',
                             lineClamp: '3',
-                            '-webkit-line-clamp': '3',
+                            WebkitLineClamp: '3',
                             boxOrient: 'vertical',
-                            '-webkit-box-orient': 'vertical',
+                            WebkitBoxOrient: 'vertical',
                         }}
                     >
                         {props.description || 'No description'}

@@ -22,13 +22,7 @@ export default [
                 name: packageJson.name,
                 generatedCode: 'es2015',
                 compact: false,
-            },
-            {
-                file: packageJson.module,
-                format: 'esm',
-                generatedCode: 'es2015',
-                compact: false,
-            },
+            }
         ],
         plugins: [
             pegjs(),
@@ -44,7 +38,7 @@ export default [
         ],
     },
     {
-        input: 'dist/esm/index.d.ts',
+        input: 'dist/cjs/index.d.ts',
         output: [{ file: 'dist/index.d.ts', format: 'esm' }],
         external: [/\.(css|less)$/],
         plugins: [dts()],

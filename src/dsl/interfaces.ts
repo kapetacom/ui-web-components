@@ -13,7 +13,7 @@ export interface DSLTypeComplex {
 export type DSLType = DSLTypeComplex | string;
 
 export interface DSLDefaultValue {
-    type: 'reference' | 'literal';
+    type: 'reference' | 'literal' | 'enum';
     value: string | number | boolean | null;
 }
 
