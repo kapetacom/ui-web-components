@@ -1,0 +1,43 @@
+@import '../../styles/values';
+@import '../../styles/functions';
+
+.key-value-row {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid @gray-light;
+
+    .key-value {
+        padding: 15px 5px;
+        flex: 1;
+        max-width: 100%;
+
+        .label {
+            font-size: 14px;
+            color: @gray-dark;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .value {
+            max-width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-size: 18px;
+
+            a {
+                color: inherit;
+                text-decoration: none;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            i.fa,
+            i.fab,
+            i.fad {
+                margin-right: 5px;
+            }
+        }
+    }
+}
