@@ -1,10 +1,10 @@
 import { Preview } from '@storybook/react';
 import { configure } from 'mobx';
-import '../styles/index.less';
+import { MemoryRouter } from 'react-router-dom';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { lightTheme, darkTheme } from '@kapeta/style';
 import { useMemo } from 'react';
-import React from 'react';
+import '../styles/index.less';
 
 configure({
     enforceActions: 'always',
@@ -14,21 +14,31 @@ configure({
     disableErrorBoundaries: true,
 });
 
+
+// Add your theme configurations to an object that you can
+// pull your desired theme from.
 const THEMES = {
-    light: createTheme(lightTheme),
-    dark: createTheme(darkTheme),
+    // TODO: fix theme json to match mui theme
+    light: createTheme(lightTheme as any),
+    dark: createTheme(darkTheme as any),
 };
 
-const withMuiTheme = (Story, context) => {
+export const withMuiTheme = (Story, context) => {
+    // The theme global we just declared
     const { theme: themeKey } = context.globals;
 
+    // only recompute the theme if the themeKey changes
     const theme = useMemo(() => THEMES[themeKey] || THEMES['light'], [themeKey]);
 
     return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Story />
-        </ThemeProvider>
+        <div>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <MemoryRouter>
+                    <Story />
+                </MemoryRouter>
+            </ThemeProvider>
+        </div>
     );
 };
 
@@ -54,4 +64,5 @@ const preview: Preview = {
     },
     decorators: [withMuiTheme],
 };
+
 export default preview;

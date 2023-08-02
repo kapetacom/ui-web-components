@@ -1,24 +1,23 @@
-import React, {useEffect, useMemo, useRef} from "react";
-import {Terminal, ITerminalOptions, ITerminalInitOnlyOptions} from 'xterm'
-import {WebLinksAddon} from 'xterm-addon-web-links';
-import {FitAddon} from 'xterm-addon-fit';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { Terminal, ITerminalOptions, ITerminalInitOnlyOptions } from 'xterm';
+import { WebLinksAddon } from 'xterm-addon-web-links';
+import { FitAddon } from 'xterm-addon-fit';
 
-import 'xterm/css/xterm.css'
+import 'xterm/css/xterm.css';
 
 export interface XTermStream {
-    write(data:string):void
-    on(cb:(line:string) => void):() => void;
+    write(data: string): void;
+    on(cb: (line: string) => void): () => void;
 }
 
 interface Props {
-    terminalOptions?: ITerminalOptions & ITerminalInitOnlyOptions
-    lines?: string[]
-    stream?: XTermStream
-    onData?: (string) => void
+    terminalOptions?: ITerminalOptions & ITerminalInitOnlyOptions;
+    lines?: string[];
+    stream?: XTermStream;
+    onData?: (string) => void;
 }
 
 export const XTerm = (props: Props) => {
-
     const xtermContainer = useRef<HTMLDivElement>(null);
 
     const terminal = useMemo(() => {
@@ -26,7 +25,7 @@ export const XTerm = (props: Props) => {
         t.loadAddon(new WebLinksAddon());
         t.loadAddon(new FitAddon());
         return t;
-    }, [props.terminalOptions])
+    }, [props.terminalOptions]);
 
     useEffect(() => {
         if (xtermContainer.current) {
@@ -39,7 +38,7 @@ export const XTerm = (props: Props) => {
             const disposer = terminal.onData(props.onData);
             return () => {
                 disposer.dispose();
-            }
+            };
         }
         return () => {};
     }, [props.onData]);
@@ -54,18 +53,17 @@ export const XTerm = (props: Props) => {
         }
 
         return () => {};
-
     }, [props.terminalOptions?.disableStdin, terminal]);
 
     useEffect(() => {
         terminal.clear();
-        props.lines?.forEach(log => terminal.writeln(log));
+        props.lines?.forEach((log) => terminal.writeln(log));
     }, [props.lines]);
 
     useEffect(() => {
         if (props.stream) {
             const listenerDisposer = props.stream.on((line) => {
-                line = line.replace(/\n?\r/g,'\n\r');
+                line = line.replace(/\n?\r/g, '\n\r');
                 terminal.write(line);
             });
 
@@ -76,12 +74,10 @@ export const XTerm = (props: Props) => {
             return () => {
                 listenerDisposer();
                 disposer.dispose();
-            }
+            };
         }
         return () => {};
     }, [terminal, props.stream]);
 
-    return (
-        <div ref={xtermContainer}></div>
-    )
-}
+    return <div ref={xtermContainer}></div>;
+};
