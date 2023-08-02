@@ -110,6 +110,8 @@ export * from './avatars/AvatarEditor';
 
 export * from './terminal/XTerm';
 
+export * from './avatars/UserAvatar';
+
 export * from './blockhub/KeyValue';
 export * from './blockhub/BlockhubGrid';
 export * from './blockhub/BlockhubTile';
