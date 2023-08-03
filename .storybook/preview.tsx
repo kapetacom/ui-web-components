@@ -14,7 +14,6 @@ configure({
     disableErrorBoundaries: true,
 });
 
-
 // Add your theme configurations to an object that you can
 // pull your desired theme from.
 const THEMES = {

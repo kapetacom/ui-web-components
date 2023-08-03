@@ -1,12 +1,13 @@
-import React from 'react';
-import { Box, Button, Stack, Tab, Tabs, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Button, CircularProgress, Stack, Tab, Tabs, Typography } from '@mui/material';
 import VerifiedIcon from '@mui/icons-material/VerifiedOutlined';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowDownIcon from '@mui/icons-material/ArrowDownward';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import styled from '@emotion/styled';
 
-import { Dependency, AssetDisplay, AssetVersionInfo, CoreTypes } from './types';
-import { BlockhubStats, BlockhubTile, DependencyKindLabel, coreNames } from './BlockhubTile';
+import { AssetDisplay, AssetFetcher, AssetVersionInfo, CoreTypes, Dependency } from './types';
+import { BlockhubStats, BlockhubTile, coreNames, DependencyKindLabel } from './BlockhubTile';
 import { parseKapetaUri } from '@kapeta/nodejs-utils';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import { isPublic, renderArtifact, renderDatetime, renderDuration, renderRepository } from './asset-helpers';
@@ -15,7 +16,11 @@ import { VersionGraph } from './Versions';
 import { AssetKindIcon, AssetKindIconText } from '../icons/AssetIcon';
 
 import useSWR from 'swr';
-import { AssetFetcher } from './types';
+import { showToasty, ToastType } from '../toast/ToastComponent';
+import { AssetService, InstanceService } from '@kapeta/ui-web-context';
+import { useAsync } from 'react-use';
+import { useDesktop } from '../utils/desktop';
+import { AssetInstallButton, InstallerService } from './AssetInstallButton';
 
 const KapetaTab = styled(Tab)({
     maxWidth: '214px',
@@ -72,7 +77,8 @@ const AutoLoadingTile = (props: { asset: Dependency; fetcher: AssetFetcher }) =>
 
 export interface BlockhubDetailsProps {
     asset: AssetDisplay;
-    fetcher: AssetFetcher;
+    service?: InstallerService;
+    fetcher?: AssetFetcher;
     versionInfo: AssetVersionInfo;
     tabId?: 'general' | 'dependencies' | 'versions' | string;
     onTabChange: (tabId: 'general' | 'dependencies' | 'versions') => void;
@@ -194,10 +200,7 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
                     <AssetKindIcon size={152} asset={props.asset.content} />
                 </Box>
 
-                {/* @ts-ignore */}
-                <Button variant="contained" color="tertiary">
-                    Get this {coreNames[props.asset.content.kind] || 'Asset type'} <ArrowDownIcon />
-                </Button>
+                <AssetInstallButton service={props.service} asset={props.asset} type={'button'} />
 
                 {/* Labels + stats */}
                 <Stack

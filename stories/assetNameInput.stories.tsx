@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { AssetNameInput, AsyncValidatorFunction, FormContainer, FormContext, useFormContextField } from '../src';
+import { AssetNameInput, AsyncValidatorFunction, FormContainer, DesktopContext, useFormContextField } from '../src';
 
 export default {
     title: 'Asset Name Input',
@@ -11,7 +11,7 @@ const defaultState = {
 };
 
 const FormState = () => {
-    const context = useContext(FormContext);
+    const context = useContext(DesktopContext);
     return (
         <>
             <pre>{JSON.stringify(context.container?.context)}</pre>

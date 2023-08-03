@@ -22,7 +22,7 @@ export default [
                 name: packageJson.name,
                 generatedCode: 'es2015',
                 compact: false,
-            }
+            },
         ],
         plugins: [
             pegjs(),

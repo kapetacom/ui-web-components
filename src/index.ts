@@ -97,6 +97,7 @@ export * from './utils/async-utils';
 export * from './utils/hexagon';
 export * from './utils/rounding';
 export * from './utils/global-object';
+export * from './utils/desktop';
 
 export * from './special/Logo';
 export * from './special/Page';
@@ -112,13 +113,4 @@ export * from './terminal/XTerm';
 
 export * from './avatars/UserAvatar';
 
-export * from './blockhub/KeyValue';
-export * from './blockhub/BlockhubGrid';
-export * from './blockhub/BlockhubTile';
-export * from './blockhub/BlockhubSidebar';
-export * from './blockhub/BlockhubDetails';
-export * from './blockhub/asset-helpers';
-export * from './blockhub/AssetSortSelect';
-export * from './blockhub/AssetTypeFilter';
-export * from './blockhub/types';
-export * from './blockhub/Versions';
+export * from './blockhub/index';

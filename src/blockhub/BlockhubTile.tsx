@@ -1,55 +1,13 @@
-import React, { ReactElement, ReactNode, SyntheticEvent } from 'react';
-import { Box, Chip, Menu, MenuItem, Paper, Rating, Stack, Typography } from '@mui/material';
+import React, { ReactNode } from 'react';
+import { Box, Paper, Rating, Stack, Typography } from '@mui/material';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import MoreVert from '@mui/icons-material/MoreVert';
 import { Link } from 'react-router-dom';
 
 import { parseKapetaUri } from '@kapeta/nodejs-utils';
-import { AssetFetcher, AssetDisplay, CoreTypes } from './types';
+import { AssetDisplay, AssetFetcher, CoreTypes } from './types';
 import { AssetKindIconText } from '../icons/AssetIcon';
 
 import useSWR from 'swr';
-
-export interface BlockhubTileActionButtonProps {
-    label: string;
-    onClick: (evt: SyntheticEvent) => void;
-    icon?: ReactElement;
-    menuItems?: {
-        label: string;
-        onClick: (evt: SyntheticEvent) => void;
-    }[];
-    color?: 'primary' | 'secondary' | 'default';
-}
-
-export function BlockhubTileActionButton(props: BlockhubTileActionButtonProps) {
-    const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
-    const handleClose = () => setAnchorEl(null);
-    const openMenu = (e: SyntheticEvent) => props.menuItems && setAnchorEl(e.currentTarget);
-    const icon = props.icon || <MoreVert />;
-    const color = props.color || 'default';
-
-    return (
-        <div>
-            <Chip label={props.label} onDelete={openMenu} deleteIcon={icon} onClick={props.onClick} color={color} />
-
-            {props.menuItems ? (
-                <Menu open={!!anchorEl} anchorEl={anchorEl} onClose={handleClose}>
-                    {props.menuItems.map((item) => (
-                        <MenuItem
-                            onClick={(e) => {
-                                item.onClick(e);
-                                handleClose();
-                            }}
-                            key={item.label}
-                        >
-                            {item.label}
-                        </MenuItem>
-                    ))}
-                </Menu>
-            ) : null}
-        </div>
-    );
-}
 
 export function BlockhubStats(props: { stats: { rating?: number; downloads?: number } }) {
     return (
