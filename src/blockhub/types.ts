@@ -1,4 +1,4 @@
-import { SchemaKind } from '@kapeta/ui-web-types';
+import { Asset, SchemaKind } from '@kapeta/ui-web-types';
 
 export type AssetFetcher = (name: string, version: string) => Promise<AssetDisplay>;
 
