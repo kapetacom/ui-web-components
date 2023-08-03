@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import { AuthScope } from './scopes';
 import { Checkbox, Divider, FormControlLabel, List, ListItem } from '@mui/material';
@@ -53,8 +53,8 @@ export const AuthScopesList = ({ scopes, editable, onChange }: AuthScopesListPro
                 const enabledBecauseAllScopeIsEnabled = theAllScopeIsEnabled && !isAllScope;
 
                 return (
-                    <>
-                        <ListItem key={`scope_${ix}`} disablePadding>
+                    <Fragment key={`scope_${ix}`}>
+                        <ListItem disablePadding>
                             <FormControlLabel
                                 control={
                                     <Checkbox
@@ -76,7 +76,7 @@ export const AuthScopesList = ({ scopes, editable, onChange }: AuthScopesListPro
                             />
                         </ListItem>
                         {isAllScope && <Divider sx={{ my: 1.5 }} />}
-                    </>
+                    </Fragment>
                 );
             })}
         </List>

@@ -5,6 +5,7 @@ import React from 'react';
 import { FormFieldHandler } from '../../form/inputs/FormFieldHandler';
 import { AuthScope } from './scopes';
 import { Box, Divider, Typography } from '@mui/material';
+import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 
 type AuthScopesFieldProps = {
     name: string;
@@ -39,8 +40,25 @@ export const AuthScopesField = (props: AuthScopesFieldProps) => {
                 />
             </Box>
             <Divider orientation="vertical" flexItem sx={{ mx: 3 }} />
-            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <Typography variant="subtitle2" sx={{ mb: 1, pt: 3 }}>
+            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <Box
+                    sx={{
+                        my: 1,
+                        width: 82,
+                        height: 82,
+                        borderRadius: '100%',
+                        border: '2px solid',
+                        borderColor: 'primary.main',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                    }}
+                >
+                    <BadgeOutlinedIcon fontSize="large" />
+                </Box>
+
+                <Typography variant="subtitle2" sx={{ mt: 3, mb: 1 }}>
                     Permissions
                 </Typography>
                 <Typography variant="body2">
