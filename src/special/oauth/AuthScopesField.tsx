@@ -2,21 +2,19 @@ import { AuthScopesList } from './AuthScopesList';
 
 import React from 'react';
 
-import './AuthScopesField.less';
-import { FormElementContainer } from '../../form/inputs/FormElementContainer';
 import { FormFieldHandler } from '../../form/inputs/FormFieldHandler';
 import { AuthScope } from './scopes';
+import { Box, Divider, Typography } from '@mui/material';
 
-interface Props {
+type AuthScopesFieldProps = {
     name: string;
     scopes: AuthScope[];
-    label?: string;
-}
+};
 
-export const AuthScopesField = (props: Props) => {
+export const AuthScopesField = (props: AuthScopesFieldProps) => {
     return (
-        <FormElementContainer label={props.label} focused={false} hasValue={true} touched={false} errorMessage={''}>
-            <div className={'auth-scopes-field'}>
+        <Box sx={{ display: 'flex', flexDirection: 'row', py: 1, px: 3 }}>
+            <Box sx={{ pr: 6 }}>
                 <FormFieldHandler
                     name={props.name}
                     component={(fieldProps) => {
@@ -39,7 +37,18 @@ export const AuthScopesField = (props: Props) => {
                         );
                     }}
                 />
-            </div>
-        </FormElementContainer>
+            </Box>
+            <Divider orientation="vertical" flexItem sx={{ mx: 3 }} />
+            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <Typography variant="subtitle2" sx={{ mb: 1, pt: 3 }}>
+                    Permissions
+                </Typography>
+                <Typography variant="body2">
+                    A members access is controlled by permissions. A permission is the ability to perform a specific
+                    action. For example, the ability to delete an issue is a permission. With Full access the invited
+                    member will be able to perform all actions.
+                </Typography>
+            </Box>
+        </Box>
     );
 };
