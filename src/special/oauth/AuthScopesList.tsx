@@ -1,83 +1,84 @@
 import React from 'react';
 
-import './AuthScopesList.less';
-import { toClass } from '@kapeta/ui-web-utils';
 import { AuthScope } from './scopes';
+import { Checkbox, Divider, FormControlLabel, List, ListItem } from '@mui/material';
 
-interface Props {
+/**
+ * Determines if a scope is enabled due to a wildcard scope.
+ *
+ * Examples:
+ * - `'*'` enables all scopes.
+ * - `'identity:*'` enables all identity scopes.
+ * - `'identity:read'` enables only the 'identity:read' scope.
+ *
+ * @param {string} scope The scope to check.
+ * @returns {boolean} Whether the scope is enabled
+ */
+function isScopeEnabledDueToWildcard(scope: AuthScope, scopes: AuthScope[]): boolean {
+    // Ignore the '*' scope itself, as it is not enabled due to a wildcard.
+    if (scope.id === '*') {
+        return false;
+    }
+
+    // If the '*' scope is enabled, all scopes are enabled.
+    if (scopes.some((s) => s.id === '*')) {
+        return true;
+    }
+
+    // Check if any of the scopes ends with '*' and if so, whether the scope starts with the same prefix.
+    return scopes.some((s) => {
+        if (s.id.endsWith('*')) {
+            const prefix = s.id.slice(0, -1); // Remove the '*' at the end.
+            return s.id.startsWith(prefix);
+        }
+        return false;
+    });
+}
+
+type AuthScopesListProps = {
     scopes: AuthScope[];
     editable?: boolean;
     onChange?: (scopes: AuthScope[]) => void;
-}
+};
 
-export const AuthScopesList = (props: Props) => {
-    const editable = !!props.editable;
-    const containerClass = toClass({
-        'auth-scopes-list': true,
-        editable: editable,
-    });
-
-    const enabledScopes = props.scopes.filter((s) => s.enabled).map((s) => s.id);
-
-    /**
-     * Determines if a scope is enabled as a consequence of other enabled scopes
-     * E.g. that ends in *
-     * @param scope
-     */
-    function isScopeEnabled(scope: string) {
-        if (scope === '*') {
-            return false;
-        }
-
-        if (enabledScopes.indexOf('*') > -1) {
-            return true;
-        }
-
-        return enabledScopes.some((enabledScope) => {
-            if (enabledScope !== scope && enabledScope.endsWith('*')) {
-                return scope.startsWith(enabledScope.substring(0, enabledScope.length - 1));
-            }
-            return false;
-        });
-    }
+export const AuthScopesList = ({ scopes, editable, onChange }: AuthScopesListProps) => {
+    const enabledScopes = scopes.filter((s) => s.enabled);
+    const theAllScopeIsEnabled = enabledScopes.some((s) => s.id === '*');
 
     return (
-        <ul className={containerClass}>
-            {props.scopes.map((scope, ix) => {
-                const scopeEnabled = isScopeEnabled(scope.id);
-                const enabled = scope.enabled || scopeEnabled;
-                const elementClass = toClass({
-                    enabled: enabled,
-                    'enabled-by-scope': scopeEnabled,
-                });
-
-                const iconClass = toClass({
-                    'fa icon': true,
-                    'fa-check-circle': enabled,
-                    'fa-times-circle': !enabled,
-                });
+        <List disablePadding sx={{ display: 'inline-block' }}>
+            {scopes.map((scope, ix) => {
+                const isEnabled = scope.enabled || isScopeEnabledDueToWildcard(scope, enabledScopes);
+                const isAllScope = scope.id === '*';
+                const enabledBecauseAllScopeIsEnabled = theAllScopeIsEnabled && !isAllScope;
 
                 return (
-                    <li
-                        key={`scope_${ix}`}
-                        className={elementClass}
-                        onClick={() => {
-                            if (!editable || !props.onChange) {
-                                return;
-                            }
-
-                            scope.enabled = !enabled;
-                            props.onChange([...props.scopes]);
-                        }}
-                    >
-                        <i className={iconClass} />
-                        <div className={'text'}>
-                            <span className={'name'}>{scope.name}</span>
-                            <span className={'id'}>{scope.id}</span>
-                        </div>
-                    </li>
+                    <>
+                        <ListItem key={`scope_${ix}`} disablePadding>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        onChange={({ target: { checked } }) => {
+                                            if (!onChange) {
+                                                return;
+                                            }
+                                            onChange([
+                                                ...scopes.filter((s) => s.id !== scope.id),
+                                                { ...scope, enabled: checked },
+                                            ]);
+                                        }}
+                                        sx={{ ml: 1 }}
+                                    />
+                                }
+                                checked={isEnabled}
+                                label={scope.name}
+                                disabled={!editable || enabledBecauseAllScopeIsEnabled}
+                            />
+                        </ListItem>
+                        {isAllScope && <Divider sx={{ my: 1.5 }} />}
+                    </>
                 );
             })}
-        </ul>
+        </List>
     );
 };
