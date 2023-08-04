@@ -8,10 +8,10 @@ const sortingOptions = {
     lastModified: 'Least recent',
     'content.metadata.title': 'Name A-Z',
     '-content.metadata.title': 'Name Z-A',
-    downloads: 'Most downloaded',
-    '-downloads': 'Least downloaded',
-    rating: 'Highest rating',
-    '-rating': 'Lowest rating',
+    '-downloadCount': 'Most downloaded',
+    downloadCount: 'Least downloaded',
+    '-rating': 'Highest rating',
+    rating: 'Lowest rating',
 };
 
 export type Sorting = keyof typeof sortingOptions;

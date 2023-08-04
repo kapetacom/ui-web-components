@@ -79,7 +79,7 @@ export interface BlockhubDetailsProps {
     asset: AssetDisplay;
     service?: InstallerService;
     fetcher?: AssetFetcher;
-    versionInfo: AssetVersionInfo;
+    versionInfo?: AssetVersionInfo;
     tabId?: 'general' | 'dependencies' | 'versions' | string;
     onTabChange: (tabId: 'general' | 'dependencies' | 'versions') => void;
     onBackAction?: () => void;
@@ -91,13 +91,13 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
 
     return (
         <Stack direction={'row'} alignItems={'stretch'} sx={{ minHeight: '100%', width: '100%' }}>
-            <Box flexBasis={120} p={3}>
+            <Box p={3} position={'fixed'}>
                 <Button color="inherit" onClick={props.onBackAction}>
                     <ArrowBack />
                     Back
                 </Button>
             </Box>
-
+            <Box flexBasis={120} p={3} />
             <Stack direction="row" sx={{ p: 2, pt: 8 }} gap={2}>
                 <VerifiedIcon sx={{ width: '35px', height: '35px' }} color="secondary" />
 
@@ -146,7 +146,7 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
                             value={'dependencies'}
                             label={[props.asset.dependencies?.length || '', 'Dependencies'].filter(Boolean).join(' ')}
                         />
-                        <KapetaTab value={'versions'} label={'Versions'} />
+                        {props.versionInfo && <KapetaTab value={'versions'} label={'Versions'} />}
                     </Tabs>
 
                     <TabContainer open={currentTab === 'general'}>
@@ -182,8 +182,7 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
                     )}
                 </Box>
             </Stack>
-            <Box flexBasis={40} flexGrow={1} flexShrink={0} maxWidth={210} />
-
+            <Box flexBasis={40} flexGrow={1} flexShrink={0} />
             <Stack
                 direction="column"
                 sx={{ backgroundColor: '#F8F8F8', width: '465px', minHeight: '100%', p: 8 }}

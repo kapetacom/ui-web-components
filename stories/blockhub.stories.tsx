@@ -12,31 +12,32 @@ import {
 } from '@mui/material';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import { BlockhubTile, DependencyKindLabel } from '../src/blockhub/BlockhubTile';
-import { BlockhubGrid } from '../src/blockhub/BlockhubGrid';
+import { BlockhubGridContainer } from '../src/blockhub/BlockhubGridContainer';
 import { BlockhubSidebar } from '../src/blockhub/BlockhubSidebar';
 import { BlockhubDetails } from '../src/blockhub/BlockhubDetails';
 
 import {
+    assetFetcher,
     Assets,
     BlockGroupAsset,
-    FrontendBlockTypeAsset,
     DeploymentAsset,
     DeploymentTargetAsset,
     FrontendBlockAsset,
+    FrontendBlockTypeAsset,
     LanguageTargetAsset,
     PlanAsset,
     ProviderInternalAsset,
     ProviderOperatorAsset,
     ServiceBlockAsset,
-    VersionInfo,
-    assetFetcher,
     ServiceBlockTypeAsset,
+    VersionInfo,
 } from './blockhub.data';
 import { AssetCoreDisplay, AssetDisplay, AssetSimpleDisplay, CoreTypes } from '../src/blockhub/types';
-import { AssetKindIcon } from '../src/icons/AssetIcon';
 import { AssetInstallButton, InstallerService } from '../src/blockhub/AssetInstallButton';
 import { BlockhubTileActionButton } from '../src/blockhub/BlockhubTileActionButton';
 import { DesktopContainer } from '../src';
+import { BlockhubModal } from '../src/blockhub/BlockhubModal';
+import { Blockhub, BlockhubMode } from '../src/blockhub/Blockhub';
 
 const assetMapper = (name: string): AssetSimpleDisplay | AssetCoreDisplay => {
     if (name.startsWith('core/')) {
@@ -76,33 +77,6 @@ function getRelated(asset: AssetDisplay) {
         dependants,
     };
 }
-
-export default {
-    title: 'Blockhub',
-};
-
-export const TileButtons = () => {
-    return (
-        <>
-            <div style={{ padding: '5px' }}>
-                <BlockhubTileActionButton
-                    label="Install"
-                    onClick={async () => {
-                        await new Promise((resolve) => setTimeout(resolve, 4000));
-                    }}
-                />
-            </div>
-            <div style={{ padding: '5px' }}>
-                <BlockhubTileActionButton
-                    label="Navigate"
-                    onClick={() => {
-                        console.log('navigate');
-                    }}
-                />
-            </div>
-        </>
-    );
-};
 
 const createInstaller = () => {
     const asset = {
@@ -156,7 +130,264 @@ const createInstaller = () => {
     };
 };
 
-export const InstallButtons = () => {
+export default {
+    title: 'Blockhub',
+};
+
+/** GRID VIEWS **/
+
+export const PageView = () => {
+    const { asset, installerService, installerServiceExists } = createInstaller();
+
+    return (
+        <Blockhub
+            mode={BlockhubMode.PAGE}
+            fetcher={assetFetcher}
+            installerService={installerService}
+            assets={{
+                loading: false,
+                value: Assets,
+            }}
+        />
+    );
+};
+
+export const PageViewLoading = () => {
+    const { asset, installerService, installerServiceExists } = createInstaller();
+    return (
+        <Blockhub
+            mode={BlockhubMode.PAGE}
+            fetcher={assetFetcher}
+            installerService={installerService}
+            assets={{
+                loading: true,
+            }}
+        />
+    );
+};
+
+export const PageViewEmpty = () => {
+    const { asset, installerService, installerServiceExists } = createInstaller();
+    return (
+        <Blockhub
+            mode={BlockhubMode.PAGE}
+            fetcher={assetFetcher}
+            installerService={installerService}
+            assets={{
+                loading: false,
+            }}
+        />
+    );
+};
+
+export const ModalStandalone = () => {
+    const { asset, installerService, installerServiceExists } = createInstaller();
+    return (
+        <DesktopContainer version={'1.2.3'}>
+            <BlockhubModal
+                fetcher={assetFetcher}
+                installerService={installerService}
+                assets={{
+                    loading: false,
+                    value: Assets,
+                }}
+                open={true}
+                onClose={() => {}}
+            />
+        </DesktopContainer>
+    );
+};
+
+export const ModalPlan = () => {
+    const { asset, installerService, installerServiceExists } = createInstaller();
+    return (
+        <DesktopContainer version={'1.2.3'}>
+            <BlockhubModal
+                plan={PlanAsset}
+                fetcher={assetFetcher}
+                installerService={installerService}
+                assets={{
+                    loading: false,
+                    value: Assets,
+                }}
+                open={true}
+                onClose={() => {}}
+            />
+        </DesktopContainer>
+    );
+};
+
+/** DETAIL VIEWS **/
+
+export const DetailBlockType = () => {
+    const [currentTab, setCurrentTab] = React.useState('general');
+    return (
+        <BlockhubDetails
+            asset={FrontendBlockTypeAsset}
+            versionInfo={VersionInfo}
+            fetcher={assetFetcher}
+            {...getRelated(FrontendBlockTypeAsset)}
+            tabId={currentTab}
+            onTabChange={(tabId) => setCurrentTab(tabId)}
+        />
+    );
+};
+
+export const DetailLanguageTargetDesktop = () => {
+    const [currentTab, setCurrentTab] = React.useState('general');
+    const { installerService } = createInstaller();
+    return (
+        <DesktopContainer version={'1.2.3'}>
+            <BlockhubDetails
+                asset={LanguageTargetAsset}
+                versionInfo={VersionInfo}
+                service={installerService}
+                fetcher={assetFetcher}
+                {...getRelated(LanguageTargetAsset)}
+                tabId={currentTab}
+                onTabChange={(tabId) => setCurrentTab(tabId)}
+            />
+        </DesktopContainer>
+    );
+};
+
+export const DetailDeploymentTarget = () => {
+    const [currentTab, setCurrentTab] = React.useState('general');
+    return (
+        <BlockhubDetails
+            asset={DeploymentTargetAsset}
+            versionInfo={VersionInfo}
+            fetcher={assetFetcher}
+            {...getRelated(DeploymentTargetAsset)}
+            tabId={currentTab}
+            onTabChange={(tabId) => setCurrentTab(tabId)}
+        />
+    );
+};
+
+export const DetailProviderOperator = () => {
+    const [currentTab, setCurrentTab] = React.useState('general');
+    return (
+        <BlockhubDetails
+            asset={ProviderOperatorAsset}
+            versionInfo={VersionInfo}
+            fetcher={assetFetcher}
+            {...getRelated(ProviderOperatorAsset)}
+            tabId={currentTab}
+            onTabChange={(tabId) => setCurrentTab(tabId)}
+        />
+    );
+};
+
+export const DetailProviderInternal = () => {
+    const [currentTab, setCurrentTab] = React.useState('general');
+    return (
+        <BlockhubDetails
+            asset={ProviderInternalAsset}
+            versionInfo={VersionInfo}
+            fetcher={assetFetcher}
+            {...getRelated(ProviderInternalAsset)}
+            tabId={currentTab}
+            onTabChange={(tabId) => setCurrentTab(tabId)}
+        />
+    );
+};
+
+export const DetailBlockGroup = () => {
+    const [currentTab, setCurrentTab] = React.useState('general');
+    return (
+        <BlockhubDetails
+            asset={BlockGroupAsset}
+            versionInfo={VersionInfo}
+            fetcher={assetFetcher}
+            {...getRelated(BlockGroupAsset)}
+            tabId={currentTab}
+            onTabChange={(tabId) => setCurrentTab(tabId)}
+        />
+    );
+};
+
+export const DetailPlan = () => {
+    const [currentTab, setCurrentTab] = React.useState('general');
+    return (
+        <BlockhubDetails
+            asset={PlanAsset}
+            versionInfo={VersionInfo}
+            fetcher={assetFetcher}
+            {...getRelated(PlanAsset)}
+            tabId={currentTab}
+            onTabChange={(tabId) => setCurrentTab(tabId)}
+        />
+    );
+};
+
+export const DetailDeployment = () => {
+    const [currentTab, setCurrentTab] = React.useState('general');
+    return (
+        <BlockhubDetails
+            asset={DeploymentAsset}
+            versionInfo={VersionInfo}
+            fetcher={assetFetcher}
+            {...getRelated(DeploymentAsset)}
+            tabId={currentTab}
+            onTabChange={(tabId) => setCurrentTab(tabId)}
+        />
+    );
+};
+
+export const DetailFrontendBlock = () => {
+    const [currentTab, setCurrentTab] = React.useState('general');
+    return (
+        <BlockhubDetails
+            asset={FrontendBlockAsset}
+            versionInfo={VersionInfo}
+            fetcher={assetFetcher}
+            {...getRelated(FrontendBlockAsset)}
+            tabId={currentTab}
+            onTabChange={(tabId) => setCurrentTab(tabId)}
+        />
+    );
+};
+
+export const DetailServiceBlock = () => {
+    const [currentTab, setCurrentTab] = React.useState('general');
+    return (
+        <BlockhubDetails
+            asset={ServiceBlockAsset}
+            versionInfo={VersionInfo}
+            fetcher={assetFetcher}
+            {...getRelated(ServiceBlockAsset)}
+            tabId={currentTab}
+            onTabChange={(tabId) => setCurrentTab(tabId)}
+        />
+    );
+};
+
+/** HELPERS **/
+export const HelperTileButtons = () => {
+    return (
+        <>
+            <div style={{ padding: '5px' }}>
+                <BlockhubTileActionButton
+                    label="Install"
+                    onClick={async () => {
+                        await new Promise((resolve) => setTimeout(resolve, 4000));
+                    }}
+                />
+            </div>
+            <div style={{ padding: '5px' }}>
+                <BlockhubTileActionButton
+                    label="Navigate"
+                    onClick={() => {
+                        console.log('navigate');
+                    }}
+                />
+            </div>
+        </>
+    );
+};
+
+export const HelperInstallButtons = () => {
     const { asset, installerService, installerServiceExists } = createInstaller();
 
     return (
@@ -167,6 +398,9 @@ export const InstallButtons = () => {
                     <AssetInstallButton service={installerService} asset={FrontendBlockTypeAsset} type={'icon'} />
                 </div>
                 <div style={{ padding: '5px' }}>
+                    <AssetInstallButton service={installerService} asset={FrontendBlockTypeAsset} type={'chip'} />
+                </div>
+                <div style={{ padding: '5px' }}>
                     <AssetInstallButton service={installerService} asset={FrontendBlockTypeAsset} type={'button'} />
                 </div>
             </div>
@@ -175,6 +409,9 @@ export const InstallButtons = () => {
                     <h3>Desktop Not Installed</h3>
                     <div style={{ padding: '5px' }}>
                         <AssetInstallButton service={installerService} asset={FrontendBlockTypeAsset} type={'icon'} />
+                    </div>
+                    <div style={{ padding: '5px' }}>
+                        <AssetInstallButton service={installerService} asset={FrontendBlockTypeAsset} type={'chip'} />
                     </div>
                     <div style={{ padding: '5px' }}>
                         <AssetInstallButton service={installerService} asset={FrontendBlockTypeAsset} type={'button'} />
@@ -193,6 +430,13 @@ export const InstallButtons = () => {
                         <AssetInstallButton
                             service={installerServiceExists}
                             asset={ServiceBlockTypeAsset}
+                            type={'chip'}
+                        />
+                    </div>
+                    <div style={{ padding: '5px' }}>
+                        <AssetInstallButton
+                            service={installerServiceExists}
+                            asset={ServiceBlockTypeAsset}
                             type={'button'}
                         />
                     </div>
@@ -202,7 +446,7 @@ export const InstallButtons = () => {
     );
 };
 
-export const CardTypes = () => {
+export const HelperTiles = () => {
     const props = {
         title: 'ChatGPT',
         subtitle: 'OpenAI',
@@ -297,283 +541,5 @@ export const CardTypes = () => {
                 />
             </Stack>
         </div>
-    );
-};
-
-export const BlockhubView = () => {
-    const { asset, installerService, installerServiceExists } = createInstaller();
-
-    return (
-        <Box
-            sx={{
-                display: 'flex',
-                '& > .BlockhubGrid': {
-                    boxSizing: 'content-box',
-                    p: 2,
-                },
-            }}
-        >
-            <BlockhubSidebar>
-                <List subheader={<ListSubheader>Blockhub</ListSubheader>}>
-                    <ListItem>
-                        <ListItemButton disabled>
-                            <ListItemIcon>
-                                <CheckCircleOutline />
-                            </ListItemIcon>
-                            <ListItemText>Installed assets</ListItemText>
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-            </BlockhubSidebar>
-            <BlockhubGrid
-                assets={{
-                    loading: false,
-                    value: Assets,
-                }}
-                renderAsset={(asset) => (
-                    <BlockhubTile
-                        title={asset.content.metadata.title!}
-                        subtitle={asset.content.metadata.title!}
-                        description={asset.content.metadata.description!}
-                        icon={<AssetKindIcon asset={asset.content} size={64} />}
-                        // AssetStats
-                        stats={{
-                            downloads: 1231,
-                            rating: 3,
-                        }}
-                        labels={[
-                            <DependencyKindLabel
-                                fetcher={assetFetcher}
-                                key={'kind'}
-                                dependency={{ name: asset.content.kind }}
-                            />,
-                            ...(asset.dependencies?.map((dep) =>
-                                dep.type === 'Language target' ? (
-                                    <DependencyKindLabel
-                                        fetcher={assetFetcher}
-                                        key={'language-target'}
-                                        dependency={{ name: dep.name }}
-                                    />
-                                ) : null
-                            ) || []),
-                        ]}
-                        // selected
-                        href={`/${asset.content.metadata.name}/${asset.version}`}
-                        actionButton={<AssetInstallButton service={installerService} asset={asset} type={'icon'} />}
-                    />
-                )}
-            />
-        </Box>
-    );
-};
-
-export const BlockhubViewLoading = () => {
-    return (
-        <Box
-            sx={{
-                display: 'flex',
-                '& > .BlockhubGrid': {
-                    flexGrow: 1,
-                    p: 3,
-                },
-            }}
-        >
-            <BlockhubSidebar>
-                <List subheader={<ListSubheader>Blockhub</ListSubheader>}>
-                    <ListItem>
-                        <ListItemButton disabled>
-                            <ListItemIcon>
-                                <CheckCircleOutline />
-                            </ListItemIcon>
-                            <ListItemText>Installed assets</ListItemText>
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-            </BlockhubSidebar>
-            <BlockhubGrid
-                assets={{
-                    loading: true,
-                }}
-                renderAsset={() => null}
-            />
-        </Box>
-    );
-};
-
-export const BlockhubViewEmpty = () => {
-    return (
-        <Box
-            sx={{
-                display: 'flex',
-                '& > .BlockhubGrid': {
-                    flexGrow: 1,
-                    p: 3,
-                },
-            }}
-        >
-            <BlockhubSidebar>
-                <List subheader={<ListSubheader>Blockhub</ListSubheader>}>
-                    <ListItem>
-                        <ListItemButton disabled>
-                            <ListItemIcon>
-                                <CheckCircleOutline />
-                            </ListItemIcon>
-                            <ListItemText>Installed assets</ListItemText>
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-            </BlockhubSidebar>
-            <BlockhubGrid
-                assets={{
-                    loading: false,
-                    value: [],
-                }}
-                renderAsset={() => null}
-            />
-        </Box>
-    );
-};
-
-export const BlockTypeView = () => {
-    const [currentTab, setCurrentTab] = React.useState('general');
-    return (
-        <BlockhubDetails
-            asset={FrontendBlockTypeAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(FrontendBlockTypeAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
-    );
-};
-
-export const LanguageTargetViewInDesktop = () => {
-    const [currentTab, setCurrentTab] = React.useState('general');
-    const { installerService } = createInstaller();
-    return (
-        <DesktopContainer version={'1.2.3'}>
-            <BlockhubDetails
-                asset={LanguageTargetAsset}
-                versionInfo={VersionInfo}
-                service={installerService}
-                fetcher={assetFetcher}
-                {...getRelated(LanguageTargetAsset)}
-                tabId={currentTab}
-                onTabChange={(tabId) => setCurrentTab(tabId)}
-            />
-        </DesktopContainer>
-    );
-};
-
-export const DeploymentTargetView = () => {
-    const [currentTab, setCurrentTab] = React.useState('general');
-    return (
-        <BlockhubDetails
-            asset={DeploymentTargetAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(DeploymentTargetAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
-    );
-};
-
-export const ProviderOperatorView = () => {
-    const [currentTab, setCurrentTab] = React.useState('general');
-    return (
-        <BlockhubDetails
-            asset={ProviderOperatorAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(ProviderOperatorAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
-    );
-};
-
-export const ProviderInternalView = () => {
-    const [currentTab, setCurrentTab] = React.useState('general');
-    return (
-        <BlockhubDetails
-            asset={ProviderInternalAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(ProviderInternalAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
-    );
-};
-
-export const BlockGroupView = () => {
-    const [currentTab, setCurrentTab] = React.useState('general');
-    return (
-        <BlockhubDetails
-            asset={BlockGroupAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(BlockGroupAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
-    );
-};
-
-export const PlanView = () => {
-    const [currentTab, setCurrentTab] = React.useState('general');
-    return (
-        <BlockhubDetails
-            asset={PlanAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(PlanAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
-    );
-};
-
-export const DeploymentView = () => {
-    const [currentTab, setCurrentTab] = React.useState('general');
-    return (
-        <BlockhubDetails
-            asset={DeploymentAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(DeploymentAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
-    );
-};
-
-export const FrontendBlockView = () => {
-    const [currentTab, setCurrentTab] = React.useState('general');
-    return (
-        <BlockhubDetails
-            asset={FrontendBlockAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(FrontendBlockAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
-    );
-};
-
-export const ServiceBlockView = () => {
-    const [currentTab, setCurrentTab] = React.useState('general');
-    return (
-        <BlockhubDetails
-            asset={ServiceBlockAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(ServiceBlockAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
     );
 };

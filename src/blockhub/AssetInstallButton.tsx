@@ -1,18 +1,16 @@
 import { Box, Button, CircularProgress, Fab, Tooltip } from '@mui/material';
 import { showToasty, ToastType } from '../toast/ToastComponent';
-import React, { useState } from 'react';
+import React from 'react';
 import { useDesktop, useDesktopTask } from '../utils/desktop';
 import { AssetService, TaskStatus } from '@kapeta/ui-web-context';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { coreNames } from './BlockhubTile';
-import ArrowDownIcon from '@mui/icons-material/ArrowDownward';
-import InstallDesktopIcon from '@mui/icons-material/InstallDesktop';
 import DownloadingIcon from '@mui/icons-material/Downloading';
 
 import { AssetDisplay } from './types';
 import { Asset } from '@kapeta/ui-web-types';
-import useSWR, { useSWRConfig } from 'swr';
-import { parseKapetaUri } from '@kapeta/nodejs-utils';
+import useSWR from 'swr';
+import { ArrowDownward, DownloadDone, InstallDesktop } from '@mui/icons-material';
+import { grey } from '@mui/material/colors';
 
 export interface InstallerService {
     install(assetRef: string): Promise<Asset>;
@@ -22,7 +20,7 @@ export interface InstallerService {
 
 interface Props {
     asset: AssetDisplay;
-    type: 'icon' | 'button';
+    type: 'icon' | 'button' | 'chip';
     service?: InstallerService;
 }
 
@@ -70,19 +68,40 @@ export const AssetInstallButton = (props: Props) => {
 
     const isProcessing = !installTask.ready || installTask.active || installedAsset.isLoading;
 
-    let icon = desktop ? installedAsset.data ? <CheckCircleIcon /> : <ArrowDownIcon /> : <InstallDesktopIcon />;
+    let icon = desktop ? installedAsset.data ? <DownloadDone /> : <ArrowDownward /> : <InstallDesktop />;
 
-    let text = desktop
+    let longText = desktop
         ? installedAsset.data
             ? 'Installed'
             : `Install ${coreNames[props.asset.content.kind] || 'asset'}`
         : 'Open desktop app to install';
+
+    let shortText: string | React.ReactNode | null = desktop ? (installedAsset.data ? 'Open' : `Get`) : '';
+
+    let chipBgColor = desktop ? (installedAsset.data ? 'primary.main' : `tertiary.main`) : grey[500];
+
+    let chipFgColor = desktop ? (installedAsset.data ? grey[100] : grey[100]) : grey[100];
+
     if (installedAsset.isLoading) {
-        text = 'Checking...';
+        longText = 'Checking...';
         icon = <DownloadingIcon />;
+        shortText = '...';
     }
 
-    const onClick = async () => {
+    if (isProcessing && props.type === 'chip') {
+        chipBgColor = 'transparent';
+        shortText = '';
+    }
+
+    const onClick = async (evt: React.MouseEvent<any>) => {
+        if (desktop && installedAsset.data) {
+            return;
+        }
+
+        console.log('Stopping propagation');
+        evt.stopPropagation();
+        evt.preventDefault();
+
         try {
             await assetService.install(assetRef);
         } catch (e) {
@@ -104,7 +123,7 @@ export const AssetInstallButton = (props: Props) => {
                     height: '68px',
                 }}
             >
-                <Tooltip title={text}>
+                <Tooltip title={longText}>
                     <span>
                         <Fab color={'primary'} onClick={onClick} size={'small'} disabled={isDisabled}>
                             {icon}
@@ -127,9 +146,50 @@ export const AssetInstallButton = (props: Props) => {
         );
     }
 
+    if (props.type === 'chip') {
+        return (
+            <Tooltip title={longText}>
+                <Box
+                    onClick={desktop ? onClick : null}
+                    sx={{
+                        display: 'inline-flex',
+                        borderRadius: '16px',
+                        justifyContent: 'center',
+                        boxSizing: 'border-box',
+                        padding: desktop ? '0 12px' : '4px',
+                        textAlign: 'center',
+                        fontSize: desktop ? '12px' : '10px',
+                        gap: '2px',
+                        bgcolor: chipBgColor,
+                        color: chipFgColor,
+                        fontWeight: 500,
+                        cursor: desktop ? 'pointer' : 'default',
+                        span: {
+                            display: 'block',
+                        },
+                        '.label': {
+                            lineHeight: '26px',
+                            marginRight: '2px',
+                        },
+                        '.MuiSvgIcon-root': {
+                            display: 'inline-block',
+                            fontSize: desktop ? '24px' : '20px',
+                        },
+                        '&:hover': {
+                            opacity: desktop ? 0.8 : 1,
+                        },
+                    }}
+                >
+                    {shortText && <span className={'label'}>{shortText}</span>}
+                    {isProcessing ? <CircularProgress size={18} /> : icon}
+                </Box>
+            </Tooltip>
+        );
+    }
+
     return (
         <Button variant="contained" disabled={isDisabled} onClick={onClick} endIcon={icon}>
-            {text}
+            {longText}
             {isProcessing && (
                 <CircularProgress
                     size={24}
