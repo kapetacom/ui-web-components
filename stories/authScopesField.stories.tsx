@@ -13,15 +13,52 @@ export default meta;
 type Story = StoryObj<typeof AuthScopesField>;
 
 const allScopes: AuthScope[] = [
-    { id: '*', name: 'All permissions' },
-    { id: 'identity:read', name: 'Identity Management Viewer' },
-    { id: 'identity:write', name: 'Identity Management Editor' },
-    { id: 'registry:read', name: 'Registry Viewer' },
-    { id: 'registry:write', name: 'Registry Editor' },
-    { id: 'deployment:read', name: 'Deployment Viewer' },
-    { id: 'deployment:write', name: 'Deployment Editor' },
-    { id: 'logging:read', name: 'Logging Viewer' },
-    { id: 'runtime:read', name: 'Runtime Statistics Viewer' },
+    {
+        id: '*',
+        name: 'Full access',
+        description:
+            'This scope grants all permissions that exist in the system and future permissions that may be added.',
+    },
+    {
+        id: 'https://auth.kapeta.com/scopes/identity:read',
+        name: 'Identity Management Viewer',
+        description: 'This scope grants read-only access to the identity management system.',
+    },
+    {
+        id: 'https://auth.kapeta.com/scopes/identity:write',
+        name: 'Identity Management Editor',
+        description: 'This scope grants write access to the identity management system.',
+    },
+    {
+        id: 'https://auth.kapeta.com/scopes/registry:read',
+        name: 'Registry Viewer',
+        description: 'This scope grants read-only access to the registry.',
+    },
+    {
+        id: 'https://auth.kapeta.com/scopes/registry:write',
+        name: 'Registry Editor',
+        description: 'This scope grants write access to the registry.',
+    },
+    {
+        id: 'https://auth.kapeta.com/scopes/deployment:read',
+        name: 'Deployment Viewer',
+        description: 'This scope grants read-only access to the deployment system.',
+    },
+    {
+        id: 'https://auth.kapeta.com/scopes/deployment:write',
+        name: 'Deployment Editor',
+        description: 'This scope grants write access to the deployment system.',
+    },
+    {
+        id: 'https://auth.kapeta.com/scopes/logging:read',
+        name: 'Logging Viewer',
+        description: 'This scope grants read-only access to the logging system.',
+    },
+    {
+        id: 'https://auth.kapeta.com/scopes/runtime:read',
+        name: 'Runtime Statistics Viewer',
+        description: 'This scope grants read-only access to the runtime statistics system.',
+    },
 ];
 
 const member = {
