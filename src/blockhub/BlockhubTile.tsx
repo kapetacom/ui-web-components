@@ -8,6 +8,7 @@ import { AssetDisplay, AssetFetcher, CoreTypes } from './types';
 import { AssetKindIconText } from '../icons/AssetIcon';
 
 import useSWR from 'swr';
+import { toClass } from '@kapeta/ui-web-utils';
 
 export function BlockhubStats(props: { stats: { rating?: number; downloads?: number } }) {
     return (
@@ -84,6 +85,7 @@ export interface BlockhubTileProps {
     labels?: React.ReactNode[];
 
     href?: string;
+    onClick?: () => void;
     selected?: boolean;
     // AssetStats
     stats?: {
@@ -93,102 +95,125 @@ export interface BlockhubTileProps {
 }
 
 export function BlockhubTile(props: BlockhubTileProps) {
+    const containerClass = toClass({
+        'blockhub-tile': true,
+        selected: props.selected,
+    });
     const link = (content: ReactNode) =>
         props.href ? (
-            <Link to={props.href} style={{ color: 'inherit', textDecoration: 'none' }}>
+            <Link
+                to={props.href}
+                style={{
+                    color: 'inherit',
+                    textDecoration: 'none',
+                    display: 'inline-block',
+                    width: '100%',
+                    height: '100%',
+                    boxSizing: 'border-box',
+                }}
+            >
                 {content}
             </Link>
         ) : (
-            content
+            <>{content}</>
         );
 
     return (
-        <Paper
-            sx={(theme) => ({
-                border: `1px solid ${theme.palette.divider}`,
-                '&.Selected': {
-                    border: `1px solid ${theme.palette.primary.main}`,
-                },
-            })}
-            className={['BlockhubTile', props.selected ? 'Selected' : ''].filter(Boolean).join(' ')}
-            elevation={0}
-        >
-            <Stack gap={2} justifyContent="space-between" p={2} sx={{ height: '100%', boxSizing: 'border-box' }}>
-                {/* Title group */}
-                <Stack direction={'row'} gap={2}>
-                    <div>{link(props.icon)}</div>
+        <div className={containerClass} onClick={props.onClick}>
+            {link(
+                <Paper
+                    sx={(theme) => ({
+                        width: '100%',
+                        height: '100%',
+                        boxSizing: 'border-box',
+                        border: `1px solid ${props.selected ? theme.palette.primary.main : theme.palette.divider}`,
+                    })}
+                    elevation={0}
+                >
+                    <Stack
+                        gap={2}
+                        justifyContent="space-between"
+                        p={2}
+                        sx={{ height: '100%', boxSizing: 'border-box' }}
+                    >
+                        {/* Title group */}
+                        <Stack direction={'row'} gap={2}>
+                            <div>{props.icon}</div>
 
-                    {/* Flexbox introduces a new initial value for min-width and min-height: auto. */}
-                    {/* To make the overflow hidden work, we need to reset it to zero */}
-                    <Stack flexGrow={1} minWidth={0}>
-                        <Stack direction={'row'} gap={1} alignItems={'center'} justifyContent={'space-between'}>
+                            {/* Flexbox introduces a new initial value for min-width and min-height: auto. */}
+                            {/* To make the overflow hidden work, we need to reset it to zero */}
+                            <Stack flexGrow={1} minWidth={0}>
+                                <Stack direction={'row'} gap={1} alignItems={'center'} justifyContent={'space-between'}>
+                                    <Typography
+                                        variant="h6"
+                                        component="div"
+                                        sx={{
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap',
+                                            flex: 1,
+                                        }}
+                                        title={props.title}
+                                    >
+                                        {props.title}
+                                    </Typography>
+
+                                    {props.actionButton}
+                                </Stack>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+                                >
+                                    {props.subtitle}
+                                </Typography>
+                            </Stack>
+                        </Stack>
+
+                        {/* Description group */}
+                        <Box
+                            sx={{
+                                // Make it take up whatever space is left
+                                flexGrow: 1,
+                                flexShrink: 1,
+                            }}
+                        >
                             <Typography
-                                variant="h6"
-                                component="div"
+                                variant="body2"
+                                color="text.secondary"
                                 sx={{
+                                    // Make it use up to 3 lines and truncate
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap',
+                                    // All browsers still use '-webkit' prefix
+                                    // https://css-tricks.com/almanac/properties/l/line-clamp/
+                                    display: '-webkit-box',
+                                    lineClamp: '3',
+                                    WebkitLineClamp: '3',
+                                    boxOrient: 'vertical',
+                                    WebkitBoxOrient: 'vertical',
                                 }}
-                                title={props.title}
                             >
-                                {link(props.title)}
+                                {props.description || 'No description'}
                             </Typography>
+                        </Box>
+                        {/* Footer group */}
 
-                            {props.actionButton}
-                        </Stack>
-                        <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-                        >
-                            {props.subtitle}
-                        </Typography>
-                    </Stack>
-                </Stack>
+                        <Stack direction={'row'} gap={2} justifyContent="space-between" alignItems={'flex-end'}>
+                            <Stack sx={{ fontSize: '12px' }} gap={'4px'}>
+                                {props.version ? (
+                                    <Box sx={{ textDecoration: 'underline', lineHeight: '166%' }}>{props.version}</Box>
+                                ) : null}
+                                <Stack className="labels" direction={'row'} gap="5px" alignItems={'center'}>
+                                    {props.labels}
+                                </Stack>
+                            </Stack>
 
-                {/* Description group */}
-                <Box
-                    sx={{
-                        // Make it take up whatever space is left
-                        flexGrow: 1,
-                        flexShrink: 1,
-                    }}
-                >
-                    <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{
-                            // Make it use up to 3 lines and truncate
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            // All browsers still use '-webkit' prefix
-                            // https://css-tricks.com/almanac/properties/l/line-clamp/
-                            display: '-webkit-box',
-                            lineClamp: '3',
-                            WebkitLineClamp: '3',
-                            boxOrient: 'vertical',
-                            WebkitBoxOrient: 'vertical',
-                        }}
-                    >
-                        {props.description || 'No description'}
-                    </Typography>
-                </Box>
-                {/* Footer group */}
-
-                <Stack direction={'row'} gap={2} justifyContent="space-between" alignItems={'flex-end'}>
-                    <Stack sx={{ fontSize: '12px' }} gap={'4px'}>
-                        {props.version ? (
-                            <Box sx={{ textDecoration: 'underline', lineHeight: '166%' }}>{props.version}</Box>
-                        ) : null}
-                        <Stack className="labels" direction={'row'} gap="5px" alignItems={'center'}>
-                            {props.labels}
+                            {props.stats ? <BlockhubStats stats={props.stats} /> : null}
                         </Stack>
                     </Stack>
-
-                    {props.stats ? <BlockhubStats stats={props.stats} /> : null}
-                </Stack>
-            </Stack>
-        </Paper>
+                </Paper>
+            )}
+        </div>
     );
 }
