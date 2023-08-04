@@ -39,9 +39,10 @@ type AuthScopesListProps = {
     scopes: AuthScope[];
     editable?: boolean;
     onChange?: (scopes: AuthScope[]) => void;
+    onHoverScope?: (scope: AuthScope) => void;
 };
 
-export const AuthScopesList = ({ scopes, editable, onChange }: AuthScopesListProps) => {
+export const AuthScopesList = ({ scopes, editable, onChange, onHoverScope }: AuthScopesListProps) => {
     const enabledScopes = scopes.filter((s) => s.enabled);
     const theAllScopeIsEnabled = enabledScopes.some((s) => s.id === '*');
 
@@ -54,7 +55,17 @@ export const AuthScopesList = ({ scopes, editable, onChange }: AuthScopesListPro
 
                 return (
                     <Fragment key={`scope_${ix}`}>
-                        <ListItem disablePadding>
+                        <ListItem
+                            disablePadding
+                            onMouseEnter={() => onHoverScope(scope)}
+                            onMouseLeave={() => onHoverScope(null)}
+                            sx={{
+                                borderRadius: 1,
+                                '&:hover': {
+                                    bgcolor: 'primary.states.hover',
+                                },
+                            }}
+                        >
                             <FormControlLabel
                                 control={
                                     <Checkbox
@@ -75,7 +86,7 @@ export const AuthScopesList = ({ scopes, editable, onChange }: AuthScopesListPro
                                 disabled={!editable || enabledBecauseAllScopeIsEnabled}
                             />
                         </ListItem>
-                        {isAllScope && <Divider sx={{ my: 1.5 }} />}
+                        {isAllScope && <Divider sx={{ my: 1.5, mr: 2 }} />}
                     </Fragment>
                 );
             })}

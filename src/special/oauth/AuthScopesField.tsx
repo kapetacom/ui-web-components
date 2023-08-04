@@ -1,6 +1,6 @@
 import { AuthScopesList } from './AuthScopesList';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import { FormFieldHandler } from '../../form/inputs/FormFieldHandler';
 import { AuthScope } from './scopes';
@@ -12,10 +12,31 @@ type AuthScopesFieldProps = {
     scopes: AuthScope[];
 };
 
+type ScopeExplanation = {
+    title: string;
+    description: string;
+};
+function getScopeExplanation(scope: AuthScope | null): ScopeExplanation {
+    if (scope === null) {
+        return {
+            title: 'What are permissions?',
+            description:
+                'A members access is controlled by permissions. A permission is the ability to perform a specific action. For example, the ability to delete an issue is a permission. With Full access the invited member will be able to perform all actions.',
+        };
+    }
+    return {
+        title: scope.name,
+        description: scope.description,
+    };
+}
+
 export const AuthScopesField = (props: AuthScopesFieldProps) => {
+    const [hoveredScope, setHoveredScope] = useState<AuthScope>(null);
+    const hoveredScopeExplanation = getScopeExplanation(hoveredScope);
+
     return (
         <Box sx={{ display: 'flex', flexDirection: 'row', py: 1, px: 3 }}>
-            <Box sx={{ pr: 6 }}>
+            <Box>
                 <FormFieldHandler
                     name={props.name}
                     component={(fieldProps) => {
@@ -34,6 +55,7 @@ export const AuthScopesField = (props: AuthScopesFieldProps) => {
                                         scopes.filter((scope) => scope.enabled).map((scope) => scope.id)
                                     );
                                 }}
+                                onHoverScope={setHoveredScope}
                             />
                         );
                     }}
@@ -43,29 +65,26 @@ export const AuthScopesField = (props: AuthScopesFieldProps) => {
             <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <Box
                     sx={{
-                        my: 1,
+                        // Only show the icon when no scope is hovered
+                        display: hoveredScope === null ? 'flex' : 'none',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
                         width: 82,
                         height: 82,
                         borderRadius: '100%',
                         border: '2px solid',
                         borderColor: 'primary.main',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        alignSelf: 'center',
+                        my: 1,
                     }}
                 >
                     <BadgeOutlinedIcon fontSize="large" />
                 </Box>
 
                 <Typography variant="subtitle2" sx={{ mt: 3, mb: 1 }}>
-                    Permissions
+                    {hoveredScopeExplanation.title}
                 </Typography>
-                <Typography variant="body2">
-                    A members access is controlled by permissions. A permission is the ability to perform a specific
-                    action. For example, the ability to delete an issue is a permission. With Full access the invited
-                    member will be able to perform all actions.
-                </Typography>
+                <Typography variant="body2">{hoveredScopeExplanation.description}</Typography>
             </Box>
         </Box>
     );
