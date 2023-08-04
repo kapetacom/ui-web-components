@@ -6,11 +6,7 @@ type FormAutocompleteProps<Option> = Omit<AutocompleteProps<Option>, 'onChange' 
     onChange?: (inputName: string, userInput: Option | null) => void;
 };
 
-export default function FormAutocomplete<Option>({
-    name,
-    onChange,
-    ...otherAutocompleteProps
-}: FormAutocompleteProps<Option>) {
+export function FormAutocomplete<Option>({ name, onChange, ...otherAutocompleteProps }: FormAutocompleteProps<Option>) {
     const formField = useFormContextField<Option | Option[] | null>(name, (value) => {
         formField.set(value);
     });

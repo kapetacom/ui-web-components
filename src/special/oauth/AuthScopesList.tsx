@@ -78,7 +78,12 @@ export const AuthScopesList = ({ scopes, editable, onChange, onHoverScope }: Aut
                                                 { ...scope, enabled: checked },
                                             ]);
                                         }}
-                                        sx={{ ml: 1 }}
+                                        sx={{
+                                            ml: 1,
+                                            '&:hover': {
+                                                bgcolor: 'transparent',
+                                            },
+                                        }}
                                     />
                                 }
                                 checked={isEnabled}
