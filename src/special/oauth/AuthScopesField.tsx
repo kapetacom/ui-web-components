@@ -36,7 +36,7 @@ export const AuthScopesField = (props: AuthScopesFieldProps) => {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'row', py: 1, px: 3 }}>
-            <Box sx={{ pr: 6 }}>
+            <Box>
                 <FormFieldHandler
                     name={props.name}
                     component={(fieldProps) => {
