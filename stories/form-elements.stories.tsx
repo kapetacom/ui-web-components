@@ -17,7 +17,7 @@ import {
     Dialog,
 } from '../src';
 import { Checkbox } from '../src/form/Checkbox';
-import FormAutocomplete from '../src/form/inputs/FormAutocomplete';
+import { FormAutocomplete } from '../src/form/inputs/FormAutocomplete';
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
 
