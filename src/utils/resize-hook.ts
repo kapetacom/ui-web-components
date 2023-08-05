@@ -1,11 +1,19 @@
-import { useEffect } from 'react';
+import {useEffect, useState} from 'react';
 
-export const useWindowResize = (cb: () => void, deps: any[]) => {
+export const useWindowResize = <T>(cb: () => T|null, deps: any[]):T|null => {
+    const [result, setResult] = useState(null);
+
+    function doCallback() {
+        setResult(cb());
+    }
+
     useEffect(() => {
-        cb();
-        window.addEventListener('resize', cb);
+        doCallback();
+        window.addEventListener('resize', doCallback);
         return () => {
-            window.removeEventListener('resize', cb);
+            window.removeEventListener('resize', doCallback);
         };
     }, deps);
+
+    return result;
 };

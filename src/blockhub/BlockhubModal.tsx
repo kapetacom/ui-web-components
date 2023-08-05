@@ -1,15 +1,15 @@
-import { Plan } from '@kapeta/schemas';
-import { Button, Dialog, DialogActions, DialogContent, IconButton, Stack, Typography } from '@mui/material';
+import {Plan} from '@kapeta/schemas';
+import {Button, Dialog, DialogActions, DialogContent, IconButton, Stack, Typography} from '@mui/material';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
-import { AsyncState } from 'react-use/lib/useAsync';
-import { AssetDisplay, AssetFetcher } from './types';
-import { Blockhub, BlockhubMode } from './Blockhub';
-import { InstallerService } from './AssetInstallButton';
-import { useWindowResize } from '../utils/resize-hook';
-import { BlockhubDetails } from './BlockhubDetails';
-import { Close } from '@mui/icons-material';
+import {AsyncState} from 'react-use/lib/useAsync';
+import {AssetDisplay, AssetFetcher} from './types';
+import {Blockhub, BlockhubCategory, BlockhubMode} from './Blockhub';
+import {InstallerService} from './AssetInstallButton';
+import {useWindowResize} from '../utils/resize-hook';
+import {BlockhubDetails} from './BlockhubDetails';
+import {Close} from '@mui/icons-material';
 
 interface Props {
     open: boolean;
@@ -17,12 +17,13 @@ interface Props {
     installerService: InstallerService;
     fetcher: AssetFetcher;
     assets: AsyncState<AssetDisplay[]>;
+    onFilterChange?: (category: BlockhubCategory) => void;
     onClose: () => void;
 }
 
 export const BlockhubModal = (props: Props) => {
     const [selection, setSelection] = useState<string[]>([]);
-    const [contentElement, setContentElement] = useState<HTMLDivElement>(null);
+
     const [currentAsset, setCurrentAsset] = useState<AssetDisplay>(null);
     const [currentAssetTab, setCurrentAssetTab] = useState<string>('general');
 
@@ -31,22 +32,26 @@ export const BlockhubModal = (props: Props) => {
         setCurrentAssetTab('general');
     };
 
-    useWindowResize(() => {
-        if (!props.open || !contentElement || !contentElement.firstElementChild) {
-            return;
+    const height = useWindowResize(() => {
+        if (!props.open) {
+            return null;
         }
-        const blockHubContainer = contentElement.firstElementChild as HTMLElement;
-        blockHubContainer.style.height = contentElement.offsetHeight + 'px';
-    }, [props.open, contentElement, contentElement?.firstElementChild]);
+        //We force a fixed height
+        return (window.innerHeight - 64) + 'px';
+    }, [props.open]);
 
     useEffect(() => {
-        if (!props.open) {
+        if (props.open) {
             resetState();
         }
     }, [props.open]);
 
     return (
-        <Dialog maxWidth={'xl'} fullWidth={true} open={props.open} onClose={props.onClose}>
+        <Dialog maxWidth={'xl'}
+                fullWidth={true}
+
+                open={props.open}
+                onClose={props.onClose}>
             <IconButton
                 sx={{
                     position: 'absolute',
@@ -56,12 +61,12 @@ export const BlockhubModal = (props: Props) => {
                 }}
                 onClick={props.onClose}
             >
-                <Close />
+                <Close/>
             </IconButton>
 
             <DialogContent
-                ref={setContentElement}
                 sx={{
+                    height,
                     padding: 0,
                     '.blockhub-main': {
                         paddingBottom: 0,
