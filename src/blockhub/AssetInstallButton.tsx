@@ -13,8 +13,7 @@ import { ArrowDownward, DownloadDone, InstallDesktop } from '@mui/icons-material
 import { grey } from '@mui/material/colors';
 
 export interface InstallerService {
-    install(assetRef: string): Promise<Asset>;
-
+    install(assetRef: string): Promise<void>;
     get(assetRef: string): Promise<Asset>;
 }
 
