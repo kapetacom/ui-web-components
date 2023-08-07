@@ -14,6 +14,7 @@ import { SimpleLoader } from '../helpers/SimpleLoader';
 export interface BlockhubGridProps {
     title?: string;
     tooltip?: ReactNode;
+    initialAssetTypeFilter?: AssetType;
     assets: AsyncState<AssetDisplay[]>;
     renderAsset: (asset: AssetDisplay) => React.ReactNode;
 }
@@ -35,7 +36,7 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 }));
 
 export function BlockhubGridContainer(props: BlockhubGridProps) {
-    const [assetTypeFilter, setAssetTypeFilter] = useState<AssetType>('ALL');
+    const [assetTypeFilter, setAssetTypeFilter] = useState<AssetType>(props.initialAssetTypeFilter ?? 'ALL');
 
     const [sorting, setSorting] = useState<Sorting>('-lastModified');
 

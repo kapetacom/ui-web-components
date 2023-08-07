@@ -44,9 +44,11 @@ export const AssetKindIcon = (props: Props) => {
             case 'core/resource-type-extension':
                 return <i style={style} className="asset-icon kap-icon-resource" />;
         }
+
+        return <i style={style} className="asset-icon fa fa-cog" />;
     }
 
-    return <i style={style} className="asset-icon fa fa-cog" />;
+    return <i style={style} className="asset-icon kap-icon-block" />;
 };
 
 export const AssetKindIconText = (props: Props) => {
