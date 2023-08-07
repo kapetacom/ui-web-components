@@ -21,7 +21,11 @@ import { AssetDisplay, AssetFetcher } from './types';
 import { Plan } from '@kapeta/schemas';
 import { AsyncState } from 'react-use/lib/useAsync';
 import { parseKapetaUri } from '@kapeta/nodejs-utils';
-import { BlockhubDetails } from './BlockhubDetails';
+import { Asset } from '@kapeta/ui-web-types';
+
+const toId = (asset: AssetDisplay) => {
+    return parseKapetaUri(`${asset.content.metadata.name}:${asset.version}`).id;
+};
 
 export enum BlockhubMode {
     PAGE,
@@ -37,13 +41,13 @@ export enum BlockhubCategory {
 
 interface Props {
     installerService?: InstallerService;
-    plan?: AssetDisplay<Plan>;
+    plan?: Asset<Plan>;
     fetcher: AssetFetcher;
     assets: AsyncState<AssetDisplay[]>;
     mode: BlockhubMode;
     onFilterChange?: (category: BlockhubCategory) => void;
-    selection?: string[];
-    onSelectionChange?: (selection: string[]) => void;
+    selection?: AssetDisplay[];
+    onSelectionChange?: (selection: AssetDisplay[]) => void;
     onAssetClick?: (asset: AssetDisplay) => void;
 }
 
@@ -180,10 +184,10 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                         tooltip={currentTab.tooltip}
                         renderAsset={(asset) => {
                             const url = `/${asset.content.metadata.name}/${asset.version}`;
-                            const id = `${asset.content.metadata.name}:${asset.version}`;
+                            const id = toId(asset);
                             const uri = parseKapetaUri(asset.content.metadata.name);
                             const title = asset.content.metadata.title || uri.name;
-                            const isSelected = currentSelection.includes(id);
+                            const isSelected = currentSelection.some((a) => toId(a) === id);
 
                             const actionButton =
                                 props.mode === BlockhubMode.MODAL_SELECTION ? (
@@ -198,9 +202,11 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                                                 return;
                                             }
                                             if (checked) {
-                                                props.onSelectionChange([...currentSelection, id]);
+                                                props.onSelectionChange([...currentSelection, asset]);
                                             } else {
-                                                props.onSelectionChange(currentSelection.filter((item) => item !== id));
+                                                props.onSelectionChange(
+                                                    currentSelection.filter((item) => toId(item) !== id)
+                                                );
                                             }
                                         }}
                                     />

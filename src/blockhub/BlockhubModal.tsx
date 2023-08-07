@@ -1,28 +1,30 @@
-import {Plan} from '@kapeta/schemas';
-import {Button, Dialog, DialogActions, DialogContent, IconButton, Stack, Typography} from '@mui/material';
+import { Plan } from '@kapeta/schemas';
+import { Button, Dialog, DialogActions, DialogContent, IconButton, Stack, Typography } from '@mui/material';
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import {AsyncState} from 'react-use/lib/useAsync';
-import {AssetDisplay, AssetFetcher} from './types';
-import {Blockhub, BlockhubCategory, BlockhubMode} from './Blockhub';
-import {InstallerService} from './AssetInstallButton';
-import {useWindowResize} from '../utils/resize-hook';
-import {BlockhubDetails} from './BlockhubDetails';
-import {Close} from '@mui/icons-material';
+import { AsyncState } from 'react-use/lib/useAsync';
+import { AssetDisplay, AssetFetcher } from './types';
+import { Blockhub, BlockhubCategory, BlockhubMode } from './Blockhub';
+import { InstallerService } from './AssetInstallButton';
+import { useWindowResize } from '../utils/resize-hook';
+import { BlockhubDetails } from './BlockhubDetails';
+import { Close } from '@mui/icons-material';
+import { Asset } from '@kapeta/ui-web-types';
 
 interface Props {
     open: boolean;
-    plan?: AssetDisplay<Plan>;
+    plan?: Asset<Plan>;
     installerService: InstallerService;
     fetcher: AssetFetcher;
     assets: AsyncState<AssetDisplay[]>;
     onFilterChange?: (category: BlockhubCategory) => void;
+    onSelect?: (selection: AssetDisplay[]) => void;
     onClose: () => void;
 }
 
 export const BlockhubModal = (props: Props) => {
-    const [selection, setSelection] = useState<string[]>([]);
+    const [selection, setSelection] = useState<AssetDisplay[]>([]);
 
     const [currentAsset, setCurrentAsset] = useState<AssetDisplay>(null);
     const [currentAssetTab, setCurrentAssetTab] = useState<string>('general');
@@ -37,7 +39,7 @@ export const BlockhubModal = (props: Props) => {
             return null;
         }
         //We force a fixed height
-        return (window.innerHeight - 64) + 'px';
+        return window.innerHeight - 64 + 'px';
     }, [props.open]);
 
     useEffect(() => {
@@ -47,11 +49,7 @@ export const BlockhubModal = (props: Props) => {
     }, [props.open]);
 
     return (
-        <Dialog maxWidth={'xl'}
-                fullWidth={true}
-
-                open={props.open}
-                onClose={props.onClose}>
+        <Dialog maxWidth={'xl'} fullWidth={true} open={props.open} onClose={props.onClose}>
             <IconButton
                 sx={{
                     position: 'absolute',
@@ -61,7 +59,7 @@ export const BlockhubModal = (props: Props) => {
                 }}
                 onClick={props.onClose}
             >
-                <Close/>
+                <Close />
             </IconButton>
 
             <DialogContent
@@ -112,7 +110,15 @@ export const BlockhubModal = (props: Props) => {
                                     : `Selected ${selection.length} assets`
                                 : 'No assets selected'}
                         </Typography>
-                        <Button variant={'contained'} disabled={selection.length === 0}>
+                        <Button
+                            variant={'contained'}
+                            disabled={selection.length === 0}
+                            onClick={() => {
+                                props.onSelect(selection);
+                                props.onClose();
+                                setSelection([]);
+                            }}
+                        >
                             Add to plan
                         </Button>
                     </Stack>
