@@ -35,7 +35,7 @@ export const AuthScopesField = (props: AuthScopesFieldProps) => {
     const hoveredScopeExplanation = getScopeExplanation(hoveredScope);
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'row', py: 1, px: 3 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
             <Box>
                 <FormFieldHandler
                     name={props.name}
