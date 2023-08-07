@@ -2,6 +2,7 @@ import React, { forwardRef, useState } from 'react';
 import {
     Box,
     Checkbox,
+    CircularProgress,
     Divider,
     List,
     ListItem,
@@ -19,12 +20,43 @@ import { AssetInstallButton, InstallerService } from './AssetInstallButton';
 import { Apartment, DownloadDone, GroupWorkOutlined } from '@mui/icons-material';
 import { AssetDisplay, AssetFetcher } from './types';
 import { Plan } from '@kapeta/schemas';
-import { AsyncState } from 'react-use/lib/useAsync';
 import { parseKapetaUri } from '@kapeta/nodejs-utils';
 import { Asset } from '@kapeta/ui-web-types';
+import { useAsync } from 'react-use';
+import { AsyncState } from 'react-use/lib/useAsync';
 
 const toId = (asset: AssetDisplay) => {
     return parseKapetaUri(`${asset.content.metadata.name}:${asset.version}`).id;
+};
+
+interface TileCheckboxProps {
+    service: InstallerService;
+    checked: boolean;
+    assetRef: string;
+    onChange: (checked: boolean) => void;
+}
+
+const TileCheckbox = (props: TileCheckboxProps) => {
+    const asset = useAsync(async () => {
+        return await props.service.get(props.assetRef);
+    }, [props.assetRef, props.service]);
+
+    if (asset.loading) {
+        return <CircularProgress size={20} />;
+    }
+
+    return (
+        <Checkbox
+            checked={props.checked}
+            value={props.assetRef}
+            onClick={(evt) => {
+                evt.stopPropagation();
+            }}
+            onChange={(evt, checked) => {
+                props.onChange(checked);
+            }}
+        />
+    );
 };
 
 export enum BlockhubMode {
@@ -96,6 +128,9 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
 
     const currentTab = tabs[tab];
     const currentSelection = props.selection || [];
+
+    const isForPlan = !!props.plan;
+    const selectBlocksForPlan = props.mode === BlockhubMode.MODAL_SELECTION && isForPlan;
 
     return (
         <div
@@ -180,6 +215,7 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                 <Box className={'blockhub-main'}>
                     <BlockhubGridContainer
                         assets={props.assets}
+                        initialAssetTypeFilter={selectBlocksForPlan ? 'BLOCK' : undefined}
                         title={currentTab.title}
                         tooltip={currentTab.tooltip}
                         renderAsset={(asset) => {
@@ -187,32 +223,32 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                             const id = toId(asset);
                             const uri = parseKapetaUri(asset.content.metadata.name);
                             const title = asset.content.metadata.title || uri.name;
-                            const isSelected = currentSelection.some((a) => toId(a) === id);
+                            const isBlock = !asset.content.kind.startsWith('core/');
+                            const showCheckbox = props.mode === BlockhubMode.MODAL_SELECTION && (isBlock || !isForPlan);
 
-                            const actionButton =
-                                props.mode === BlockhubMode.MODAL_SELECTION ? (
-                                    <Checkbox
-                                        checked={isSelected}
-                                        value={id}
-                                        onClick={(evt) => {
-                                            evt.stopPropagation();
-                                        }}
-                                        onChange={(evt, checked) => {
-                                            if (!props.onSelectionChange) {
-                                                return;
-                                            }
-                                            if (checked) {
-                                                props.onSelectionChange([...currentSelection, asset]);
-                                            } else {
-                                                props.onSelectionChange(
-                                                    currentSelection.filter((item) => toId(item) !== id)
-                                                );
-                                            }
-                                        }}
-                                    />
-                                ) : (
-                                    <AssetInstallButton service={props.installerService} asset={asset} type={'chip'} />
-                                );
+                            const isSelected = showCheckbox ? currentSelection.some((a) => toId(a) === id) : false;
+
+                            const actionButton = showCheckbox ? (
+                                <TileCheckbox
+                                    service={props.installerService}
+                                    checked={isSelected}
+                                    assetRef={id}
+                                    onChange={(checked) => {
+                                        if (!props.onSelectionChange) {
+                                            return;
+                                        }
+                                        if (checked) {
+                                            props.onSelectionChange([...currentSelection, asset]);
+                                        } else {
+                                            props.onSelectionChange(
+                                                currentSelection.filter((item) => toId(item) !== id)
+                                            );
+                                        }
+                                    }}
+                                />
+                            ) : (
+                                <AssetInstallButton service={props.installerService} asset={asset} type={'chip'} />
+                            );
 
                             return (
                                 <BlockhubTile
