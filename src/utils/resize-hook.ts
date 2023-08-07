@@ -1,6 +1,6 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
-export const useWindowResize = <T>(cb: () => T|null, deps: any[]):T|null => {
+export const useWindowResize = <T>(cb: () => T | null, deps: any[]): T | null => {
     const [result, setResult] = useState(null);
 
     function doCallback() {
