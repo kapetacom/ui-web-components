@@ -14,7 +14,6 @@ import {
     Type,
     ModalSize,
     Modal,
-    Dialog,
 } from '../src';
 import { Checkbox } from '../src/form/Checkbox';
 import { FormAutocomplete } from '../src/form/inputs/FormAutocomplete';
@@ -359,7 +358,7 @@ export const FormButton = () => {
 
 export const FormAutocompletes = () => {
     const [formData, setFormData] = useState({});
-    const [apiMovies, setApiMovies] = useState([]);
+    const [apiMovies, setApiMovies] = useState<Movie[]>([]);
     const [isLoadingMovies, setIsLoadingMovies] = useState(false);
 
     return (
