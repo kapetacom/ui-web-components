@@ -5,7 +5,7 @@ export type TooltipProps = MuiTooltipProps & {
     maxWidth?: number;
 };
 
-export const Tooltip = styled(({ className, ...props }: TooltipProps) => (
+export const Tooltip = styled(({ className, maxWidth, ...props }: TooltipProps) => (
     <MuiTooltip {...props} classes={{ popper: className }} />
 ))(({ theme, maxWidth }) => ({
     [`& .${tooltipClasses.arrow}::before`]: {
