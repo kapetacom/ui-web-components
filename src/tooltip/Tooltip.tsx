@@ -1,7 +1,7 @@
 import { Tooltip as MuiTooltip, TooltipProps as MuiTooltipProps, styled, tooltipClasses } from '@mui/material';
 import React from 'react';
 
-type TooltipProps = MuiTooltipProps & {
+export type TooltipProps = MuiTooltipProps & {
     maxWidth?: number;
 };
 

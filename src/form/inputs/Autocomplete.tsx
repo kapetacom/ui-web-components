@@ -8,7 +8,7 @@ export type AutocompleteProps<Option> = Omit<MuiAutocompleteProps<Option, boolea
         hidePopupIndicator?: boolean;
     };
 
-export default function Autocomplete<Option>(props: AutocompleteProps<Option>) {
+export function Autocomplete<Option>(props: AutocompleteProps<Option>) {
     const { name, label, placeholder, hidePopupIndicator, autoFocus, ...autocompleteProps } = props;
     return (
         <MuiAutocomplete
