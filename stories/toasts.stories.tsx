@@ -41,5 +41,21 @@ export const Toasts = () => (
         >
             Show danger
         </button>
+        <button
+            onClick={() =>
+                showToasty(
+                    {
+                        type: ToastType.DANGER,
+                        title: 'Error',
+                        message: `Very important error information that you should read`,
+                    },
+                    {
+                        autoClose: false,
+                    }
+                )
+            }
+        >
+            Show persistent
+        </button>
     </div>
 );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { toast, ToastContainer as Container } from 'react-toastify';
+import { toast, ToastContainer as Container, ToastOptions } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './ToastComponent.less';
@@ -103,11 +103,12 @@ export const Toast = (props: ToastProps) => {
     return <></>;
 };
 
-export const showToasty = (props: ToastProps) => {
+export const showToasty = (props: ToastProps, options: ToastOptions = {}) => {
     toast(<ToastComp title={props.title} message={props.message} type={props.type} />, {
         closeButton: <CloseButton />,
         progressClassName: 'progress-bar',
         progressStyle: {},
         closeOnClick: false,
+        ...options,
     });
 };
