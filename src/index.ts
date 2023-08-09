@@ -116,3 +116,5 @@ export * from './avatars/UserAvatar';
 export * from './blockhub/index';
 
 export * from './tooltip/Tooltip';
+
+export * from './confirm';
