@@ -97,9 +97,7 @@ export const ConfirmationDialog = ({ open, options, onCancel, onConfirm, onClose
             ) : (
                 confirmationKeyword && <DialogContent {...contentProps}>{confirmationContent}</DialogContent>
             )}
-            <DialogActions sx={{ px: 3, py: 2 }} {...dialogActionsProps}>
-                {dialogActions}
-            </DialogActions>
+            <DialogActions {...dialogActionsProps}>{dialogActions}</DialogActions>
         </Dialog>
     );
 };

@@ -15,9 +15,17 @@ const DEFAULT_OPTIONS: ConfirmOptions = {
     confirmationText: 'Ok',
     cancellationText: 'Cancel',
     dialogProps: {},
-    dialogActionsProps: {},
-    confirmationButtonProps: {},
-    cancellationButtonProps: {},
+    dialogActionsProps: {
+        sx: { py: 2, px: 3 },
+    },
+    confirmationButtonProps: {
+        variant: 'contained',
+        color: 'primary',
+    },
+    cancellationButtonProps: {
+        variant: 'text',
+        color: 'inherit',
+    },
     titleProps: {},
     contentProps: {},
     allowClose: true,
