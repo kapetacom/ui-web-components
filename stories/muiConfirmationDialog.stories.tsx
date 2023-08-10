@@ -112,7 +112,7 @@ export const WithCustomButtonProps: Story = {
             <Button
                 onClick={() => {
                     confirm({
-                        confirmationButtonProps: { color: 'error', variant: 'contained' },
+                        confirmationButtonProps: { color: 'error' },
                         cancellationButtonProps: { variant: 'text' },
                     }).then(confirmationAction);
                 }}
