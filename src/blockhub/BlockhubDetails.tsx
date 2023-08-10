@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { Box, Button, CircularProgress, Stack, Tab, Tabs, Typography } from '@mui/material';
+import React from 'react';
+import { Box, Button, Stack, Tab, Tabs, Typography } from '@mui/material';
 import VerifiedIcon from '@mui/icons-material/VerifiedOutlined';
 import ArrowBack from '@mui/icons-material/ArrowBack';
-import ArrowDownIcon from '@mui/icons-material/ArrowDownward';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import styled from '@emotion/styled';
 
 import { AssetDisplay, AssetFetcher, AssetVersionInfo, CoreTypes, Dependency } from './types';
@@ -14,13 +12,11 @@ import { isPublic, renderArtifact, renderDatetime, renderDuration, renderReposit
 import { KeyValue, KeyValueRow } from './KeyValue';
 import { VersionGraph } from './Versions';
 import { AssetKindIcon, AssetKindIconText } from '../icons/AssetIcon';
-
 import useSWR from 'swr';
-import { showToasty, ToastType } from '../toast/ToastComponent';
-import { AssetService, InstanceService } from '@kapeta/ui-web-context';
-import { useAsync } from 'react-use';
-import { useDesktop } from '../utils/desktop';
 import { AssetInstallButton, InstallerService } from './AssetInstallButton';
+import { Size } from '@kapeta/ui-web-types';
+
+export type BlockHubDetailsPreviewer = (asset: AssetDisplay, size: Size) => React.ReactNode;
 
 const KapetaTab = styled(Tab)({
     maxWidth: '214px',
@@ -40,7 +36,14 @@ const KindIcon = (props: { kind: CoreTypes; text: string }) => (
     </Box>
 );
 
-const AutoLoadingTile = (props: { asset: Dependency; fetcher: AssetFetcher }) => {
+interface Props {
+    disableNavigation?: boolean;
+    onAssetClick?: (asset: AssetDisplay) => void;
+    asset: Dependency;
+    fetcher: AssetFetcher;
+}
+
+const AutoLoadingTile = (props: Props) => {
     const { fullName, version } = parseKapetaUri(props.asset.name);
     const assetReq = useSWR([fullName, version], ([name, version]) => props.fetcher(name, version || 'current'), {
         revalidateOnFocus: false,
@@ -70,7 +73,16 @@ const AutoLoadingTile = (props: { asset: Dependency; fetcher: AssetFetcher }) =>
                     <DependencyKindLabel fetcher={props.fetcher} key={dependency.name} dependency={dependency} />
                 ) : null
             )}
-            href={`/${fullName}/${version}`}
+            onClick={
+                props.onAssetClick
+                    ? () => {
+                          if (props.onAssetClick && asset) {
+                              props.onAssetClick(asset);
+                          }
+                      }
+                    : undefined
+            }
+            href={props.disableNavigation ? undefined : `/${fullName}/${version}`}
         />
     );
 };
@@ -83,6 +95,9 @@ export interface BlockhubDetailsProps {
     tabId?: 'general' | 'dependencies' | 'versions' | string;
     onTabChange: (tabId: 'general' | 'dependencies' | 'versions') => void;
     onBackAction?: () => void;
+    previewRenderer?: BlockHubDetailsPreviewer;
+    disableNavigation?: boolean;
+    onAssetClick?: (asset: AssetDisplay) => void;
 }
 
 export function BlockhubDetails(props: BlockhubDetailsProps) {
@@ -170,7 +185,13 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
                             <Stack gap={2}>
                                 {props.asset.dependencies?.length === 0 && 'No dependencies'}
                                 {props.asset.dependencies?.map((asset) => (
-                                    <AutoLoadingTile fetcher={props.fetcher} asset={asset} key={asset.name} />
+                                    <AutoLoadingTile
+                                        fetcher={props.fetcher}
+                                        disableNavigation={props.disableNavigation}
+                                        onAssetClick={props.onAssetClick}
+                                        asset={asset}
+                                        key={asset.name}
+                                    />
                                 ))}
                             </Stack>
                         </TabContainer>
@@ -185,18 +206,32 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
             <Box flexBasis={40} flexGrow={1} flexShrink={0} />
             <Stack
                 direction="column"
-                sx={{ backgroundColor: '#F8F8F8', width: '465px', minHeight: '100%', p: 8 }}
+                sx={{
+                    backgroundColor: '#F8F8F8',
+                    width: '465px',
+                    minWidth: '465px',
+                    maxWidth: '465px',
+                    minHeight: '100%',
+                    boxSizing: 'border-box',
+                    p: 8,
+                }}
                 gap={2}
             >
-                <Typography variant="h6">
-                    <KindIcon
-                        kind={props.asset.content.kind as CoreTypes}
-                        text={coreNames[props.asset.content.kind] || props.asset.content.kind}
-                    />
-                </Typography>
-
-                <Box textAlign={'center'} sx={{ background: '#F4EEEE', padding: 2 }}>
-                    <AssetKindIcon size={152} asset={props.asset.content} />
+                <Box
+                    textAlign={'center'}
+                    sx={{
+                        background: '#F4EEEE',
+                        padding: 2,
+                        height: '192px',
+                        minHeight: '192px',
+                        boxSizing: 'border-box',
+                    }}
+                >
+                    {props.previewRenderer ? (
+                        props.previewRenderer(props.asset, { width: 305, height: 160 })
+                    ) : (
+                        <AssetKindIcon size={152} asset={props.asset.content} />
+                    )}
                 </Box>
 
                 <AssetInstallButton service={props.service} asset={props.asset} type={'button'} />

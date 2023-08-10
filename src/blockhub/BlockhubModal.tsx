@@ -8,7 +8,7 @@ import { AssetDisplay, AssetFetcher } from './types';
 import { Blockhub, BlockhubCategory, BlockhubMode } from './Blockhub';
 import { InstallerService } from './AssetInstallButton';
 import { useWindowResize } from '../utils/resize-hook';
-import { BlockhubDetails } from './BlockhubDetails';
+import { BlockhubDetails, BlockHubDetailsPreviewer } from './BlockhubDetails';
 import { Close } from '@mui/icons-material';
 import { Asset } from '@kapeta/ui-web-types';
 
@@ -18,6 +18,7 @@ interface Props {
     installerService: InstallerService;
     fetcher: AssetFetcher;
     assets: AsyncState<AssetDisplay[]>;
+    previewRenderer?: BlockHubDetailsPreviewer;
     onFilterChange?: (category: BlockhubCategory) => void;
     onSelect?: (selection: AssetDisplay[]) => void;
     onClose: () => void;
@@ -77,15 +78,19 @@ export const BlockhubModal = (props: Props) => {
                 {currentAsset ? (
                     <BlockhubDetails
                         asset={currentAsset}
+                        disableNavigation={true}
+                        onAssetClick={setCurrentAsset}
                         fetcher={props.fetcher}
                         service={props.installerService}
                         onBackAction={resetState}
                         tabId={currentAssetTab}
                         onTabChange={setCurrentAssetTab}
+                        previewRenderer={props.previewRenderer}
                     />
                 ) : (
                     <Blockhub
                         {...props}
+                        disableNavigation={true}
                         selection={selection}
                         onAssetClick={setCurrentAsset}
                         onSelectionChange={setSelection}

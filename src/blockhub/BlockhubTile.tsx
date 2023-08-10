@@ -115,7 +115,7 @@ export function BlockhubTile(props: BlockhubTileProps) {
                 {content}
             </Link>
         ) : (
-            <>{content}</>
+            <a style={{ cursor: props.onClick ? 'pointer' : undefined }}>{content}</a>
         );
 
     return (

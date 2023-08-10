@@ -79,6 +79,7 @@ interface Props {
     mode: BlockhubMode;
     onFilterChange?: (category: BlockhubCategory) => void;
     selection?: AssetDisplay[];
+    disableNavigation?: boolean;
     onSelectionChange?: (selection: AssetDisplay[]) => void;
     onAssetClick?: (asset: AssetDisplay) => void;
 }
@@ -265,7 +266,7 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                                         downloads: asset.downloadCount,
                                         rating: asset.rating,
                                     }}
-                                    href={url}
+                                    href={props.disableNavigation ? undefined : url}
                                     actionButton={actionButton}
                                     labels={[
                                         <DependencyKindLabel
