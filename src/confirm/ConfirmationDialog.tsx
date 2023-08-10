@@ -82,7 +82,16 @@ export const ConfirmationDialog = ({ open, options, onCancel, onConfirm, onClose
     });
 
     return (
-        <Dialog fullWidth maxWidth="xs" {...dialogProps} open={open} onClose={allowClose ? onClose : null}>
+        <Dialog
+            fullWidth
+            maxWidth="xs"
+            {...dialogProps}
+            open={open}
+            onClose={allowClose ? onClose : null}
+            PaperProps={{
+                elevation: 23,
+            }}
+        >
             {title && <DialogTitle {...titleProps}>{title}</DialogTitle>}
             {content ? (
                 <DialogContent {...contentProps}>
