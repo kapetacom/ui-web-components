@@ -27,7 +27,9 @@ const DEFAULT_OPTIONS: ConfirmOptions = {
         color: 'inherit',
     },
     titleProps: {},
-    contentProps: {},
+    contentProps: {
+        sx: { py: 1, px: 3 },
+    },
     allowClose: true,
     confirmationKeywordTextFieldProps: {},
     hideCancelButton: false,
