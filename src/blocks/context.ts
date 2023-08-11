@@ -2,15 +2,17 @@ import { BlockDefinition, BlockInstance } from '@kapeta/schemas';
 import { InstanceStatus } from '@kapeta/ui-web-context';
 import { createContext } from 'react';
 
-export const BlockContext = createContext<{
+export interface BlockContextData {
     readOnly?: boolean;
-    definition?: BlockDefinition;
-    instance?: BlockInstance;
-    status?: InstanceStatus;
+    definition?: BlockDefinition | undefined;
+    instance?: BlockInstance | undefined;
+    status?: InstanceStatus | undefined;
     callbacks: {
         onInstanceNameChange?: (name: string) => void;
     };
-}>({
+}
+
+export const BlockContext = createContext<BlockContextData>({
     readOnly: false,
     callbacks: {
         onInstanceNameChange: undefined,
