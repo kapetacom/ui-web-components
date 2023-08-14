@@ -1,6 +1,6 @@
 import { Box, Button, CircularProgress, Fab, Tooltip } from '@mui/material';
 import { showToasty, ToastType } from '../toast/ToastComponent';
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useDesktop, useDesktopTask } from '../utils/desktop';
 import { AssetService, TaskStatus } from '@kapeta/ui-web-context';
 import { coreNames } from './BlockhubTile';
@@ -15,6 +15,7 @@ import { grey } from '@mui/material/colors';
 export interface InstallerService {
     install(assetRef: string): Promise<void>;
     get(assetRef: string): Promise<Asset>;
+    onChange?:(assetRef: string, cb: () => void|Promise<void>) => () => void;
 }
 
 interface Props {
@@ -26,9 +27,9 @@ interface Props {
 export const AssetInstallButton = (props: Props) => {
     const desktop = useDesktop();
 
-    const assetService = props.service || {
-        install: async (assetRef: string) => {
-            return AssetService.install(assetRef);
+    const assetService:InstallerService = props.service || {
+        install: async (assetRef: string):Promise<void> => {
+            await AssetService.install(assetRef);
         },
         get: async (assetRef: string) => {
             return AssetService.get(assetRef, false);
@@ -42,6 +43,17 @@ export const AssetInstallButton = (props: Props) => {
         }
         return assetService.get(ref);
     });
+
+    useEffect(() => {
+        if (!assetService.onChange) {
+            return () => {};
+        }
+
+        return assetService.onChange(assetRef, async () => {
+            await installedAsset.mutate();
+        });
+    }, [assetService.onChange, installedAsset]);
+
 
     const installTask = useDesktopTask(`asset:install:${assetRef}`, async (task) => {
         if (task.status === TaskStatus.FAILED) {
@@ -97,7 +109,6 @@ export const AssetInstallButton = (props: Props) => {
             return;
         }
 
-        console.log('Stopping propagation');
         evt.stopPropagation();
         evt.preventDefault();
 

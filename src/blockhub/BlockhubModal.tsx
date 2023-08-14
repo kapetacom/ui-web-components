@@ -19,14 +19,14 @@ interface Props {
     fetcher: AssetFetcher;
     assets: AsyncState<AssetDisplay[]>;
     previewRenderer?: BlockHubDetailsPreviewer;
-    onFilterChange?: (category: BlockhubCategory) => void;
+    category?: BlockhubCategory
+    onCategoryChange?: (category: BlockhubCategory) => void;
     onSelect?: (selection: AssetDisplay[]) => void;
     onClose: () => void;
 }
 
 export const BlockhubModal = (props: Props) => {
     const [selection, setSelection] = useState<AssetDisplay[]>([]);
-
     const [currentAsset, setCurrentAsset] = useState<AssetDisplay>(null);
     const [currentAssetTab, setCurrentAssetTab] = useState<string>('general');
 
