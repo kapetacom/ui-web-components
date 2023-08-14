@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, {forwardRef, useEffect, useState} from 'react';
 import {
     Box,
     Checkbox,
@@ -77,7 +77,8 @@ interface Props {
     fetcher: AssetFetcher;
     assets: AsyncState<AssetDisplay[]>;
     mode: BlockhubMode;
-    onFilterChange?: (category: BlockhubCategory) => void;
+    category?: BlockhubCategory
+    onCategoryChange?: (category: BlockhubCategory) => void;
     selection?: AssetDisplay[];
     disableNavigation?: boolean;
     onSelectionChange?: (selection: AssetDisplay[]) => void;
@@ -85,8 +86,6 @@ interface Props {
 }
 
 export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) => {
-    const [tab, setTab] = useState(0);
-
     const tabs = [
         ...(props.mode !== BlockhubMode.PAGE
             ? [
@@ -126,7 +125,18 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
             ),
         },
     ];
+    const [tab, setTab] = useState(props.category ?
+        tabs.findIndex((tab) => tab.type === props.category) : 0
+    );
 
+    useEffect(() => {
+        const ix = tabs.findIndex((tab) => tab.type === props.category);
+        if (ix !== -1) {
+            setTab(ix);
+        } else {
+            setTab(0);
+        }
+    }, [props.category])
     const currentTab = tabs[tab];
     const currentSelection = props.selection || [];
 
@@ -203,7 +213,7 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                                     selected={tab === index}
                                     onClick={() => {
                                         setTab(index);
-                                        props.onFilterChange?.(tabInfo.type);
+                                        props.onCategoryChange?.(tabInfo.type);
                                     }}
                                 >
                                     <ListItemIcon>{tabInfo.icon}</ListItemIcon>
