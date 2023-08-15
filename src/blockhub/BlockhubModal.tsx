@@ -19,7 +19,7 @@ interface Props {
     fetcher: AssetFetcher;
     assets: AsyncState<AssetDisplay[]>;
     previewRenderer?: BlockHubDetailsPreviewer;
-    category?: BlockhubCategory
+    category?: BlockhubCategory;
     onCategoryChange?: (category: BlockhubCategory) => void;
     onSelect?: (selection: AssetDisplay[]) => void;
     onClose: () => void;
