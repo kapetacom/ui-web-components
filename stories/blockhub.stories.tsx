@@ -201,7 +201,16 @@ export const ModalPlan = () => {
     return (
         <DesktopContainer version={'1.2.3'}>
             <BlockhubModal
-                plan={PlanAsset}
+                plan={{
+                    kind: CoreTypes.PLAN,
+                    ref: `${PlanAsset.content.metadata.name}:${PlanAsset.version}`,
+                    data: PlanAsset.content,
+                    exists: true,
+                    ymlPath: '',
+                    path: '',
+                    version: PlanAsset.version,
+                    editable: true,
+                }}
                 fetcher={assetFetcher}
                 installerService={installerService}
                 assets={{
