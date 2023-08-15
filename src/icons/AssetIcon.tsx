@@ -3,63 +3,88 @@ import { IconValue, Kind } from '@kapeta/schemas';
 import './AssetIcon.less';
 
 interface Props {
-    asset: Kind;
+    kind: string;
+    icon?: IconValue;
     size?: number;
+    title?: string;
 }
 
-export const AssetKindIcon = (props: Props) => {
+export const KindIcon = (props: Props) => {
     const size = props.size || 16;
     const style = {
         fontSize: size + 'px',
         height: size + 'px',
     };
-    if ('icon' in props.asset.spec) {
-        const icon = props.asset.spec.icon as IconValue;
-        switch (icon.type) {
+    if (props.icon) {
+        switch (props.icon.type) {
             case 'fontawesome5':
-                return <i style={style} className={`asset-icon ${icon.value}`} />;
+                return <i style={style} className={`asset-icon ${props.icon.value}`} title={props.title} />;
             case 'url':
-                return <img style={style} className="asset-icon" src={icon.value} alt={props.asset.metadata.title} />;
+                return <img style={style} className="asset-icon" src={props.icon.value} alt={props.title} />;
         }
     }
 
-    if (props.asset.kind.startsWith('core/')) {
+    if (props.kind.startsWith('core/')) {
         //Core concepts
-        switch (props.asset.kind) {
+        switch (props.kind) {
             case 'core/plan':
-                return <i style={style} className="asset-icon kap-icon-plan" />;
+                return <i style={style} className="asset-icon kap-icon-plan" title={props.title} />;
 
             case 'core/language-target':
-                return <i style={style} className="asset-icon fa fa-code" />;
+                return <i style={style} className="asset-icon fa fa-code" title={props.title} />;
 
             case 'core/deployment-target':
-                return <i style={style} className="asset-icon fa fa-cloud-upload" />;
+                return <i style={style} className="asset-icon fa fa-cloud-upload" title={props.title} />;
 
             case 'core/block-type':
             case 'core/block-type-operator':
-                return <i style={style} className="asset-icon kap-icon-block" />;
+                return <i style={style} className="asset-icon kap-icon-block" title={props.title} />;
 
             case 'core/resource-type-operator':
             case 'core/resource-type-internal':
             case 'core/resource-type-extension':
-                return <i style={style} className="asset-icon kap-icon-resource" />;
+                return <i style={style} className="asset-icon kap-icon-resource" title={props.title} />;
         }
 
-        return <i style={style} className="asset-icon fa fa-cog" />;
+        return <i style={style} className="asset-icon fa fa-cog" title={props.title} />;
     }
 
-    return <i style={style} className="asset-icon kap-icon-block" />;
+    return <i style={style} className="asset-icon kap-icon-block" title={props.title} />;
 };
 
-export const AssetKindIconText = (props: Props) => {
-    let text = props.asset.metadata.title ?? props.asset.metadata.name;
-    if (props.asset.kind === 'core/plan') {
+interface PropsWithText extends Props {
+    title: string;
+}
+
+export const KindIconText = (props: PropsWithText) => {
+    let text = props.title;
+    if (props.kind === 'core/plan') {
         text = 'Plan';
     }
     return (
         <span className="asset-icon-text">
-            <AssetKindIcon asset={props.asset} size={props.size} />
+            <KindIcon {...props} />
             <span className={'title'}>{text}</span>
         </span>
     );
+};
+
+interface AssetProps {
+    asset: Kind;
+    size?: number;
+}
+export const AssetKindIcon = (props: AssetProps) => {
+    return (
+        <KindIcon
+            kind={props.asset.kind}
+            icon={props.asset.spec.icon}
+            size={props.size}
+            title={props.asset.metadata.title}
+        />
+    );
+};
+
+export const AssetKindIconText = (props: AssetProps) => {
+    let title = props.asset.metadata.title ?? props.asset.metadata.name;
+    return <KindIconText kind={props.asset.kind} icon={props.asset.spec.icon} size={props.size} title={title} />;
 };
