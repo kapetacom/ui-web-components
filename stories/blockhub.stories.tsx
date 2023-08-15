@@ -35,7 +35,7 @@ import {
 import { AssetCoreDisplay, AssetDisplay, AssetSimpleDisplay, CoreTypes } from '../src/blockhub/types';
 import { AssetInstallButton, InstallerService } from '../src/blockhub/AssetInstallButton';
 import { BlockhubTileActionButton } from '../src/blockhub/BlockhubTileActionButton';
-import { DesktopContainer } from '../src';
+import { DefaultContext, DesktopContainer } from '../src';
 import { BlockhubModal } from '../src/blockhub/BlockhubModal';
 import { Blockhub, BlockhubMode } from '../src/blockhub/Blockhub';
 
@@ -92,14 +92,13 @@ const createInstaller = () => {
     const installerService: InstallerService = {
         install: async (ref: string) => {
             await new Promise((resolve) => setTimeout(resolve, 4000));
-            return {
-                ...asset,
-                ref,
-            };
         },
         get: async (ref: string) => {
             await new Promise((resolve) => setTimeout(resolve, 2000));
             return null;
+        },
+        uninstall: async (ref: string) => {
+            await new Promise((resolve) => setTimeout(resolve, 4000));
         },
     };
 
@@ -110,10 +109,6 @@ const createInstaller = () => {
                     reject(new Error('already installed'));
                 }, 4000)
             );
-            return {
-                ...asset,
-                ref,
-            };
         },
         get: async (ref: string) => {
             await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -121,6 +116,9 @@ const createInstaller = () => {
                 ...asset,
                 ref,
             };
+        },
+        uninstall: async (ref: string) => {
+            await new Promise((resolve) => setTimeout(resolve, 4000));
         },
     };
     return {
@@ -391,7 +389,7 @@ export const HelperInstallButtons = () => {
     const { asset, installerService, installerServiceExists } = createInstaller();
 
     return (
-        <>
+        <DefaultContext>
             <div>
                 <h3>Not Desktop</h3>
                 <div style={{ padding: '5px' }}>
@@ -442,7 +440,7 @@ export const HelperInstallButtons = () => {
                     </div>
                 </div>
             </DesktopContainer>
-        </>
+        </DefaultContext>
     );
 };
 

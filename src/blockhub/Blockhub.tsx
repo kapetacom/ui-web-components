@@ -1,4 +1,4 @@
-import React, {forwardRef, useEffect, useState} from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import {
     Box,
     Checkbox,
@@ -77,7 +77,7 @@ interface Props {
     fetcher: AssetFetcher;
     assets: AsyncState<AssetDisplay[]>;
     mode: BlockhubMode;
-    category?: BlockhubCategory
+    category?: BlockhubCategory;
     onCategoryChange?: (category: BlockhubCategory) => void;
     selection?: AssetDisplay[];
     disableNavigation?: boolean;
@@ -125,9 +125,7 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
             ),
         },
     ];
-    const [tab, setTab] = useState(props.category ?
-        tabs.findIndex((tab) => tab.type === props.category) : 0
-    );
+    const [tab, setTab] = useState(props.category ? tabs.findIndex((tab) => tab.type === props.category) : 0);
 
     useEffect(() => {
         const ix = tabs.findIndex((tab) => tab.type === props.category);
@@ -136,7 +134,7 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
         } else {
             setTab(0);
         }
-    }, [props.category])
+    }, [props.category]);
     const currentTab = tabs[tab];
     const currentSelection = props.selection || [];
 
