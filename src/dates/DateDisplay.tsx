@@ -31,16 +31,22 @@ export const toDateTextInner = (props:Props) => {
         date = props.date;
     }
 
-    if (date < 1) {
+    if (date < 0) {
         return null;
     }
-
-    const timeDiffRelative = props.timeDiffRelative ?? DEFAULT_TIME_DIFF_RELATIVE;
-
     const dt = DateTime.fromMillis(date);
 
     if (props.allowRelative !== false) {
+        const timeDiffRelative = props.timeDiffRelative ?? DEFAULT_TIME_DIFF_RELATIVE;
         const timeDiff = Math.abs(Date.now() - date);
+
+        if (timeDiff < 5000) {
+            return {
+                relative: true,
+                text: 'now'
+            }
+        }
+
         if (timeDiff < timeDiffRelative) {
             return {
                 relative: true,
