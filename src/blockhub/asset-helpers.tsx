@@ -41,37 +41,6 @@ export function getShortKind(asset: AssetCoreDisplay) {
     return kind;
 }
 
-export function renderDuration(date: Date | number) {
-    if (typeof date === 'number') {
-        date = new Date(date);
-    }
-
-    const diff = Date.now() - date.getTime();
-    if (diff < 2000) {
-        return 'Just now';
-    }
-
-    const oneMinute = 60 * 1000;
-    const oneHour = 60 * 60 * 1000;
-
-    const dt = DateTime.fromJSDate(date);
-    if (diff > 24 * oneHour) {
-        return dt.toFormat('yyyy-MM-dd');
-    }
-
-    const duration = DateTime.now().diff(dt);
-
-    if (diff > oneHour) {
-        return duration.toFormat(`h 'hours', m 'minutes and' s 'seconds ago'`);
-    }
-
-    if (diff > oneMinute) {
-        return duration.toFormat(`m 'minutes and' s 'seconds ago'`);
-    }
-
-    return duration.toFormat(`s 'seconds ago'`);
-}
-
 export function renderRepository(repository: AssetRepositoryInfo) {
     if (repository.type === 'none') {
         return <div className={'repository none'}>Not version controlled</div>;

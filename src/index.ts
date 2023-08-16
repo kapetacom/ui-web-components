@@ -118,3 +118,5 @@ export * from './blockhub/index';
 export * from './tooltip/Tooltip';
 
 export * from './confirm';
+
+export * from './dates';

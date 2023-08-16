@@ -1,9 +1,8 @@
 import React from 'react';
-import { renderDuration } from './asset-helpers';
-
-import './Versions.less';
 import { AssetVersionInfo, Version } from './types';
 import { toClass } from '@kapeta/ui-web-utils';
+import {toDateText} from "../dates";
+import './Versions.less';
 
 interface GraphProps extends AssetVersionInfo {}
 
@@ -58,7 +57,7 @@ export const VersionElement = (props: ElementProps) => {
             </div>
             <div className={'details'}>
                 <span className={'published'}>
-                    Published {renderDuration(props.version.created).toLowerCase()} by{' '}
+                    Published {toDateText({date:props.version.created})} by{' '}
                     <span className={'value'}>{props.version.author.name}</span>
                 </span>
                 <span className={'commit'}>
