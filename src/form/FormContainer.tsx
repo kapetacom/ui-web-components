@@ -4,6 +4,7 @@ import './FormContainer.less';
 
 import { FormContext, FormContextType, ResetListener } from './FormContext';
 import { toClass } from '@kapeta/ui-web-utils';
+import { ValidatorList } from '../validation/Validators';
 
 export type FormChangeHandler = (formState: FormStateChangeEvent) => void;
 
@@ -17,6 +18,7 @@ export type FormData = { [key: string]: any };
 interface Props {
     onSubmit?: () => void;
     onReset?: () => void;
+    validators?: ValidatorList;
     initialValue?: FormData;
     onSubmitData?: (data: FormData) => void;
     onChange?: (data: FormData) => void;
@@ -375,6 +377,7 @@ export class FormContainer extends React.Component<Props, State> {
                 <FormContext.Provider
                     value={{
                         valid: this.state.valid,
+                        validators: this.props.validators,
                         processing: this.state.processing,
                         container: this,
                         onReadyStateChanged: (fieldName: string, ready: boolean) =>

@@ -1,10 +1,12 @@
 import React, { Context, useContext, useEffect, useMemo } from 'react';
 import { FormContainer } from './FormContainer';
+import { ValidatorList } from '../validation/Validators';
 
 export type ResetListener = (value: any) => void;
 
 interface FormContextData {
     valid: boolean;
+    validators?: ValidatorList;
     processing: boolean;
     container?: FormContainer;
     onReadyStateChanged: (childName: any, ready: boolean) => void;
@@ -16,6 +18,7 @@ export interface FormContextType extends Context<FormContextData> {}
 
 const defaultValue: FormContextData = {
     valid: false,
+    validators: [],
     processing: false,
     onReadyStateChanged: () => {},
     onValueChanged: () => {},
