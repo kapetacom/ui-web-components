@@ -73,7 +73,8 @@ export const FormRow = (props: FormRowProps) => {
     const [touchedState, setTouchedState] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
-    const validators = useMemo(() => normaliseValidators(props.validation), [props.validation]);
+    const validators = useMemo(() => normaliseValidators(props.validation).concat(context.validators), [props.validation, context.validators]);
+
 
     const touched = useMemo(() => {
         if (touchedState) {
