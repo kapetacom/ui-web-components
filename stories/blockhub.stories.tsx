@@ -229,14 +229,16 @@ export const ModalPlan = () => {
 export const DetailBlockType = () => {
     const [currentTab, setCurrentTab] = React.useState('general');
     return (
-        <BlockhubDetails
-            asset={FrontendBlockTypeAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(FrontendBlockTypeAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
+        <DefaultContext>
+            <BlockhubDetails
+                asset={FrontendBlockTypeAsset}
+                versionInfo={VersionInfo}
+                fetcher={assetFetcher}
+                {...getRelated(FrontendBlockTypeAsset)}
+                tabId={currentTab}
+                onTabChange={(tabId) => setCurrentTab(tabId)}
+            />
+        </DefaultContext>
     );
 };
 
@@ -244,129 +246,147 @@ export const DetailLanguageTargetDesktop = () => {
     const [currentTab, setCurrentTab] = React.useState('general');
     const { installerService } = createInstaller();
     return (
-        <DesktopContainer version={'1.2.3'}>
-            <BlockhubDetails
-                asset={LanguageTargetAsset}
-                versionInfo={VersionInfo}
-                service={installerService}
-                fetcher={assetFetcher}
-                {...getRelated(LanguageTargetAsset)}
-                tabId={currentTab}
-                onTabChange={(tabId) => setCurrentTab(tabId)}
-            />
-        </DesktopContainer>
+        <DefaultContext>
+            <DesktopContainer version={'1.2.3'}>
+                <BlockhubDetails
+                    asset={LanguageTargetAsset}
+                    versionInfo={VersionInfo}
+                    service={installerService}
+                    fetcher={assetFetcher}
+                    {...getRelated(LanguageTargetAsset)}
+                    tabId={currentTab}
+                    onTabChange={(tabId) => setCurrentTab(tabId)}
+                />
+            </DesktopContainer>
+        </DefaultContext>
     );
 };
 
 export const DetailDeploymentTarget = () => {
     const [currentTab, setCurrentTab] = React.useState('general');
     return (
-        <BlockhubDetails
-            asset={DeploymentTargetAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(DeploymentTargetAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
+        <DefaultContext>
+            <BlockhubDetails
+                asset={DeploymentTargetAsset}
+                versionInfo={VersionInfo}
+                fetcher={assetFetcher}
+                {...getRelated(DeploymentTargetAsset)}
+                tabId={currentTab}
+                onTabChange={(tabId) => setCurrentTab(tabId)}
+            />
+        </DefaultContext>
     );
 };
 
 export const DetailProviderOperator = () => {
     const [currentTab, setCurrentTab] = React.useState('general');
     return (
-        <BlockhubDetails
-            asset={ProviderOperatorAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(ProviderOperatorAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
+        <DefaultContext>
+            <BlockhubDetails
+                asset={ProviderOperatorAsset}
+                versionInfo={VersionInfo}
+                fetcher={assetFetcher}
+                {...getRelated(ProviderOperatorAsset)}
+                tabId={currentTab}
+                onTabChange={(tabId) => setCurrentTab(tabId)}
+            />
+        </DefaultContext>
     );
 };
 
 export const DetailProviderInternal = () => {
     const [currentTab, setCurrentTab] = React.useState('general');
     return (
-        <BlockhubDetails
-            asset={ProviderInternalAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(ProviderInternalAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
+        <DefaultContext>
+            <BlockhubDetails
+                asset={ProviderInternalAsset}
+                versionInfo={VersionInfo}
+                fetcher={assetFetcher}
+                {...getRelated(ProviderInternalAsset)}
+                tabId={currentTab}
+                onTabChange={(tabId) => setCurrentTab(tabId)}
+            />
+        </DefaultContext>
     );
 };
 
 export const DetailBlockGroup = () => {
     const [currentTab, setCurrentTab] = React.useState('general');
     return (
-        <BlockhubDetails
-            asset={BlockGroupAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(BlockGroupAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
+        <DefaultContext>
+            <BlockhubDetails
+                asset={BlockGroupAsset}
+                versionInfo={VersionInfo}
+                fetcher={assetFetcher}
+                {...getRelated(BlockGroupAsset)}
+                tabId={currentTab}
+                onTabChange={(tabId) => setCurrentTab(tabId)}
+            />
+        </DefaultContext>
     );
 };
 
 export const DetailPlan = () => {
     const [currentTab, setCurrentTab] = React.useState('general');
     return (
-        <BlockhubDetails
-            asset={PlanAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(PlanAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
+        <DefaultContext>
+            <BlockhubDetails
+                asset={PlanAsset}
+                versionInfo={VersionInfo}
+                fetcher={assetFetcher}
+                {...getRelated(PlanAsset)}
+                tabId={currentTab}
+                onTabChange={(tabId) => setCurrentTab(tabId)}
+            />
+        </DefaultContext>
     );
 };
 
 export const DetailDeployment = () => {
     const [currentTab, setCurrentTab] = React.useState('general');
     return (
-        <BlockhubDetails
-            asset={DeploymentAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(DeploymentAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
+        <DefaultContext>
+            <BlockhubDetails
+                asset={DeploymentAsset}
+                versionInfo={VersionInfo}
+                fetcher={assetFetcher}
+                {...getRelated(DeploymentAsset)}
+                tabId={currentTab}
+                onTabChange={(tabId) => setCurrentTab(tabId)}
+            />
+        </DefaultContext>
     );
 };
 
 export const DetailFrontendBlock = () => {
     const [currentTab, setCurrentTab] = React.useState('general');
     return (
-        <BlockhubDetails
-            asset={FrontendBlockAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(FrontendBlockAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
+        <DefaultContext>
+            <BlockhubDetails
+                asset={FrontendBlockAsset}
+                versionInfo={VersionInfo}
+                fetcher={assetFetcher}
+                {...getRelated(FrontendBlockAsset)}
+                tabId={currentTab}
+                onTabChange={(tabId) => setCurrentTab(tabId)}
+            />
+        </DefaultContext>
     );
 };
 
 export const DetailServiceBlock = () => {
     const [currentTab, setCurrentTab] = React.useState('general');
     return (
-        <BlockhubDetails
-            asset={ServiceBlockAsset}
-            versionInfo={VersionInfo}
-            fetcher={assetFetcher}
-            {...getRelated(ServiceBlockAsset)}
-            tabId={currentTab}
-            onTabChange={(tabId) => setCurrentTab(tabId)}
-        />
+        <DefaultContext>
+            <BlockhubDetails
+                asset={ServiceBlockAsset}
+                versionInfo={VersionInfo}
+                fetcher={assetFetcher}
+                {...getRelated(ServiceBlockAsset)}
+                tabId={currentTab}
+                onTabChange={(tabId) => setCurrentTab(tabId)}
+            />
+        </DefaultContext>
     );
 };
 
