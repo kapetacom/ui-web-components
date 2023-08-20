@@ -1,24 +1,12 @@
 import React, { useState } from 'react';
 import { State, Store } from '@sambego/storybook-state';
 
-import {
-    Button,
-    ButtonSize,
-    ButtonStyle,
-    ButtonType,
-    FormSelect,
-    FormButtons,
-    FormContainer,
-    FormTextarea,
-    FormInput,
-    Type,
-    ModalSize,
-    Modal,
-} from '../src';
+import { FormSelect, FormButtons, FormContainer, FormTextarea, FormInput, Type } from '../src';
 import { Checkbox } from '../src/form/Checkbox';
 import { FormAutocomplete } from '../src/form/inputs/FormAutocomplete';
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
+import { Button, Modal } from '@mui/material';
 
 let dropdownState = new Store({
     test1: [],
@@ -51,7 +39,7 @@ export const SelectInModal = () => {
 
     return (
         <div style={{ padding: '15px' }}>
-            <Modal open={true} title={'Test'} size={ModalSize.small}>
+            <Modal open={true} title={'Test'}>
                 <FormContainer>
                     <FormSelect
                         help={helpText}
@@ -336,20 +324,17 @@ export const FormButton = () => {
 
                 <FormButtons>
                     <Button
-                        width={ButtonSize.MEDIUM}
-                        style={ButtonStyle.DANGER}
+                        color={'error'}
                         onClick={() => {
                             console.log('Clicked cancel!');
                         }}
-                        text="Test"
-                    />
+                    >
+                        Test
+                    </Button>
 
-                    <Button
-                        type={ButtonType.SUBMIT}
-                        width={ButtonSize.MEDIUM}
-                        style={ButtonStyle.PRIMARY}
-                        text="Test"
-                    />
+                    <Button color={'primary'} type={'submit'}>
+                        Test
+                    </Button>
                 </FormButtons>
             </FormContainer>
         </div>
@@ -471,7 +456,9 @@ export const FormAutocompletes = () => {
                 />
 
                 <FormButtons>
-                    <Button width={ButtonSize.SMALL} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} text="Save" />
+                    <Button type={'submit'} color="primary">
+                        Save
+                    </Button>
                 </FormButtons>
             </FormContainer>
 

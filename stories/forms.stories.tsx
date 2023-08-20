@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
-import {
-    AsyncValidatorFunction,
-    Button,
-    ButtonStyle,
-    ButtonType,
-    debouncedValidator,
-    FormButtons,
-    FormContainer,
-} from '../src';
+import { AsyncValidatorFunction, debouncedValidator, FormButtons, FormContainer } from '../src';
 import { FormField, FormFieldType } from '../src/form/inputs/FormField';
 import { useFormContextField } from '../src/form/FormContext';
+import { Button } from '@mui/material';
 
 function minMaxAgeCheck(name: string, value: number) {
     if (value < 1) {
@@ -86,20 +79,14 @@ export const SimpleForm = () => {
                 />
 
                 <FormButtons>
-                    <Button
-                        width={120}
-                        text={'Load Alt'}
-                        onClick={() => setInitialValue(AltFormValue)}
-                        type={ButtonType.BUTTON}
-                    />
-                    <Button
-                        width={120}
-                        text={'Load Normal'}
-                        onClick={() => setInitialValue(InitialFormValue)}
-                        type={ButtonType.BUTTON}
-                    />
-                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                    <Button onClick={() => setInitialValue(AltFormValue)}>Load Alt</Button>
+                    <Button onClick={() => setInitialValue(InitialFormValue)}>Load Normal</Button>
+                    <Button type={'reset'} color={'error'}>
+                        Reset
+                    </Button>
+                    <Button type={'submit'} color={'primary'}>
+                        Save
+                    </Button>
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -154,8 +141,10 @@ export const NestedDataForm = () => {
                 />
 
                 <FormButtons>
-                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                    <Button color={'error'}>Reset</Button>
+                    <Button type={'submit'} color={'primary'}>
+                        Save
+                    </Button>
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -216,8 +205,10 @@ export const FormWithConditionals = () => {
                 )}
 
                 <FormButtons>
-                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                    <Button color={'error'}>Reset</Button>
+                    <Button type={'submit'} color={'primary'}>
+                        Save
+                    </Button>
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -267,8 +258,10 @@ export const FormWithValidation = () => {
                 />
 
                 <FormButtons>
-                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                    <Button color={'error'}>Reset</Button>
+                    <Button type={'submit'} color={'primary'}>
+                        Save
+                    </Button>
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -336,8 +329,10 @@ export const FormWithAsyncValidation = () => {
                 />
 
                 <FormButtons>
-                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                    <Button color={'error'}>Reset</Button>
+                    <Button type={'submit'} color={'primary'}>
+                        Save
+                    </Button>
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -368,8 +363,10 @@ export const AsyncForm = () => {
                 />
 
                 <FormButtons>
-                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                    <Button color={'error'}>Reset</Button>
+                    <Button type={'submit'} color={'primary'}>
+                        Save
+                    </Button>
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -393,8 +390,10 @@ export const FormNavigationOnSubmit = () => {
                     />
 
                     <FormButtons>
-                        <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                        <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                        <Button color={'error'}>Reset</Button>
+                        <Button type={'submit'} color={'primary'}>
+                            Save
+                        </Button>
                     </FormButtons>
                 </FormContainer>
             </form>
@@ -420,8 +419,10 @@ export const CustomFormValidation = () => {
             <FormField name={'ok'} label={'Something'} validation={['required']} />
             <FormField name={'fail'} label={'Fails'} validation={['required']} />
             <FormButtons>
-                <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                <Button color={'error'}>Reset</Button>
+                <Button type={'submit'} color={'primary'}>
+                    Save
+                </Button>
             </FormButtons>
         </FormContainer>
     );
