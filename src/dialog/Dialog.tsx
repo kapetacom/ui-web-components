@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
-
 import { createHexagonPath, Orientation, toClass } from '@kapeta/ui-web-utils';
 
 import { DialogControl } from './DialogControl';
@@ -8,14 +6,13 @@ import { OverlayComponent, OverlayContext, OverlayContextType } from '../overlay
 import { PanelStructure } from '../helpers/PanelStructure';
 import { DialogTypes } from './DialogTypes';
 import { Draggable } from '../dnd/Draggable';
-import { Button, ButtonSize, ButtonStyle, ButtonType } from '../button/buttons';
 import { FormContainer } from '../form/FormContainer';
 import { FormInput } from '../form/inputs/FormInput';
 import { FormButtons } from '../form/FormButtons';
 import { RenderInBody } from '../overlay/RenderInBody';
 
 import './Dialog.less';
-import { makeObservable } from 'mobx';
+import Button from '@mui/material/Button';
 
 const DEFAULT_HEXAGONAL = {
     height: 350,
@@ -58,7 +55,6 @@ const CheckedIcon: React.FC = () => {
     );
 };
 
-@observer
 export class Dialog extends Component<DialogProps, any> implements OverlayComponent {
     static contextType = OverlayContext;
     context!: React.ContextType<OverlayContextType>;
@@ -189,21 +185,15 @@ export class Dialog extends Component<DialogProps, any> implements OverlayCompon
                 </text>
 
                 <foreignObject x={initialSize.width / 2 - 100} y={initialSize.height - 100} overflow="visible">
-                    <Button
-                        onClick={DialogControl.accept}
-                        width={ButtonSize.SMALL}
-                        style={ButtonStyle.PRIMARY}
-                        text={'Yes'}
-                    />
+                    <Button onClick={DialogControl.accept} size={'small'} color={'primary'}>
+                        Yes
+                    </Button>
                 </foreignObject>
 
                 <foreignObject x={initialSize.width / 2 + 10} y={initialSize.height - 100} overflow="visible">
-                    <Button
-                        onClick={() => this.close()}
-                        width={ButtonSize.SMALL}
-                        style={ButtonStyle.DANGER}
-                        text={'No'}
-                    />
+                    <Button size={'small'} color={'error'} onClick={() => this.close()}>
+                        No
+                    </Button>
                 </foreignObject>
             </svg>
         );
@@ -242,18 +232,12 @@ export class Dialog extends Component<DialogProps, any> implements OverlayCompon
                         )}
 
                         <FormButtons>
-                            <Button
-                                width={ButtonSize.SMALL}
-                                style={ButtonStyle.DANGER}
-                                onClick={() => this.close()}
-                                text="Cancel"
-                            />
-                            <Button
-                                width={ButtonSize.SMALL}
-                                type={ButtonType.SUBMIT}
-                                style={ButtonStyle.PRIMARY}
-                                text={'Ok'}
-                            />
+                            <Button size={'small'} color={'error'} onClick={() => this.close()}>
+                                Cancel
+                            </Button>
+                            <Button size={'small'} type={'submit'} color={'primary'}>
+                                Ok
+                            </Button>
                         </FormButtons>
                     </FormContainer>
                 </div>

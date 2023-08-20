@@ -6,8 +6,8 @@ import { DataList } from './DataList';
 
 import { ColDef } from 'ag-grid-community';
 import { GridApi } from 'ag-grid-community';
-import { PanelAlignment, PanelSize, SidePanel } from '../side-panel/SidePanel';
 import { Detail, DetailRowValue } from '../detail/Detail';
+import { Drawer } from '@mui/material';
 
 interface ExtendedColDef<T extends any> extends ColDef<T> {
     showInTable?: boolean;
@@ -48,15 +48,14 @@ export function DataListDetails<T = any>(props: Props<T>) {
                 columnDefs={props.columnDefs.filter((colDef) => colDef.showInTable !== false)}
             />
 
-            <SidePanel
+            <Drawer
                 open={showDetails}
                 title={'Details'}
                 onClose={() => {
                     setShowDetails(false);
                     gridApi?.deselectAll();
                 }}
-                side={PanelAlignment.right}
-                size={PanelSize.medium}
+                anchor={'right'}
             >
                 {details && (
                     <Detail data={details}>
@@ -65,7 +64,7 @@ export function DataListDetails<T = any>(props: Props<T>) {
                         })}
                     </Detail>
                 )}
-            </SidePanel>
+            </Drawer>
         </>
     );
 }

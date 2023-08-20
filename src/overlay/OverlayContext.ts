@@ -1,5 +1,4 @@
 import React, { Context } from 'react';
-import exp from 'constants';
 
 export interface OverlayComponent {
     isOpen: () => boolean;

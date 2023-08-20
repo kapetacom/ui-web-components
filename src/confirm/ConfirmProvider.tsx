@@ -80,41 +80,42 @@ const buildOptions = (defaultOptions, options) => {
     };
 };
 
+type Resolver = { apply: (ok: boolean) => void };
+
 export const ConfirmProvider = ({ children, defaultOptions = {} }: ConfirmProviderProps) => {
     const [options, setOptions] = useState<ConfirmOptions>({});
-    const [resolveReject, setResolveReject] = useState([]);
-    const [resolve, reject] = resolveReject;
+    const [resolver, setResolver] = useState<Resolver>();
 
-    const confirm = useCallback((options: ConfirmOptions = {}): Promise<void> => {
-        return new Promise((resolve, reject) => {
+    const confirm = useCallback((options: ConfirmOptions = {}): Promise<boolean> => {
+        return new Promise((resolve) => {
             setOptions(options);
-            setResolveReject([resolve, reject]);
+            setResolver({ apply: resolve });
         });
     }, []);
 
     const handleClose = useCallback(() => {
-        setResolveReject([]);
+        setResolver(undefined);
     }, []);
 
     const handleCancel = useCallback(() => {
-        if (reject) {
-            reject();
+        if (resolver) {
+            resolver.apply(false);
             handleClose();
         }
-    }, [reject, handleClose]);
+    }, [resolver, handleClose]);
 
     const handleConfirm = useCallback(() => {
-        if (resolve) {
-            resolve();
+        if (resolver) {
+            resolver.apply(true);
             handleClose();
         }
-    }, [resolve, handleClose]);
+    }, [resolver, handleClose]);
 
     return (
         <>
             <ConfirmContext.Provider value={confirm}>{children}</ConfirmContext.Provider>
             <ConfirmationDialog
-                open={resolveReject.length === 2}
+                open={!!resolver}
                 options={buildOptions(defaultOptions, options)}
                 onClose={handleClose}
                 onCancel={handleCancel}

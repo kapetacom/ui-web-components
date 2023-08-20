@@ -2,7 +2,7 @@ import React from 'react';
 import { FormContext, FormContextType } from './FormContext';
 
 import './FormButtons.less';
-import { Button } from '../button/buttons';
+import { Button } from '@mui/material';
 
 interface FormButtonsProps {
     children: any;

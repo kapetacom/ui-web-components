@@ -39,6 +39,9 @@ export enum StandardIcons {
     CANCEL = 'fa fa-times',
 }
 
+/**
+ * @deprecated Use MUI Button instead
+ */
 export enum ButtonStyle {
     PRIMARY = 'primary',
     PRIMARY_SHINE = 'primary_shine',
@@ -47,18 +50,27 @@ export enum ButtonStyle {
     DANGER = 'danger',
 }
 
+/**
+ * @deprecated Use MUI Button instead
+ */
 export enum ButtonType {
     BUTTON = 'button',
     SUBMIT = 'submit',
     RESET = 'reset',
 }
 
+/**
+ * @deprecated Use MUI Button instead
+ */
 export enum ButtonShape {
     HEXAGON = 'hexagon',
     ICON = 'icon',
     SQUARE = 'square',
 }
 
+/**
+ * @deprecated Use MUI Button instead
+ */
 export enum ButtonSize {
     ICON = 26,
     SMALL = 90,
@@ -143,6 +155,9 @@ const ButtonInner = (props: ButtonProps) => {
     return <></>;
 };
 
+/**
+ * @deprecated Use MUI Button instead
+ */
 export const Button = (props: ButtonProps) => {
     const width = props.width ? props.width : props.shape === ButtonShape.ICON ? ButtonSize.ICON : ButtonSize.MEDIUM;
 
@@ -175,6 +190,10 @@ interface LogoProps {
     width?: number;
 }
 
+/**
+ *
+ * @deprecated Use MUI Button instead
+ */
 export const LogoButton = (props: LogoProps) => {
     const width = props.width ? props.width : ButtonSize.MEDIUM;
     const logoWidth = 50;
