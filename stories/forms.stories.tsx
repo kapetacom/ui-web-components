@@ -403,24 +403,26 @@ export const FormNavigationOnSubmit = () => {
 };
 
 export const CustomFormValidation = () => {
-    return (<FormContainer
-        initialValue={{}}
-        onSubmitData={(data) => {
-            console.log(data);
-        }}
-        validators={[
-            (fieldName: string, value: string) => {
-                if (fieldName === 'fail') {
-                    throw new Error('This field will never pass');
-                }
-            }
-        ]}
-    >
-        <FormField name={'ok'} label={'Something'} validation={['required']} />
-        <FormField name={'fail'} label={'Fails'} validation={['required']} />
-        <FormButtons>
-            <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-            <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
-        </FormButtons>
-    </FormContainer>)
+    return (
+        <FormContainer
+            initialValue={{}}
+            onSubmitData={(data) => {
+                console.log(data);
+            }}
+            validators={[
+                (fieldName: string, value: string) => {
+                    if (fieldName === 'fail') {
+                        throw new Error('This field will never pass');
+                    }
+                },
+            ]}
+        >
+            <FormField name={'ok'} label={'Something'} validation={['required']} />
+            <FormField name={'fail'} label={'Fails'} validation={['required']} />
+            <FormButtons>
+                <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
+                <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+            </FormButtons>
+        </FormContainer>
+    );
 };

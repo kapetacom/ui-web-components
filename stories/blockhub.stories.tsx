@@ -1,19 +1,6 @@
 import React from 'react';
-import {
-    Box,
-    Checkbox,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    ListSubheader,
-    Stack,
-} from '@mui/material';
-import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
+import { Checkbox, Stack } from '@mui/material';
 import { BlockhubTile, DependencyKindLabel } from '../src/blockhub/BlockhubTile';
-import { BlockhubGridContainer } from '../src/blockhub/BlockhubGridContainer';
-import { BlockhubSidebar } from '../src/blockhub/BlockhubSidebar';
 import { BlockhubDetails } from '../src/blockhub/BlockhubDetails';
 
 import {
@@ -138,29 +125,33 @@ export const PageView = () => {
     const { asset, installerService, installerServiceExists } = createInstaller();
 
     return (
-        <Blockhub
-            mode={BlockhubMode.PAGE}
-            fetcher={assetFetcher}
-            installerService={installerService}
-            assets={{
-                loading: false,
-                value: Assets,
-            }}
-        />
+        <DefaultContext>
+            <Blockhub
+                mode={BlockhubMode.PAGE}
+                fetcher={assetFetcher}
+                installerService={installerService}
+                assets={{
+                    loading: false,
+                    value: Assets,
+                }}
+            />
+        </DefaultContext>
     );
 };
 
 export const PageViewLoading = () => {
     const { asset, installerService, installerServiceExists } = createInstaller();
     return (
-        <Blockhub
-            mode={BlockhubMode.PAGE}
-            fetcher={assetFetcher}
-            installerService={installerService}
-            assets={{
-                loading: true,
-            }}
-        />
+        <DefaultContext>
+            <Blockhub
+                mode={BlockhubMode.PAGE}
+                fetcher={assetFetcher}
+                installerService={installerService}
+                assets={{
+                    loading: true,
+                }}
+            />
+        </DefaultContext>
     );
 };
 
@@ -181,46 +172,50 @@ export const PageViewEmpty = () => {
 export const ModalStandalone = () => {
     const { asset, installerService, installerServiceExists } = createInstaller();
     return (
-        <DesktopContainer version={'1.2.3'}>
-            <BlockhubModal
-                fetcher={assetFetcher}
-                installerService={installerService}
-                assets={{
-                    loading: false,
-                    value: Assets,
-                }}
-                open={true}
-                onClose={() => {}}
-            />
-        </DesktopContainer>
+        <DefaultContext>
+            <DesktopContainer version={'1.2.3'}>
+                <BlockhubModal
+                    fetcher={assetFetcher}
+                    installerService={installerService}
+                    assets={{
+                        loading: false,
+                        value: Assets,
+                    }}
+                    open={true}
+                    onClose={() => {}}
+                />
+            </DesktopContainer>
+        </DefaultContext>
     );
 };
 
 export const ModalPlan = () => {
     const { asset, installerService, installerServiceExists } = createInstaller();
     return (
-        <DesktopContainer version={'1.2.3'}>
-            <BlockhubModal
-                plan={{
-                    kind: CoreTypes.PLAN,
-                    ref: `${PlanAsset.content.metadata.name}:${PlanAsset.version}`,
-                    data: PlanAsset.content,
-                    exists: true,
-                    ymlPath: '',
-                    path: '',
-                    version: PlanAsset.version,
-                    editable: true,
-                }}
-                fetcher={assetFetcher}
-                installerService={installerService}
-                assets={{
-                    loading: false,
-                    value: Assets,
-                }}
-                open={true}
-                onClose={() => {}}
-            />
-        </DesktopContainer>
+        <DefaultContext>
+            <DesktopContainer version={'1.2.3'}>
+                <BlockhubModal
+                    plan={{
+                        kind: CoreTypes.PLAN,
+                        ref: `${PlanAsset.content.metadata.name}:${PlanAsset.version}`,
+                        data: PlanAsset.content,
+                        exists: true,
+                        ymlPath: '',
+                        path: '',
+                        version: PlanAsset.version,
+                        editable: true,
+                    }}
+                    fetcher={assetFetcher}
+                    installerService={installerService}
+                    assets={{
+                        loading: false,
+                        value: Assets,
+                    }}
+                    open={true}
+                    onClose={() => {}}
+                />
+            </DesktopContainer>
+        </DefaultContext>
     );
 };
 

@@ -1,2 +1,1 @@
-
-export * from './DateDisplay'
+export * from './DateDisplay';
