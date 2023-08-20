@@ -5,7 +5,7 @@ import ArrowBack from '@mui/icons-material/ArrowBack';
 import styled from '@emotion/styled';
 
 import { AssetDisplay, AssetFetcher, AssetVersionInfo, CoreTypes, Dependency } from './types';
-import { BlockhubStats, BlockhubTile,  DependencyKindLabel } from './BlockhubTile';
+import { BlockhubStats, BlockhubTile, DependencyKindLabel } from './BlockhubTile';
 import { parseKapetaUri } from '@kapeta/nodejs-utils';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import { isPublic, renderArtifact, renderDatetime, renderRepository } from './asset-helpers';
@@ -15,7 +15,7 @@ import { AssetKindIcon, AssetKindIconText } from '../icons/AssetIcon';
 import useSWR from 'swr';
 import { AssetInstallButton, InstallerService } from './AssetInstallButton';
 import { Size } from '@kapeta/ui-web-types';
-import {toDateText} from "../dates";
+import { toDateText } from '../dates';
 
 export type BlockHubDetailsPreviewer = (asset: AssetDisplay, size: Size) => React.ReactNode;
 
@@ -143,9 +143,7 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
                                 title={props.asset.lastModified ? renderDatetime(props.asset.lastModified) : ''}
                             >
                                 {props.asset.lastModified && (
-                                    <span className={'value'}>
-                                        Last updated {toDateText(props.asset.lastModified)}
-                                    </span>
+                                    <span className={'value'}>Last updated {toDateText(props.asset.lastModified)}</span>
                                 )}
                             </span>
                         </Typography>

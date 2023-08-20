@@ -17,13 +17,14 @@ import { BlockhubGridContainer } from './BlockhubGridContainer';
 import { BlockhubTile, DependencyKindLabel } from './BlockhubTile';
 import { AssetKindIcon } from '../icons/AssetIcon';
 import { AssetInstallButton, InstallerService } from './AssetInstallButton';
-import { Apartment, DownloadDone, GroupWorkOutlined } from '@mui/icons-material';
+import { Apartment, DownloadDone, GroupWorkOutlined, Paid } from '@mui/icons-material';
 import { AssetDisplay, AssetFetcher } from './types';
 import { Plan } from '@kapeta/schemas';
 import { parseKapetaUri } from '@kapeta/nodejs-utils';
 import { Asset } from '@kapeta/ui-web-types';
 import { useAsync } from 'react-use';
 import { AsyncState } from 'react-use/lib/useAsync';
+import { Tooltip } from '../tooltip/Tooltip';
 
 const toId = (asset: AssetDisplay) => {
     return parseKapetaUri(`${asset.content.metadata.name}:${asset.version}`).id;
@@ -69,6 +70,7 @@ export enum BlockhubCategory {
     INSTALLED,
     OWN,
     COMMUNITY,
+    PREMIUM,
 }
 
 interface Props {
@@ -120,7 +122,18 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
             tooltip: (
                 <>
                     <b>Search the community for available assets</b>
-                    <p>Find new free or paid assets to add new capabilities to your software</p>
+                    <p>Find new community-made assets to add new capabilities to your software</p>
+                </>
+            ),
+        },
+        {
+            title: 'Premium',
+            icon: <Paid />,
+            type: BlockhubCategory.PREMIUM,
+            tooltip: (
+                <>
+                    <b>Coming soon!</b>
+                    <p>Find new paid assets to add new capabilities to your software</p>
                 </>
             ),
         },
@@ -208,6 +221,7 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                         {tabs.map((tabInfo, index) => (
                             <ListItem disablePadding={true} key={`nav_${index}`}>
                                 <ListItemButton
+                                    disabled={tabInfo.type === BlockhubCategory.PREMIUM}
                                     selected={tab === index}
                                     onClick={() => {
                                         setTab(index);
@@ -215,7 +229,14 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                                     }}
                                 >
                                     <ListItemIcon>{tabInfo.icon}</ListItemIcon>
-                                    <ListItemText>{tabInfo.title}</ListItemText>
+                                    <ListItemText>
+                                        <Typography>{tabInfo.title}</Typography>
+                                        {tabInfo.type === BlockhubCategory.PREMIUM && (
+                                            <Typography variant={'caption'} color={'secondary.text'}>
+                                                Coming soon!
+                                            </Typography>
+                                        )}
+                                    </ListItemText>
                                 </ListItemButton>
                             </ListItem>
                         ))}
