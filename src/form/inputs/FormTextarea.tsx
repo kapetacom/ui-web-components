@@ -22,6 +22,9 @@ export const FormTextarea = withFormFieldController((props: Props, controller) =
                     display: 'block',
                     mt: 1,
                     mb: 1,
+                    '.MuiInputBase-root': {
+                        width: '100%',
+                    },
                 }}
                 onChange={onChange}
                 variant={'standard'}

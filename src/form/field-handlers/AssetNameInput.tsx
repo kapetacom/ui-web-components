@@ -7,7 +7,6 @@ import {
     FormControl,
     FormGroup,
     FormHelperText,
-    FormLabel,
     Input,
     InputLabel,
     MenuItem,
@@ -28,8 +27,8 @@ export const AssetNameInput = (props: Props) => {
     const value = formField.get('/');
 
     // Add a fake option for unknown namespaces (e.g. loading an asset that you can no longer access)
-    const validateNamespace = useMemo(
-        () => (name, value) => {
+    const validateNamespace = useCallback(
+        (name, value) => {
             const [namespace] = value.split('/');
             if (!(props.namespaces || []).includes(namespace)) {
                 throw 'Namespace not available';
@@ -56,17 +55,21 @@ export const AssetNameInput = (props: Props) => {
         autoFocus: props.autoFocus,
     });
 
-    const [namespace, setNamespace] = useState('');
-    const [assetName, setAssetName] = useState('');
-
-    // Reset state when value changes:
-
-    useEffect(() => {
-        const [newNamespace, newAssetName] = value.split('/') || [];
-        const defaultNamespace = props.namespaces?.[0] || '';
-        setNamespace(newNamespace || defaultNamespace);
-        setAssetName(newAssetName || '');
+    const [namespace, assetName] = useMemo(() => {
+        let [newNamespace, newAssetName] = value.split('/') || [];
+        if (!newNamespace) {
+            newNamespace = props.namespaces.length > 0 ? props.namespaces[0] : '';
+        }
+        return [newNamespace, newAssetName];
     }, [value, props.namespaces]);
+
+    const namespaces = useMemo(() => {
+        const out = [...(props.namespaces || [])];
+        if (!out.includes(namespace)) {
+            out.push(namespace);
+        }
+        return out;
+    }, [props.namespaces, namespace]);
 
     // Report back to the form context for validation
     useEffect(() => {
@@ -78,7 +81,7 @@ export const AssetNameInput = (props: Props) => {
         }
     }, [controller.name, namespace, assetName]);
 
-    const callback = useCallback(
+    const onChange = useCallback(
         (namespace: string, assetName: string) => {
             const value =
                 namespace || assetName
@@ -102,10 +105,6 @@ export const AssetNameInput = (props: Props) => {
         [controller.name, formField]
     );
 
-    let namespaces = [...(props.namespaces || [])];
-    if (!namespaces.includes(namespace)) {
-        namespaces.push(namespace);
-    }
     const inputLabelId = `${id}-label`;
     const namespaceId = `${id}-namespace`;
     const nameId = `${id}-name`;
@@ -143,12 +142,15 @@ export const AssetNameInput = (props: Props) => {
                         autoWidth={true}
                         defaultValue={namespaces.length > 0 ? namespaces[0] : undefined}
                         id={namespaceId}
+                        value={namespace}
                         labelId={inputLabelId}
                         disabled={controller.disabled}
                         readOnly={controller.readOnly}
+                        onChange={(evt) => onChange(evt.target.value, assetName)}
                         sx={{
-                            flex: 0,
+                            flex: 1,
                             maxWidth: '200px',
+                            minWidth: '60px',
                             '.MuiSelect-select': {
                                 pr: 1,
                             },
@@ -165,7 +167,7 @@ export const AssetNameInput = (props: Props) => {
                     </Typography>
                     <Input
                         sx={{
-                            flex: 1,
+                            flex: 2,
                         }}
                         id={nameId}
                         type={Type.TEXT}
@@ -173,7 +175,7 @@ export const AssetNameInput = (props: Props) => {
                         readOnly={controller.readOnly}
                         name={'asset-name'}
                         value={assetName}
-                        onChange={(evt) => callback(namespace, evt.target.value)}
+                        onChange={(evt) => onChange(namespace, evt.target.value)}
                     />
                 </Stack>
                 {controller.help && <FormHelperText>{controller.help}</FormHelperText>}
