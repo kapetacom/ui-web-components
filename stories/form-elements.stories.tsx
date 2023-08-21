@@ -1,24 +1,12 @@
 import React, { useState } from 'react';
 import { State, Store } from '@sambego/storybook-state';
 
-import {
-    Button,
-    ButtonSize,
-    ButtonStyle,
-    ButtonType,
-    FormSelect,
-    FormButtons,
-    FormContainer,
-    FormTextarea,
-    FormInput,
-    Type,
-    ModalSize,
-    Modal,
-} from '../src';
+import { FormSelect, FormButtons, FormContainer, FormTextarea, FormInput, Type } from '../src';
 import { Checkbox } from '../src/form/Checkbox';
 import { FormAutocomplete } from '../src/form/inputs/FormAutocomplete';
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
+import { Button, Modal } from '@mui/material';
 
 let dropdownState = new Store({
     test1: [],
@@ -51,29 +39,31 @@ export const SelectInModal = () => {
 
     return (
         <div style={{ padding: '15px' }}>
-            <Modal open={true} title={'Test'} size={ModalSize.small}>
-                <FormContainer>
-                    <FormSelect
-                        help={helpText}
-                        name={'text'}
-                        label={'Text Value'}
-                        value={input1}
-                        onChange={(inputName, userInput) => setInput1(userInput)}
-                        options={['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX']}
-                    />
-
-                    <div style={{ width: '80%' }}>
+            <Modal open={true} title={'Test'}>
+                <div>
+                    <FormContainer>
                         <FormSelect
                             help={helpText}
                             name={'text'}
-                            label={'Text Value (w/ deselect)'}
-                            value={input2}
-                            onChange={(inputName, userInput) => setInput2(userInput)}
-                            options={['ONE', 'TWO', 'THREE']}
-                            enableDeselect
+                            label={'Text Value'}
+                            value={input1}
+                            onChange={(inputName, userInput) => setInput1(userInput)}
+                            options={['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX']}
                         />
-                    </div>
-                </FormContainer>
+
+                        <div style={{ width: '80%' }}>
+                            <FormSelect
+                                help={helpText}
+                                name={'text'}
+                                label={'Text Value (w/ deselect)'}
+                                value={input2}
+                                onChange={(inputName, userInput) => setInput2(userInput)}
+                                options={['ONE', 'TWO', 'THREE']}
+                                enableDeselect
+                            />
+                        </div>
+                    </FormContainer>
+                </div>
             </Modal>
         </div>
     );
@@ -336,20 +326,18 @@ export const FormButton = () => {
 
                 <FormButtons>
                     <Button
-                        width={ButtonSize.MEDIUM}
-                        style={ButtonStyle.DANGER}
+                        color={'error'}
+                        variant={'contained'}
                         onClick={() => {
                             console.log('Clicked cancel!');
                         }}
-                        text="Test"
-                    />
+                    >
+                        Test
+                    </Button>
 
-                    <Button
-                        type={ButtonType.SUBMIT}
-                        width={ButtonSize.MEDIUM}
-                        style={ButtonStyle.PRIMARY}
-                        text="Test"
-                    />
+                    <Button color={'primary'} variant={'contained'} type={'submit'}>
+                        Test
+                    </Button>
                 </FormButtons>
             </FormContainer>
         </div>
@@ -471,7 +459,9 @@ export const FormAutocompletes = () => {
                 />
 
                 <FormButtons>
-                    <Button width={ButtonSize.SMALL} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} text="Save" />
+                    <Button type={'submit'} color="primary">
+                        Save
+                    </Button>
                 </FormButtons>
             </FormContainer>
 

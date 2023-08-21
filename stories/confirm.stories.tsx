@@ -5,9 +5,10 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import { ConfirmProvider, useConfirm } from '../src/confirm';
+import { useConfirmDelete, useConfirmInfo, useConfirmSuccess, useConfirmWarn } from '../src/confirm/useConfirm';
 
 const meta: Meta = {
-    title: 'MUI Confirmation Dialog',
+    title: 'Confirm',
     component: Button,
     decorators: [
         (Story) => (
@@ -24,13 +25,50 @@ export default meta;
 
 type Story = StoryObj<typeof Button>;
 
-const confirmationAction = () => console.log('Confirmed');
-const cancellationAction = () => console.log('Cancelled');
+const confirmHandler = (ok: boolean) => (ok ? console.log('Confirmed') : console.log('Cancelled'));
 
 export const Basic: Story = {
     render: () => {
         const confirm = useConfirm();
-        return <Button onClick={() => confirm().then(confirmationAction)}>Click</Button>;
+        return <Button onClick={async () => confirmHandler(await confirm())}>Click</Button>;
+    },
+};
+
+export const Icons: Story = {
+    render: () => {
+        const confirmDeletion = useConfirmDelete();
+        const confirmWarn = useConfirmWarn();
+        const confirmInfo = useConfirmInfo();
+        const confirmSuccess = useConfirmSuccess();
+        return (
+            <>
+                <Button
+                    onClick={async () =>
+                        confirmHandler(
+                            await confirmDeletion('Do you want to delete this?', 'This action is permanent!')
+                        )
+                    }
+                >
+                    Delete
+                </Button>
+
+                <Button
+                    onClick={async () =>
+                        confirmHandler(await confirmWarn('Do you want to delete this?', 'This action is permanent!'))
+                    }
+                >
+                    Warn
+                </Button>
+
+                <Button onClick={async () => confirmHandler(await confirmInfo('This happened!', 'Everything is fine'))}>
+                    Info
+                </Button>
+
+                <Button onClick={async () => confirmHandler(await confirmSuccess('It worked!', 'Well done'))}>
+                    Success
+                </Button>
+            </>
+        );
     },
 };
 
@@ -39,8 +77,9 @@ export const WithDescription: Story = {
         const confirm = useConfirm();
         return (
             <Button
-                onClick={() => {
-                    confirm({ description: 'This action is permanent!' }).then(confirmationAction);
+                onClick={async () => {
+                    const ok = await confirm({ description: 'This action is permanent!' });
+                    confirmHandler(ok);
                 }}
             >
                 Click
@@ -62,7 +101,7 @@ export const WithCustomText: Story = {
                         description: 'This will reset your device to its factory settings.',
                         confirmationText: 'Accept',
                         cancellationText: 'Cancel',
-                    }).then(confirmationAction);
+                    }).then(confirmHandler);
                 }}
             >
                 Click
@@ -79,7 +118,7 @@ export const WithDialogProps: Story = {
                 onClick={() => {
                     confirm({
                         dialogProps: { disableEscapeKeyDown: true, maxWidth: 'xs' },
-                    }).then(confirmationAction);
+                    }).then(confirmHandler);
                 }}
             >
                 Click
@@ -96,7 +135,7 @@ export const WithDialogActionsProps: Story = {
                 onClick={() => {
                     confirm({
                         dialogActionsProps: { sx: { justifyContent: 'flex-start' } },
-                    }).then(confirmationAction);
+                    }).then(confirmHandler);
                 }}
             >
                 Click
@@ -114,7 +153,7 @@ export const WithCustomButtonProps: Story = {
                     confirm({
                         confirmationButtonProps: { color: 'error' },
                         cancellationButtonProps: { variant: 'text' },
-                    }).then(confirmationAction);
+                    }).then(confirmHandler);
                 }}
             >
                 Click
@@ -130,8 +169,7 @@ export const WithCustomCallbacks: Story = {
             <Button
                 onClick={() => {
                     confirm()
-                        .then(confirmationAction)
-                        .catch(cancellationAction)
+                        .then(confirmHandler)
                         .finally(() => console.log('closed'));
                 }}
             >
@@ -156,7 +194,7 @@ export const WithCustomElements: Story = {
                         description: <LinearProgress />,
                         confirmationText: 'Accept',
                         cancellationText: 'Cancel',
-                    }).then(confirmationAction);
+                    }).then(confirmHandler);
                 }}
             >
                 Click
@@ -178,7 +216,7 @@ export const WithCustomContent: Story = {
                                 <Box p={2}>This isn't wrapped in DialogContentText.</Box>
                             </div>
                         ),
-                    }).then(confirmationAction);
+                    }).then(confirmHandler);
                 }}
             >
                 Click
@@ -195,9 +233,7 @@ export const WithNaturalCloseDisabled: Story = {
                 onClick={() => {
                     confirm({
                         allowClose: false,
-                    })
-                        .then(confirmationAction)
-                        .catch(cancellationAction);
+                    }).then(confirmHandler);
                 }}
             >
                 Click
@@ -215,7 +251,7 @@ export const WithConfirmationKeyword: Story = {
                     confirm({
                         description: 'This action is permanent. Please enter "DELETE" to confirm the action.',
                         confirmationKeyword: 'DELETE',
-                    }).then(confirmationAction);
+                    }).then(confirmHandler);
                 }}
             >
                 Click
@@ -236,7 +272,7 @@ export const WithConfirmationKeywordAndCustomTextFieldProps: Story = {
                             label: 'Enter DELETE',
                             variant: 'standard',
                         },
-                    }).then(confirmationAction);
+                    }).then(confirmHandler);
                 }}
             >
                 Click
@@ -251,7 +287,7 @@ export const WithReversedButtons: Story = {
         return (
             <Button
                 onClick={() => {
-                    confirm({ buttonOrder: ['confirm', 'cancel'] }).then(confirmationAction);
+                    confirm({ buttonOrder: ['confirm', 'cancel'] }).then(confirmHandler);
                 }}
             >
                 Click

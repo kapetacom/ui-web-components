@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './styles.less';
-import { DataGrid, DataGridTheme, DataList, DataListDetails, OverlayContainer } from '../src';
+import { DataGrid, DataGridTheme, DataList, DataListDetails, DefaultContext } from '../src';
 
 const RAW_DATA = [
     {
@@ -127,42 +127,40 @@ export const SimpleDataList = () => {
 
 export const DataListWithDetails = () => {
     return (
-        <OverlayContainer>
-            <DataListDetails
-                theme={DataGridTheme.MATERIAL}
-                rowData={RAW_DATA.map((row) => {
-                    return {
-                        name: row.asset.metadata.name,
-                        kind: row.asset.kind,
-                        version: row.asset.metadata.version,
-                        ownerName: 'Kapeta',
-                    };
-                })}
-                columnDefs={[
-                    {
-                        field: 'id',
-                        headerName: 'ID',
-                    },
-                    {
-                        field: 'kind',
-                        headerName: 'Kind',
-                        filter: true,
-                        width: 280,
-                    },
-                    {
-                        field: 'version',
-                        headerName: 'Version',
-                        filter: true,
-                    },
-                    {
-                        field: 'ownerName',
-                        headerName: 'Owner',
-                        showInTable: false,
-                        filter: true,
-                    },
-                ]}
-            />
-        </OverlayContainer>
+        <DataListDetails
+            theme={DataGridTheme.MATERIAL}
+            rowData={RAW_DATA.map((row) => {
+                return {
+                    name: row.asset.metadata.name,
+                    kind: row.asset.kind,
+                    version: row.asset.metadata.version,
+                    ownerName: 'Kapeta',
+                };
+            })}
+            columnDefs={[
+                {
+                    field: 'id',
+                    headerName: 'ID',
+                },
+                {
+                    field: 'kind',
+                    headerName: 'Kind',
+                    filter: true,
+                    width: 280,
+                },
+                {
+                    field: 'version',
+                    headerName: 'Version',
+                    filter: true,
+                },
+                {
+                    field: 'ownerName',
+                    headerName: 'Owner',
+                    showInTable: false,
+                    filter: true,
+                },
+            ]}
+        />
     );
 };
 

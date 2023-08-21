@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Avatar, Box, CircularProgress, Fab, Zoom } from '@mui/material';
-import { FormRow } from '../form/FormRow';
+import React, { useCallback, useRef, useState } from 'react';
+import { Avatar, Box, CircularProgress, Fab, FormControl, FormHelperText, InputLabel, Zoom } from '@mui/material';
+import { FormFieldControllerProps, useFormFieldController } from '../form/formFieldController';
 import { IconType, IconValue } from '@kapeta/schemas';
 import { ValidatorListUnresolved } from '../validation/Validators';
 import { useFormContextField } from '../form/FormContext';
@@ -19,6 +19,8 @@ interface Props {
     resultType?: AvatarResultType;
     sync?: boolean;
     maxFileSize?: number;
+    readOnly?: boolean;
+    disabled?: boolean;
 }
 
 enum UploadStatus {
@@ -80,6 +82,10 @@ export const AvatarEditor = (props: Props) => {
 
     const onFileChange = useCallback(
         async (evt) => {
+            if (props.disabled || props.readOnly) {
+                return;
+            }
+
             const files = evt.target.files;
             if (files && files.length > 0) {
                 const file = files[0];
@@ -164,6 +170,8 @@ export const AvatarEditor = (props: Props) => {
                 key={'file_' + filePickerKey}
                 ref={inputRef}
                 accept={'image/*'}
+                readOnly={props.readOnly}
+                disabled={props.disabled}
                 onChange={onFileChange}
             />
 
@@ -276,21 +284,35 @@ export const AvatarEditor = (props: Props) => {
     );
 };
 
-interface FormProps {
-    name: string;
-    label: string;
-    help?: string;
+interface FormProps extends FormFieldControllerProps<IconValue> {
     fallbackIcon?: string;
-    value?: IconValue;
-    validation?: ValidatorListUnresolved;
-    disabled?: boolean;
     onChange?: (inputName: string, userInput: IconValue) => void | Promise<void>;
     maxFileSize?: number;
 }
 
 export const FormAvatarEditor = (props: FormProps) => {
+    const controller = useFormFieldController<IconValue>({
+        name: props.name,
+        value: props.value,
+        help: props.help,
+        validation: props.validation,
+        defaultValue: {
+            type: IconType.Fontawesome5,
+            value: props.fallbackIcon,
+        },
+        label: props.label,
+        disabled: props.disabled,
+        readOnly: props.disabled,
+        autoFocus: props.autoFocus,
+    });
+
     return (
-        <Box
+        <FormControl
+            disabled={controller.disabled}
+            required={controller.required}
+            error={controller.showError}
+            autoFocus={controller.autoFocus}
+            variant={'standard'}
             sx={{
                 bgcolor: 'inherit',
                 '& .type-avatar .input-container': {
@@ -299,36 +321,29 @@ export const FormAvatarEditor = (props: FormProps) => {
                 },
             }}
         >
-            <FormRow
-                name={props.name}
-                type={'avatar'}
-                help={props.help}
-                disabled={props.disabled}
-                defaultValue={{
-                    type: IconType.Fontawesome5,
-                    value: props.fallbackIcon,
+            <InputLabel shrink={true} disabled={controller.disabled} required={controller.required}>
+                {controller.label ?? 'Icon'}
+            </InputLabel>
+            <AvatarEditor
+                url={controller.value?.type === IconType.URL ? controller.value.value : ''}
+                resultType={AvatarResultType.DATA_URL}
+                size={100}
+                sync={true}
+                disabled={controller.disabled}
+                readOnly={controller.readOnly}
+                maxFileSize={props.maxFileSize}
+                fallbackIcon={
+                    controller.value?.type === IconType.Fontawesome5 ? controller.value.value : props.fallbackIcon
+                }
+                onSave={async (file) => {
+                    await props.onChange?.(props.name, {
+                        type: IconType.URL,
+                        value: file.url,
+                    });
                 }}
-                value={props.value}
-                validation={props.validation}
-                label={'Icon'}
-                focused={true}
-            >
-                <AvatarEditor
-                    url={props.value?.type === IconType.URL ? props.value.value : ''}
-                    resultType={AvatarResultType.DATA_URL}
-                    size={100}
-                    sync={true}
-                    maxFileSize={props.maxFileSize}
-                    fallbackIcon={props.value?.type === IconType.Fontawesome5 ? props.value.value : props.fallbackIcon}
-                    onSave={async (file) => {
-                        await props.onChange?.(props.name, {
-                            type: IconType.URL,
-                            value: file.url,
-                        });
-                    }}
-                />
-            </FormRow>
-        </Box>
+            />
+            {controller.help && <FormHelperText>{controller.help}</FormHelperText>}
+        </FormControl>
     );
 };
 

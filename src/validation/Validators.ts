@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useAsync } from 'react-use';
 export type AsyncValidationContext = { cancel: () => void; promise: Promise<any> };
-export type ValidationContext = { cancel: () => void; errors: Promise<string[]>; async: boolean };
+export type ValidationContext = { cancel: () => void; errors: Promise<string[]>; hasAsync: boolean };
 export type AsyncValidatorFunction = (fieldName: string, value: any) => AsyncValidationContext;
 export type SyncValidatorFunction = (fieldName: string, value: any) => void;
 export type ValidatorFunction = AsyncValidatorFunction | SyncValidatorFunction | string;
@@ -48,7 +48,6 @@ export function useValidation(active: boolean, validation: ValidatorListUnresolv
         if (!active) {
             return () => {};
         }
-
         const context = applyValidation(validation, name, value);
         setValidationContext(context);
         return () => {
@@ -63,7 +62,7 @@ export function useValidation(active: boolean, validation: ValidatorListUnresolv
 
     return {
         errors: errors,
-        async: validationContext?.async ?? false,
+        hasAsync: validationContext?.hasAsync ?? false,
     };
 }
 
@@ -145,7 +144,7 @@ export function applyValidation(validation: ValidatorListUnresolved, name: strin
 
     return {
         errors: promise,
-        async: anyAsync,
+        hasAsync: anyAsync,
         cancel: () => {
             cancelled = true;
             doResolve([]);

@@ -2,11 +2,13 @@ import React from 'react';
 
 import './ListElement.less';
 import { toClass } from '@kapeta/ui-web-utils';
-import { Actions, Button, ButtonShape, ButtonStyle } from '../button/buttons';
+
+import { Button, ButtonTypeMap, IconButton } from '@mui/material';
+import { Actions } from '../button/buttons';
 
 export interface ActionType {
     icon: string;
-    style: ButtonStyle;
+    color: ButtonTypeMap['props']['color'];
     on: (entry: any) => any;
 }
 
@@ -33,13 +35,16 @@ export const ListElement = (props: Props) => {
                 {hasAnyAction && (
                     <Actions>
                         {props.actions.map((a, ix) => (
-                            <Button
+                            <IconButton
                                 key={`action_${ix}`}
-                                text={a.icon}
-                                shape={ButtonShape.ICON}
-                                style={a.style}
+                                sx={{
+                                    fontSize: 'inherit',
+                                }}
+                                color={a.color}
                                 onClick={() => a.on(props.entry)}
-                            />
+                            >
+                                <i className={a.icon} />
+                            </IconButton>
                         ))}
                     </Actions>
                 )}

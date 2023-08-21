@@ -1,8 +1,7 @@
 import React from 'react';
 import { FormContext, FormContextType } from './FormContext';
 
-import './FormButtons.less';
-import { Button } from '../button/buttons';
+import { Button, Stack } from '@mui/material';
 
 interface FormButtonsProps {
     children: any;
@@ -64,6 +63,10 @@ export class FormButtons extends React.Component<FormButtonsProps, any> {
             });
         });
 
-        return <div className="form-buttons">{newChildren}</div>;
+        return (
+            <Stack gap={2} pt={4} direction="row" justifyContent="flex-end" className="form-buttons">
+                {newChildren}
+            </Stack>
+        );
     }
 }

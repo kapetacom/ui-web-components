@@ -1,9 +1,6 @@
 import React from 'react';
-import { toClass } from '@kapeta/ui-web-utils';
-import { FormRow } from '../FormRow';
-import { Checkbox } from '../Checkbox';
-
-import './FormCheckbox.less';
+import { useFormFieldController, withFormFieldController } from '../formFieldController';
+import { Checkbox, FormControl, FormControlLabel, FormHelperText } from '@mui/material';
 
 interface Props {
     name: string;
@@ -15,38 +12,38 @@ interface Props {
     onChange?: (inputName: string, userInput: any) => void;
 }
 
-export const FormCheckbox = (props: Props) => {
+export const FormCheckbox = withFormFieldController((props: Props, controller) => {
     const onChange = (value: boolean) => {
         if (props.onChange) {
             props.onChange(props.name, value);
         }
     };
 
-    let className = toClass({
-        'form-checkbox': true,
-    });
-
     let checked = props.value === true;
 
     return (
-        <FormRow
-            name={props.name}
-            value={props.value}
-            help={props.help}
-            label={''}
-            validation={props.validation}
-            type={'checkbox'}
-            disableZoom={true}
-            focused={false}
+        <FormControl
             disabled={props.disabled}
+            required={controller.required}
+            autoFocus={controller.autoFocus}
+            variant={'standard'}
+            error={controller.showError}
+            sx={{
+                display: 'block',
+                mb: 1,
+                mt: 1,
+                '.MuiFormHelperText-root': {
+                    ml: 0,
+                },
+            }}
         >
-            <div className={className}>
-                <label>
-                    <Checkbox value={checked} onChange={onChange} disabled={props.disabled} />
-
-                    <span className={'name'}>{props.label}</span>
-                </label>
-            </div>
-        </FormRow>
+            <FormControlLabel
+                onChange={(evt, checked) => onChange(checked)}
+                checked={checked}
+                control={<Checkbox />}
+                label={props.label}
+            />
+            {controller.help && <FormHelperText>{controller.help}</FormHelperText>}
+        </FormControl>
     );
-};
+});

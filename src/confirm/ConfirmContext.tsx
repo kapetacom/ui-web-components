@@ -1,4 +1,4 @@
 import { createContext } from 'react';
 import { ConfirmOptions } from './types';
 
-export const ConfirmContext = createContext<((options?: ConfirmOptions) => Promise<void>) | undefined>(undefined);
+export const ConfirmContext = createContext<((options?: ConfirmOptions) => Promise<boolean>) | undefined>(undefined);

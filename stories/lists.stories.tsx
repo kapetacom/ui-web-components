@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { List } from '../src/list/List';
 import _ from 'lodash';
-import { ButtonStyle, StandardIcons } from '../src';
+import { StandardIcons } from '../src';
 
 export default {
     title: 'Lists',
@@ -24,21 +24,21 @@ export const SimpleList = () => {
                 }}
                 actions={[
                     {
-                        style: ButtonStyle.DEFAULT,
+                        color: 'inherit',
                         icon: StandardIcons.VIEW,
                         on: (account) => {
                             console.log('VIEW', account);
                         },
                     },
                     {
-                        style: ButtonStyle.PRIMARY,
+                        color: 'primary',
                         icon: StandardIcons.EDIT,
                         on: (account) => {
                             console.log('EDIT', account);
                         },
                     },
                     {
-                        style: ButtonStyle.DANGER,
+                        color: 'error',
                         icon: StandardIcons.DELETE,
                         on: (account) => {
                             _.pull(accounts, account);

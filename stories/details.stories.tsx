@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Detail, DetailButtons, DetailRow, DetailRowListValue, DetailRowValue, DetailSize } from '../src/detail/Detail';
-import { Button, ButtonShape, ButtonStyle, Dialog, ToastContainer } from '../src';
+import { DefaultContext, ToastContainer } from '../src';
+import { Button } from '@mui/material';
 
 function minMaxAgeCheck(name: string, value: number) {
     if (value < 1) {
@@ -44,44 +45,46 @@ export const FullDetail = () => {
     const editable = true;
 
     return (
-        <div style={{ width: '550px', background: 'white' }}>
-            <ToastContainer />
-            <Dialog />
-            <Detail data={user} editable={editable} onChange={onChange}>
-                <DetailRowValue fixed={true} label={'Full Name'} name={'name'} validation={['required']} />
-                <DetailRowValue label={'Handle'} name={'handle'} validation={['required']} />
-                <DetailRowValue label={'Age'} name={'age'} validation={['required', minMaxAgeCheck]} />
-                <DetailRowValue label={'Embedded'} name={'embedded.value'} />
-                <DetailRowListValue
-                    label={'E-mails'}
-                    typeName={'E-mail'}
-                    validation={['required', 'email']}
-                    name={'emails'}
-                />
-                <DetailRowListValue
-                    fixed={true}
-                    label={'Phone numbers'}
-                    typeName={'Phone number'}
-                    validation={['required']}
-                    name={'phones'}
-                />
+        <DefaultContext>
+            <div style={{ width: '550px', background: 'white' }}>
+                <Detail data={user} editable={editable} onChange={onChange}>
+                    <DetailRowValue fixed={true} label={'Full Name'} name={'name'} validation={['required']} />
+                    <DetailRowValue label={'Handle'} name={'handle'} validation={['required']} />
+                    <DetailRowValue label={'Age'} name={'age'} validation={['required', minMaxAgeCheck]} />
+                    <DetailRowValue label={'Embedded'} name={'embedded.value'} />
+                    <DetailRowListValue
+                        label={'E-mails'}
+                        typeName={'E-mail'}
+                        validation={['required', 'email']}
+                        name={'emails'}
+                    />
+                    <DetailRowListValue
+                        fixed={true}
+                        label={'Phone numbers'}
+                        typeName={'Phone number'}
+                        validation={['required']}
+                        name={'phones'}
+                    />
 
-                <DetailRowListValue
-                    label={'Embedded list'}
-                    typeName={'Embedded entry'}
-                    validation={['required']}
-                    name={'embedded.list'}
-                />
-                <DetailRow label={'Very long name that doesnt fit the normal size'}>
-                    Very long value that doesnt fit the normal size
-                </DetailRow>
+                    <DetailRowListValue
+                        label={'Embedded list'}
+                        typeName={'Embedded entry'}
+                        validation={['required']}
+                        name={'embedded.list'}
+                    />
+                    <DetailRow label={'Very long name that doesnt fit the normal size'}>
+                        Very long value that doesnt fit the normal size
+                    </DetailRow>
 
-                <DetailButtons>
-                    <Button text={'Change password'} shape={ButtonShape.SQUARE} />
-                    <Button text={'Disable'} shape={ButtonShape.SQUARE} style={ButtonStyle.DANGER} />
-                </DetailButtons>
-            </Detail>
-        </div>
+                    <DetailButtons>
+                        <Button variant={'contained'}>Change password</Button>
+                        <Button variant={'contained'} color="error">
+                            Disable
+                        </Button>
+                    </DetailButtons>
+                </Detail>
+            </div>
+        </DefaultContext>
     );
 };
 
@@ -105,35 +108,37 @@ export const SmallDetail = () => {
     const editable = true;
 
     return (
-        <div style={{ width: '250px', background: 'white' }}>
-            <ToastContainer />
-            <Dialog />
-            <Detail data={user} editable={editable} onChange={onChange} size={DetailSize.SMALL}>
-                <DetailRowValue fixed={true} label={'Full Name'} name={'name'} validation={['required']} />
-                <DetailRowValue label={'Handle'} name={'handle'} validation={['required']} />
-                <DetailRowValue label={'Age'} name={'age'} validation={['required', minMaxAgeCheck]} />
-                <DetailRowListValue
-                    label={'E-mails'}
-                    typeName={'E-mail'}
-                    validation={['required', 'email']}
-                    name={'emails'}
-                />
-                <DetailRowListValue
-                    fixed={true}
-                    label={'Phone numbers'}
-                    typeName={'Phone number'}
-                    validation={['required']}
-                    name={'phones'}
-                />
-                <DetailRow label={'Very long name that doesnt fit the normal size'}>
-                    Very long value that doesnt fit the normal size
-                </DetailRow>
+        <DefaultContext>
+            <div style={{ width: '250px', background: 'white' }}>
+                <Detail data={user} editable={editable} onChange={onChange} size={DetailSize.SMALL}>
+                    <DetailRowValue fixed={true} label={'Full Name'} name={'name'} validation={['required']} />
+                    <DetailRowValue label={'Handle'} name={'handle'} validation={['required']} />
+                    <DetailRowValue label={'Age'} name={'age'} validation={['required', minMaxAgeCheck]} />
+                    <DetailRowListValue
+                        label={'E-mails'}
+                        typeName={'E-mail'}
+                        validation={['required', 'email']}
+                        name={'emails'}
+                    />
+                    <DetailRowListValue
+                        fixed={true}
+                        label={'Phone numbers'}
+                        typeName={'Phone number'}
+                        validation={['required']}
+                        name={'phones'}
+                    />
+                    <DetailRow label={'Very long name that doesnt fit the normal size'}>
+                        Very long value that doesnt fit the normal size
+                    </DetailRow>
 
-                <DetailButtons>
-                    <Button text={'Change password'} shape={ButtonShape.SQUARE} />
-                    <Button text={'Disable'} shape={ButtonShape.SQUARE} style={ButtonStyle.DANGER} />
-                </DetailButtons>
-            </Detail>
-        </div>
+                    <DetailButtons>
+                        <Button variant={'contained'}>Change password</Button>
+                        <Button variant={'contained'} color="error">
+                            Disable
+                        </Button>
+                    </DetailButtons>
+                </Detail>
+            </div>
+        </DefaultContext>
     );
 };

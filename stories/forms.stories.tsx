@@ -1,15 +1,8 @@
-import React, { useState } from 'react';
-import {
-    AsyncValidatorFunction,
-    Button,
-    ButtonStyle,
-    ButtonType,
-    debouncedValidator,
-    FormButtons,
-    FormContainer,
-} from '../src';
+import React, { useMemo, useState } from 'react';
+import { AsyncValidatorFunction, debouncedValidator, FormButtons, FormContainer } from '../src';
 import { FormField, FormFieldType } from '../src/form/inputs/FormField';
 import { useFormContextField } from '../src/form/FormContext';
+import { Button } from '@mui/material';
 
 function minMaxAgeCheck(name: string, value: number) {
     if (value < 1) {
@@ -86,20 +79,18 @@ export const SimpleForm = () => {
                 />
 
                 <FormButtons>
-                    <Button
-                        width={120}
-                        text={'Load Alt'}
-                        onClick={() => setInitialValue(AltFormValue)}
-                        type={ButtonType.BUTTON}
-                    />
-                    <Button
-                        width={120}
-                        text={'Load Normal'}
-                        onClick={() => setInitialValue(InitialFormValue)}
-                        type={ButtonType.BUTTON}
-                    />
-                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                    <Button variant={'contained'} onClick={() => setInitialValue(AltFormValue)}>
+                        Load Alt
+                    </Button>
+                    <Button variant={'contained'} onClick={() => setInitialValue(InitialFormValue)}>
+                        Load Normal
+                    </Button>
+                    <Button variant={'contained'} type={'reset'} color={'error'}>
+                        Reset
+                    </Button>
+                    <Button variant={'contained'} type={'submit'} color={'primary'}>
+                        Save
+                    </Button>
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -154,8 +145,12 @@ export const NestedDataForm = () => {
                 />
 
                 <FormButtons>
-                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                    <Button variant={'contained'} color={'error'}>
+                        Reset
+                    </Button>
+                    <Button variant={'contained'} type={'submit'} color={'primary'}>
+                        Save
+                    </Button>
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -216,8 +211,12 @@ export const FormWithConditionals = () => {
                 )}
 
                 <FormButtons>
-                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                    <Button variant={'contained'} color={'error'}>
+                        Reset
+                    </Button>
+                    <Button variant={'contained'} type={'submit'} color={'primary'}>
+                        Save
+                    </Button>
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -267,8 +266,12 @@ export const FormWithValidation = () => {
                 />
 
                 <FormButtons>
-                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                    <Button variant={'contained'} color={'error'}>
+                        Reset
+                    </Button>
+                    <Button variant={'contained'} type={'submit'} color={'primary'}>
+                        Save
+                    </Button>
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -280,29 +283,35 @@ export const FormWithValidation = () => {
 export const FormWithAsyncValidation = () => {
     const [formData, setFormData] = useState({});
 
-    const asyncValidation: AsyncValidatorFunction = debouncedValidator(500, (name, value) => {
-        console.log('Start async validation', value);
-        let doResolve, timer;
-        const promise = new Promise((resolve, reject) => {
-            doResolve = resolve;
-            timer = setTimeout(() => {
-                console.log('Do async validation', value);
-                if (value === 'fail') {
-                    reject('This is not a valid value');
-                } else {
-                    resolve(null);
-                }
-            }, 1000);
-        });
+    const asyncValidation: AsyncValidatorFunction = useMemo(
+        () =>
+            debouncedValidator(500, (name, value) => {
+                console.log('Start async validation', value);
+                let doResolve, timer;
+                const promise = new Promise((resolve, reject) => {
+                    doResolve = resolve;
+                    timer = setTimeout(() => {
+                        console.log('Do async validation', value);
+                        if (value === 'fail') {
+                            reject('This is not a valid value');
+                        } else {
+                            resolve(null);
+                        }
+                    }, 1000);
+                });
 
-        return {
-            promise,
-            cancel: () => {
-                clearTimeout(timer);
-                doResolve && doResolve();
-            },
-        };
-    });
+                return {
+                    promise,
+                    cancel: () => {
+                        clearTimeout(timer);
+                        doResolve && doResolve();
+                    },
+                };
+            }),
+        []
+    );
+
+    const validation = useMemo(() => [asyncValidation], [asyncValidation]);
 
     return (
         <div style={{ width: '550px' }}>
@@ -316,7 +325,7 @@ export const FormWithAsyncValidation = () => {
                     name={'name'}
                     label={'Name'}
                     help={'This will fail if you type "fail"'}
-                    validation={[asyncValidation]}
+                    validation={validation}
                 />
                 <FormField name={'email'} label={'E-mail'} validation={['required', 'email']} />
                 <FormField name={'enabled'} label={'Enable?'} type={FormFieldType.CHECKBOX} />
@@ -336,8 +345,12 @@ export const FormWithAsyncValidation = () => {
                 />
 
                 <FormButtons>
-                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                    <Button variant={'contained'} color={'error'}>
+                        Reset
+                    </Button>
+                    <Button variant={'contained'} type={'submit'} color={'primary'}>
+                        Save
+                    </Button>
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -368,8 +381,12 @@ export const AsyncForm = () => {
                 />
 
                 <FormButtons>
-                    <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                    <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                    <Button variant={'contained'} color={'error'}>
+                        Reset
+                    </Button>
+                    <Button variant={'contained'} type={'submit'} color={'primary'}>
+                        Save
+                    </Button>
                 </FormButtons>
             </FormContainer>
             <b>Submitted data</b>
@@ -393,8 +410,12 @@ export const FormNavigationOnSubmit = () => {
                     />
 
                     <FormButtons>
-                        <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                        <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                        <Button variant={'contained'} color={'error'}>
+                            Reset
+                        </Button>
+                        <Button variant={'contained'} type={'submit'} color={'primary'}>
+                            Save
+                        </Button>
                     </FormButtons>
                 </FormContainer>
             </form>
@@ -420,8 +441,12 @@ export const CustomFormValidation = () => {
             <FormField name={'ok'} label={'Something'} validation={['required']} />
             <FormField name={'fail'} label={'Fails'} validation={['required']} />
             <FormButtons>
-                <Button width={80} text={'Reset'} type={ButtonType.RESET} style={ButtonStyle.DANGER} />
-                <Button width={80} text={'Save'} type={ButtonType.SUBMIT} style={ButtonStyle.PRIMARY} />
+                <Button variant={'contained'} color={'error'}>
+                    Reset
+                </Button>
+                <Button variant={'contained'} type={'submit'} color={'primary'}>
+                    Save
+                </Button>
             </FormButtons>
         </FormContainer>
     );

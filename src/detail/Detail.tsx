@@ -2,11 +2,11 @@ import React, { Context, createContext, useContext, useState } from 'react';
 import _ from 'lodash';
 import './Detail.less';
 import { toClass } from '@kapeta/ui-web-utils';
-import { Button, ButtonShape, ButtonStyle, StandardIcons } from '../button/buttons';
-import { applyValidation, useValidation } from '../validation/Validators';
+import { useValidation } from '../validation/Validators';
 import { showToasty, ToastType } from '../toast/ToastComponent';
-import { DialogControl } from '../dialog/DialogControl';
-import { useAsync } from 'react-use';
+import { IconButton, Stack } from '@mui/material';
+import { CloseRounded, DeleteRounded, Edit, Save } from '@mui/icons-material';
+import { useConfirmDelete } from '../confirm/useConfirm';
 
 interface DetailContextData {
     onValueChanged: (name: string, value: any) => void;
@@ -32,6 +32,13 @@ export enum DetailSize {
     SMALL = 'small',
     FULL = 'full',
 }
+
+const IconButtonSX = {
+    fontSize: 'inherit',
+    '.MuiSvgIcon-root': {
+        fontSize: 'inherit',
+    },
+};
 
 type Data = { [key: string]: any };
 
@@ -202,15 +209,17 @@ export const DetailRowValue = (props: DetailRowValueProps) => {
             </span>
 
             {isEditable && !isEditing && (
-                <Button
-                    text={StandardIcons.EDIT}
-                    shape={ButtonShape.ICON}
-                    style={ButtonStyle.PRIMARY}
+                <IconButton
+                    color={'primary'}
+                    size={'small'}
+                    sx={IconButtonSX}
                     onClick={() => {
                         setValue(originalValue);
                         context.setEditing(props.name);
                     }}
-                />
+                >
+                    <Edit />
+                </IconButton>
             )}
 
             {isEditing && !isProcessing && (
@@ -242,6 +251,7 @@ interface DetailRowListValueEntryProps {
 
 export const DetailRowListValueEntry = (props: DetailRowListValueEntryProps) => {
     let context = useContext(DetailContext);
+    const onDelete = useConfirmDelete();
     const [listEntryValue, setListEntryValue] = useState('');
     const fieldId = `${props.name}[${props.index}]`;
     const isEditing = context.isEditing(fieldId);
@@ -272,35 +282,37 @@ export const DetailRowListValueEntry = (props: DetailRowListValueEntryProps) => 
                 <span className={'actions'}>
                     {!isEditing && (
                         <>
-                            <Button
-                                text={StandardIcons.EDIT}
-                                shape={ButtonShape.ICON}
-                                style={ButtonStyle.PRIMARY}
+                            <IconButton
+                                color={'primary'}
+                                size={'small'}
+                                sx={IconButtonSX}
                                 onClick={() => {
                                     setListEntryValue(props.entryValue);
                                     context.setEditing(fieldId);
                                 }}
-                            />
+                            >
+                                <Edit />
+                            </IconButton>
 
-                            <Button
-                                text={StandardIcons.DELETE}
-                                shape={ButtonShape.ICON}
-                                style={ButtonStyle.DANGER}
-                                onClick={() => {
-                                    DialogControl.delete(
+                            <IconButton
+                                color={'error'}
+                                size={'small'}
+                                sx={IconButtonSX}
+                                onClick={async () => {
+                                    const ok = await onDelete(
                                         `Delete ${props.typeName}?`,
-                                        'This action can not be undone. Continue?',
-                                        async (ok) => {
-                                            if (!ok) {
-                                                return;
-                                            }
-                                            const newValue = [...props.originalValue];
-                                            newValue.splice(props.index, 1);
-                                            context.onValueChanged(props.name, newValue);
-                                        }
+                                        'This action can not be undone. Continue?'
                                     );
+                                    if (!ok) {
+                                        return;
+                                    }
+                                    const newValue = [...props.originalValue];
+                                    newValue.splice(props.index, 1);
+                                    context.onValueChanged(props.name, newValue);
                                 }}
-                            />
+                            >
+                                <DeleteRounded />
+                            </IconButton>
                         </>
                     )}
                     {isEditing && !props.processing && (
@@ -418,33 +430,35 @@ export const DetailButtons = (props: DetailButtonsProps) => {
         'detail-buttons': true,
     });
 
-    return <div className={classNames}>{props.children}</div>;
+    return (
+        <Stack gap={2} direction={'row'} className={classNames}>
+            {props.children}
+        </Stack>
+    );
 };
 
 const Spinner = () => (
     <div className={'spinner'}>
         <i className={'fad fa-cog fa-spin'} />
-        <span className={'inner'}>Saving...</span>
     </div>
 );
 
 const SaveCancelButtons = (props: { invalid: boolean; onSave: () => any; onCancel: () => any }) => {
     return (
         <>
-            <Button
-                text={StandardIcons.SAVE}
-                shape={ButtonShape.ICON}
+            <IconButton
+                size={'small'}
+                sx={IconButtonSX}
                 disabled={props.invalid}
-                style={ButtonStyle.PRIMARY}
+                color={'primary'}
                 onClick={props.onSave}
-            />
+            >
+                <Save />
+            </IconButton>
 
-            <Button
-                text={StandardIcons.CANCEL}
-                shape={ButtonShape.ICON}
-                style={ButtonStyle.DANGER}
-                onClick={props.onCancel}
-            />
+            <IconButton size={'small'} sx={IconButtonSX} color={'error'} onClick={props.onCancel}>
+                <CloseRounded />
+            </IconButton>
         </>
     );
 };
