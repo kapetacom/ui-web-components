@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { toClass } from '@kapeta/ui-web-utils';
 import { FormFieldControllerProps, useFormFieldController, withFormFieldController } from '../formFieldController';
 import TextField from '@mui/material/TextField';
+import { FormFieldProcessingContainer } from './FormFieldProcessingContainer';
 
 export enum Type {
     DATE = 'date',
@@ -61,29 +62,35 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
     }
 
     return (
-        <TextField
-            sx={{
-                display: 'block',
-                mt: 1,
-                mb: 1,
-            }}
-            onChange={onChange}
-            variant={'standard'}
-            label={controller.label}
-            helperText={controller.help}
-            disabled={controller.disabled}
-            name={controller.name}
-            required={controller.required}
-            error={controller.showError}
-            value={value}
-            type={props.type}
-            InputLabelProps={{
-                shrink: NON_TEXT_TYPES.includes(props.type) ? true : undefined,
-            }}
-            inputProps={{
-                readOnly: controller.readOnly,
-                defaultChecked: checked,
-            }}
-        />
+        <FormFieldProcessingContainer controller={controller}>
+            <TextField
+                sx={{
+                    display: 'block',
+                    mt: 1,
+                    mb: 1,
+                    '.MuiInputBase-root': {
+                        width: '100%',
+                    },
+                }}
+                autoFocus={controller.autoFocus}
+                onChange={onChange}
+                variant={'standard'}
+                label={controller.label}
+                helperText={controller.help}
+                disabled={controller.disabled}
+                name={controller.name}
+                required={controller.required}
+                error={controller.showError}
+                value={value}
+                type={props.type}
+                InputLabelProps={{
+                    shrink: NON_TEXT_TYPES.includes(props.type) ? true : undefined,
+                }}
+                inputProps={{
+                    readOnly: controller.readOnly,
+                    defaultChecked: checked,
+                }}
+            />
+        </FormFieldProcessingContainer>
     );
 });

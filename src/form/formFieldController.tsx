@@ -11,33 +11,36 @@ export enum StatusType {
 }
 export interface FormFieldControllerProps<V = any> {
     name: string;
-    value: V;
+    value?: V;
     defaultValue?: V;
     help?: string;
     validation?: ValidatorListUnresolved;
     label?: string;
     disabled?: boolean;
     readOnly?: boolean;
+    autoFocus?: boolean;
 }
 
 export interface FormFieldController<V = any> {
     name: string;
-    value: V;
+    value?: V;
     filled: boolean;
     touched: boolean;
     required: boolean;
     errors: AsyncState<string[]>;
+    processing: boolean;
     showError: boolean;
     status: StatusType;
     help?: string;
     label?: string;
     disabled: boolean;
     readOnly: boolean;
+    autoFocus?: boolean;
 }
 
 export const useFormFieldController = <T = any,>(props: FormFieldControllerProps<T>): FormFieldController<T> => {
     const context = useContext(FormContext);
-    const [touchedState, setTouchedState] = useState(false);
+    const [formSubmitAttempted, setFormSubmitAttempted] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     const childValue = useMemo(() => {
@@ -67,23 +70,30 @@ export const useFormFieldController = <T = any,>(props: FormFieldControllerProps
 
     const initialValue = useMemo(() => {
         return childValue;
-    }, [childValue]);
+    }, []);
 
-    const validators = useMemo(
-        () => normaliseValidators(props.validation).concat(context.validators),
-        [props.validation, context.validators]
-    );
+    const validators = useMemo(() => {
+        const validators = [];
+        if (props.validation) {
+            validators.push(...normaliseValidators(props.validation));
+        }
+
+        if (context.validators) {
+            validators.push(...context.validators);
+        }
+        return validators;
+    }, [props.validation, context.validators]);
 
     const touched = useMemo(() => {
-        if (touchedState) {
+        if (formSubmitAttempted) {
             return true;
         }
         if (defaultValue !== childValue && initialValue !== childValue) {
             return true;
         }
 
-        return touchedState;
-    }, [touchedState, defaultValue, childValue]);
+        return formSubmitAttempted;
+    }, [formSubmitAttempted, defaultValue, childValue]);
 
     const required = useMemo(() => {
         return validators.indexOf('required') > -1;
@@ -102,13 +112,13 @@ export const useFormFieldController = <T = any,>(props: FormFieldControllerProps
             switch (evt.type) {
                 case 'submit':
                     if (evt.value) {
-                        setTouchedState(false);
+                        setFormSubmitAttempted(false);
                     } else {
-                        setTouchedState(true);
+                        setFormSubmitAttempted(true);
                     }
                     break;
                 case 'reset':
-                    setTouchedState(false);
+                    setFormSubmitAttempted(false);
                     break;
             }
         });
@@ -157,7 +167,8 @@ export const useFormFieldController = <T = any,>(props: FormFieldControllerProps
         touched,
         required,
         errors,
-        showError: touched && errors.value?.length > 0,
+        processing: errors.loading,
+        showError: formSubmitAttempted && errors.value?.length > 0,
         help,
         status: errorMessage && errorMessage.length > 0 ? StatusType.ERROR : StatusType.OK,
         label: props.label,
@@ -165,6 +176,7 @@ export const useFormFieldController = <T = any,>(props: FormFieldControllerProps
         readOnly: !!props.readOnly,
         name: props.name,
         value: childValue,
+        autoFocus: props.autoFocus,
     };
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFormFieldController } from '../formFieldController';
+import { useFormFieldController, withFormFieldController } from '../formFieldController';
 import { Checkbox, FormControl, FormControlLabel, FormHelperText } from '@mui/material';
 
 interface Props {
@@ -12,14 +12,7 @@ interface Props {
     onChange?: (inputName: string, userInput: any) => void;
 }
 
-export const FormCheckbox = (props: Props) => {
-    const controller = useFormFieldController({
-        name: props.name,
-        value: props.value,
-        help: props.help,
-        validation: props.validation,
-    });
-
+export const FormCheckbox = withFormFieldController((props: Props, controller) => {
     const onChange = (value: boolean) => {
         if (props.onChange) {
             props.onChange(props.name, value);
@@ -32,6 +25,8 @@ export const FormCheckbox = (props: Props) => {
         <FormControl
             disabled={props.disabled}
             required={controller.required}
+            autoFocus={controller.autoFocus}
+            variant={'standard'}
             error={controller.showError}
             sx={{
                 display: 'block',
@@ -51,4 +46,4 @@ export const FormCheckbox = (props: Props) => {
             {controller.help && <FormHelperText>{controller.help}</FormHelperText>}
         </FormControl>
     );
-};
+});

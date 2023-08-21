@@ -1,40 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useFormFieldController } from '../formFieldController';
+import { useFormFieldController, withFormFieldController } from '../formFieldController';
 import _ from 'lodash';
 import { FormControl, FormControlLabel, FormHelperText, FormLabel, InputLabel, Radio, RadioGroup } from '@mui/material';
 
 interface Props {
-    name: string;
-    label?: string;
-    value?: any;
-    validation?: any[];
-    help?: string;
     options: string[] | { [key: string]: string };
-    disabled?: boolean;
     onChange?: (inputName: string, userInput: any) => void;
 }
 
-export const FormRadioGroup = (props: Props) => {
-    const controller = useFormFieldController({
-        name: props.name,
-        value: props.value,
-        help: props.help,
-        validation: props.validation,
-    });
-
+export const FormRadioGroup = withFormFieldController((props: Props, controller) => {
     const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
         emitChange(evt.target.value);
     };
 
     function emitChange(value: any) {
         if (props.onChange) {
-            props.onChange(props.name, value);
+            props.onChange(controller.name, value);
         }
     }
 
     useEffect(() => {
         const value = getCurrentValue();
-        if (props.value !== value) {
+        if (controller.value !== value) {
             emitChange(value);
         }
     }, []);
@@ -60,7 +47,7 @@ export const FormRadioGroup = (props: Props) => {
     function getCurrentValue() {
         let options = getOptions();
 
-        return props.value || Object.keys(options)[0];
+        return controller.value || Object.keys(options)[0];
     }
 
     const options = getOptions();
@@ -70,10 +57,11 @@ export const FormRadioGroup = (props: Props) => {
 
     return (
         <FormControl
-            disabled={props.disabled}
+            disabled={controller.disabled}
             onChange={onChange}
             required={controller.required}
             error={controller.showError}
+            autoFocus={controller.autoFocus}
             defaultValue={defaultValue}
             variant={'standard'}
             sx={{
@@ -86,7 +74,7 @@ export const FormRadioGroup = (props: Props) => {
             }}
         >
             <InputLabel shrink={true} required={controller.required}>
-                {props.label}
+                {controller.label}
             </InputLabel>
             <RadioGroup
                 row={true}
@@ -95,15 +83,20 @@ export const FormRadioGroup = (props: Props) => {
                 }}
                 defaultValue={defaultValue}
                 value={currentValue}
-                name={props.name}
+                name={controller.name}
             >
                 {Object.entries(options).map(([value, label], ix) => {
                     return (
-                        <FormControlLabel disabled={props.disabled} value={value} control={<Radio />} label={label} />
+                        <FormControlLabel
+                            disabled={controller.disabled}
+                            value={value}
+                            control={<Radio readOnly={controller.readOnly} />}
+                            label={label}
+                        />
                     );
                 })}
             </RadioGroup>
             {controller.help && <FormHelperText>{controller.help}</FormHelperText>}
         </FormControl>
     );
-};
+});

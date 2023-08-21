@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { Avatar, Box, CircularProgress, Fab, FormControl, FormHelperText, InputLabel, Zoom } from '@mui/material';
-import { useFormFieldController } from '../form/formFieldController';
+import { FormFieldControllerProps, useFormFieldController } from '../form/formFieldController';
 import { IconType, IconValue } from '@kapeta/schemas';
 import { ValidatorListUnresolved } from '../validation/Validators';
 import { useFormContextField } from '../form/FormContext';
@@ -284,14 +284,8 @@ export const AvatarEditor = (props: Props) => {
     );
 };
 
-interface FormProps {
-    name: string;
-    label: string;
-    help?: string;
+interface FormProps extends FormFieldControllerProps<IconValue> {
     fallbackIcon?: string;
-    value?: IconValue;
-    validation?: ValidatorListUnresolved;
-    disabled?: boolean;
     onChange?: (inputName: string, userInput: IconValue) => void | Promise<void>;
     maxFileSize?: number;
 }
@@ -309,6 +303,7 @@ export const FormAvatarEditor = (props: FormProps) => {
         label: props.label,
         disabled: props.disabled,
         readOnly: props.disabled,
+        autoFocus: props.autoFocus,
     });
 
     return (
@@ -316,6 +311,7 @@ export const FormAvatarEditor = (props: FormProps) => {
             disabled={controller.disabled}
             required={controller.required}
             error={controller.showError}
+            autoFocus={controller.autoFocus}
             variant={'standard'}
             sx={{
                 bgcolor: 'inherit',
@@ -326,15 +322,19 @@ export const FormAvatarEditor = (props: FormProps) => {
             }}
         >
             <InputLabel shrink={true} disabled={controller.disabled} required={controller.required}>
-                {props.label ?? 'Icon'}
+                {controller.label ?? 'Icon'}
             </InputLabel>
             <AvatarEditor
-                url={props.value?.type === IconType.URL ? props.value.value : ''}
+                url={controller.value?.type === IconType.URL ? controller.value.value : ''}
                 resultType={AvatarResultType.DATA_URL}
                 size={100}
                 sync={true}
+                disabled={controller.disabled}
+                readOnly={controller.readOnly}
                 maxFileSize={props.maxFileSize}
-                fallbackIcon={props.value?.type === IconType.Fontawesome5 ? props.value.value : props.fallbackIcon}
+                fallbackIcon={
+                    controller.value?.type === IconType.Fontawesome5 ? controller.value.value : props.fallbackIcon
+                }
                 onSave={async (file) => {
                     await props.onChange?.(props.name, {
                         type: IconType.URL,

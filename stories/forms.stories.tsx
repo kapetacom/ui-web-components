@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { AsyncValidatorFunction, debouncedValidator, FormButtons, FormContainer } from '../src';
 import { FormField, FormFieldType } from '../src/form/inputs/FormField';
 import { useFormContextField } from '../src/form/FormContext';
@@ -283,29 +283,35 @@ export const FormWithValidation = () => {
 export const FormWithAsyncValidation = () => {
     const [formData, setFormData] = useState({});
 
-    const asyncValidation: AsyncValidatorFunction = debouncedValidator(500, (name, value) => {
-        console.log('Start async validation', value);
-        let doResolve, timer;
-        const promise = new Promise((resolve, reject) => {
-            doResolve = resolve;
-            timer = setTimeout(() => {
-                console.log('Do async validation', value);
-                if (value === 'fail') {
-                    reject('This is not a valid value');
-                } else {
-                    resolve(null);
-                }
-            }, 1000);
-        });
+    const asyncValidation: AsyncValidatorFunction = useMemo(
+        () =>
+            debouncedValidator(500, (name, value) => {
+                console.log('Start async validation', value);
+                let doResolve, timer;
+                const promise = new Promise((resolve, reject) => {
+                    doResolve = resolve;
+                    timer = setTimeout(() => {
+                        console.log('Do async validation', value);
+                        if (value === 'fail') {
+                            reject('This is not a valid value');
+                        } else {
+                            resolve(null);
+                        }
+                    }, 1000);
+                });
 
-        return {
-            promise,
-            cancel: () => {
-                clearTimeout(timer);
-                doResolve && doResolve();
-            },
-        };
-    });
+                return {
+                    promise,
+                    cancel: () => {
+                        clearTimeout(timer);
+                        doResolve && doResolve();
+                    },
+                };
+            }),
+        []
+    );
+
+    const validation = useMemo(() => [asyncValidation], [asyncValidation]);
 
     return (
         <div style={{ width: '550px' }}>
@@ -319,7 +325,7 @@ export const FormWithAsyncValidation = () => {
                     name={'name'}
                     label={'Name'}
                     help={'This will fail if you type "fail"'}
-                    validation={[asyncValidation]}
+                    validation={validation}
                 />
                 <FormField name={'email'} label={'E-mail'} validation={['required', 'email']} />
                 <FormField name={'enabled'} label={'Enable?'} type={FormFieldType.CHECKBOX} />

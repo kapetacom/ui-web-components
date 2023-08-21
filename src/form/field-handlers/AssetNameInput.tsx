@@ -53,6 +53,7 @@ export const AssetNameInput = (props: Props) => {
         readOnly: props.readOnly,
         disabled: props.disabled,
         defaultValue: props.defaultValue,
+        autoFocus: props.autoFocus,
     });
 
     const [namespace, setNamespace] = useState('');
@@ -114,6 +115,7 @@ export const AssetNameInput = (props: Props) => {
             disabled={props.disabled}
             required={controller.required}
             error={controller.showError}
+            autoFocus={controller.autoFocus}
             variant={'standard'}
             sx={{
                 display: 'block',
