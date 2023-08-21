@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { List } from '../src/list/List';
 import _ from 'lodash';
-import { ButtonStyle, StandardIcons } from '../src';
+import { StandardIcons } from '../src';
 
 export default {
     title: 'Lists',

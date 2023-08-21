@@ -4,7 +4,7 @@ import './Detail.less';
 import { toClass } from '@kapeta/ui-web-utils';
 import { useValidation } from '../validation/Validators';
 import { showToasty, ToastType } from '../toast/ToastComponent';
-import { IconButton } from '@mui/material';
+import { IconButton, Stack } from '@mui/material';
 import { CloseRounded, DeleteRounded, Edit, Save } from '@mui/icons-material';
 import { useConfirmDelete } from '../confirm/useConfirm';
 
@@ -430,7 +430,11 @@ export const DetailButtons = (props: DetailButtonsProps) => {
         'detail-buttons': true,
     });
 
-    return <div className={classNames}>{props.children}</div>;
+    return (
+        <Stack gap={2} direction={'row'} className={classNames}>
+            {props.children}
+        </Stack>
+    );
 };
 
 const Spinner = () => (
