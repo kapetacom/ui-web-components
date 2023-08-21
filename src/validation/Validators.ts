@@ -45,7 +45,6 @@ export function useValidation(active: boolean, validation: ValidatorListUnresolv
     const [validationContext, setValidationContext] = useState<ValidationContext>();
 
     useEffect(() => {
-        console.log('Changed useValidation', active, validation, name, value);
         if (!active) {
             return () => {};
         }
