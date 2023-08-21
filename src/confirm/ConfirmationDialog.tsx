@@ -7,6 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import { ConfirmOptions } from './types';
+import { Box, Stack } from '@mui/material';
 
 interface ConfirmationDialogProps {
     open: boolean;
@@ -25,6 +26,7 @@ export const ConfirmationDialog = ({ open, options, onCancel, onConfirm, onClose
         cancellationText,
         dialogProps,
         dialogActionsProps,
+        icon,
         confirmationButtonProps,
         cancellationButtonProps,
         titleProps,
@@ -92,21 +94,30 @@ export const ConfirmationDialog = ({ open, options, onCancel, onConfirm, onClose
                 elevation: 23,
             }}
         >
-            {title && <DialogTitle {...titleProps}>{title}</DialogTitle>}
-            {content ? (
-                <DialogContent {...contentProps}>
-                    {content}
-                    {confirmationContent}
-                </DialogContent>
-            ) : description ? (
-                <DialogContent {...contentProps}>
-                    <DialogContentText>{description}</DialogContentText>
-                    {confirmationContent}
-                </DialogContent>
-            ) : (
-                confirmationKeyword && <DialogContent {...contentProps}>{confirmationContent}</DialogContent>
-            )}
-            <DialogActions {...dialogActionsProps}>{dialogActions}</DialogActions>
+            <Stack direction={'row'} justifyContent={'stretch'} alignItems={'center'}>
+                {icon && (
+                    <Box flex={0} p={2} pr={0} textAlign={'center'}>
+                        {icon}
+                    </Box>
+                )}
+                <Box flex={1}>
+                    {title && <DialogTitle {...titleProps}>{title}</DialogTitle>}
+                    {content ? (
+                        <DialogContent {...contentProps}>
+                            {content}
+                            {confirmationContent}
+                        </DialogContent>
+                    ) : description ? (
+                        <DialogContent {...contentProps}>
+                            <DialogContentText>{description}</DialogContentText>
+                            {confirmationContent}
+                        </DialogContent>
+                    ) : (
+                        confirmationKeyword && <DialogContent {...contentProps}>{confirmationContent}</DialogContent>
+                    )}
+                    <DialogActions {...dialogActionsProps}>{dialogActions}</DialogActions>
+                </Box>
+            </Stack>
         </Dialog>
     );
 };

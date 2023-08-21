@@ -4,10 +4,9 @@ import './Detail.less';
 import { toClass } from '@kapeta/ui-web-utils';
 import { useValidation } from '../validation/Validators';
 import { showToasty, ToastType } from '../toast/ToastComponent';
-import { DialogControl } from '../dialog/DialogControl';
-import Button from '@mui/material/Button';
 import { IconButton } from '@mui/material';
 import { CloseRounded, DeleteRounded, Edit, Save } from '@mui/icons-material';
+import { useConfirmDelete } from '../confirm/useConfirm';
 
 interface DetailContextData {
     onValueChanged: (name: string, value: any) => void;
@@ -252,6 +251,7 @@ interface DetailRowListValueEntryProps {
 
 export const DetailRowListValueEntry = (props: DetailRowListValueEntryProps) => {
     let context = useContext(DetailContext);
+    const onDelete = useConfirmDelete();
     const [listEntryValue, setListEntryValue] = useState('');
     const fieldId = `${props.name}[${props.index}]`;
     const isEditing = context.isEditing(fieldId);
@@ -298,19 +298,17 @@ export const DetailRowListValueEntry = (props: DetailRowListValueEntryProps) => 
                                 color={'error'}
                                 size={'small'}
                                 sx={IconButtonSX}
-                                onClick={() => {
-                                    DialogControl.delete(
+                                onClick={async () => {
+                                    const ok = await onDelete(
                                         `Delete ${props.typeName}?`,
-                                        'This action can not be undone. Continue?',
-                                        async (ok) => {
-                                            if (!ok) {
-                                                return;
-                                            }
-                                            const newValue = [...props.originalValue];
-                                            newValue.splice(props.index, 1);
-                                            context.onValueChanged(props.name, newValue);
-                                        }
+                                        'This action can not be undone. Continue?'
                                     );
+                                    if (!ok) {
+                                        return;
+                                    }
+                                    const newValue = [...props.originalValue];
+                                    newValue.splice(props.index, 1);
+                                    context.onValueChanged(props.name, newValue);
                                 }}
                             >
                                 <DeleteRounded />

@@ -40,28 +40,30 @@ export const SelectInModal = () => {
     return (
         <div style={{ padding: '15px' }}>
             <Modal open={true} title={'Test'}>
-                <FormContainer>
-                    <FormSelect
-                        help={helpText}
-                        name={'text'}
-                        label={'Text Value'}
-                        value={input1}
-                        onChange={(inputName, userInput) => setInput1(userInput)}
-                        options={['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX']}
-                    />
-
-                    <div style={{ width: '80%' }}>
+                <div>
+                    <FormContainer>
                         <FormSelect
                             help={helpText}
                             name={'text'}
-                            label={'Text Value (w/ deselect)'}
-                            value={input2}
-                            onChange={(inputName, userInput) => setInput2(userInput)}
-                            options={['ONE', 'TWO', 'THREE']}
-                            enableDeselect
+                            label={'Text Value'}
+                            value={input1}
+                            onChange={(inputName, userInput) => setInput1(userInput)}
+                            options={['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX']}
                         />
-                    </div>
-                </FormContainer>
+
+                        <div style={{ width: '80%' }}>
+                            <FormSelect
+                                help={helpText}
+                                name={'text'}
+                                label={'Text Value (w/ deselect)'}
+                                value={input2}
+                                onChange={(inputName, userInput) => setInput2(userInput)}
+                                options={['ONE', 'TWO', 'THREE']}
+                                enableDeselect
+                            />
+                        </div>
+                    </FormContainer>
+                </div>
             </Modal>
         </div>
     );
@@ -325,6 +327,7 @@ export const FormButton = () => {
                 <FormButtons>
                     <Button
                         color={'error'}
+                        variant={'contained'}
                         onClick={() => {
                             console.log('Clicked cancel!');
                         }}
@@ -332,7 +335,7 @@ export const FormButton = () => {
                         Test
                     </Button>
 
-                    <Button color={'primary'} type={'submit'}>
+                    <Button color={'primary'} variant={'contained'} type={'submit'}>
                         Test
                     </Button>
                 </FormButtons>

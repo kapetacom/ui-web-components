@@ -1,6 +1,6 @@
-import React, { RefObject, useState } from 'react';
-import './FormTextarea.less';
-import { FormRow } from '../FormRow';
+import React from 'react';
+import { useFormFieldController } from '../formFieldController';
+import TextField from '@mui/material/TextField';
 
 interface Props {
     name: string;
@@ -13,77 +13,43 @@ interface Props {
     onChange?: (inputName: string, userInput: any) => void;
 }
 
-const MIN_HEIGHT: number = 22;
-const MAX_HEIGHT: number = 200;
-
 export const FormTextarea = (props: Props) => {
-    const [inputFocused, setInputFocused] = useState(false);
-
-    const textHeightElementRef: RefObject<HTMLDivElement> = React.createRef();
-
-    const [userInput, setUserInput] = useState(props.value ?? '');
-
-    const inputOnBlur = () => {
-        setInputFocused(false);
-    };
-
-    const inputOnFocus = () => {
-        setInputFocused(true);
-    };
-
-    function calculateHeight() {
-        let currentHeight = MIN_HEIGHT;
-        if (textHeightElementRef.current) {
-            textHeightElementRef.current.innerHTML = userInput + 'X';
-            currentHeight = textHeightElementRef.current.offsetHeight;
-            if (MIN_HEIGHT > currentHeight) {
-                currentHeight = MIN_HEIGHT;
-            }
-
-            if (MAX_HEIGHT < currentHeight) {
-                currentHeight = MAX_HEIGHT;
-            }
-        }
-
-        return currentHeight;
-    }
+    const controller = useFormFieldController({
+        name: props.name,
+        value: props.value,
+        help: props.help,
+        validation: props.validation,
+    });
 
     const onChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
         let val = evt.target.value;
-        setUserInput(val);
         if (props.onChange) {
-            props.onChange(props.name, userInput);
+            props.onChange(props.name, val);
         }
     };
 
-    let currentHeight = calculateHeight();
-
     return (
-        <FormRow
-            name={props.name}
-            value={userInput}
+        <TextField
+            sx={{
+                display: 'block',
+                mt: 1,
+                mb: 1,
+            }}
+            onChange={onChange}
+            variant={'standard'}
+            multiline={true}
             label={props.label}
-            help={props.help}
-            validation={props.validation}
-            focused={inputFocused}
+            autoFocus={false}
+            required={controller.required}
+            helperText={controller.help}
             disabled={props.disabled}
-            readOnly={props.readOnly}
-        >
-            <div className={'textarea-wrapper'}>
-                <textarea
-                    name={props.name}
-                    onChange={onChange}
-                    style={{ height: currentHeight + 'px' }}
-                    onFocus={inputOnFocus}
-                    onBlur={inputOnBlur}
-                    className={'textarea'}
-                    value={userInput}
-                    readOnly={props.readOnly}
-                    disabled={props.disabled}
-                    autoComplete="off"
-                ></textarea>
-                <div ref={textHeightElementRef} className={'text-height'}></div>
-            </div>
-        </FormRow>
+            name={props.name}
+            value={props.value}
+            type={'text'}
+            error={controller.showError}
+            inputProps={{
+                readOnly: props.readOnly,
+            }}
+        />
     );
 };

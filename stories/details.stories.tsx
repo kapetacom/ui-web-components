@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Detail, DetailButtons, DetailRow, DetailRowListValue, DetailRowValue, DetailSize } from '../src/detail/Detail';
-import { Button, ButtonShape, ButtonStyle, Dialog, ToastContainer } from '../src';
+import { ToastContainer } from '../src';
+import { Button } from '@mui/material';
 
 function minMaxAgeCheck(name: string, value: number) {
     if (value < 1) {
@@ -46,7 +47,6 @@ export const FullDetail = () => {
     return (
         <div style={{ width: '550px', background: 'white' }}>
             <ToastContainer />
-            <Dialog />
             <Detail data={user} editable={editable} onChange={onChange}>
                 <DetailRowValue fixed={true} label={'Full Name'} name={'name'} validation={['required']} />
                 <DetailRowValue label={'Handle'} name={'handle'} validation={['required']} />
@@ -77,8 +77,10 @@ export const FullDetail = () => {
                 </DetailRow>
 
                 <DetailButtons>
-                    <Button text={'Change password'} shape={ButtonShape.SQUARE} />
-                    <Button text={'Disable'} shape={ButtonShape.SQUARE} style={ButtonStyle.DANGER} />
+                    <Button variant={'contained'}>Change password</Button>
+                    <Button variant={'contained'} color="error">
+                        Disable
+                    </Button>
                 </DetailButtons>
             </Detail>
         </div>
@@ -107,7 +109,6 @@ export const SmallDetail = () => {
     return (
         <div style={{ width: '250px', background: 'white' }}>
             <ToastContainer />
-            <Dialog />
             <Detail data={user} editable={editable} onChange={onChange} size={DetailSize.SMALL}>
                 <DetailRowValue fixed={true} label={'Full Name'} name={'name'} validation={['required']} />
                 <DetailRowValue label={'Handle'} name={'handle'} validation={['required']} />
@@ -130,8 +131,10 @@ export const SmallDetail = () => {
                 </DetailRow>
 
                 <DetailButtons>
-                    <Button text={'Change password'} shape={ButtonShape.SQUARE} />
-                    <Button text={'Disable'} shape={ButtonShape.SQUARE} style={ButtonStyle.DANGER} />
+                    <Button variant={'contained'}>Change password</Button>
+                    <Button variant={'contained'} color="error">
+                        Disable
+                    </Button>
                 </DetailButtons>
             </Detail>
         </div>

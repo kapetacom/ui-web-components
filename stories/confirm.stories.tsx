@@ -5,9 +5,10 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import { ConfirmProvider, useConfirm } from '../src/confirm';
+import { useConfirmDelete, useConfirmInfo, useConfirmSuccess, useConfirmWarn } from '../src/confirm/useConfirm';
 
 const meta: Meta = {
-    title: 'MUI Confirmation Dialog',
+    title: 'Confirm',
     component: Button,
     decorators: [
         (Story) => (
@@ -30,6 +31,44 @@ export const Basic: Story = {
     render: () => {
         const confirm = useConfirm();
         return <Button onClick={async () => confirmHandler(await confirm())}>Click</Button>;
+    },
+};
+
+export const Icons: Story = {
+    render: () => {
+        const confirmDeletion = useConfirmDelete();
+        const confirmWarn = useConfirmWarn();
+        const confirmInfo = useConfirmInfo();
+        const confirmSuccess = useConfirmSuccess();
+        return (
+            <>
+                <Button
+                    onClick={async () =>
+                        confirmHandler(
+                            await confirmDeletion('Do you want to delete this?', 'This action is permanent!')
+                        )
+                    }
+                >
+                    Delete
+                </Button>
+
+                <Button
+                    onClick={async () =>
+                        confirmHandler(await confirmWarn('Do you want to delete this?', 'This action is permanent!'))
+                    }
+                >
+                    Warn
+                </Button>
+
+                <Button onClick={async () => confirmHandler(await confirmInfo('This happened!', 'Everything is fine'))}>
+                    Info
+                </Button>
+
+                <Button onClick={async () => confirmHandler(await confirmSuccess('It worked!', 'Well done'))}>
+                    Success
+                </Button>
+            </>
+        );
     },
 };
 

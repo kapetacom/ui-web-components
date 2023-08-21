@@ -79,12 +79,16 @@ export const SimpleForm = () => {
                 />
 
                 <FormButtons>
-                    <Button onClick={() => setInitialValue(AltFormValue)}>Load Alt</Button>
-                    <Button onClick={() => setInitialValue(InitialFormValue)}>Load Normal</Button>
-                    <Button type={'reset'} color={'error'}>
+                    <Button variant={'contained'} onClick={() => setInitialValue(AltFormValue)}>
+                        Load Alt
+                    </Button>
+                    <Button variant={'contained'} onClick={() => setInitialValue(InitialFormValue)}>
+                        Load Normal
+                    </Button>
+                    <Button variant={'contained'} type={'reset'} color={'error'}>
                         Reset
                     </Button>
-                    <Button type={'submit'} color={'primary'}>
+                    <Button variant={'contained'} type={'submit'} color={'primary'}>
                         Save
                     </Button>
                 </FormButtons>
@@ -141,8 +145,10 @@ export const NestedDataForm = () => {
                 />
 
                 <FormButtons>
-                    <Button color={'error'}>Reset</Button>
-                    <Button type={'submit'} color={'primary'}>
+                    <Button variant={'contained'} color={'error'}>
+                        Reset
+                    </Button>
+                    <Button variant={'contained'} type={'submit'} color={'primary'}>
                         Save
                     </Button>
                 </FormButtons>
@@ -205,8 +211,10 @@ export const FormWithConditionals = () => {
                 )}
 
                 <FormButtons>
-                    <Button color={'error'}>Reset</Button>
-                    <Button type={'submit'} color={'primary'}>
+                    <Button variant={'contained'} color={'error'}>
+                        Reset
+                    </Button>
+                    <Button variant={'contained'} type={'submit'} color={'primary'}>
                         Save
                     </Button>
                 </FormButtons>
@@ -258,8 +266,10 @@ export const FormWithValidation = () => {
                 />
 
                 <FormButtons>
-                    <Button color={'error'}>Reset</Button>
-                    <Button type={'submit'} color={'primary'}>
+                    <Button variant={'contained'} color={'error'}>
+                        Reset
+                    </Button>
+                    <Button variant={'contained'} type={'submit'} color={'primary'}>
                         Save
                     </Button>
                 </FormButtons>
@@ -329,8 +339,10 @@ export const FormWithAsyncValidation = () => {
                 />
 
                 <FormButtons>
-                    <Button color={'error'}>Reset</Button>
-                    <Button type={'submit'} color={'primary'}>
+                    <Button variant={'contained'} color={'error'}>
+                        Reset
+                    </Button>
+                    <Button variant={'contained'} type={'submit'} color={'primary'}>
                         Save
                     </Button>
                 </FormButtons>
@@ -363,8 +375,10 @@ export const AsyncForm = () => {
                 />
 
                 <FormButtons>
-                    <Button color={'error'}>Reset</Button>
-                    <Button type={'submit'} color={'primary'}>
+                    <Button variant={'contained'} color={'error'}>
+                        Reset
+                    </Button>
+                    <Button variant={'contained'} type={'submit'} color={'primary'}>
                         Save
                     </Button>
                 </FormButtons>
@@ -390,8 +404,10 @@ export const FormNavigationOnSubmit = () => {
                     />
 
                     <FormButtons>
-                        <Button color={'error'}>Reset</Button>
-                        <Button type={'submit'} color={'primary'}>
+                        <Button variant={'contained'} color={'error'}>
+                            Reset
+                        </Button>
+                        <Button variant={'contained'} type={'submit'} color={'primary'}>
                             Save
                         </Button>
                     </FormButtons>
@@ -419,8 +435,10 @@ export const CustomFormValidation = () => {
             <FormField name={'ok'} label={'Something'} validation={['required']} />
             <FormField name={'fail'} label={'Fails'} validation={['required']} />
             <FormButtons>
-                <Button color={'error'}>Reset</Button>
-                <Button type={'submit'} color={'primary'}>
+                <Button variant={'contained'} color={'error'}>
+                    Reset
+                </Button>
+                <Button variant={'contained'} type={'submit'} color={'primary'}>
                     Save
                 </Button>
             </FormButtons>

@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import './FormRadioGroup.less';
-import { toClass } from '@kapeta/ui-web-utils';
-import { FormRow } from '../FormRow';
+import { useFormFieldController } from '../formFieldController';
 import _ from 'lodash';
+import { FormControl, FormControlLabel, FormHelperText, FormLabel, InputLabel, Radio, RadioGroup } from '@mui/material';
 
 interface Props {
     name: string;
@@ -16,17 +15,12 @@ interface Props {
 }
 
 export const FormRadioGroup = (props: Props) => {
-    const [inputFocused, setInputFocused] = useState(false);
-
-    const inputRef = useRef<HTMLInputElement>();
-
-    const inputOnBlur = () => {
-        setInputFocused(false);
-    };
-
-    const inputOnFocus = () => {
-        setInputFocused(true);
-    };
+    const controller = useFormFieldController({
+        name: props.name,
+        value: props.value,
+        help: props.help,
+        validation: props.validation,
+    });
 
     const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
         emitChange(evt.target.value);
@@ -69,45 +63,47 @@ export const FormRadioGroup = (props: Props) => {
         return props.value || Object.keys(options)[0];
     }
 
-    let className = toClass({
-        'form-radiogroup': true,
-    });
-
     const options = getOptions();
     const currentValue = getCurrentValue();
 
+    const defaultValue = Object.keys(options)[0];
+
     return (
-        <FormRow
-            name={props.name}
-            value={props.value}
-            label={props.label}
-            help={props.help}
-            validation={props.validation}
-            type={'radiogroup'}
-            disableZoom={true}
-            focused={inputFocused}
+        <FormControl
             disabled={props.disabled}
+            onChange={onChange}
+            required={controller.required}
+            error={controller.showError}
+            defaultValue={defaultValue}
+            variant={'standard'}
+            sx={{
+                display: 'block',
+                mt: 1,
+                mb: 1,
+                '.MuiFormHelperText-root': {
+                    ml: 0,
+                },
+            }}
         >
-            <div className={className}>
+            <InputLabel shrink={true} required={controller.required}>
+                {props.label}
+            </InputLabel>
+            <RadioGroup
+                row={true}
+                sx={{
+                    pt: 2,
+                }}
+                defaultValue={defaultValue}
+                value={currentValue}
+                name={props.name}
+            >
                 {Object.entries(options).map(([value, label], ix) => {
                     return (
-                        <label key={`radio_${ix}`}>
-                            <input
-                                type={'radio'}
-                                name={props.name}
-                                onChange={onChange}
-                                onFocus={inputOnFocus}
-                                onBlur={inputOnBlur}
-                                value={value}
-                                checked={value === currentValue}
-                                disabled={props.disabled}
-                                ref={inputRef}
-                            />
-                            <span className={'name'}>{label}</span>
-                        </label>
+                        <FormControlLabel disabled={props.disabled} value={value} control={<Radio />} label={label} />
                     );
                 })}
-            </div>
-        </FormRow>
+            </RadioGroup>
+            {controller.help && <FormHelperText>{controller.help}</FormHelperText>}
+        </FormControl>
     );
 };
