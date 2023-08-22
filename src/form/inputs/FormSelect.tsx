@@ -5,13 +5,13 @@ import { MenuItem, TextField } from '@mui/material';
 interface Props {
     options: string[] | { [key: string]: string };
     multi?: boolean;
-    enableDeselect?: boolean;
     onChange?: (inputName: string, userInput: any) => void;
 }
 
 export const FormSelect = withFormFieldController<string | string[]>((props: Props, controller) => {
     const onChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
         let val = evt.target.value;
+        console.log('FormSelect onChange', val);
         if (props.onChange) {
             props.onChange(controller.name, val);
         }
@@ -29,8 +29,6 @@ export const FormSelect = withFormFieldController<string | string[]>((props: Pro
     if (!value) {
         if (props.multi) {
             value = [];
-        } else if (options.length > 0) {
-            value = options[0].value;
         }
     }
 
@@ -63,7 +61,7 @@ export const FormSelect = withFormFieldController<string | string[]>((props: Pro
             }}
             SelectProps={{
                 multiple: props.multi,
-                displayEmpty: props.enableDeselect,
+                displayEmpty: true,
             }}
         >
             {options.map((option) => (

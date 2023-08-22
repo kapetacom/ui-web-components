@@ -88,6 +88,7 @@ export const FormRadioGroup = withFormFieldController((props: Props, controller)
                 {Object.entries(options).map(([value, label], ix) => {
                     return (
                         <FormControlLabel
+                            key={ix}
                             disabled={controller.disabled}
                             value={value}
                             control={<Radio readOnly={controller.readOnly} />}

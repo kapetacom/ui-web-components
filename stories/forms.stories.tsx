@@ -78,6 +78,14 @@ export const SimpleForm = () => {
                     options={{ one: 'One', two: 'Two', three: 'Three' }}
                 />
 
+                <FormField
+                    name={'select_empty'}
+                    label={'Select Empty'}
+                    type={FormFieldType.ENUM}
+                    help={'Just one please'}
+                    options={{ one: 'One', two: 'Two', three: 'Three' }}
+                />
+
                 <FormButtons>
                     <Button variant={'contained'} onClick={() => setInitialValue(AltFormValue)}>
                         Load Alt
