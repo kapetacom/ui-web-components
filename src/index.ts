@@ -100,3 +100,5 @@ export * from './tooltip/Tooltip';
 export * from './confirm';
 
 export * from './dates';
+
+export * from './dialog/Dialog';
