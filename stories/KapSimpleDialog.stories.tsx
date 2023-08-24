@@ -24,7 +24,6 @@ export const Basic: Story = {
                     open={isOpen}
                     onClose={closeDialog}
                     title="Dialog Title"
-                    content="Dialog Content"
                     actions={
                         <>
                             <Button variant="contained" onClick={closeDialog}>
@@ -35,7 +34,9 @@ export const Basic: Story = {
                             </Button>
                         </>
                     }
-                />
+                >
+                    Dialog Content
+                </KapSimpleDialog>
             </>
         );
     },

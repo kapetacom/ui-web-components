@@ -33,12 +33,6 @@ export const Basic: Story = {
                     open={isOpen}
                     onClose={closeDialog}
                     title="Dialog Title"
-                    content={
-                        <>
-                            <FormField name={'name'} label={'Full name'} />
-                            <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
-                        </>
-                    }
                     actions={
                         <Button
                             type="submit"
@@ -52,7 +46,10 @@ export const Basic: Story = {
                     onSubmitData={(data) => {
                         onSubmitData(data).catch(() => undefined);
                     }}
-                />
+                >
+                    <FormField name={'name'} label={'Full name'} />
+                    <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
+                </KapFormDialog>
             </>
         );
     },
