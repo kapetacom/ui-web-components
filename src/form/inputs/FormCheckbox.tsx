@@ -30,7 +30,6 @@ export const FormCheckbox = withFormFieldController((props: Props, controller) =
             error={controller.showError}
             sx={{
                 display: 'block',
-                my: 1,
                 '.MuiFormHelperText-root': {
                     ml: 0,
                 },

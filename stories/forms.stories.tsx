@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { AsyncValidatorFunction, debouncedValidator, FormButtons, FormContainer } from '../src';
 import { FormField, FormFieldType } from '../src/form/inputs/FormField';
 import { useFormContextField } from '../src/form/FormContext';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 function minMaxAgeCheck(name: string, value: number) {
     if (value < 1) {
@@ -45,61 +45,63 @@ export const SimpleForm = () => {
                     setFormData(data);
                 }}
             >
-                <FormField name={'name'} label={'Name'} />
-                <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
-                <FormField
-                    name={'enabled'}
-                    label={'Enable?'}
-                    type={FormFieldType.CHECKBOX}
-                    help={'Should this be enabled?'}
-                />
+                <Box display="flex" flexDirection="column" gap={2}>
+                    <FormField name={'name'} label={'Name'} />
+                    <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
+                    <FormField
+                        name={'enabled'}
+                        label={'Enable?'}
+                        type={FormFieldType.CHECKBOX}
+                        help={'Should this be enabled?'}
+                    />
 
-                <FormField
-                    name={'radios'}
-                    label={'Radios'}
-                    type={FormFieldType.RADIO}
-                    help={'Pick one of these'}
-                    options={{ one: 'One', two: 'Two', three: 'Three' }}
-                />
+                    <FormField
+                        name={'radios'}
+                        label={'Radios'}
+                        type={FormFieldType.RADIO}
+                        help={'Pick one of these'}
+                        options={{ one: 'One', two: 'Two', three: 'Three' }}
+                    />
 
-                <FormField
-                    name={'select_multi'}
-                    label={'Select Multi'}
-                    type={FormFieldType.ENUM_MULTI}
-                    help={'You can choose multiple'}
-                    options={{ one: 'One', two: 'Two', three: 'Three' }}
-                />
+                    <FormField
+                        name={'select_multi'}
+                        label={'Select Multi'}
+                        type={FormFieldType.ENUM_MULTI}
+                        help={'You can choose multiple'}
+                        options={{ one: 'One', two: 'Two', three: 'Three' }}
+                    />
 
-                <FormField
-                    name={'select_one'}
-                    label={'Select One'}
-                    type={FormFieldType.ENUM}
-                    help={'Just one please'}
-                    options={{ one: 'One', two: 'Two', three: 'Three' }}
-                />
+                    <FormField
+                        name={'select_one'}
+                        label={'Select One'}
+                        type={FormFieldType.ENUM}
+                        help={'Just one please'}
+                        options={{ one: 'One', two: 'Two', three: 'Three' }}
+                    />
 
-                <FormField
-                    name={'select_empty'}
-                    label={'Select Empty'}
-                    type={FormFieldType.ENUM}
-                    help={'Just one please'}
-                    options={{ one: 'One', two: 'Two', three: 'Three' }}
-                />
+                    <FormField
+                        name={'select_empty'}
+                        label={'Select Empty'}
+                        type={FormFieldType.ENUM}
+                        help={'Just one please'}
+                        options={{ one: 'One', two: 'Two', three: 'Three' }}
+                    />
 
-                <FormButtons>
-                    <Button variant={'contained'} onClick={() => setInitialValue(AltFormValue)}>
-                        Load Alt
-                    </Button>
-                    <Button variant={'contained'} onClick={() => setInitialValue(InitialFormValue)}>
-                        Load Normal
-                    </Button>
-                    <Button variant={'contained'} type={'reset'} color={'error'}>
-                        Reset
-                    </Button>
-                    <Button variant={'contained'} type={'submit'} color={'primary'}>
-                        Save
-                    </Button>
-                </FormButtons>
+                    <FormButtons>
+                        <Button variant={'contained'} onClick={() => setInitialValue(AltFormValue)}>
+                            Load Alt
+                        </Button>
+                        <Button variant={'contained'} onClick={() => setInitialValue(InitialFormValue)}>
+                            Load Normal
+                        </Button>
+                        <Button variant={'contained'} type={'reset'} color={'error'}>
+                            Reset
+                        </Button>
+                        <Button variant={'contained'} type={'submit'} color={'primary'}>
+                            Save
+                        </Button>
+                    </FormButtons>
+                </Box>
             </FormContainer>
             <b>Submitted data</b>
             <pre>{JSON.stringify(formData, null, 2)}</pre>
@@ -119,47 +121,49 @@ export const NestedDataForm = () => {
                     setFormData(data);
                 }}
             >
-                <FormField name={'author.name'} label={'Name'} />
-                <FormField name={'author.age'} label={'Age'} type={FormFieldType.NUMBER} />
-                <FormField
-                    name={'enabled'}
-                    label={'Enable?'}
-                    type={FormFieldType.CHECKBOX}
-                    help={'Should this be enabled?'}
-                />
+                <Box display="flex" flexDirection="column" gap={2}>
+                    <FormField name={'author.name'} label={'Name'} />
+                    <FormField name={'author.age'} label={'Age'} type={FormFieldType.NUMBER} />
+                    <FormField
+                        name={'enabled'}
+                        label={'Enable?'}
+                        type={FormFieldType.CHECKBOX}
+                        help={'Should this be enabled?'}
+                    />
 
-                <FormField
-                    name={'radios'}
-                    label={'Radios'}
-                    type={FormFieldType.RADIO}
-                    help={'Pick one of these'}
-                    options={{ one: 'One', two: 'Two', three: 'Three' }}
-                />
+                    <FormField
+                        name={'radios'}
+                        label={'Radios'}
+                        type={FormFieldType.RADIO}
+                        help={'Pick one of these'}
+                        options={{ one: 'One', two: 'Two', three: 'Three' }}
+                    />
 
-                <FormField
-                    name={'options.select_multi'}
-                    label={'Select Multi'}
-                    type={FormFieldType.ENUM_MULTI}
-                    help={'You can choose multiple'}
-                    options={{ one: 'One', two: 'Two', three: 'Three' }}
-                />
+                    <FormField
+                        name={'options.select_multi'}
+                        label={'Select Multi'}
+                        type={FormFieldType.ENUM_MULTI}
+                        help={'You can choose multiple'}
+                        options={{ one: 'One', two: 'Two', three: 'Three' }}
+                    />
 
-                <FormField
-                    name={'options.select_one'}
-                    label={'Select One'}
-                    type={FormFieldType.ENUM}
-                    help={'Just one please'}
-                    options={{ one: 'One', two: 'Two', three: 'Three' }}
-                />
+                    <FormField
+                        name={'options.select_one'}
+                        label={'Select One'}
+                        type={FormFieldType.ENUM}
+                        help={'Just one please'}
+                        options={{ one: 'One', two: 'Two', three: 'Three' }}
+                    />
 
-                <FormButtons>
-                    <Button variant={'contained'} color={'error'}>
-                        Reset
-                    </Button>
-                    <Button variant={'contained'} type={'submit'} color={'primary'}>
-                        Save
-                    </Button>
-                </FormButtons>
+                    <FormButtons>
+                        <Button variant={'contained'} color={'error'}>
+                            Reset
+                        </Button>
+                        <Button variant={'contained'} type={'submit'} color={'primary'}>
+                            Save
+                        </Button>
+                    </FormButtons>
+                </Box>
             </FormContainer>
             <b>Submitted data</b>
             <pre>{JSON.stringify(formData, null, 2)}</pre>
@@ -181,51 +185,53 @@ export const FormWithConditionals = () => {
                     setFormData(data);
                 }}
             >
-                <FormField name={'name'} label={'Name'} />
-                <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
-                <FormField
-                    name={'enabled'}
-                    label={'Enable?'}
-                    type={FormFieldType.CHECKBOX}
-                    help={'Should this be enabled?'}
-                />
+                <Box display="flex" flexDirection="column" gap={2}>
+                    <FormField name={'name'} label={'Name'} />
+                    <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
+                    <FormField
+                        name={'enabled'}
+                        label={'Enable?'}
+                        type={FormFieldType.CHECKBOX}
+                        help={'Should this be enabled?'}
+                    />
 
-                {formData.enabled && (
-                    <div>
-                        <FormField
-                            name={'radios'}
-                            label={'Radios'}
-                            type={FormFieldType.RADIO}
-                            help={'Pick one of these'}
-                            options={{ one: 'One', two: 'Two', three: 'Three' }}
-                        />
+                    {formData.enabled && (
+                        <div>
+                            <FormField
+                                name={'radios'}
+                                label={'Radios'}
+                                type={FormFieldType.RADIO}
+                                help={'Pick one of these'}
+                                options={{ one: 'One', two: 'Two', three: 'Three' }}
+                            />
 
-                        <FormField
-                            name={'select_multi'}
-                            label={'Select Multi'}
-                            type={FormFieldType.ENUM_MULTI}
-                            help={'You can choose multiple'}
-                            options={{ one: 'One', two: 'Two', three: 'Three' }}
-                        />
+                            <FormField
+                                name={'select_multi'}
+                                label={'Select Multi'}
+                                type={FormFieldType.ENUM_MULTI}
+                                help={'You can choose multiple'}
+                                options={{ one: 'One', two: 'Two', three: 'Three' }}
+                            />
 
-                        <FormField
-                            name={'select_one'}
-                            label={'Select One'}
-                            type={FormFieldType.ENUM}
-                            help={'Just one please'}
-                            options={{ one: 'One', two: 'Two', three: 'Three' }}
-                        />
-                    </div>
-                )}
+                            <FormField
+                                name={'select_one'}
+                                label={'Select One'}
+                                type={FormFieldType.ENUM}
+                                help={'Just one please'}
+                                options={{ one: 'One', two: 'Two', three: 'Three' }}
+                            />
+                        </div>
+                    )}
 
-                <FormButtons>
-                    <Button variant={'contained'} color={'error'}>
-                        Reset
-                    </Button>
-                    <Button variant={'contained'} type={'submit'} color={'primary'}>
-                        Save
-                    </Button>
-                </FormButtons>
+                    <FormButtons>
+                        <Button variant={'contained'} color={'error'}>
+                            Reset
+                        </Button>
+                        <Button variant={'contained'} type={'submit'} color={'primary'}>
+                            Save
+                        </Button>
+                    </FormButtons>
+                </Box>
             </FormContainer>
             <b>Submitted data</b>
             <pre>{JSON.stringify(formData, null, 2)}</pre>
@@ -254,33 +260,35 @@ export const FormWithValidation = () => {
                     setFormData(data);
                 }}
             >
-                <FormField name={'name'} label={'Name'} validation={['required', failValidation]} />
-                <FormField name={'email'} label={'E-mail'} validation={['required', 'email']} />
-                <FormField name={'enabled'} label={'Enable?'} type={FormFieldType.CHECKBOX} />
-                <CustomFormComponent />
+                <Box display="flex" flexDirection="column" gap={2}>
+                    <FormField name={'name'} label={'Name'} validation={['required', failValidation]} />
+                    <FormField name={'email'} label={'E-mail'} validation={['required', 'email']} />
+                    <FormField name={'enabled'} label={'Enable?'} type={FormFieldType.CHECKBOX} />
+                    <CustomFormComponent />
 
-                <FormField
-                    name={'age'}
-                    label={'Age'}
-                    validation={['required', minMaxAgeCheck]}
-                    type={FormFieldType.NUMBER}
-                />
+                    <FormField
+                        name={'age'}
+                        label={'Age'}
+                        validation={['required', minMaxAgeCheck]}
+                        type={FormFieldType.NUMBER}
+                    />
 
-                <FormField
-                    name={'select_one'}
-                    label={'Select'}
-                    type={FormFieldType.RADIO}
-                    options={{ one: 'One', two: 'Two', three: 'Three' }}
-                />
+                    <FormField
+                        name={'select_one'}
+                        label={'Select'}
+                        type={FormFieldType.RADIO}
+                        options={{ one: 'One', two: 'Two', three: 'Three' }}
+                    />
 
-                <FormButtons>
-                    <Button variant={'contained'} color={'error'}>
-                        Reset
-                    </Button>
-                    <Button variant={'contained'} type={'submit'} color={'primary'}>
-                        Save
-                    </Button>
-                </FormButtons>
+                    <FormButtons>
+                        <Button variant={'contained'} color={'error'}>
+                            Reset
+                        </Button>
+                        <Button variant={'contained'} type={'submit'} color={'primary'}>
+                            Save
+                        </Button>
+                    </FormButtons>
+                </Box>
             </FormContainer>
             <b>Submitted data</b>
             <pre>{JSON.stringify(formData, null, 2)}</pre>
@@ -329,37 +337,39 @@ export const FormWithAsyncValidation = () => {
                     setFormData(data);
                 }}
             >
-                <FormField
-                    name={'name'}
-                    label={'Name'}
-                    help={'This will fail if you type "fail"'}
-                    validation={validation}
-                />
-                <FormField name={'email'} label={'E-mail'} validation={['required', 'email']} />
-                <FormField name={'enabled'} label={'Enable?'} type={FormFieldType.CHECKBOX} />
+                <Box display="flex" flexDirection="column" gap={2}>
+                    <FormField
+                        name={'name'}
+                        label={'Name'}
+                        help={'This will fail if you type "fail"'}
+                        validation={validation}
+                    />
+                    <FormField name={'email'} label={'E-mail'} validation={['required', 'email']} />
+                    <FormField name={'enabled'} label={'Enable?'} type={FormFieldType.CHECKBOX} />
 
-                <FormField
-                    name={'age'}
-                    label={'Age'}
-                    validation={['required', minMaxAgeCheck]}
-                    type={FormFieldType.NUMBER}
-                />
+                    <FormField
+                        name={'age'}
+                        label={'Age'}
+                        validation={['required', minMaxAgeCheck]}
+                        type={FormFieldType.NUMBER}
+                    />
 
-                <FormField
-                    name={'select_one'}
-                    label={'Select'}
-                    type={FormFieldType.RADIO}
-                    options={{ one: 'One', two: 'Two', three: 'Three' }}
-                />
+                    <FormField
+                        name={'select_one'}
+                        label={'Select'}
+                        type={FormFieldType.RADIO}
+                        options={{ one: 'One', two: 'Two', three: 'Three' }}
+                    />
 
-                <FormButtons>
-                    <Button variant={'contained'} color={'error'}>
-                        Reset
-                    </Button>
-                    <Button variant={'contained'} type={'submit'} color={'primary'}>
-                        Save
-                    </Button>
-                </FormButtons>
+                    <FormButtons>
+                        <Button variant={'contained'} color={'error'}>
+                            Reset
+                        </Button>
+                        <Button variant={'contained'} type={'submit'} color={'primary'}>
+                            Save
+                        </Button>
+                    </FormButtons>
+                </Box>
             </FormContainer>
             <b>Submitted data</b>
             <pre>{JSON.stringify(formData, null, 2)}</pre>
@@ -379,35 +389,7 @@ export const AsyncForm = () => {
                     setFormData(data);
                 }}
             >
-                <FormField name={'name'} label={'Name'} />
-                <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
-                <FormField
-                    name={'enabled'}
-                    label={'Enable?'}
-                    type={FormFieldType.CHECKBOX}
-                    help={'Should this be enabled?'}
-                />
-
-                <FormButtons>
-                    <Button variant={'contained'} color={'error'}>
-                        Reset
-                    </Button>
-                    <Button variant={'contained'} type={'submit'} color={'primary'}>
-                        Save
-                    </Button>
-                </FormButtons>
-            </FormContainer>
-            <b>Submitted data</b>
-            <pre>{JSON.stringify(formData, null, 2)}</pre>
-        </div>
-    );
-};
-
-export const FormNavigationOnSubmit = () => {
-    return (
-        <div style={{ width: '550px' }}>
-            <form method={'GET'}>
-                <FormContainer initialValue={InitialFormValue}>
+                <Box display="flex" flexDirection="column" gap={2}>
                     <FormField name={'name'} label={'Name'} />
                     <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
                     <FormField
@@ -425,6 +407,38 @@ export const FormNavigationOnSubmit = () => {
                             Save
                         </Button>
                     </FormButtons>
+                </Box>
+            </FormContainer>
+            <b>Submitted data</b>
+            <pre>{JSON.stringify(formData, null, 2)}</pre>
+        </div>
+    );
+};
+
+export const FormNavigationOnSubmit = () => {
+    return (
+        <div style={{ width: '550px' }}>
+            <form method={'GET'}>
+                <FormContainer initialValue={InitialFormValue}>
+                    <Box display="flex" flexDirection="column" gap={2}>
+                        <FormField name={'name'} label={'Name'} />
+                        <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
+                        <FormField
+                            name={'enabled'}
+                            label={'Enable?'}
+                            type={FormFieldType.CHECKBOX}
+                            help={'Should this be enabled?'}
+                        />
+
+                        <FormButtons>
+                            <Button variant={'contained'} color={'error'}>
+                                Reset
+                            </Button>
+                            <Button variant={'contained'} type={'submit'} color={'primary'}>
+                                Save
+                            </Button>
+                        </FormButtons>
+                    </Box>
                 </FormContainer>
             </form>
         </div>
@@ -446,16 +460,18 @@ export const CustomFormValidation = () => {
                 },
             ]}
         >
-            <FormField name={'ok'} label={'Something'} validation={['required']} />
-            <FormField name={'fail'} label={'Fails'} validation={['required']} />
-            <FormButtons>
-                <Button variant={'contained'} color={'error'}>
-                    Reset
-                </Button>
-                <Button variant={'contained'} type={'submit'} color={'primary'}>
-                    Save
-                </Button>
-            </FormButtons>
+            <Box display="flex" flexDirection="column" gap={2}>
+                <FormField name={'ok'} label={'Something'} validation={['required']} />
+                <FormField name={'fail'} label={'Fails'} validation={['required']} />
+                <FormButtons>
+                    <Button variant={'contained'} color={'error'}>
+                        Reset
+                    </Button>
+                    <Button variant={'contained'} type={'submit'} color={'primary'}>
+                        Save
+                    </Button>
+                </FormButtons>
+            </Box>
         </FormContainer>
     );
 };
