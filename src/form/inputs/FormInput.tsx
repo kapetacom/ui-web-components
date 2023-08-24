@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withFormFieldController } from '../formFieldController';
-import TextField from '@mui/material/TextField';
 import { FormFieldProcessingContainer } from './FormFieldProcessingContainer';
+import { TextField, InputAdornment, IconButton } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 export enum Type {
     DATE = 'date',
@@ -19,6 +21,11 @@ interface FormInputProps {
 }
 
 export const FormInput = withFormFieldController<string | number | boolean>((props: FormInputProps, controller) => {
+    const [showPassword, setShowPassword] = useState(false);
+    const togglePasswordVisibility = () => {
+        setShowPassword((prev) => !prev);
+    };
+
     const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
         emitChange(evt.target.value);
     };
@@ -68,13 +75,35 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
                 required={controller.required}
                 error={controller.showError}
                 value={value}
-                type={props.type}
+                type={props.type === Type.PASSWORD && showPassword ? 'text' : props.type}
                 InputLabelProps={{
                     shrink: NON_TEXT_TYPES.includes(props.type) ? true : undefined,
                 }}
                 inputProps={{
                     readOnly: controller.readOnly,
                 }}
+                InputProps={
+                    props.type === Type.PASSWORD
+                        ? {
+                              endAdornment: (
+                                  <InputAdornment position="start">
+                                      <IconButton
+                                          edge="end"
+                                          onClick={togglePasswordVisibility}
+                                          aria-label="toggle password visibility"
+                                          sx={{
+                                              '&:focus': {
+                                                  backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                                              },
+                                          }}
+                                      >
+                                          {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                      </IconButton>
+                                  </InputAdornment>
+                              ),
+                          }
+                        : undefined
+                }
             />
         </FormFieldProcessingContainer>
     );
