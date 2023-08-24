@@ -15,7 +15,7 @@ export interface FormStateChangeEvent {
 
 export type FormData = { [key: string]: any };
 
-interface Props {
+export interface FormContainerProps {
     onSubmit?: () => void;
     onReset?: () => void;
     validators?: ValidatorList;
@@ -32,7 +32,7 @@ interface State {
     processing: boolean;
 }
 
-export class FormContainer extends React.Component<Props, State> {
+export class FormContainer extends React.Component<FormContainerProps, State> {
     static contextType = FormContext;
     context!: React.ContextType<FormContextType>;
 
@@ -46,7 +46,7 @@ export class FormContainer extends React.Component<Props, State> {
 
     private readonly resetListeners: { [key: string]: ResetListener[] } = {};
 
-    constructor(props: Props) {
+    constructor(props: FormContainerProps) {
         super(props);
 
         this.submitClickHandler = {
@@ -362,7 +362,7 @@ export class FormContainer extends React.Component<Props, State> {
         this.focusFirstUnready();
     }
 
-    componentDidUpdate(prevProps: Props) {
+    componentDidUpdate(prevProps: FormContainerProps) {
         this.bindButtons();
 
         if (this.props.initialValue !== prevProps.initialValue) {
