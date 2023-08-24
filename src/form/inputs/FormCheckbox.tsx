@@ -26,12 +26,11 @@ export const FormCheckbox = withFormFieldController((props: Props, controller) =
             disabled={props.disabled}
             required={controller.required}
             autoFocus={controller.autoFocus}
-            variant={'standard'}
+            variant={controller.variant}
             error={controller.showError}
             sx={{
                 display: 'block',
-                mb: 1,
-                mt: 1,
+                my: 1,
                 '.MuiFormHelperText-root': {
                     ml: 0,
                 },

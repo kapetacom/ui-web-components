@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useFormFieldController, withFormFieldController } from '../formFieldController';
+import React, { useEffect } from 'react';
+import { withFormFieldController } from '../formFieldController';
 import _ from 'lodash';
-import { FormControl, FormControlLabel, FormHelperText, FormLabel, InputLabel, Radio, RadioGroup } from '@mui/material';
+import { FormControl, FormControlLabel, FormHelperText, InputLabel, Radio, RadioGroup } from '@mui/material';
 
 interface Props {
     options: string[] | { [key: string]: string };
@@ -63,11 +63,10 @@ export const FormRadioGroup = withFormFieldController((props: Props, controller)
             error={controller.showError}
             autoFocus={controller.autoFocus}
             defaultValue={defaultValue}
-            variant={'standard'}
+            variant={controller.variant}
             sx={{
                 display: 'block',
-                mt: 1,
-                mb: 1,
+                my: 1,
                 '.MuiFormHelperText-root': {
                     ml: 0,
                 },

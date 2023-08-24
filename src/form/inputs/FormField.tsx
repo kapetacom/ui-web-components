@@ -5,6 +5,7 @@ import { FormTextarea } from './FormTextarea';
 import { FormRadioGroup } from './FormRadioGroup';
 import { FormCheckbox } from './FormCheckbox';
 import { FieldProps, FormFieldHandler } from './FormFieldHandler';
+import { TextFieldProps } from '@mui/material';
 
 export enum FormFieldType {
     DATE = 'date',
@@ -19,67 +20,69 @@ export enum FormFieldType {
     ENUM_MULTI = 'enum_multi',
 }
 
-interface SharedProps {
+interface SharedFormFieldProps {
     label?: string;
     validation?: any[];
     help?: string;
     options?: string[] | { [key: string]: string };
     disabled?: boolean;
     readOnly?: boolean;
+    variant?: TextFieldProps['variant'];
 }
 
-interface Props extends SharedProps {
+interface FormFieldProps extends SharedFormFieldProps {
     name: string;
     type?: FormFieldType;
 }
 
-interface NoTypeProps extends SharedProps, FieldProps {}
-
-interface InnerElementProps extends NoTypeProps {
+interface InnerElementProps extends SharedFormFieldProps, FieldProps {
     type?: FormFieldType;
 }
 
-const InnerElement = (props: InnerElementProps) => {
-    const type = props.type ? props.type : FormFieldType.STRING;
-
-    const innerProps: NoTypeProps = {
-        ...props,
-    };
-    delete innerProps['type'];
-
-    switch (type) {
+const InnerElement = ({ type: formFieldType = FormFieldType.STRING, ...props }: InnerElementProps) => {
+    switch (formFieldType) {
         case FormFieldType.ENUM:
         case FormFieldType.ENUM_MULTI:
             if (!props.options) {
                 throw new Error('Missing attribute: options');
             }
-            return <FormSelect multi={type === FormFieldType.ENUM_MULTI} options={props.options} {...innerProps} />;
+            return (
+                <FormSelect
+                    multi={formFieldType === FormFieldType.ENUM_MULTI}
+                    options={props.options}
+                    {...props}
+                    variant={props.variant}
+                />
+            );
 
         case FormFieldType.STRING:
-            return <FormInput type={Type.TEXT} {...innerProps} />;
+            return <FormInput type={Type.TEXT} {...props} variant={props.variant} />;
         case FormFieldType.TEXT:
-            return <FormTextarea {...innerProps} />;
+            return <FormTextarea {...props} variant={props.variant} />;
         case FormFieldType.DATE:
-            return <FormInput type={Type.DATE} {...innerProps} />;
+            return <FormInput type={Type.DATE} {...props} variant={props.variant} />;
         case FormFieldType.NUMBER:
-            return <FormInput type={Type.NUMBER} {...innerProps} />;
+            return <FormInput type={Type.NUMBER} {...props} variant={props.variant} />;
         case FormFieldType.EMAIL:
-            return <FormInput type={Type.EMAIL} {...innerProps} />;
+            return <FormInput type={Type.EMAIL} {...props} variant={props.variant} />;
         case FormFieldType.PASSWORD:
-            return <FormInput type={Type.PASSWORD} {...innerProps} />;
+            return <FormInput type={Type.PASSWORD} {...props} variant={props.variant} />;
         case FormFieldType.CHECKBOX:
-            return <FormCheckbox {...innerProps} />;
-        case FormFieldType.RADIO:
+            return <FormCheckbox {...props} />;
+        case FormFieldType.RADIO: {
             if (!props.options) {
                 throw new Error('Missing attribute: options');
             }
-            return <FormRadioGroup options={props.options} {...innerProps} />;
+            return <FormRadioGroup options={props.options} {...props} />;
+        }
+        default: {
+            formFieldType satisfies never;
+            throw new Error('Invalid form field type: ' + formFieldType);
+        }
     }
-
-    throw new Error('Invalid form field type: ' + type);
 };
 
-export const FormField = (props: Props) => {
+export const FormField = (props: FormFieldProps) => {
     const parentProps = props;
 
     return (

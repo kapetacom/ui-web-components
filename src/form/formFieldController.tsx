@@ -4,6 +4,7 @@ import { FormContext } from './FormContext';
 
 import { FormStateChangeEvent } from './FormContainer';
 import { AsyncState } from 'react-use/lib/useAsync';
+import { TextFieldProps } from '@mui/material';
 
 export enum StatusType {
     ERROR = 'error',
@@ -19,6 +20,7 @@ export interface FormFieldControllerProps<V = any> {
     disabled?: boolean;
     readOnly?: boolean;
     autoFocus?: boolean;
+    variant?: TextFieldProps['variant'];
 }
 
 export interface FormFieldController<V = any> {
@@ -36,6 +38,7 @@ export interface FormFieldController<V = any> {
     disabled: boolean;
     readOnly: boolean;
     autoFocus?: boolean;
+    variant?: TextFieldProps['variant'];
 }
 
 export const useFormFieldController = <T = any,>(props: FormFieldControllerProps<T>): FormFieldController<T> => {
@@ -177,6 +180,7 @@ export const useFormFieldController = <T = any,>(props: FormFieldControllerProps
         name: props.name,
         value: childValue,
         autoFocus: props.autoFocus,
+        variant: props.variant,
     };
 };
 

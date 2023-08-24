@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFormFieldController, withFormFieldController } from '../formFieldController';
+import { withFormFieldController } from '../formFieldController';
 import TextField from '@mui/material/TextField';
 import { FormFieldProcessingContainer } from './FormFieldProcessingContainer';
 
@@ -20,14 +20,13 @@ export const FormTextarea = withFormFieldController((props: Props, controller) =
             <TextField
                 sx={{
                     display: 'block',
-                    mt: 1,
-                    mb: 1,
+                    my: 1,
                     '.MuiInputBase-root': {
                         width: '100%',
                     },
                 }}
                 onChange={onChange}
-                variant={'standard'}
+                variant={controller.variant}
                 multiline={true}
                 label={controller.label}
                 autoFocus={controller.autoFocus}
