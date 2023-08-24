@@ -100,3 +100,7 @@ export * from './tooltip/Tooltip';
 export * from './confirm';
 
 export * from './dates';
+
+export * from './dialogs/KapDialog';
+export * from './dialogs/KapFormDialog';
+export * from './dialogs/KapSimpleDialog';

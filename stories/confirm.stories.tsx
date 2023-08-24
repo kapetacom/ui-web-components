@@ -8,7 +8,7 @@ import { ConfirmProvider, useConfirm } from '../src/confirm';
 import { useConfirmDelete, useConfirmInfo, useConfirmSuccess, useConfirmWarn } from '../src/confirm/useConfirm';
 
 const meta: Meta = {
-    title: 'Confirm',
+    title: 'Dialogs/Confirm',
     component: Button,
     decorators: [
         (Story) => (
