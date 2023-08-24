@@ -75,7 +75,6 @@ export const AuthScopesField = (props: AuthScopesFieldProps) => {
                         borderRadius: '100%',
                         border: '2px solid',
                         borderColor: 'primary.main',
-                        my: 1,
                     }}
                 >
                     <BadgeOutlinedIcon fontSize="large" />

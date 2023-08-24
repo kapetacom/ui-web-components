@@ -20,7 +20,6 @@ export const FormTextarea = withFormFieldController((props: Props, controller) =
             <TextField
                 sx={{
                     display: 'block',
-                    my: 1,
                     '.MuiInputBase-root': {
                         width: '100%',
                     },

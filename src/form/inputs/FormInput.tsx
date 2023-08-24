@@ -60,7 +60,6 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
             <TextField
                 sx={{
                     display: 'block',
-                    my: 1,
                     '.MuiInputBase-root': {
                         width: '100%',
                     },

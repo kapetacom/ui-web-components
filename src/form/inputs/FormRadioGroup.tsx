@@ -66,7 +66,6 @@ export const FormRadioGroup = withFormFieldController((props: Props, controller)
             variant={controller.variant}
             sx={{
                 display: 'block',
-                my: 1,
                 '.MuiFormHelperText-root': {
                     ml: 0,
                 },

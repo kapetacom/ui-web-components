@@ -36,7 +36,6 @@ export const FormSelect = withFormFieldController<string | string[]>((props: For
         <TextField
             sx={{
                 display: 'block',
-                my: 1,
                 '.MuiInputBase-root': {
                     minWidth: '100%',
                 },
