@@ -1,20 +1,20 @@
-import React, { ReactNode } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 import { KapDialog, KapDialogProps } from './KapDialog';
 import { FormContainer, FormContainerProps } from '../form/FormContainer';
 
-export type KapFormDialogProps<OnCloseFn extends (...args: any[]) => any> = {
+export type KapFormDialogProps<OnCloseFn extends (...args: any[]) => any> = PropsWithChildren<{
     open: KapDialogProps<OnCloseFn>['open'];
     onClose: OnCloseFn;
     title?: ReactNode;
-    content?: ReactNode;
     actions?: ReactNode;
-} & Omit<FormContainerProps, 'children'>;
+}> &
+    Omit<FormContainerProps, 'children'>;
 
 export const KapFormDialog = <OnCloseFn extends (...args: any[]) => any>({
     open,
     onClose,
     title,
-    content,
+    children,
     actions,
     ...formContainerProps
 }: KapFormDialogProps<OnCloseFn>) => {
@@ -22,7 +22,7 @@ export const KapFormDialog = <OnCloseFn extends (...args: any[]) => any>({
         <KapDialog open={open} onClose={onClose}>
             <FormContainer {...formContainerProps}>
                 {title && <KapDialog.Title>{title}</KapDialog.Title>}
-                {content && <KapDialog.Content>{content}</KapDialog.Content>}
+                {children && <KapDialog.Content>{children}</KapDialog.Content>}
                 {actions && <KapDialog.Actions>{actions}</KapDialog.Actions>}
             </FormContainer>
         </KapDialog>
