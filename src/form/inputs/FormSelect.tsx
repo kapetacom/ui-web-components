@@ -2,13 +2,13 @@ import React from 'react';
 import { withFormFieldController } from '../formFieldController';
 import { MenuItem, TextField } from '@mui/material';
 
-interface Props {
+interface FormSelectProps {
     options: string[] | { [key: string]: string };
     multi?: boolean;
     onChange?: (inputName: string, userInput: any) => void;
 }
 
-export const FormSelect = withFormFieldController<string | string[]>((props: Props, controller) => {
+export const FormSelect = withFormFieldController<string | string[]>((props: FormSelectProps, controller) => {
     const onChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
         let val = evt.target.value;
         console.log('FormSelect onChange', val);
@@ -43,7 +43,7 @@ export const FormSelect = withFormFieldController<string | string[]>((props: Pro
                 },
             }}
             onChange={onChange}
-            variant={'standard'}
+            variant={controller.variant}
             multiline={true}
             label={controller.label}
             autoFocus={controller.autoFocus}

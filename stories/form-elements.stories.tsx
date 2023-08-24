@@ -80,7 +80,6 @@ export const FormInputs = () => {
                 <FormInput help={helpText} name={'num'} label={'Number Value'} type={Type.NUMBER} />
                 <FormInput help={helpText} name={'pw'} label={'Password Value'} type={Type.PASSWORD} />
                 <FormInput help={helpText} name={'date'} label={'Date Value'} type={Type.DATE} />
-                <FormInput help={helpText} name={'checker'} label={'Boolean Value'} type={Type.CHECKBOX} />
             </FormContainer>
         </div>
     );
@@ -220,7 +219,6 @@ export const CountrySelects = () => {
             style={{
                 width: '600px',
                 padding: '10px',
-                backgroundColor: '#e0ecff',
             }}
         >
             <form onSubmit={() => {}}>

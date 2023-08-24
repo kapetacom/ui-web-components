@@ -1,6 +1,5 @@
-import React, { useRef } from 'react';
-import { toClass } from '@kapeta/ui-web-utils';
-import { FormFieldControllerProps, useFormFieldController, withFormFieldController } from '../formFieldController';
+import React from 'react';
+import { withFormFieldController } from '../formFieldController';
 import TextField from '@mui/material/TextField';
 import { FormFieldProcessingContainer } from './FormFieldProcessingContainer';
 
@@ -10,21 +9,17 @@ export enum Type {
     NUMBER = 'number',
     PASSWORD = 'password',
     TEXT = 'text',
-    CHECKBOX = 'checkbox',
 }
 
-const NON_TEXT_TYPES = [Type.DATE, Type.CHECKBOX];
+const NON_TEXT_TYPES = [Type.DATE];
 
-interface Props {
+interface FormInputProps {
     onChange?: (inputName: string, userInput: any) => void;
     type?: Type;
 }
-export const FormInput = withFormFieldController<string | number | boolean>((props: Props, controller) => {
+
+export const FormInput = withFormFieldController<string | number | boolean>((props: FormInputProps, controller) => {
     const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-        if (props.type === Type.CHECKBOX) {
-            emitChange(evt.target.checked);
-            return;
-        }
         emitChange(evt.target.value);
     };
 
@@ -37,11 +32,8 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
             return value;
         }
 
-        switch (props.type) {
-            case Type.NUMBER:
-                return parseFloat(value);
-            case Type.CHECKBOX:
-                return value.toLowerCase() === 'true';
+        if (props.type === Type.NUMBER) {
+            return parseFloat(value);
         }
 
         return value;
@@ -55,26 +47,20 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
     }
 
     let value = controller.value;
-    let checked;
-
-    if (props.type === Type.CHECKBOX) {
-        checked = value === true;
-    }
 
     return (
         <FormFieldProcessingContainer controller={controller}>
             <TextField
                 sx={{
                     display: 'block',
-                    mt: 1,
-                    mb: 1,
+                    my: 1,
                     '.MuiInputBase-root': {
                         width: '100%',
                     },
                 }}
                 autoFocus={controller.autoFocus}
                 onChange={onChange}
-                variant={'standard'}
+                variant={controller.variant}
                 label={controller.label}
                 helperText={controller.help}
                 disabled={controller.disabled}
@@ -88,7 +74,6 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
                 }}
                 inputProps={{
                     readOnly: controller.readOnly,
-                    defaultChecked: checked,
                 }}
             />
         </FormFieldProcessingContainer>
