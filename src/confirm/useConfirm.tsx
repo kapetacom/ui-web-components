@@ -1,8 +1,11 @@
 import React, { useContext } from 'react';
 import { ConfirmContext } from './ConfirmContext';
 import { ConfirmOptions } from './types';
-import { CheckCircleOutlined, Delete, Info, Warning } from '@mui/icons-material';
-import { Box, BoxProps, ButtonProps } from '@mui/material';
+import CheckCircleOutlined from '@mui/icons-material/CheckCircleOutlined';
+import Delete from '@mui/icons-material/Delete';
+import Info from '@mui/icons-material/Info';
+import Warning from '@mui/icons-material/Warning';
+import { Box, ButtonProps } from '@mui/material';
 
 export const useConfirm = (): ((options?: ConfirmOptions) => Promise<boolean>) => {
     const confirm = useContext(ConfirmContext);

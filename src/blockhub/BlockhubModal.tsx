@@ -9,7 +9,7 @@ import { Blockhub, BlockhubCategory, BlockhubMode } from './Blockhub';
 import { InstallerService } from './AssetInstallButton';
 import { useWindowResize } from '../utils/resize-hook';
 import { BlockhubDetails, BlockHubDetailsPreviewer } from './BlockhubDetails';
-import { Close } from '@mui/icons-material';
+import Close from '@mui/icons-material/Close';
 import { Asset } from '@kapeta/ui-web-types';
 
 interface Props {

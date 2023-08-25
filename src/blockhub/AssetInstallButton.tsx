@@ -9,7 +9,12 @@ import DownloadingIcon from '@mui/icons-material/Downloading';
 import { AssetDisplay } from './types';
 import { Asset } from '@kapeta/ui-web-types';
 import useSWR from 'swr';
-import { ArrowDownward, Delete, DownloadDone, InstallDesktop, MoreVertRounded } from '@mui/icons-material';
+import ArrowDownward from '@mui/icons-material/ArrowDownward';
+import Delete from '@mui/icons-material/Delete';
+import DownloadDone from '@mui/icons-material/DownloadDone';
+import InstallDesktop from '@mui/icons-material/InstallDesktop';
+import MoreVertRounded from '@mui/icons-material/MoreVertRounded';
+
 import { grey } from '@mui/material/colors';
 import { useConfirm } from '../confirm';
 
