@@ -29,6 +29,7 @@ export * from './form/inputs/FormCheckbox';
 export * from './form/inputs/FormRadioGroup';
 export * from './form/inputs/FormAutocomplete';
 export * from './form/inputs/Autocomplete';
+export * from './form/DefaultFormLayout';
 
 export * from './helpers/Loader';
 export * from './helpers/SimpleLoader';
@@ -104,4 +105,3 @@ export * from './dates';
 export * from './dialogs/KapDialog';
 export * from './dialogs/KapFormDialog';
 export * from './dialogs/KapSimpleDialog';
-export * from './form/DefaultFormLayout';
