@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { State, Store } from '@sambego/storybook-state';
 
-import { FormSelect, FormButtons, FormContainer, FormTextarea, FormInput, Type } from '../src';
+import { FormSelect, FormButtons, FormContainer, FormTextarea, FormInput, Type, DefaultFormLayout } from '../src';
 import { Checkbox } from '../src/form/Checkbox';
 import { FormAutocomplete } from '../src/form/inputs/FormAutocomplete';
 import Chip from '@mui/material/Chip';
@@ -37,11 +37,13 @@ export const FormInputs = () => {
     return (
         <div style={{ padding: '15px' }}>
             <FormContainer>
-                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
-                <FormInput help={helpText} name={'email'} label={'Email Value'} type={Type.EMAIL} />
-                <FormInput help={helpText} name={'num'} label={'Number Value'} type={Type.NUMBER} />
-                <FormInput help={helpText} name={'pw'} label={'Password Value'} type={Type.PASSWORD} />
-                <FormInput help={helpText} name={'date'} label={'Date Value'} type={Type.DATE} />
+                <DefaultFormLayout sx={{ mt: 2 }} gap={2}>
+                    <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
+                    <FormInput help={helpText} name={'email'} label={'Email Value'} type={Type.EMAIL} />
+                    <FormInput help={helpText} name={'num'} label={'Number Value'} type={Type.NUMBER} />
+                    <FormInput help={helpText} name={'pw'} label={'Password Value'} type={Type.PASSWORD} />
+                    <FormInput help={helpText} name={'date'} label={'Date Value'} type={Type.DATE} />
+                </DefaultFormLayout>
             </FormContainer>
         </div>
     );
