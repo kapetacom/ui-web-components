@@ -5,7 +5,7 @@ export type DefaultFormLayoutProps = PropsWithChildren<{
     gap?: number;
 }>;
 
-export default function DefaultFormLayout({ children, gap = 3 }: DefaultFormLayoutProps) {
+export const DefaultFormLayout = ({ children, gap = 3 }: DefaultFormLayoutProps) => {
     return (
         <Box
             display="flex"
@@ -20,4 +20,4 @@ export default function DefaultFormLayout({ children, gap = 3 }: DefaultFormLayo
             {children}
         </Box>
     );
-}
+};
