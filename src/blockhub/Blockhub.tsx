@@ -17,7 +17,11 @@ import { BlockhubGridContainer } from './BlockhubGridContainer';
 import { BlockhubTile, DependencyKindLabel } from './BlockhubTile';
 import { AssetKindIcon } from '../icons/AssetIcon';
 import { AssetInstallButton, InstallerService } from './AssetInstallButton';
-import { Apartment, DownloadDone, GroupWorkOutlined, Paid } from '@mui/icons-material';
+import Apartment from '@mui/icons-material/Apartment';
+import DownloadDone from '@mui/icons-material/DownloadDone';
+import GroupWorkOutlined from '@mui/icons-material/GroupWorkOutlined';
+import Paid from '@mui/icons-material/Paid';
+
 import { AssetDisplay, AssetFetcher } from './types';
 import { Plan } from '@kapeta/schemas';
 import { parseKapetaUri } from '@kapeta/nodejs-utils';
