@@ -104,3 +104,4 @@ export * from './dates';
 export * from './dialogs/KapDialog';
 export * from './dialogs/KapFormDialog';
 export * from './dialogs/KapSimpleDialog';
+export * from './form/DefaultFormLayout';

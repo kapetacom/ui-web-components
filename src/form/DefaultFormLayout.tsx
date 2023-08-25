@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React, { PropsWithChildren } from 'react';
 
-type DefaultFormLayoutProps = PropsWithChildren<{
+export type DefaultFormLayoutProps = PropsWithChildren<{
     gap?: number;
 }>;
 
