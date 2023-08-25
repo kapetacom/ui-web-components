@@ -6,7 +6,7 @@ import { Checkbox } from '../src/form/Checkbox';
 import { FormAutocomplete } from '../src/form/inputs/FormAutocomplete';
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
-import { Box, Button, Modal } from '@mui/material';
+import { Button } from '@mui/material';
 
 let dropdownState = new Store({
     test1: [],
@@ -37,13 +37,11 @@ export const FormInputs = () => {
     return (
         <div style={{ padding: '15px' }}>
             <FormContainer>
-                <Box display="flex" flexDirection="column" gap={2}>
-                    <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
-                    <FormInput help={helpText} name={'email'} label={'Email Value'} type={Type.EMAIL} />
-                    <FormInput help={helpText} name={'num'} label={'Number Value'} type={Type.NUMBER} />
-                    <FormInput help={helpText} name={'pw'} label={'Password Value'} type={Type.PASSWORD} />
-                    <FormInput help={helpText} name={'date'} label={'Date Value'} type={Type.DATE} />
-                </Box>
+                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
+                <FormInput help={helpText} name={'email'} label={'Email Value'} type={Type.EMAIL} />
+                <FormInput help={helpText} name={'num'} label={'Number Value'} type={Type.NUMBER} />
+                <FormInput help={helpText} name={'pw'} label={'Password Value'} type={Type.PASSWORD} />
+                <FormInput help={helpText} name={'date'} label={'Date Value'} type={Type.DATE} />
             </FormContainer>
         </div>
     );
@@ -55,11 +53,9 @@ export const FormTextareas = () => {
     return (
         <div style={{ padding: '15px' }}>
             <FormContainer>
-                <Box display="flex" flexDirection="column" gap={2}>
-                    <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
-                    <FormTextarea help={helpText} name={'multi'} label={'Multi line'} validation={['required']} />
-                    <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
-                </Box>
+                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
+                <FormTextarea help={helpText} name={'multi'} label={'Multi line'} validation={['required']} />
+                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
             </FormContainer>
         </div>
     );
@@ -77,11 +73,9 @@ export const FormSelects = () => {
     return (
         <div style={{ padding: '15px' }}>
             <FormContainer>
-                <Box display="flex" flexDirection="column" gap={2}>
-                    <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
-                    <FormSelect help={helpText} name={'multi'} label={'Multi line'} options={options} />
-                    <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
-                </Box>
+                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
+                <FormSelect help={helpText} name={'multi'} label={'Multi line'} options={options} />
+                <FormInput help={helpText} name={'text'} label={'Text Value'} type={Type.TEXT} />
             </FormContainer>
         </div>
     );
@@ -100,54 +94,52 @@ export const MixedInputs = () => {
             }}
         >
             <form onSubmit={handleSubmit}>
-                <Box display="flex" flexDirection="column" gap={2}>
-                    <FormInput
-                        name={'SingleInput1'}
-                        value={'Test value'}
-                        label={'Single line input'}
-                        validation={['required']}
-                        help={'Specify the name of your block.'}
-                        onChange={inputReturnCallback}
-                    />
+                <FormInput
+                    name={'SingleInput1'}
+                    value={'Test value'}
+                    label={'Single line input'}
+                    validation={['required']}
+                    help={'Specify the name of your block.'}
+                    onChange={inputReturnCallback}
+                />
 
-                    <FormInput
-                        name={'SingleInput2'}
-                        value={''}
-                        label={'Single line input'}
-                        validation={['required']}
-                        help={'Specify the name of your block.'}
-                        onChange={inputReturnCallback}
-                    />
+                <FormInput
+                    name={'SingleInput2'}
+                    value={''}
+                    label={'Single line input'}
+                    validation={['required']}
+                    help={'Specify the name of your block.'}
+                    onChange={inputReturnCallback}
+                />
 
-                    <FormInput
-                        name={'SingleInput3'}
-                        value={''}
-                        label={'Single line input type number'}
-                        validation={['required']}
-                        help={'Specify the ID of your block.'}
-                        type={Type.NUMBER}
-                        onChange={inputReturnCallback}
-                    />
+                <FormInput
+                    name={'SingleInput3'}
+                    value={''}
+                    label={'Single line input type number'}
+                    validation={['required']}
+                    help={'Specify the ID of your block.'}
+                    type={Type.NUMBER}
+                    onChange={inputReturnCallback}
+                />
 
-                    <FormTextarea
-                        name={'MultiLineInput1'}
-                        value={''}
-                        label={'Multiline line input disabled'}
-                        validation={['required']}
-                        help={'Specify the description of your block.'}
-                        onChange={inputReturnCallback}
-                        disabled={true}
-                    />
-                    <FormTextarea
-                        name={'MultiLineInput2'}
-                        value={''}
-                        label={'Multiline line input'}
-                        validation={['required']}
-                        help={'Specify the description of your block.'}
-                        onChange={inputReturnCallback}
-                    />
-                    <input type="submit" value="Submit" />
-                </Box>
+                <FormTextarea
+                    name={'MultiLineInput1'}
+                    value={''}
+                    label={'Multiline line input disabled'}
+                    validation={['required']}
+                    help={'Specify the description of your block.'}
+                    onChange={inputReturnCallback}
+                    disabled={true}
+                />
+                <FormTextarea
+                    name={'MultiLineInput2'}
+                    value={''}
+                    label={'Multiline line input'}
+                    validation={['required']}
+                    help={'Specify the description of your block.'}
+                    onChange={inputReturnCallback}
+                />
+                <input type="submit" value="Submit" />
             </form>
         </div>
     );
@@ -322,111 +314,109 @@ export const FormAutocompletes = () => {
                     setFormData(data);
                 }}
             >
-                <Box display="flex" flexDirection="column" gap={2}>
-                    <FormAutocomplete
-                        name="best_movie_of_all_time"
-                        label="Best movie of all time"
-                        onChange={(name, value) => {
-                            console.log(name, value);
-                        }}
-                        options={top100Movies}
-                        getOptionLabel={(option) => {
-                            const isMovieOption = typeof option === 'object' && 'name' in option;
-                            return isMovieOption ? option.name : option;
-                        }}
-                        isOptionEqualToValue={(option, value) => value?.name === option.name}
-                        autoHighlight // Highlight first match in the listbox
-                        autoFocus
-                    />
+                <FormAutocomplete
+                    name="best_movie_of_all_time"
+                    label="Best movie of all time"
+                    onChange={(name, value) => {
+                        console.log(name, value);
+                    }}
+                    options={top100Movies}
+                    getOptionLabel={(option) => {
+                        const isMovieOption = typeof option === 'object' && 'name' in option;
+                        return isMovieOption ? option.name : option;
+                    }}
+                    isOptionEqualToValue={(option, value) => value?.name === option.name}
+                    autoHighlight // Highlight first match in the listbox
+                    autoFocus
+                />
 
-                    <FormAutocomplete
-                        name="top_3_movies"
-                        label="Top 3 movies"
-                        onChange={(name, value) => {
-                            console.log(name, value);
-                        }}
-                        options={top100Movies}
-                        getOptionLabel={(option) => {
+                <FormAutocomplete
+                    name="top_3_movies"
+                    label="Top 3 movies"
+                    onChange={(name, value) => {
+                        console.log(name, value);
+                    }}
+                    options={top100Movies}
+                    getOptionLabel={(option) => {
+                        const isMovieOption = typeof option === 'object' && 'name' in option;
+                        return isMovieOption ? option.name : option;
+                    }}
+                    isOptionEqualToValue={(option, value) => value?.name === option.name}
+                    hidePopupIndicator
+                    multiple
+                    limitTags={3} // Max tags to show when multiple
+                    filterSelectedOptions // Hide selected options
+                    autoHighlight // Highlight first match
+                    freeSolo // Allow free text
+                    // Example of how to render the options
+                    renderOption={(props, option, state) => {
+                        return (
+                            <li {...props}>
+                                <span>
+                                    <strong>{option.name}</strong> ({option.year})
+                                </span>
+                            </li>
+                        );
+                    }}
+                    // Example of how to render tags
+                    renderTags={(value, getTagProps, ownerState) => {
+                        return value.map((option, index) => {
                             const isMovieOption = typeof option === 'object' && 'name' in option;
-                            return isMovieOption ? option.name : option;
-                        }}
-                        isOptionEqualToValue={(option, value) => value?.name === option.name}
-                        hidePopupIndicator
-                        multiple
-                        limitTags={3} // Max tags to show when multiple
-                        filterSelectedOptions // Hide selected options
-                        autoHighlight // Highlight first match
-                        freeSolo // Allow free text
-                        // Example of how to render the options
-                        renderOption={(props, option, state) => {
                             return (
-                                <li {...props}>
-                                    <span>
-                                        <strong>{option.name}</strong> ({option.year})
-                                    </span>
-                                </li>
+                                <Chip
+                                    avatar={
+                                        <Avatar>
+                                            {isMovieOption ? option.name.charAt(0) : (option as string).charAt(0)}
+                                        </Avatar>
+                                    }
+                                    label={isMovieOption ? option.name : option}
+                                    {...getTagProps({ index })}
+                                    style={{ marginRight: 5 }}
+                                    variant="outlined"
+                                    color="primary"
+                                />
                             );
-                        }}
-                        // Example of how to render tags
-                        renderTags={(value, getTagProps, ownerState) => {
-                            return value.map((option, index) => {
-                                const isMovieOption = typeof option === 'object' && 'name' in option;
-                                return (
-                                    <Chip
-                                        avatar={
-                                            <Avatar>
-                                                {isMovieOption ? option.name.charAt(0) : (option as string).charAt(0)}
-                                            </Avatar>
-                                        }
-                                        label={isMovieOption ? option.name : option}
-                                        {...getTagProps({ index })}
-                                        style={{ marginRight: 5 }}
-                                        variant="outlined"
-                                        color="primary"
-                                    />
-                                );
-                            });
-                        }}
-                    />
+                        });
+                    }}
+                />
 
-                    <FormAutocomplete
-                        name="search_for_a_movie"
-                        label="Search for a movie (API)"
-                        onChange={(name, value) => {
-                            console.log('onChange', { name, value });
-                        }}
-                        onInputChange={async (event, value, reason) => {
-                            console.log('onInputChange', { event, value, reason });
+                <FormAutocomplete
+                    name="search_for_a_movie"
+                    label="Search for a movie (API)"
+                    onChange={(name, value) => {
+                        console.log('onChange', { name, value });
+                    }}
+                    onInputChange={async (event, value, reason) => {
+                        console.log('onInputChange', { event, value, reason });
 
-                            // Simulate API call
-                            setIsLoadingMovies(true);
-                            await new Promise((resolve) => setTimeout(resolve, 500));
-                            const filteredMovies =
-                                value === ''
-                                    ? []
-                                    : top100Movies.filter((movie) =>
-                                          movie.name.toLowerCase().includes(value.toLowerCase())
-                                      );
-                            setApiMovies(filteredMovies);
-                            setIsLoadingMovies(false);
-                        }}
-                        loading={isLoadingMovies}
-                        options={apiMovies}
-                        getOptionLabel={(option) => {
-                            const isMovieOption = typeof option === 'object' && 'name' in option;
-                            return isMovieOption ? option.name : option;
-                        }}
-                        isOptionEqualToValue={(option, value) => value?.name === option.name}
-                        autoHighlight // Highlight first match
-                        freeSolo // Allow free text
-                    />
+                        // Simulate API call
+                        setIsLoadingMovies(true);
+                        await new Promise((resolve) => setTimeout(resolve, 500));
+                        const filteredMovies =
+                            value === ''
+                                ? []
+                                : top100Movies.filter((movie) =>
+                                      movie.name.toLowerCase().includes(value.toLowerCase())
+                                  );
+                        setApiMovies(filteredMovies);
+                        setIsLoadingMovies(false);
+                    }}
+                    loading={isLoadingMovies}
+                    options={apiMovies}
+                    getOptionLabel={(option) => {
+                        const isMovieOption = typeof option === 'object' && 'name' in option;
+                        return isMovieOption ? option.name : option;
+                    }}
+                    isOptionEqualToValue={(option, value) => value?.name === option.name}
+                    autoHighlight // Highlight first match
+                    freeSolo // Allow free text
+                />
 
-                    <FormButtons>
-                        <Button type={'submit'} color="primary" variant="contained">
-                            Save
-                        </Button>
-                    </FormButtons>
-                </Box>
+                <FormButtons>
+                    <Button type={'submit'} color="primary" variant="contained">
+                        Save
+                    </Button>
+                </FormButtons>
             </FormContainer>
 
             <b>Submitted data</b>
