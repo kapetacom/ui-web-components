@@ -39,7 +39,11 @@ interface InnerElementProps extends SharedFormFieldProps, FieldProps {
     type?: FormFieldType;
 }
 
-const InnerElement = ({ type: formFieldType = FormFieldType.STRING, ...props }: InnerElementProps) => {
+const InnerElement = ({
+    type: formFieldType = FormFieldType.STRING,
+    variant = 'standard',
+    ...props
+}: InnerElementProps) => {
     switch (formFieldType) {
         case FormFieldType.ENUM:
         case FormFieldType.ENUM_MULTI:
@@ -51,22 +55,22 @@ const InnerElement = ({ type: formFieldType = FormFieldType.STRING, ...props }: 
                     multi={formFieldType === FormFieldType.ENUM_MULTI}
                     options={props.options}
                     {...props}
-                    variant={props.variant}
+                    variant={variant}
                 />
             );
 
         case FormFieldType.STRING:
-            return <FormInput type={Type.TEXT} {...props} variant={props.variant} />;
+            return <FormInput type={Type.TEXT} {...props} variant={variant} />;
         case FormFieldType.TEXT:
-            return <FormTextarea {...props} variant={props.variant} />;
+            return <FormTextarea {...props} variant={variant} />;
         case FormFieldType.DATE:
-            return <FormInput type={Type.DATE} {...props} variant={props.variant} />;
+            return <FormInput type={Type.DATE} {...props} variant={variant} />;
         case FormFieldType.NUMBER:
-            return <FormInput type={Type.NUMBER} {...props} variant={props.variant} />;
+            return <FormInput type={Type.NUMBER} {...props} variant={variant} />;
         case FormFieldType.EMAIL:
-            return <FormInput type={Type.EMAIL} {...props} variant={props.variant} />;
+            return <FormInput type={Type.EMAIL} {...props} variant={variant} />;
         case FormFieldType.PASSWORD:
-            return <FormInput type={Type.PASSWORD} {...props} variant={props.variant} />;
+            return <FormInput type={Type.PASSWORD} {...props} variant={variant} />;
         case FormFieldType.CHECKBOX:
             return <FormCheckbox {...props} />;
         case FormFieldType.RADIO: {

@@ -60,13 +60,14 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
             <TextField
                 sx={{
                     display: 'block',
+                    my: 1,
                     '.MuiInputBase-root': {
                         width: '100%',
                     },
                 }}
                 autoFocus={controller.autoFocus}
                 onChange={onChange}
-                variant={controller.variant}
+                variant={controller.variant || 'standard'}
                 label={controller.label}
                 helperText={controller.help}
                 disabled={controller.disabled}
