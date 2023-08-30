@@ -1,11 +1,10 @@
 import React from 'react';
 import { FormSelect } from './FormSelect';
-import { FormInput, Type } from './FormInput';
+import { FormInput, FormInputProps, Type } from './FormInput';
 import { FormTextarea } from './FormTextarea';
 import { FormRadioGroup } from './FormRadioGroup';
 import { FormCheckbox } from './FormCheckbox';
 import { FieldProps, FormFieldHandler } from './FormFieldHandler';
-import { TextFieldProps } from '@mui/material';
 
 export enum FormFieldType {
     DATE = 'date',
@@ -27,10 +26,12 @@ interface SharedFormFieldProps {
     options?: string[] | { [key: string]: string };
     disabled?: boolean;
     readOnly?: boolean;
-    variant?: TextFieldProps['variant'];
+    variant?: FormInputProps['variant'];
+    onFocus?: FormInputProps['onFocus'];
+    onBlur?: FormInputProps['onBlur'];
 }
 
-interface FormFieldProps extends SharedFormFieldProps {
+export interface FormFieldProps extends SharedFormFieldProps {
     name: string;
     type?: FormFieldType;
 }

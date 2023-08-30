@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { AsyncValidatorFunction, debouncedValidator, FormButtons, FormContainer } from '../src';
 import { FormField, FormFieldType } from '../src/form/inputs/FormField';
-import { useFormContextField } from '../src/form/FormContext';
+import { FormContext, FormContextWatcher, useFormContextField } from '../src/form/FormContext';
 import { Button } from '@mui/material';
 
 function minMaxAgeCheck(name: string, value: number) {
@@ -31,10 +31,41 @@ export default {
     title: 'Forms',
 };
 
+export const DebugFormContext = () => {
+    const { valid, processing, isDirty } = useContext(FormContext);
+
+    return (
+        <>
+            <b>Form context:</b>
+            <pre>{JSON.stringify({ valid, processing, isDirty }, null, 2)}</pre>
+        </>
+    );
+};
+
 export const SimpleForm = () => {
     const [formData, setFormData] = useState({});
 
-    const [initialValue, setInitialValue] = useState(InitialFormValue);
+    const formValueA = {
+        name: 'Henrik',
+        age: 39,
+        enabled: false,
+        radios: 'One',
+        select_multi: ['two', 'three'],
+        select_one: 'two',
+        select_empty: '',
+    };
+
+    const formValueB = {
+        name: 'John',
+        age: 32,
+        enabled: true,
+        radios: 'Two',
+        select_multi: ['one'],
+        select_one: 'three',
+        select_empty: '',
+    };
+
+    const [initialValue, setInitialValue] = useState(formValueA);
 
     return (
         <div style={{ width: '550px' }}>
@@ -45,7 +76,9 @@ export const SimpleForm = () => {
                     setFormData(data);
                 }}
             >
-                <FormField name={'name'} label={'Name'} />
+                <FormContextWatcher onChange={(context) => console.log('Form context changed to:', context)} />
+
+                <FormField name={'name'} label={'Name'} validation={['required']} />
                 <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
                 <FormField
                     name={'enabled'}
@@ -87,11 +120,11 @@ export const SimpleForm = () => {
                 />
 
                 <FormButtons>
-                    <Button variant={'contained'} onClick={() => setInitialValue(AltFormValue)}>
-                        Load Alt
+                    <Button variant={'contained'} onClick={() => setInitialValue(formValueA)}>
+                        Load A
                     </Button>
-                    <Button variant={'contained'} onClick={() => setInitialValue(InitialFormValue)}>
-                        Load Normal
+                    <Button variant={'contained'} onClick={() => setInitialValue(formValueB)}>
+                        Load B
                     </Button>
                     <Button variant={'contained'} type={'reset'} color={'error'}>
                         Reset
@@ -100,6 +133,8 @@ export const SimpleForm = () => {
                         Save
                     </Button>
                 </FormButtons>
+
+                <DebugFormContext />
             </FormContainer>
             <b>Submitted data</b>
             <pre>{JSON.stringify(formData, null, 2)}</pre>
@@ -396,6 +431,8 @@ export const AsyncForm = () => {
                         Save
                     </Button>
                 </FormButtons>
+
+                <DebugFormContext />
             </FormContainer>
             <b>Submitted data</b>
             <pre>{JSON.stringify(formData, null, 2)}</pre>

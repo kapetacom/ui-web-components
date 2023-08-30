@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withFormFieldController } from '../formFieldController';
 import { FormFieldProcessingContainer } from './FormFieldProcessingContainer';
-import { TextField, InputAdornment, IconButton } from '@mui/material';
+import { TextField, InputAdornment, IconButton, TextFieldProps } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
@@ -15,7 +15,9 @@ export enum Type {
 
 const NON_TEXT_TYPES = [Type.DATE];
 
-interface FormInputProps {
+type PickedMuiTextFieldProps = Pick<TextFieldProps, 'variant' | 'onFocus' | 'onBlur'>;
+
+export interface FormInputProps extends PickedMuiTextFieldProps {
     onChange?: (inputName: string, userInput: any) => void;
     type?: Type;
 }
@@ -67,6 +69,8 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
                 }}
                 autoFocus={controller.autoFocus}
                 onChange={onChange}
+                onFocus={controller.onFocus || undefined}
+                onBlur={controller.onBlur || undefined}
                 variant={controller.variant || 'standard'}
                 label={controller.label}
                 helperText={controller.help}

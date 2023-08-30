@@ -30,6 +30,7 @@ interface State {
     readyStates: { [key: string]: boolean };
     valid: boolean;
     processing: boolean;
+    isDirty: boolean;
 }
 
 export class FormContainer extends React.Component<FormContainerProps, State> {
@@ -66,6 +67,7 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
             readyStates: {},
             processing: false,
             valid: true,
+            isDirty: false,
         };
     }
 
@@ -80,14 +82,10 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
     private onValueChanged(name: string, value: any) {
         this.setState(
             (state) => {
+                const nextFormData = _.set({ ...state.formData }, name, value);
                 return {
-                    formData: _.set(
-                        {
-                            ...state.formData,
-                        },
-                        name,
-                        value
-                    ),
+                    formData: nextFormData,
+                    isDirty: !_.isEqual(this.props.initialValue, nextFormData),
                 };
             },
             () => this.emitChange()
@@ -252,6 +250,7 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
 
             this.emitFormStateChange('reset', true);
         });
+        this.setState({ isDirty: false });
     }
 
     private handleResetClick(evt: MouseEvent): void {
@@ -379,6 +378,7 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
                         valid: this.state.valid,
                         validators: this.props.validators,
                         processing: this.state.processing,
+                        isDirty: this.state.isDirty,
                         container: this,
                         onReadyStateChanged: (fieldName: string, ready: boolean) =>
                             this.onReadyStateChanged(fieldName, ready),
