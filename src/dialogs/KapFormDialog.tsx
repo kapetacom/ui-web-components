@@ -23,7 +23,17 @@ export const KapFormDialog = <OnCloseFn extends (...args: any[]) => any>({
             <FormContainer {...formContainerProps}>
                 {title && <KapDialog.Title>{title}</KapDialog.Title>}
                 {children && <KapDialog.Content>{children}</KapDialog.Content>}
-                {actions && <KapDialog.Actions>{actions}</KapDialog.Actions>}
+                {actions && (
+                    <KapDialog.Actions
+                        sx={
+                            // Remove the padding from form-buttons if the dialog actions has such.
+                            // This is to avoid double padding
+                            { '.MuiStack-root.form-buttons': { pt: 0 } }
+                        }
+                    >
+                        {actions}
+                    </KapDialog.Actions>
+                )}
             </FormContainer>
         </KapDialog>
     );
