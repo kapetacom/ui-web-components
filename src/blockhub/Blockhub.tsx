@@ -89,6 +89,7 @@ interface Props {
     disableNavigation?: boolean;
     onSelectionChange?: (selection: AssetDisplay[]) => void;
     onAssetClick?: (asset: AssetDisplay) => void;
+    linkMaker?: (asset: AssetDisplay) => string;
 }
 
 export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) => {
@@ -253,7 +254,9 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                         title={currentTab.title}
                         tooltip={currentTab.tooltip}
                         renderAsset={(asset) => {
-                            const url = `/${asset.content.metadata.name}/${asset.version}`;
+                            const url = props.linkMaker
+                                ? props.linkMaker(asset)
+                                : `/${asset.content.metadata.name}/${asset.version}`;
                             const id = toId(asset);
                             const uri = parseKapetaUri(asset.content.metadata.name);
                             const title = asset.content.metadata.title || uri.name;

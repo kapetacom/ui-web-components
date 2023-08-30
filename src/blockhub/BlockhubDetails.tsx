@@ -42,6 +42,7 @@ interface Props {
     onAssetClick?: (asset: AssetDisplay) => void;
     asset: Dependency;
     fetcher: AssetFetcher;
+    linkMaker?: (fullName: string, version: string) => string;
 }
 
 const AutoLoadingTile = (props: Props) => {
@@ -57,6 +58,8 @@ const AutoLoadingTile = (props: Props) => {
           }
         : undefined;
     const asset = assetReq.data;
+
+    const url = props.linkMaker ? props.linkMaker(fullName, version) : `/${fullName}/${version}`;
 
     return (
         <BlockhubTile
@@ -83,7 +86,7 @@ const AutoLoadingTile = (props: Props) => {
                       }
                     : undefined
             }
-            href={props.disableNavigation ? undefined : `/${fullName}/${version}`}
+            href={props.disableNavigation ? undefined : url}
         />
     );
 };
@@ -99,6 +102,7 @@ export interface BlockhubDetailsProps {
     previewRenderer?: BlockHubDetailsPreviewer;
     disableNavigation?: boolean;
     onAssetClick?: (asset: AssetDisplay) => void;
+    linkMaker?: (fullName: string, version: string) => string;
 }
 
 export function BlockhubDetails(props: BlockhubDetailsProps) {
@@ -189,6 +193,7 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
                                         disableNavigation={props.disableNavigation}
                                         onAssetClick={props.onAssetClick}
                                         asset={asset}
+                                        linkMaker={props.linkMaker}
                                         key={asset.name}
                                     />
                                 ))}
