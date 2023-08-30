@@ -103,6 +103,7 @@ export interface BlockhubDetailsProps {
     disableNavigation?: boolean;
     onAssetClick?: (asset: AssetDisplay) => void;
     linkMaker?: (fullName: string, version: string) => string;
+    subscriptions?: boolean;
 }
 
 export function BlockhubDetails(props: BlockhubDetailsProps) {
@@ -238,7 +239,12 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
                     )}
                 </Box>
 
-                <AssetInstallButton service={props.service} asset={props.asset} type={'button'} />
+                <AssetInstallButton
+                    subscriptions={props.subscriptions}
+                    service={props.service}
+                    asset={props.asset}
+                    type={'button'}
+                />
 
                 {/* Labels + stats */}
                 <Stack
