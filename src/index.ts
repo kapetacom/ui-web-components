@@ -83,6 +83,7 @@ export * from './utils/desktop';
 export * from './special/Logo';
 export * from './special/Page';
 export * from './special/mfa/OTPCode';
+export * from './special/mfa/OTPInput';
 export * from './special/oauth/AuthScopesField';
 export * from './special/oauth/AuthScopesList';
 export * from './special/oauth/scopes';
