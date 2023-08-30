@@ -165,9 +165,6 @@ export const useFormFieldController = <T = any,>(props: FormFieldControllerProps
     }, [errors.loading, errors.value, touched, hasAsync]);
 
     let help = errorMessage && touched ? errorMessage : props.help;
-    if (!help && required) {
-        help = 'This value is required';
-    }
 
     return {
         filled,
