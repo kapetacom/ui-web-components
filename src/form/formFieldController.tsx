@@ -19,7 +19,7 @@ export interface FormFieldControllerProps<V = any> {
     label?: string;
     disabled?: boolean;
     readOnly?: boolean;
-    autoFocus?: boolean;
+    autoFocus?: FormInputProps['autoFocus'];
     variant?: FormInputProps['variant'];
     onFocus?: FormInputProps['onFocus'];
     onBlur?: FormInputProps['onBlur'];
@@ -39,7 +39,7 @@ export interface FormFieldController<V = any> {
     label?: string;
     disabled: boolean;
     readOnly: boolean;
-    autoFocus?: boolean;
+    autoFocus?: FormInputProps['autoFocus'];
     variant?: FormInputProps['variant'];
     onFocus?: FormInputProps['onFocus'];
     onBlur?: FormInputProps['onBlur'];

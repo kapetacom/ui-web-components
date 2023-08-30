@@ -15,7 +15,7 @@ export enum Type {
 
 const NON_TEXT_TYPES = [Type.DATE];
 
-type PickedMuiTextFieldProps = Pick<TextFieldProps, 'variant' | 'onFocus' | 'onBlur'>;
+type PickedMuiTextFieldProps = Pick<TextFieldProps, 'variant' | 'onFocus' | 'onBlur' | 'autoFocus'>;
 
 export interface FormInputProps extends PickedMuiTextFieldProps {
     onChange?: (inputName: string, userInput: any) => void;
