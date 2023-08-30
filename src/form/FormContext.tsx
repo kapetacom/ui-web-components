@@ -8,6 +8,7 @@ interface FormContextData {
     valid: boolean;
     validators?: ValidatorList;
     processing: boolean;
+    isDirty: boolean;
     container?: FormContainer;
     onReadyStateChanged: (childName: any, ready: boolean) => void;
     onValueChanged: (name: string, value: any) => void;
@@ -20,6 +21,7 @@ const defaultValue: FormContextData = {
     valid: false,
     validators: [],
     processing: false,
+    isDirty: false,
     onReadyStateChanged: () => {},
     onValueChanged: () => {},
     onReset: () => {
@@ -62,4 +64,13 @@ export function useFormContextField<T = any>(fieldName: string, resetHandler?: R
             },
         };
     }, [fieldName, context.container]);
+}
+
+export function FormContextWatcher({ onChange }: { onChange: (context: FormContextData) => void }) {
+    const context = useContext(FormContext);
+    useEffect(() => {
+        onChange(context);
+        return () => {};
+    });
+    return null;
 }

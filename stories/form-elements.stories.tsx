@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
 import { State, Store } from '@sambego/storybook-state';
 
-import { FormSelect, FormButtons, FormContainer, FormTextarea, FormInput, Type, DefaultFormLayout } from '../src';
+import {
+    FormSelect,
+    FormButtons,
+    FormContainer,
+    FormTextarea,
+    FormInput,
+    Type,
+    DefaultFormLayout,
+    FormField,
+    FormFieldType,
+} from '../src';
 import { Checkbox } from '../src/form/Checkbox';
 import { FormAutocomplete } from '../src/form/inputs/FormAutocomplete';
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 
 let dropdownState = new Store({
     test1: [],
@@ -44,6 +54,26 @@ export const FormInputs = () => {
                     <FormInput help={helpText} name={'pw'} label={'Password Value'} type={Type.PASSWORD} />
                     <FormInput help={helpText} name={'date'} label={'Date Value'} type={Type.DATE} />
                 </DefaultFormLayout>
+            </FormContainer>
+        </div>
+    );
+};
+
+export const FormFieldsWithCallbacks = () => {
+    const onFocus = () => console.log("I'm focused!");
+    const onBlur = () => console.log("I'm blurred!");
+
+    return (
+        <div style={{ padding: '15px' }}>
+            <Typography variant="body1">Focus and blur events are logged in the console</Typography>
+            <FormContainer>
+                <FormField
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                    name={'text'}
+                    label={'Text Value'}
+                    type={FormFieldType.STRING}
+                />
             </FormContainer>
         </div>
     );
