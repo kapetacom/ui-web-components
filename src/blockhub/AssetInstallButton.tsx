@@ -7,7 +7,6 @@ import { coreNames } from './BlockhubTile';
 import DownloadingIcon from '@mui/icons-material/Downloading';
 
 import { AssetDisplay } from './types';
-import { Asset } from '@kapeta/ui-web-types';
 import useSWR from 'swr';
 import ArrowDownward from '@mui/icons-material/ArrowDownward';
 import Delete from '@mui/icons-material/Delete';
@@ -21,7 +20,7 @@ import { useConfirm } from '../confirm';
 export interface InstallerService {
     install(assetRef: string): Promise<void>;
 
-    get(assetRef: string): Promise<Asset>;
+    get(assetRef: string): Promise<boolean>;
 
     uninstall?: (assetRef: string) => Promise<void>;
     onChange?: (assetRef: string, cb: () => void | Promise<void>) => () => void;
@@ -37,6 +36,7 @@ interface Props {
     asset: AssetDisplay;
     type: 'icon' | 'button' | 'chip';
     service?: InstallerService;
+    subscriptions?: boolean;
 }
 
 export const AssetInstallButton = (props: Props) => {
@@ -47,19 +47,22 @@ export const AssetInstallButton = (props: Props) => {
     const closeSubmenu = () => {
         setSubmenuAnchorElm(null);
     };
-
+    const active = !!(props.subscriptions || desktop);
     const assetService: InstallerService = props.service || {
-        install: async (assetRef: string): Promise<void> => {
+        install: async (assetRef: string) => {
             await AssetService.install(assetRef);
         },
         get: async (assetRef: string) => {
-            return AssetService.get(assetRef, false);
+            return !!(await AssetService.get(assetRef, false));
+        },
+        uninstall: async (assetRef: string) => {
+            return AssetService.remove(assetRef);
         },
     };
 
     const assetRef = `kapeta://${props.asset.content.metadata.name}:${props.asset.version}`;
     const installedAsset = useSWR(assetRef, async (ref) => {
-        if (!desktop) {
+        if (!active) {
             return undefined;
         }
         return assetService.get(ref);
@@ -79,7 +82,7 @@ export const AssetInstallButton = (props: Props) => {
         if (task.status === TaskStatus.FAILED) {
             showToasty({
                 type: ToastType.ALERT,
-                title: 'Failed to install asset',
+                title: props.subscriptions ? 'Failed to add asset' : 'Failed to install asset',
                 message: task.errorMessage,
             });
         }
@@ -88,29 +91,41 @@ export const AssetInstallButton = (props: Props) => {
             await installedAsset.mutate();
             showToasty({
                 type: ToastType.SUCCESS,
-                title: 'Asset installed',
-                message: 'The asset has been installed successfully.',
+                title: props.subscriptions ? 'Asset added' : 'Asset installed',
+                message: props.subscriptions
+                    ? 'The asset has been added successfully.'
+                    : 'The asset has been installed successfully.',
             });
         }
     });
 
-    const isDisabled = !installTask.ready || !desktop || installTask.active || installedAsset.isLoading;
+    const isDisabled = !installTask.ready || !active || installTask.active || installedAsset.isLoading;
 
     const isProcessing = !installTask.ready || installTask.active || installedAsset.isLoading;
 
-    let icon = desktop ? installedAsset.data ? <DownloadDone /> : <ArrowDownward /> : <InstallDesktop />;
+    let icon = active ? installedAsset.data ? <DownloadDone /> : <ArrowDownward /> : <InstallDesktop />;
 
-    let longText = desktop
+    let longText = active
         ? installedAsset.data
-            ? 'Installed'
+            ? props.subscriptions
+                ? 'Added'
+                : 'Installed'
+            : props.subscriptions
+            ? `Add ${coreNames[props.asset.content.kind] || 'asset'}`
             : `Install ${coreNames[props.asset.content.kind] || 'asset'}`
         : 'Open desktop app to install';
 
-    let shortText: string | React.ReactNode | null = desktop ? (installedAsset.data ? 'Open' : `Get`) : '';
+    let shortText: string | React.ReactNode | null = active
+        ? installedAsset.data
+            ? 'Open'
+            : props.subscriptions
+            ? `Add`
+            : `Get`
+        : '';
 
-    let chipBgColor = desktop ? (installedAsset.data ? 'primary.main' : `tertiary.main`) : grey[500];
+    let chipBgColor = active ? (installedAsset.data ? 'primary.main' : `tertiary.main`) : grey[500];
 
-    let chipFgColor = desktop ? (installedAsset.data ? grey[100] : grey[100]) : grey[100];
+    let chipFgColor = active ? (installedAsset.data ? grey[100] : grey[100]) : grey[100];
 
     if (installedAsset.isLoading) {
         longText = 'Checking...';
@@ -124,7 +139,7 @@ export const AssetInstallButton = (props: Props) => {
     }
 
     const subMenu: SubMenuItem[] = useMemo(() => {
-        const canRemove = !!(props.service?.uninstall && desktop && installedAsset.data);
+        const canRemove = !!(props.service?.uninstall && active && installedAsset.data);
         if (canRemove) {
             return [
                 {
@@ -133,12 +148,12 @@ export const AssetInstallButton = (props: Props) => {
                     onClick: async () => {
                         try {
                             await confirm({
-                                title: 'Uninstall asset',
+                                title: props.subscriptions ? 'Remove asset' : 'Uninstall asset',
                                 content: `
                             Are you sure you want to remove ${props.asset.content.metadata.name}? 
                             This will not delete anything from your disk.
                             `,
-                                confirmationText: 'Uninstall',
+                                confirmationText: props.subscriptions ? 'Remove' : 'Uninstall',
                             });
 
                             await props.service?.uninstall(assetRef);
@@ -151,7 +166,7 @@ export const AssetInstallButton = (props: Props) => {
             ];
         }
         return [];
-    }, [props.service?.uninstall, desktop, installedAsset, installedAsset.data]);
+    }, [props.service?.uninstall, active, installedAsset, installedAsset.data]);
 
     if (subMenu.length > 0) {
         icon = <MoreVertRounded />;
@@ -160,10 +175,13 @@ export const AssetInstallButton = (props: Props) => {
     const installAction = useCallback(async () => {
         try {
             await assetService.install(assetRef);
+            if (props.subscriptions) {
+                await installedAsset.mutate();
+            }
         } catch (e) {
             showToasty({
                 type: ToastType.ALERT,
-                title: 'Failed to install asset',
+                title: props.subscriptions ? 'Failed to add asset' : 'Failed to install asset',
                 message: e.message,
             });
         }
@@ -171,7 +189,7 @@ export const AssetInstallButton = (props: Props) => {
 
     const onPrimaryClick = useCallback(
         async (evt: React.MouseEvent<any>) => {
-            if (!desktop) {
+            if (!active) {
                 return;
             }
 
@@ -188,12 +206,12 @@ export const AssetInstallButton = (props: Props) => {
                 await installAction();
             }
         },
-        [installAction, subMenu]
+        [installAction, subMenu, active, installedAsset.data]
     );
 
     const onSecondaryClick = useCallback(
         async (evt: React.MouseEvent<any>) => {
-            if (!desktop) {
+            if (!active) {
                 return;
             }
 
@@ -204,7 +222,7 @@ export const AssetInstallButton = (props: Props) => {
                 return;
             }
         },
-        [installAction, subMenu]
+        [installAction, subMenu, active]
     );
 
     const subMenuElement =
@@ -294,16 +312,16 @@ export const AssetInstallButton = (props: Props) => {
                             justifyContent: 'center',
                             alignItems: 'center',
                             boxSizing: 'border-box',
-                            paddingLeft: desktop ? '6px' : '4px',
-                            paddingRight: desktop ? '2px' : '4px',
+                            paddingLeft: active ? '6px' : '4px',
+                            paddingRight: active ? '2px' : '4px',
                             textAlign: 'center',
-                            fontSize: desktop ? '12px' : '10px',
+                            fontSize: active ? '12px' : '10px',
                             gap: '0px',
                             bgcolor: chipBgColor,
                             color: chipFgColor,
                             fontWeight: 500,
                             lineHeight: '30px',
-                            cursor: desktop ? 'pointer' : 'default',
+                            cursor: active ? 'pointer' : 'default',
                             span: {
                                 display: 'block',
                             },
@@ -312,10 +330,10 @@ export const AssetInstallButton = (props: Props) => {
                             },
                             '.MuiSvgIcon-root': {
                                 display: 'inline-block',
-                                fontSize: desktop ? '24px' : '20px',
+                                fontSize: active ? '24px' : '20px',
                             },
                             '&:hover': {
-                                opacity: desktop ? 0.8 : 1,
+                                opacity: active ? 0.8 : 1,
                             },
                             'a,span': {
                                 fontSize: 'inherit',

@@ -90,6 +90,7 @@ interface Props {
     onSelectionChange?: (selection: AssetDisplay[]) => void;
     onAssetClick?: (asset: AssetDisplay) => void;
     linkMaker?: (asset: AssetDisplay) => string;
+    subscriptions?: boolean;
 }
 
 export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) => {
@@ -284,7 +285,12 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                                     }}
                                 />
                             ) : (
-                                <AssetInstallButton service={props.installerService} asset={asset} type={'chip'} />
+                                <AssetInstallButton
+                                    subscriptions={props.subscriptions}
+                                    service={props.installerService}
+                                    asset={asset}
+                                    type={'chip'}
+                                />
                             );
 
                             return (
