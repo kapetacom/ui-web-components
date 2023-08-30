@@ -26,6 +26,7 @@ interface SharedFormFieldProps {
     options?: string[] | { [key: string]: string };
     disabled?: boolean;
     readOnly?: boolean;
+    autoFocus?: FormInputProps['autoFocus'];
     variant?: FormInputProps['variant'];
     onFocus?: FormInputProps['onFocus'];
     onBlur?: FormInputProps['onBlur'];

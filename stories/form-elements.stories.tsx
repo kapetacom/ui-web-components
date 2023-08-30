@@ -79,6 +79,17 @@ export const FormFieldsWithCallbacks = () => {
     );
 };
 
+export const FormFieldWithAutoFocus = () => {
+    return (
+        <div style={{ padding: '15px' }}>
+            <Typography variant="body1">Form field is automatically focused</Typography>
+            <FormContainer>
+                <FormField name={'text'} label={'Text Value'} type={FormFieldType.STRING} autoFocus />
+            </FormContainer>
+        </div>
+    );
+};
+
 export const FormTextareas = () => {
     const helpText = 'This is some help text';
 
