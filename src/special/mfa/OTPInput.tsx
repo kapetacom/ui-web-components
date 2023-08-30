@@ -19,9 +19,6 @@ export const OTPInput = (props: OTPInputProps) => {
             sx={{
                 ...props.sx,
                 maxWidth: `calc(${length} * 3em)`,
-                '.MuiOtpInput-TextField input': {
-                    p: 1,
-                },
             }}
         />
     );
