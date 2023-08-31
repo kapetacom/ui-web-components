@@ -17,6 +17,7 @@ import { FormAutocomplete } from '../src/form/inputs/FormAutocomplete';
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
 import { Button, Typography } from '@mui/material';
+import { OTPInput } from '../src/special/mfa/OTPInput';
 
 let dropdownState = new Store({
     test1: [],
@@ -341,6 +342,32 @@ export const FormButton = () => {
                     </Button>
                 </FormButtons>
             </FormContainer>
+        </div>
+    );
+};
+
+export const OTPCodeInput = () => {
+    const onComplete = (otp: string) => {
+        console.log('You entered ' + otp);
+    };
+    return (
+        <div style={{ width: 500 }}>
+            <Typography variant="body1">Any characters allowed</Typography>
+            <OTPInput autoFocus onComplete={onComplete} length={8} />
+            <br />
+
+            <Typography variant="body1">0-9 and a-d is allowed</Typography>
+            <OTPInput
+                autoFocus
+                onComplete={onComplete}
+                validateChar={(char) => {
+                    return /^[0-9a-d]$/.test(char);
+                }}
+            />
+            <br />
+
+            <Typography variant="body1">With placeholder</Typography>
+            <OTPInput autoFocus onComplete={onComplete} length={8} TextFieldsProps={{ placeholder: '_' }} />
         </div>
     );
 };

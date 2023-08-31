@@ -10,6 +10,9 @@ interface OTPCodeProps {
 
 import './OTPCode.less';
 
+/**
+ * @deprecated Use OTPInput instead
+ */
 export const OTPCode = (props: OTPCodeProps) => {
     const value = props.value ? props.value : '';
 
