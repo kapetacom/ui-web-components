@@ -91,25 +91,27 @@ interface Props {
     onAssetClick?: (asset: AssetDisplay) => void;
     linkMaker?: (asset: AssetDisplay) => string;
     subscriptions?: boolean;
+    contextHandle?: string;
 }
 
 export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) => {
     const tabs = [
-        ...(props.mode !== BlockhubMode.PAGE
-            ? [
-                  {
-                      title: 'Installed assets',
-                      icon: <DownloadDone />,
-                      type: BlockhubCategory.INSTALLED,
-                      tooltip: (
-                          <>
-                              <b>Assets that are installed on your computer</b>
-                              <p>These are the assets currently downloaded to your local machine. </p>
-                          </>
-                      ),
-                  },
-              ]
-            : []),
+        {
+            title: props.subscriptions ? 'Available assets' : 'Installed assets',
+            icon: <DownloadDone />,
+            type: BlockhubCategory.INSTALLED,
+            tooltip: props.subscriptions ? (
+                <>
+                    <b>Assets that are available on your account</b>
+                    <p>These are the assets currently owned or added to your account. </p>
+                </>
+            ) : (
+                <>
+                    <b>Assets that are installed on your computer</b>
+                    <p>These are the assets currently downloaded to your local machine. </p>
+                </>
+            ),
+        },
         {
             title: 'Your organization',
             icon: <Apartment />,
@@ -287,6 +289,7 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                             ) : (
                                 <AssetInstallButton
                                     subscriptions={props.subscriptions}
+                                    contextHandle={props.contextHandle}
                                     service={props.installerService}
                                     asset={asset}
                                     type={'chip'}
