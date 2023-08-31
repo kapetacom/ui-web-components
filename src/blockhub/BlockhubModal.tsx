@@ -11,6 +11,7 @@ import { useWindowResize } from '../utils/resize-hook';
 import { BlockhubDetails, BlockHubDetailsPreviewer } from './BlockhubDetails';
 import Close from '@mui/icons-material/Close';
 import { Asset } from '@kapeta/ui-web-types';
+import { AssetType } from './AssetTypeFilter';
 
 interface Props {
     open: boolean;
@@ -23,6 +24,8 @@ interface Props {
     onCategoryChange?: (category: BlockhubCategory) => void;
     onSelect?: (selection: AssetDisplay[]) => void;
     onClose: () => void;
+    filter?: AssetType;
+    onFilterChange: (filter: AssetType) => void;
 }
 
 export const BlockhubModal = (props: Props) => {

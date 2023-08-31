@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Checkbox, Stack } from '@mui/material';
 import { BlockhubTile, DependencyKindLabel } from '../src/blockhub/BlockhubTile';
 import { BlockhubDetails } from '../src/blockhub/BlockhubDetails';
@@ -22,7 +22,7 @@ import {
 import { AssetCoreDisplay, AssetDisplay, AssetSimpleDisplay, CoreTypes } from '../src/blockhub/types';
 import { AssetInstallButton, InstallerService } from '../src/blockhub/AssetInstallButton';
 import { BlockhubTileActionButton } from '../src/blockhub/BlockhubTileActionButton';
-import { DefaultContext, DesktopContainer } from '../src';
+import { AssetType, DefaultContext, DesktopContainer } from '../src';
 import { BlockhubModal } from '../src/blockhub/BlockhubModal';
 import { Blockhub, BlockhubMode } from '../src/blockhub/Blockhub';
 
@@ -99,10 +99,7 @@ const createInstaller = () => {
         },
         get: async (ref: string) => {
             await new Promise((resolve) => setTimeout(resolve, 2000));
-            return {
-                ...asset,
-                ref,
-            };
+            return true;
         },
         uninstall: async (ref: string) => {
             await new Promise((resolve) => setTimeout(resolve, 4000));
@@ -123,11 +120,14 @@ export default {
 
 export const PageView = () => {
     const { asset, installerService, installerServiceExists } = createInstaller();
+    const [assetTypeFilter, setAssetTypeFilter] = useState<AssetType>('ALL');
 
     return (
         <DefaultContext>
             <Blockhub
                 mode={BlockhubMode.PAGE}
+                filter={assetTypeFilter}
+                onFilterChange={setAssetTypeFilter}
                 fetcher={assetFetcher}
                 installerService={installerService}
                 assets={{
@@ -141,9 +141,12 @@ export const PageView = () => {
 
 export const PageViewLoading = () => {
     const { asset, installerService, installerServiceExists } = createInstaller();
+    const [assetTypeFilter, setAssetTypeFilter] = useState<AssetType>('ALL');
     return (
         <DefaultContext>
             <Blockhub
+                filter={assetTypeFilter}
+                onFilterChange={setAssetTypeFilter}
                 mode={BlockhubMode.PAGE}
                 fetcher={assetFetcher}
                 installerService={installerService}
@@ -157,8 +160,11 @@ export const PageViewLoading = () => {
 
 export const PageViewEmpty = () => {
     const { asset, installerService, installerServiceExists } = createInstaller();
+    const [assetTypeFilter, setAssetTypeFilter] = useState<AssetType>('ALL');
     return (
         <Blockhub
+            filter={assetTypeFilter}
+            onFilterChange={setAssetTypeFilter}
             mode={BlockhubMode.PAGE}
             fetcher={assetFetcher}
             installerService={installerService}
@@ -171,10 +177,13 @@ export const PageViewEmpty = () => {
 
 export const ModalStandalone = () => {
     const { asset, installerService, installerServiceExists } = createInstaller();
+    const [assetTypeFilter, setAssetTypeFilter] = useState<AssetType>('ALL');
     return (
         <DefaultContext>
             <DesktopContainer version={'1.2.3'}>
                 <BlockhubModal
+                    filter={assetTypeFilter}
+                    onFilterChange={setAssetTypeFilter}
                     fetcher={assetFetcher}
                     installerService={installerService}
                     assets={{
@@ -191,10 +200,13 @@ export const ModalStandalone = () => {
 
 export const ModalPlan = () => {
     const { asset, installerService, installerServiceExists } = createInstaller();
+    const [assetTypeFilter, setAssetTypeFilter] = useState<AssetType>('ALL');
     return (
         <DefaultContext>
             <DesktopContainer version={'1.2.3'}>
                 <BlockhubModal
+                    filter={assetTypeFilter}
+                    onFilterChange={setAssetTypeFilter}
                     plan={{
                         kind: CoreTypes.PLAN,
                         ref: `${PlanAsset.content.metadata.name}:${PlanAsset.version}`,
@@ -437,6 +449,33 @@ export const HelperInstallButtons = () => {
                     </div>
                     <div style={{ padding: '5px' }}>
                         <AssetInstallButton service={installerService} asset={FrontendBlockTypeAsset} type={'button'} />
+                    </div>
+                </div>
+                <div>
+                    <h3>Desktop Loading</h3>
+                    <div style={{ padding: '5px' }}>
+                        <AssetInstallButton
+                            forceLoading={true}
+                            service={installerService}
+                            asset={FrontendBlockTypeAsset}
+                            type={'icon'}
+                        />
+                    </div>
+                    <div style={{ padding: '5px' }}>
+                        <AssetInstallButton
+                            forceLoading={true}
+                            service={installerService}
+                            asset={FrontendBlockTypeAsset}
+                            type={'chip'}
+                        />
+                    </div>
+                    <div style={{ padding: '5px' }}>
+                        <AssetInstallButton
+                            forceLoading={true}
+                            service={installerService}
+                            asset={FrontendBlockTypeAsset}
+                            type={'button'}
+                        />
                     </div>
                 </div>
                 <div>
