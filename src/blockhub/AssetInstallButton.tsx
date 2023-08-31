@@ -16,6 +16,7 @@ import MoreVertRounded from '@mui/icons-material/MoreVertRounded';
 
 import { grey } from '@mui/material/colors';
 import { useConfirm } from '../confirm';
+import { parseKapetaUri } from '@kapeta/nodejs-utils';
 
 export interface InstallerService {
     install(assetRef: string): Promise<void>;
@@ -37,6 +38,7 @@ interface Props {
     type: 'icon' | 'button' | 'chip';
     service?: InstallerService;
     subscriptions?: boolean;
+    contextHandle?: string;
 }
 
 export const AssetInstallButton = (props: Props) => {
@@ -44,10 +46,12 @@ export const AssetInstallButton = (props: Props) => {
     const confirm = useConfirm();
     const [submenuAnchorElm, setSubmenuAnchorElm] = useState<null | HTMLElement>(null);
     const submenuOpen = Boolean(submenuAnchorElm);
+    const assetRef = `kapeta://${props.asset.content.metadata.name}:${props.asset.version}`;
+    const assetUri = parseKapetaUri(assetRef);
     const closeSubmenu = () => {
         setSubmenuAnchorElm(null);
     };
-    const active = !!(props.subscriptions || desktop);
+    const active = !!((props.subscriptions && props.contextHandle !== assetUri.handle) || desktop);
     const assetService: InstallerService = props.service || {
         install: async (assetRef: string) => {
             await AssetService.install(assetRef);
@@ -60,7 +64,6 @@ export const AssetInstallButton = (props: Props) => {
         },
     };
 
-    const assetRef = `kapeta://${props.asset.content.metadata.name}:${props.asset.version}`;
     const installedAsset = useSWR(assetRef, async (ref) => {
         if (!active) {
             return undefined;
@@ -103,7 +106,17 @@ export const AssetInstallButton = (props: Props) => {
 
     const isProcessing = !installTask.ready || installTask.active || installedAsset.isLoading;
 
-    let icon = active ? installedAsset.data ? <DownloadDone /> : <ArrowDownward /> : <InstallDesktop />;
+    let icon = active ? (
+        installedAsset.data ? (
+            <DownloadDone />
+        ) : (
+            <ArrowDownward />
+        )
+    ) : props.subscriptions ? (
+        <DownloadDone />
+    ) : (
+        <InstallDesktop />
+    );
 
     let longText = active
         ? installedAsset.data
@@ -113,6 +126,8 @@ export const AssetInstallButton = (props: Props) => {
             : props.subscriptions
             ? `Add ${coreNames[props.asset.content.kind] || 'asset'}`
             : `Install ${coreNames[props.asset.content.kind] || 'asset'}`
+        : props.subscriptions
+        ? 'You own this asset'
         : 'Open desktop app to install';
 
     let shortText: string | React.ReactNode | null = active
@@ -146,21 +161,21 @@ export const AssetInstallButton = (props: Props) => {
                     label: 'Remove',
                     icon: <Delete />,
                     onClick: async () => {
-                        try {
-                            await confirm({
-                                title: props.subscriptions ? 'Remove asset' : 'Uninstall asset',
-                                content: `
-                            Are you sure you want to remove ${props.asset.content.metadata.name}? 
-                            This will not delete anything from your disk.
-                            `,
-                                confirmationText: props.subscriptions ? 'Remove' : 'Uninstall',
-                            });
+                        const ok = await confirm({
+                            title: props.subscriptions ? 'Remove asset' : 'Uninstall asset',
+                            content: `
+                        Are you sure you want to remove ${props.asset.content.metadata.name}? 
+                        This will not delete anything from your disk.
+                        `,
+                            confirmationText: props.subscriptions ? 'Remove' : 'Uninstall',
+                        });
 
-                            await props.service?.uninstall(assetRef);
-                            await installedAsset.mutate();
-                        } catch (e: any) {
-                            // User cancelled
+                        if (!ok) {
+                            return;
                         }
+
+                        await props.service?.uninstall(assetRef);
+                        await installedAsset.mutate();
                     },
                 },
             ];

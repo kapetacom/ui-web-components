@@ -104,6 +104,7 @@ export interface BlockhubDetailsProps {
     onAssetClick?: (asset: AssetDisplay) => void;
     linkMaker?: (fullName: string, version: string) => string;
     subscriptions?: boolean;
+    contextHandle?: string;
 }
 
 export function BlockhubDetails(props: BlockhubDetailsProps) {
@@ -241,6 +242,7 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
 
                 <AssetInstallButton
                     subscriptions={props.subscriptions}
+                    contextHandle={props.contextHandle}
                     service={props.service}
                     asset={props.asset}
                     type={'button'}
