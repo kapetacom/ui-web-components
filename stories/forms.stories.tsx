@@ -2,7 +2,7 @@ import React, { useContext, useMemo, useState } from 'react';
 import { AsyncValidatorFunction, debouncedValidator, FormButtons, FormContainer } from '../src';
 import { FormField, FormFieldType } from '../src/form/inputs/FormField';
 import { FormContext, FormContextWatcher, useFormContextField } from '../src/form/FormContext';
-import { Button } from '@mui/material';
+import { Box, Button, Divider, Typography } from '@mui/material';
 
 function minMaxAgeCheck(name: string, value: number) {
     if (value < 1) {
@@ -399,6 +399,90 @@ export const FormWithAsyncValidation = () => {
             <b>Submitted data</b>
             <pre>{JSON.stringify(formData, null, 2)}</pre>
         </div>
+    );
+};
+
+export const FormWithActiveAsyncValidation = () => {
+    const asyncValidation: AsyncValidatorFunction = useMemo(
+        () =>
+            debouncedValidator(500, () => {
+                let doResolve;
+
+                const promise = new Promise((resolve) => {
+                    doResolve = resolve;
+                });
+
+                return {
+                    promise,
+                    cancel: () => {
+                        doResolve && doResolve();
+                    },
+                };
+            }),
+        []
+    );
+
+    const validation = useMemo(() => [asyncValidation], [asyncValidation]);
+
+    return (
+        <Box sx={{ width: '550px' }}>
+            <Typography variant="body1">
+                While validation is processing spinners are shown in input and textarea elements
+            </Typography>
+
+            <FormContainer>
+                <Typography variant="body2" sx={{ mt: 4 }}>
+                    input type="text"
+                </Typography>
+                <FormField name={'email'} label={'E-mail'} validation={validation} />
+                <FormField name={'email'} label={'E-mail'} validation={validation} variant="outlined" />
+                <FormField name={'email'} label={'E-mail'} validation={validation} variant="filled" />
+
+                <Typography variant="body2" sx={{ mt: 4 }}>
+                    input type="password"
+                </Typography>
+                <FormField name="password" label="Password" validation={validation} type={FormFieldType.PASSWORD} />
+                <FormField
+                    name="password"
+                    label="Password"
+                    validation={validation}
+                    variant="outlined"
+                    type={FormFieldType.PASSWORD}
+                />
+                <FormField
+                    name="password"
+                    label="Password"
+                    validation={validation}
+                    variant="filled"
+                    type={FormFieldType.PASSWORD}
+                />
+
+                <Typography variant="body2" sx={{ mt: 4 }}>
+                    textarea
+                </Typography>
+                <FormField
+                    name={'description1'}
+                    label={'Description 1'}
+                    validation={validation}
+                    variant="standard"
+                    type={FormFieldType.TEXT}
+                />
+                <FormField
+                    name={'description2'}
+                    label={'Description 2'}
+                    validation={validation}
+                    variant="outlined"
+                    type={FormFieldType.TEXT}
+                />
+                <FormField
+                    name={'description3'}
+                    label={'Description 3'}
+                    validation={validation}
+                    variant="filled"
+                    type={FormFieldType.TEXT}
+                />
+            </FormContainer>
+        </Box>
     );
 };
 

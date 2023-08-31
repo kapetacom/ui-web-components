@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { withFormFieldController } from '../formFieldController';
 import { FormFieldProcessingContainer } from './FormFieldProcessingContainer';
 import { TextField, InputAdornment, IconButton, TextFieldProps } from '@mui/material';
@@ -57,9 +57,12 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
 
     let value = controller.value;
 
+    const inputRef = useRef<HTMLInputElement>(null);
+
     return (
-        <FormFieldProcessingContainer controller={controller}>
+        <FormFieldProcessingContainer controller={controller} inputElement={inputRef.current}>
             <TextField
+                inputRef={inputRef}
                 sx={{
                     display: 'block',
                     my: 1,
