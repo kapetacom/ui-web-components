@@ -3,7 +3,7 @@ import { showToasty, ToastType } from '../toast/ToastComponent';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDesktop, useDesktopTask } from '../utils/desktop';
 import { AssetService, TaskStatus } from '@kapeta/ui-web-context';
-import { coreNames } from './BlockhubTile';
+import { coreNames, getNameForKind } from './BlockhubTile';
 import DownloadingIcon from '@mui/icons-material/Downloading';
 
 import { AssetDisplay } from './types';
@@ -82,11 +82,14 @@ export const AssetInstallButton = (props: Props) => {
         });
     }, [assetService.onChange, installedAsset]);
 
+    const kindName = getNameForKind(props.asset.content.kind);
+    const kindNameLC = kindName.toLowerCase();
+
     const installTask = useDesktopTask(`asset:install:${assetRef}`, async (task) => {
         if (task.status === TaskStatus.FAILED) {
             showToasty({
                 type: ToastType.ALERT,
-                title: props.subscriptions ? 'Failed to add asset' : 'Failed to install asset',
+                title: props.subscriptions ? `Failed to add ${kindNameLC}` : `Failed to install ${kindNameLC}`,
                 message: task.errorMessage,
             });
         }
@@ -95,10 +98,10 @@ export const AssetInstallButton = (props: Props) => {
             await installedAsset.mutate();
             showToasty({
                 type: ToastType.SUCCESS,
-                title: props.subscriptions ? 'Asset added' : 'Asset installed',
+                title: props.subscriptions ? `${kindName} added` : `${kindName} installed`,
                 message: props.subscriptions
-                    ? 'The asset has been added successfully.'
-                    : 'The asset has been installed successfully.',
+                    ? `The ${kindNameLC} has been added successfully.`
+                    : `The ${kindNameLC} has been installed successfully.`,
             });
         }
     });
@@ -127,10 +130,10 @@ export const AssetInstallButton = (props: Props) => {
                 ? 'Added'
                 : 'Installed'
             : props.subscriptions
-            ? `Add ${coreNames[props.asset.content.kind] || 'asset'}`
-            : `Install ${coreNames[props.asset.content.kind] || 'asset'}`
+            ? `Add ${kindNameLC}`
+            : `Install ${kindNameLC}`
         : props.subscriptions
-        ? 'You own this asset'
+        ? `You own this ${kindNameLC}`
         : 'Open desktop app to install';
 
     let shortText: string | React.ReactNode | null = active
@@ -170,7 +173,7 @@ export const AssetInstallButton = (props: Props) => {
                     icon: <Delete />,
                     onClick: async () => {
                         const ok = await confirm({
-                            title: props.subscriptions ? 'Remove asset' : 'Uninstall asset',
+                            title: props.subscriptions ? `Remove ${kindNameLC}` : `Uninstall ${kindNameLC}`,
                             content: `
                         Are you sure you want to remove ${props.asset.content.metadata.name}? 
                         This will not delete anything from your disk.
@@ -204,11 +207,11 @@ export const AssetInstallButton = (props: Props) => {
         } catch (e) {
             showToasty({
                 type: ToastType.ALERT,
-                title: props.subscriptions ? 'Failed to add asset' : 'Failed to install asset',
+                title: props.subscriptions ? `Failed to add ${kindNameLC}` : `Failed to install ${kindNameLC}`,
                 message: e.message,
             });
         }
-    }, [assetRef, assetService]);
+    }, [assetRef, assetService, kindNameLC]);
 
     const onPrimaryClick = useCallback(
         async (evt: React.MouseEvent<any>) => {

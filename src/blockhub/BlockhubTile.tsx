@@ -48,6 +48,10 @@ export const coreNames: Record<CoreTypes, string> = {
     [CoreTypes.PROVIDER_EXTENSION]: 'Resource type',
 };
 
+export const getNameForKind = (kind: string) => {
+    return coreNames[kind] ?? 'Asset';
+};
+
 export function DependencyKindLabel(props: { dependency: { name: string }; fetcher: AssetFetcher }) {
     const assetReq = useSWR(
         props.dependency.name,
