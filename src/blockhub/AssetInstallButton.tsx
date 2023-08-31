@@ -39,6 +39,7 @@ interface Props {
     service?: InstallerService;
     subscriptions?: boolean;
     contextHandle?: string;
+    forceLoading?: boolean; //Used for testing
 }
 
 export const AssetInstallButton = (props: Props) => {
@@ -102,9 +103,11 @@ export const AssetInstallButton = (props: Props) => {
         }
     });
 
-    const isDisabled = !installTask.ready || !active || installTask.active || installedAsset.isLoading;
+    const isDisabled =
+        props.forceLoading === true || !installTask.ready || !active || installTask.active || installedAsset.isLoading;
 
-    const isProcessing = !installTask.ready || installTask.active || installedAsset.isLoading;
+    const isProcessing =
+        props.forceLoading === true || !installTask.ready || installTask.active || installedAsset.isLoading;
 
     let icon = active ? (
         installedAsset.data ? (
@@ -140,7 +143,7 @@ export const AssetInstallButton = (props: Props) => {
 
     let chipBgColor = active ? (installedAsset.data ? 'primary.main' : `tertiary.main`) : grey[500];
 
-    let chipFgColor = active ? (installedAsset.data ? grey[100] : grey[100]) : grey[100];
+    let chipFgColor: string = active ? (installedAsset.data ? grey[100] : grey[100]) : grey[100];
 
     if (installedAsset.isLoading) {
         longText = 'Checking...';
@@ -150,7 +153,12 @@ export const AssetInstallButton = (props: Props) => {
 
     if (isProcessing && props.type === 'chip') {
         chipBgColor = 'transparent';
+        chipFgColor = 'primary.main';
         shortText = '';
+    }
+
+    if (installTask.active) {
+        longText = 'Installing...';
     }
 
     const subMenu: SubMenuItem[] = useMemo(() => {
@@ -300,6 +308,7 @@ export const AssetInstallButton = (props: Props) => {
                     {isProcessing && (
                         <CircularProgress
                             size={48}
+                            color={'primary'}
                             sx={{
                                 position: 'absolute',
                                 top: '0',

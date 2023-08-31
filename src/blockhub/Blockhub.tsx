@@ -29,6 +29,7 @@ import { Asset } from '@kapeta/ui-web-types';
 import { useAsync } from 'react-use';
 import { AsyncState } from 'react-use/lib/useAsync';
 import { Tooltip } from '../tooltip/Tooltip';
+import { AssetType } from './AssetTypeFilter';
 
 const toId = (asset: AssetDisplay) => {
     return parseKapetaUri(`${asset.content.metadata.name}:${asset.version}`).id;
@@ -92,6 +93,8 @@ interface Props {
     linkMaker?: (asset: AssetDisplay) => string;
     subscriptions?: boolean;
     contextHandle?: string;
+    filter?: AssetType;
+    onFilterChange: (filter: AssetType) => void;
 }
 
 export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) => {
@@ -253,8 +256,9 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                 <Box className={'blockhub-main'}>
                     <BlockhubGridContainer
                         assets={props.assets}
-                        initialAssetTypeFilter={selectBlocksForPlan ? 'BLOCK' : undefined}
+                        filter={props.filter ?? (selectBlocksForPlan ? 'BLOCK' : undefined)}
                         title={currentTab.title}
+                        onFilterChange={props.onFilterChange}
                         tooltip={currentTab.tooltip}
                         renderAsset={(asset) => {
                             const url = props.linkMaker
