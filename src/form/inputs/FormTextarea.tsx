@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { withFormFieldController } from '../formFieldController';
 import TextField from '@mui/material/TextField';
 import { FormFieldProcessingContainer } from './FormFieldProcessingContainer';
@@ -15,9 +15,12 @@ export const FormTextarea = withFormFieldController((props: Props, controller) =
         }
     };
 
+    const inputRef = useRef<HTMLTextAreaElement>(null);
+
     return (
-        <FormFieldProcessingContainer controller={controller}>
+        <FormFieldProcessingContainer controller={controller} inputElement={inputRef.current}>
             <TextField
+                inputRef={inputRef}
                 sx={{
                     display: 'block',
                     my: 1,
