@@ -1,72 +1,68 @@
-import React from 'react';
-import { FormContext, FormContextType } from './FormContext';
+import React, { useContext } from 'react';
+import { FormContext } from './FormContext';
+import { Box, BoxProps, Button } from '@mui/material';
+import { KapButton } from '../button/KapButton';
 
-import { Button, Stack } from '@mui/material';
+export type FormButtonsProps = {
+    /**
+     * Add a wrapper div around the buttons with gap between them and right alignment.
+     */
+    addWrapperDiv?: boolean;
+    children: React.ReactNode;
+} & BoxProps;
 
-interface FormButtonsProps {
-    children: any;
-}
+const FormButtons: React.FC<FormButtonsProps> = ({ addWrapperDiv = true, sx, children }) => {
+    const context = useContext(FormContext);
 
-export class FormButtons extends React.Component<FormButtonsProps, any> {
-    static contextType = FormContext;
-    context!: React.ContextType<FormContextType>;
+    const newChildren = React.Children.map(children, (child, index) => {
+        if (React.isValidElement(child)) {
+            const { props } = child;
 
-    isSubmitButton(child: any) {
-        if (child.type === 'button' && (child.props.type === 'submit' || child.props.type === undefined)) {
-            return true;
-        }
+            const isButton = child.type === 'button';
+            const isMuiButton = child.type === Button;
+            const isKapButton = child.type === KapButton;
+            const isSubmitButton = props.type === 'submit';
 
-        if (child.type === 'input' && child.props.type === 'submit') {
-            return true;
-        }
-
-        if (child.type === Button && child.props.type === 'submit') {
-            return true;
-        }
-
-        if (child.type === 'input' && child.props.type === 'image') {
-            return true;
-        }
-
-        return false;
-    }
-
-    render() {
-        let children = this.props.children;
-        if (!Array.isArray(children)) {
-            children = [children];
-        }
-
-        const newChildren = children.map((child: any, ix: number) => {
-            if (!this.isSubmitButton(child)) {
-                if (this.context.processing) {
-                    //Disable all buttons when form is processing
-                    return React.cloneElement(child, {
-                        disabled: true,
-                        key: ix,
-                    });
-                }
-
-                return child;
+            if (isButton || isMuiButton || isKapButton) {
+                return (
+                    <KapButton
+                        key={index}
+                        {...props}
+                        loading={isSubmitButton && context.processing}
+                        disabled={
+                            typeof props.disabled === 'boolean'
+                                ? // If the consumer passes the disabled prop we use it.
+                                  props.disabled
+                                : // Otherwise we use the form context.
+                                  isSubmitButton && (!context.isDirty || !context.valid || context.processing)
+                        }
+                    >
+                        {props.children}
+                    </KapButton>
+                );
             }
+            return child;
+        }
+        return child;
+    });
 
-            if (this.context.valid && !this.context.processing) {
-                return child;
-            }
+    return addWrapperDiv ? (
+        <Box
+            className="form-buttons"
+            display="flex"
+            flexDirection="row"
+            justifyContent="flex-end"
+            sx={{
+                gap: 2,
+                pt: 4,
+                ...sx,
+            }}
+        >
+            {newChildren}
+        </Box>
+    ) : (
+        newChildren
+    );
+};
 
-            //Disable submit buttons when form is invalid or processing
-            return React.cloneElement(child, {
-                disabled: true,
-                text: this.context.processing ? 'Submitting...' : child.props.text,
-                width: this.context.processing ? 120 : child.props.width,
-                key: ix,
-            });
-        });
-
-        return (
-            <Stack gap={2} pt={4} direction="row" justifyContent="flex-end" className="form-buttons">
-                {newChildren}
-            </Stack>
-        );
-    }
-}
+export { FormButtons };

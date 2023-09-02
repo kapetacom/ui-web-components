@@ -508,7 +508,7 @@ export const AsyncForm = () => {
                 />
 
                 <FormButtons>
-                    <Button variant={'contained'} color={'error'}>
+                    <Button variant={'text'} type="reset" color={'inherit'}>
                         Reset
                     </Button>
                     <Button variant={'contained'} type={'submit'} color={'primary'}>
