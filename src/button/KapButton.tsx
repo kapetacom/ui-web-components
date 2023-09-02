@@ -35,7 +35,8 @@ export const KapButton = (props: KapButtonProps<ElementType>) => {
                     },
 
                     '&-enter-active': {
-                        transition: 'all 0.3s cubic-bezier(0.46, -0.27, 0.49, 1.28)',
+                        transition:
+                            'transform 0.3s cubic-bezier(0.46, -0.27, 0.49, 1.28) 0.2s, opacity 0.3s ease-in-out 0.2s',
                     },
 
                     '&-enter-active, &-enter-done': {
@@ -48,7 +49,7 @@ export const KapButton = (props: KapButtonProps<ElementType>) => {
                     },
 
                     '&-exit-active': {
-                        transition: 'all 0.3s cubic-bezier(0.46, -0.27, 0.49, 1.28)',
+                        transition: 'transform 0.3s cubic-bezier(0.46, -0.27, 0.49, 1.28), opacity 0.3s ease-in-out',
                     },
 
                     '&-exit-active, &-exit-done': {
@@ -77,7 +78,7 @@ export const KapButton = (props: KapButtonProps<ElementType>) => {
                     },
 
                     '&-enter-active': {
-                        transition: 'all 0.3s cubic-bezier(0.46, -0.27, 0.49, 1.28)',
+                        transition: 'opacity 0.3s ease-in-out',
                     },
 
                     '&-enter-active, &-enter-done': {
@@ -89,7 +90,7 @@ export const KapButton = (props: KapButtonProps<ElementType>) => {
                     },
 
                     '&-exit-active': {
-                        transition: 'all 0.3s cubic-bezier(0.46, -0.27, 0.49, 1.28)',
+                        transition: 'opacity 0.3s ease-in-out',
                     },
 
                     '&-exit-active, &-exit-done': {
