@@ -15,6 +15,9 @@ export const KapButton = (props: KapButtonProps<ElementType>) => {
         large: 24,
     };
 
+    const textRef = React.useRef(null);
+    const spinnerRef = React.useRef(null);
+
     return (
         <Button
             {...buttonProps}
@@ -99,8 +102,8 @@ export const KapButton = (props: KapButtonProps<ElementType>) => {
                 },
             }}
         >
-            <CSSTransition in={!loading} appear timeout={400} classNames="button-text">
-                <Box component="span" className="button-text">
+            <CSSTransition in={!loading} appear timeout={400} classNames="button-text" nodeRef={textRef}>
+                <Box component="span" className="button-text" ref={textRef}>
                     {children}
                 </Box>
             </CSSTransition>
@@ -111,8 +114,9 @@ export const KapButton = (props: KapButtonProps<ElementType>) => {
                 classNames="button-circular-progress"
                 mountOnEnter
                 unmountOnExit
+                nodeRef={spinnerRef}
             >
-                <Box component="span" className="button-circular-progress">
+                <Box component="span" className="button-circular-progress" ref={spinnerRef}>
                     <CircularProgress
                         size={sizeToSpinnerSize[buttonProps.size || 'medium']}
                         color="inherit"
