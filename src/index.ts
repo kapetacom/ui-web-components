@@ -1,4 +1,5 @@
 export * from './button/buttons';
+export * from './button/KapButton';
 
 export { BlockHandle, BlockInstanceName, BlockLayout, BlockName, BlockStatus, BlockVersion } from './blocks/components';
 export { useBlock } from './blocks/hooks';
