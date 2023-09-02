@@ -32,7 +32,7 @@ export const Basic: Story = {
             <>
                 <Box gap={1} display="flex" flexDirection="row" flexWrap="wrap">
                     {buttonColors.map((color) => (
-                        <KapButton variant="contained" color={color}>
+                        <KapButton key={color} variant="contained" color={color}>
                             Label
                         </KapButton>
                     ))}
@@ -62,6 +62,7 @@ export const Loading: Story = {
 
                 {buttonVariants.map((variant) => (
                     <Box
+                        key={variant}
                         gap={1}
                         display="flex"
                         flexDirection="row"
@@ -72,6 +73,7 @@ export const Loading: Story = {
                         {buttonColors.map((color) =>
                             buttonSizes.map((size) => (
                                 <KapButton
+                                    key={`${variant}-${color}-${size}`}
                                     variant={variant}
                                     color={color}
                                     loading={loading}
