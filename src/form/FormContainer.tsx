@@ -16,11 +16,11 @@ export interface FormStateChangeEvent {
 export type FormData = { [key: string]: any };
 
 export interface FormContainerProps {
-    onSubmit?: () => void;
+    onSubmit?: () => void | Promise<void>;
     onReset?: () => void;
     validators?: ValidatorList;
     initialValue?: FormData;
-    onSubmitData?: (data: FormData) => void;
+    onSubmitData?: (data: FormData) => void | Promise<void>;
     onChange?: (data: FormData) => void;
     children: any;
 }
