@@ -2,6 +2,9 @@ import React from 'react';
 import { DateTime, ToRelativeOptions, DateTimeFormatOptions } from 'luxon';
 import { Tooltip } from '../tooltip/Tooltip';
 
+export const KapDateTime = DateTime;
+export type KapDateTimeFormatOptions = DateTimeFormatOptions;
+
 const DEFAULT_TIME_DIFF_RELATIVE = 1000 * 60 * 60 * 24;
 interface Props {
     date?: Date | number | string;
