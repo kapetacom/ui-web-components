@@ -62,6 +62,6 @@ export const FormButtons = (props: props) => {
             {newChildren}
         </Box>
     ) : (
-        newChildren
+        <>{newChildren}</>
     );
 };
