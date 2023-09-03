@@ -3,7 +3,7 @@ import { FormContext } from './FormContext';
 import { Box, BoxProps, Button } from '@mui/material';
 import { KapButton } from '../button/KapButton';
 
-export type FormButtonsProps = {
+type props = {
     /**
      * Add a wrapper div around the buttons with gap between them and right alignment.
      */
@@ -11,10 +11,11 @@ export type FormButtonsProps = {
     children: React.ReactNode;
 } & BoxProps;
 
-const FormButtons: React.FC<FormButtonsProps> = ({ addWrapperDiv = true, sx, children }) => {
+export const FormButtons = (props: props) => {
+    const addWrapperDiv = props.addWrapperDiv === undefined ? true : props.addWrapperDiv;
     const context = useContext(FormContext);
 
-    const newChildren = React.Children.map(children, (child, index) => {
+    const newChildren = React.Children.map(props.children, (child, index) => {
         if (React.isValidElement(child)) {
             const { props } = child;
 
@@ -55,7 +56,7 @@ const FormButtons: React.FC<FormButtonsProps> = ({ addWrapperDiv = true, sx, chi
             sx={{
                 gap: 2,
                 pt: 4,
-                ...sx,
+                ...props.sx,
             }}
         >
             {newChildren}
@@ -64,5 +65,3 @@ const FormButtons: React.FC<FormButtonsProps> = ({ addWrapperDiv = true, sx, chi
         newChildren
     );
 };
-
-export { FormButtons };
