@@ -1,9 +1,9 @@
 import { Box, Button, CircularProgress, Fab, ListItemIcon, ListItemText, Menu, MenuItem, Tooltip } from '@mui/material';
 import { showToasty, ToastType } from '../toast/ToastComponent';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useDesktop, useDesktopTask } from '../utils/desktop';
-import { AssetService, TaskStatus } from '@kapeta/ui-web-context';
-import { coreNames, getNameForKind } from './BlockhubTile';
+import { TaskState, useDesktop } from '../utils/desktop';
+import { TaskStatus } from '@kapeta/ui-web-context';
+import { getNameForKind } from './BlockhubTile';
 import DownloadingIcon from '@mui/icons-material/Downloading';
 
 import { AssetDisplay } from './types';
@@ -52,59 +52,54 @@ export const AssetInstallButton = (props: Props) => {
     const closeSubmenu = () => {
         setSubmenuAnchorElm(null);
     };
-    const active = !!((props.subscriptions && props.contextHandle !== assetUri.handle) || desktop);
-    const assetService: InstallerService = props.service || {
-        install: async (assetRef: string) => {
-            await AssetService.install(assetRef);
-        },
-        get: async (assetRef: string) => {
-            return !!(await AssetService.get(assetRef, false));
-        },
-        uninstall: async (assetRef: string) => {
-            return AssetService.remove(assetRef);
-        },
-    };
-
+    const active = !!((props.subscriptions && props.contextHandle !== assetUri.handle) || desktop.version);
     const installedAsset = useSWR(assetRef, async (ref) => {
         if (!active) {
             return undefined;
         }
-        return assetService.get(ref);
+        return props.service?.get(ref);
     });
 
     useEffect(() => {
-        if (!assetService.onChange) {
+        if (!props.service?.onChange) {
             return () => {};
         }
 
-        return assetService.onChange(assetRef, async () => {
+        return props.service?.onChange(assetRef, async () => {
             await installedAsset.mutate();
         });
-    }, [assetService.onChange, installedAsset]);
+    }, [props.service?.onChange, installedAsset]);
 
     const kindName = getNameForKind(props.asset.content.kind);
     const kindNameLC = kindName.toLowerCase();
 
-    const installTask = useDesktopTask(`asset:install:${assetRef}`, async (task) => {
-        if (task.status === TaskStatus.FAILED) {
-            showToasty({
-                type: ToastType.ALERT,
-                title: props.subscriptions ? `Failed to add ${kindNameLC}` : `Failed to install ${kindNameLC}`,
-                message: task.errorMessage,
-            });
-        }
+    let installTask: TaskState = {
+        ready: true,
+        active: false,
+        task: null,
+    };
+    if (desktop.getTask) {
+        installTask = desktop.getTask(`asset:install:${assetRef}`, async (task) => {
+            if (task.status === TaskStatus.FAILED) {
+                showToasty({
+                    type: ToastType.ALERT,
+                    title: props.subscriptions ? `Failed to add ${kindNameLC}` : `Failed to install ${kindNameLC}`,
+                    message: task.errorMessage,
+                });
+            }
 
-        if (task.status === TaskStatus.COMPLETED) {
-            await installedAsset.mutate();
-            showToasty({
-                type: ToastType.SUCCESS,
-                title: props.subscriptions ? `${kindName} added` : `${kindName} installed`,
-                message: props.subscriptions
-                    ? `The ${kindNameLC} has been added successfully.`
-                    : `The ${kindNameLC} has been installed successfully.`,
-            });
-        }
-    });
+            if (task.status === TaskStatus.COMPLETED) {
+                await installedAsset.mutate();
+                showToasty({
+                    type: ToastType.SUCCESS,
+                    title: props.subscriptions ? `${kindName} added` : `${kindName} installed`,
+                    message: props.subscriptions
+                        ? `The ${kindNameLC} has been added successfully.`
+                        : `The ${kindNameLC} has been installed successfully.`,
+                });
+            }
+        });
+    }
 
     const isDisabled =
         props.forceLoading === true || !installTask.ready || !active || installTask.active || installedAsset.isLoading;
@@ -200,7 +195,7 @@ export const AssetInstallButton = (props: Props) => {
 
     const installAction = useCallback(async () => {
         try {
-            await assetService.install(assetRef);
+            await props.service?.install(assetRef);
             if (props.subscriptions) {
                 await installedAsset.mutate();
             }
@@ -211,7 +206,7 @@ export const AssetInstallButton = (props: Props) => {
                 message: e.message,
             });
         }
-    }, [assetRef, assetService, kindNameLC]);
+    }, [assetRef, props.service, kindNameLC]);
 
     const onPrimaryClick = useCallback(
         async (evt: React.MouseEvent<any>) => {
