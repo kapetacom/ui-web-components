@@ -2,7 +2,7 @@ import React from 'react';
 
 const authProviderNames = ['google', 'microsoft', 'github'] as const;
 
-type AuthProviderIconProps = {
+export type AuthProviderIconProps = {
     /**
      * The name of the auth provider
      */
