@@ -86,9 +86,9 @@ export const AssetNameInput = (props: Props) => {
             const value =
                 namespace || assetName
                     ? [
-                          namespace.toLowerCase(),
+                          namespace?.toLowerCase(),
                           assetName
-                              .toLowerCase()
+                              ?.toLowerCase()
                               .replace(/[^a-z0-9_-]/g, '-')
                               .replace(/-{2,}/g, '-')
                               .replace(/_{2,}/g, '_')

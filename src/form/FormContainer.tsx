@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import _, { cloneDeep } from 'lodash';
 import './FormContainer.less';
 
 import { FormContext, FormContextType, ResetListener } from './FormContext';
@@ -63,7 +63,7 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
         };
 
         this.state = {
-            formData: props.initialValue ? { ...props.initialValue } : {},
+            formData: props.initialValue ? cloneDeep(props.initialValue) : {},
             readyStates: {},
             processing: false,
             valid: true,
@@ -83,9 +83,10 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
         this.setState(
             (state) => {
                 const nextFormData = _.set({ ...state.formData }, name, value);
+                const equals = _.isEqual(this.props.initialValue, nextFormData);
                 return {
                     formData: nextFormData,
-                    isDirty: !_.isEqual(this.props.initialValue, nextFormData),
+                    isDirty: !equals,
                 };
             },
             () => this.emitChange()
@@ -218,7 +219,7 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
                 }
 
                 if (this.props.onSubmitData) {
-                    await this.props.onSubmitData({ ...this.state.formData });
+                    await this.props.onSubmitData(cloneDeep(this.state.formData));
                 }
 
                 this.emitFormStateChange('submit', true);
@@ -230,18 +231,19 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
 
     private emitChange() {
         if (this.props.onChange) {
-            this.props.onChange({ ...this.state.formData });
+            //Emit a frozen copy of the form data to prevent consumers from mutating it
+            this.props.onChange(Object.freeze({ ...this.state.formData }));
         }
     }
 
     public reset() {
-        const originalData = this.props.initialValue || {};
+        const originalData = this.props.initialValue ? cloneDeep(this.props.initialValue) : {};
         Object.entries(this.resetListeners).forEach(([name, listeners]) => {
             listeners.forEach((listener) => {
                 listener(_.has(originalData, name) ? _.get(originalData, name) : '');
             });
         });
-        this.setState({ formData: { ...originalData } }, () => {
+        this.setState({ formData: originalData }, () => {
             this.emitChange();
 
             if (this.props.onReset) {
