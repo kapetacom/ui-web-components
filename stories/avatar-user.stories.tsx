@@ -32,3 +32,12 @@ export const AvatarBoss = () => {
         </div>
     );
 };
+
+export const AvatarDark = () => {
+    // Check that it's not a super dark color / contrast
+    return (
+        <div style={{ backgroundColor: 'rgb(18, 18, 18)', padding: '12px' }}>
+            <UserAvatar name={'aa'} />
+        </div>
+    );
+};

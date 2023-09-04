@@ -15,9 +15,15 @@ function stringToColor(string?: string) {
 
     let color = '#';
 
+    // Transform hash to hex, and add a leading zero if only one hex digit
+    // only allow values between 64 and 255 to avoid too dark colors
+    const minValue = 64;
+    const maxValue = 255;
+    const sourceRange = 255;
     for (i = 0; i < 3; i += 1) {
-        const value = (hash >> (i * 8)) & 0xff;
-        color += `00${value.toString(16)}`.slice(-2);
+        let value = (hash >> (i * 8)) & 0xff;
+        value = (value * (maxValue - minValue)) / sourceRange + minValue;
+        color += `00${Math.round(value).toString(16)}`.slice(-2);
     }
     /* eslint-enable no-bitwise */
 
@@ -25,7 +31,7 @@ function stringToColor(string?: string) {
 }
 
 export function getInitialsForName(name: string) {
-    const nameParts = name.split(' ');
+    const nameParts = name.split(' ').filter(Boolean);
     let initials = '';
     if (nameParts.length === 1) {
         return name.substring(0, 2);
