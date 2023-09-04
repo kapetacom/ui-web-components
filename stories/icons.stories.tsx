@@ -143,22 +143,32 @@ export const AuthProviderIcons = () => {
     return (
         <>
             <Typography variant="body1">Default</Typography>
-            <Box display="flex" flexDirection="row" gap={3} marginBottom={3}>
+            <Box display="flex" flexDirection="row" gap={3} marginBottom={5}>
                 <AuthProviderIcon name={'google'} size={50} />
                 <AuthProviderIcon name={'microsoft'} size={50} />
                 <AuthProviderIcon name={'github'} size={50} />
             </Box>
 
             <Typography variant="body1">Color</Typography>
-            <Box display="flex" flexDirection="row" gap={3} marginBottom={3} alignItems="center">
+            <Box display="flex" flexDirection="row" gap={3} marginBottom={5} alignItems="center">
                 <AuthProviderIcon name={'google'} size={50} color={color} />
                 <AuthProviderIcon name={'microsoft'} size={50} color={color} />
                 <AuthProviderIcon name={'github'} size={50} color={color} />
                 <TextField value={color} onChange={(e) => setColor(e.target.value)} variant="outlined" />
             </Box>
 
+            <Box sx={{ color: 'slateblue' }}>
+                <Typography variant="body1">currentColor: "slateblue"</Typography>
+                <Box display="flex" flexDirection="row" gap={3} marginBottom={5} alignItems="center">
+                    <AuthProviderIcon name={'google'} size={50} color="currentColor" />
+                    <AuthProviderIcon name={'microsoft'} size={50} color="currentColor" />
+                    <AuthProviderIcon name={'github'} size={50} color="currentColor" />
+                    <TextField value="currentColor" variant="outlined" disabled />
+                </Box>
+            </Box>
+
             <Typography variant="body1">Size</Typography>
-            <Box display="flex" flexDirection="row" gap={3} marginBottom={3} alignItems="center">
+            <Box display="flex" flexDirection="row" gap={3} marginBottom={5} alignItems="center">
                 <AuthProviderIcon name={'google'} size={size} />
                 <AuthProviderIcon name={'microsoft'} size={size} />
                 <AuthProviderIcon name={'github'} size={size} />
