@@ -17,7 +17,7 @@ export type AuthProviderIconProps = {
     color?: string;
 };
 
-export default function AuthProviderIcon({ name, size = 24, color }: AuthProviderIconProps) {
+export const AuthProviderIcon = ({ name, size = 24, color }: AuthProviderIconProps) => {
     if (size < 0) {
         size = 0;
     }
@@ -79,4 +79,4 @@ export default function AuthProviderIcon({ name, size = 24, color }: AuthProvide
             throw new Error(`AuthProviderIcon: ${name} is not supported`);
         }
     }
-}
+};

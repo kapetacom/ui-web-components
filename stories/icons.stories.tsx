@@ -2,7 +2,7 @@ import React from 'react';
 import { AssetKindIcon, AssetKindIconText } from '../src/icons/AssetIcon';
 import { IconType, IconValue, Kind } from '@kapeta/schemas';
 import './styles.less';
-import AuthProviderIcon from '../src/icons/AuthProviderIcon';
+import { AuthProviderIcon } from '../src/icons/AuthProviderIcon';
 import { Box, TextField, Typography } from '@mui/material';
 
 export default {
