@@ -25,7 +25,13 @@ export const AuthProviderIcon = ({ name, size = 24, color }: AuthProviderIconPro
     switch (name) {
         case 'google': {
             return (
-                <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} fill="none" viewBox="0 0 64 64">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    fill="none"
+                    viewBox="12.41 12.03 37.19 37.94"
+                >
                     <path
                         fill={color || '#4280EF'}
                         d="M49.6 31.455c0-1.282-.124-2.604-.33-3.844H31.371v7.316h10.25a8.624 8.624 0 0 1-3.802 5.745l6.117 4.753c3.596-3.348 5.663-8.225 5.663-13.97Z"
@@ -47,7 +53,13 @@ export const AuthProviderIcon = ({ name, size = 24, color }: AuthProviderIconPro
         }
         case 'microsoft': {
             return (
-                <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} fill="none" viewBox="0 0 25 24">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    fill="none"
+                    viewBox="5.3 4.8 14.4 14.4"
+                >
                     <path fill={color || '#2979FF'} d="M5.3 4.8h6.851v6.84H5.3V4.8Z" />
                     <path fill={color || '#7FBA00'} d="M12.849 4.8h6.85v6.84h-6.85V4.8Z" />
                     <path fill={color || '#00A4EF'} d="M5.3 12.37h6.851v6.83H5.3v-6.83Z" />
@@ -57,7 +69,13 @@ export const AuthProviderIcon = ({ name, size = 24, color }: AuthProviderIconPro
         }
         case 'github': {
             return (
-                <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} fill="none" viewBox="0 0 24 24">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    fill="none"
+                    viewBox="4.8 4.96 14.4 14.24"
+                >
                     <g clipPath="url(#a)">
                         <path
                             fill={color || '#2979FF'}
