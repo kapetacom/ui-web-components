@@ -2,6 +2,8 @@ import React from 'react';
 import { AssetKindIcon, AssetKindIconText } from '../src/icons/AssetIcon';
 import { IconType, IconValue, Kind } from '@kapeta/schemas';
 import './styles.less';
+import AuthProviderIcon from '../src/icons/AuthProviderIcon/AuthProviderIcon';
+import { Box, TextField, Typography } from '@mui/material';
 
 export default {
     title: 'Icons',
@@ -131,5 +133,42 @@ export const AssetIconTexts = () => {
                 <AssetKindIconText size={size} asset={RESOURCE_TYPE_EXTENSION} />
             </p>
         </div>
+    );
+};
+
+export const AuthProviderIcons = () => {
+    const [color, setColor] = React.useState('#000000');
+    const [size, setSize] = React.useState(50);
+
+    return (
+        <>
+            <Typography variant="body1">Default</Typography>
+            <Box display="flex" flexDirection="row" gap={3} marginBottom={3}>
+                <AuthProviderIcon name={'google'} size={50} />
+                <AuthProviderIcon name={'microsoft'} size={50} />
+                <AuthProviderIcon name={'github'} size={50} />
+            </Box>
+
+            <Typography variant="body1">Color</Typography>
+            <Box display="flex" flexDirection="row" gap={3} marginBottom={3} alignItems="center">
+                <AuthProviderIcon name={'google'} size={50} color={color} />
+                <AuthProviderIcon name={'microsoft'} size={50} color={color} />
+                <AuthProviderIcon name={'github'} size={50} color={color} />
+                <TextField value={color} onChange={(e) => setColor(e.target.value)} variant="outlined" />
+            </Box>
+
+            <Typography variant="body1">Size</Typography>
+            <Box display="flex" flexDirection="row" gap={3} marginBottom={3} alignItems="center">
+                <AuthProviderIcon name={'google'} size={size} />
+                <AuthProviderIcon name={'microsoft'} size={size} />
+                <AuthProviderIcon name={'github'} size={size} />
+                <TextField
+                    type="number"
+                    value={size}
+                    onChange={(e) => setSize(parseInt(e.target.value, 10))}
+                    variant="outlined"
+                />
+            </Box>
+        </>
     );
 };
