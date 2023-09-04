@@ -37,7 +37,7 @@ export const BlockStatus = () => {
 
 export const BlockName = () => {
     const block = useBlock();
-    const name = block.definition?.kind ? parseKapetaUri(block.definition.kind).name : '';
+    const name = block.definition?.metadata.name ? parseKapetaUri(block.definition?.metadata.name).name : '';
     return (
         <SVGAutoSizeText
             className="block-body-text block-name"
@@ -55,7 +55,7 @@ export const BlockName = () => {
 
 export const BlockHandle = () => {
     const block = useBlock();
-    const handle = block.definition?.kind ? parseKapetaUri(block.definition.kind).handle : '';
+    const handle = block.definition?.metadata.name ? parseKapetaUri(block.definition?.metadata.name).handle : '';
     return (
         <SVGAutoSizeText
             className="block-body-text block-handle"
@@ -73,7 +73,7 @@ export const BlockHandle = () => {
 
 export const BlockVersion = () => {
     const block = useBlock();
-    const version = block.definition?.kind ? parseKapetaUri(block.definition.kind).version : '';
+    const version = block.instance?.block?.ref ? parseKapetaUri(block.instance?.block?.ref).version : '';
     return (
         <SVGAutoSizeText
             className="block-body-text block-version"

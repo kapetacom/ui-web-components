@@ -15,6 +15,7 @@ export * from './entities/EntityEditor';
 export * from './form/Checkbox';
 export * from './form/FormButtons';
 export * from './form/field-handlers/AssetNameInput';
+export * from './form/field-handlers/AssetVersionSelector';
 export * from './form/FormContainer';
 export * from './form/FormContext';
 export * from './form/formFieldController';
