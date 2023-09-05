@@ -67,7 +67,9 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
             readyStates: {},
             processing: false,
             valid: true,
-            isDirty: false,
+            // In order to know if a form is dirty we compare initialValue with formData. If the
+            // initialValue is not set then we consider the form dirty by default.
+            isDirty: props.initialValue ? false : true,
         };
     }
 
@@ -82,12 +84,15 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
     private onValueChanged(name: string, value: any) {
         this.setState(
             (state) => {
-                const nextFormData = _.set({ ...state.formData }, name, value);
-                const equals = _.isEqual(this.props.initialValue, nextFormData);
-                return {
-                    formData: nextFormData,
-                    isDirty: !equals,
+                const nextState: State = {
+                    ...state,
+                    formData: _.set({ ...state.formData }, name, value),
                 };
+                if (this.props.initialValue) {
+                    const equals = _.isEqual(this.props.initialValue, nextState.formData);
+                    nextState.isDirty = !equals;
+                }
+                return nextState;
             },
             () => this.emitChange()
         );
@@ -252,7 +257,9 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
 
             this.emitFormStateChange('reset', true);
         });
-        this.setState({ isDirty: false });
+        if (this.props.initialValue) {
+            this.setState({ isDirty: false });
+        }
     }
 
     private handleResetClick(evt: MouseEvent): void {
