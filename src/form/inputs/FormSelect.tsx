@@ -11,7 +11,6 @@ interface FormSelectProps {
 export const FormSelect = withFormFieldController<string | string[]>((props: FormSelectProps, controller) => {
     const onChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
         let val = evt.target.value;
-        console.log('FormSelect onChange', val);
         if (props.onChange) {
             props.onChange(controller.name, val);
         }
@@ -35,12 +34,9 @@ export const FormSelect = withFormFieldController<string | string[]>((props: For
     return (
         <TextField
             sx={{
-                display: 'block',
                 my: 1,
-                '.MuiInputBase-root': {
-                    minWidth: '100%',
-                },
             }}
+            fullWidth={true}
             onChange={onChange}
             variant={controller.variant}
             multiline={true}

@@ -16,7 +16,7 @@ import { Checkbox } from '../src/form/Checkbox';
 import { FormAutocomplete } from '../src/form/inputs/FormAutocomplete';
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
-import { Button, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { OTPInput } from '../src/special/mfa/OTPInput';
 
 let dropdownState = new Store({
@@ -57,6 +57,30 @@ export const FormInputs = () => {
                 </DefaultFormLayout>
             </FormContainer>
         </div>
+    );
+};
+
+export const MultiSelect = () => {
+    return (
+        <Box padding={3} maxWidth={'400px'} border={'1px dashed red'}>
+            <FormContainer>
+                <FormField
+                    name="Pick all you want"
+                    label="Pick all you want"
+                    type={FormFieldType.ENUM_MULTI}
+                    variant="outlined"
+                    options={[
+                        'Chocolate chip cookies',
+                        'Peanut butter cookies',
+                        'Oatmeal raisin cookies',
+                        'Snickerdoodle cookies',
+                        'Sugar cookies',
+                        'Raspberry cookies',
+                        'Strawberry milkshake',
+                    ]}
+                />
+            </FormContainer>
+        </Box>
     );
 };
 
