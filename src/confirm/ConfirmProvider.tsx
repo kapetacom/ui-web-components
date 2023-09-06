@@ -93,23 +93,23 @@ export const ConfirmProvider = ({ children, defaultOptions = {} }: ConfirmProvid
         });
     }, []);
 
-    const handleClose = useCallback(() => {
+    const cleanup = useCallback(() => {
         setResolver(undefined);
     }, []);
 
     const handleCancel = useCallback(() => {
         if (resolver) {
             resolver.apply(false);
-            handleClose();
         }
-    }, [resolver, handleClose]);
+        cleanup();
+    }, [resolver, cleanup]);
 
     const handleConfirm = useCallback(() => {
         if (resolver) {
             resolver.apply(true);
-            handleClose();
         }
-    }, [resolver, handleClose]);
+        cleanup();
+    }, [resolver, cleanup]);
 
     return (
         <>
@@ -117,7 +117,7 @@ export const ConfirmProvider = ({ children, defaultOptions = {} }: ConfirmProvid
             <ConfirmationDialog
                 open={!!resolver}
                 options={buildOptions(defaultOptions, options)}
-                onClose={handleClose}
+                onClose={handleCancel}
                 onCancel={handleCancel}
                 onConfirm={handleConfirm}
             />

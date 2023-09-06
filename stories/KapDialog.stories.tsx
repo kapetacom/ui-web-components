@@ -19,7 +19,9 @@ export const Basic: Story = {
         const closeDialog = () => setIsOpen(false);
         return (
             <>
-                <Button onClick={openDialog}>Open Dialog</Button>
+                <Button onClick={openDialog} disabled={isOpen}>
+                    Open Dialog
+                </Button>
                 <KapDialog open={isOpen} onClose={closeDialog}>
                     <KapDialog.Title>Dialog Title</KapDialog.Title>
                     <KapDialog.Content>Dialog Content</KapDialog.Content>
@@ -39,7 +41,9 @@ export const LongTitle: Story = {
         const closeDialog = () => setIsOpen(false);
         return (
             <>
-                <Button onClick={openDialog}>Open Dialog</Button>
+                <Button onClick={openDialog} disabled={isOpen}>
+                    Open Dialog
+                </Button>
                 <KapDialog open={isOpen} onClose={closeDialog}>
                     <KapDialog.Title>
                         This is a very long title that will not wrap but instead it will be truncated
@@ -66,7 +70,9 @@ export const WithStyleTweaks: Story = {
         const closeDialog = () => setIsOpen(false);
         return (
             <>
-                <Button onClick={openDialog}>Open Dialog</Button>
+                <Button onClick={openDialog} disabled={isOpen}>
+                    Open Dialog
+                </Button>
                 <KapDialog open={isOpen} onClose={closeDialog}>
                     <KapDialog.Title>Dialog Title</KapDialog.Title>
                     <KapDialog.Content dividers sx={{ borderBottom: 'none' }}>
