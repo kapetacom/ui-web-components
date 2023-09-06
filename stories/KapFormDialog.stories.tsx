@@ -28,7 +28,9 @@ export const Basic: Story = {
         };
         return (
             <>
-                <Button onClick={openDialog}>Open Dialog</Button>
+                <Button onClick={openDialog} disabled={isOpen}>
+                    Open Dialog
+                </Button>
                 <KapFormDialog
                     open={isOpen}
                     onClose={closeDialog}

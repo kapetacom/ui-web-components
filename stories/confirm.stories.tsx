@@ -29,8 +29,20 @@ const confirmHandler = (ok: boolean) => (ok ? console.log('Confirmed') : console
 
 export const Basic: Story = {
     render: () => {
+        const [isConfirming, setIsConfirming] = React.useState(false);
         const confirm = useConfirm();
-        return <Button onClick={async () => confirmHandler(await confirm())}>Click</Button>;
+        return (
+            <Button
+                onClick={async () => {
+                    setIsConfirming(true);
+                    confirmHandler(await confirm());
+                    setIsConfirming(false);
+                }}
+                disabled={isConfirming}
+            >
+                Click
+            </Button>
+        );
     },
 };
 
