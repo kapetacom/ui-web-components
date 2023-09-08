@@ -34,8 +34,10 @@ export const BlockStatus = () => {
         [InstanceStatus.STARTING]: 'Block is starting',
         [InstanceStatus.READY]: 'Block is ready',
         [InstanceStatus.UNHEALTHY]: 'Block is unhealthy',
-        [InstanceStatus.EXITED]: 'Block has exited',
+        [InstanceStatus.FAILED]: 'Block failed to start',
         [InstanceStatus.STOPPED]: 'Block has stopped',
+        [InstanceStatus.STOPPING]: 'Block is stopping',
+        [InstanceStatus.BUSY]: 'Block is unresponsive',
     };
 
     const title = titleMapping[block.status] || '';
