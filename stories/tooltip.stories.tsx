@@ -132,3 +132,40 @@ export const Placement: Story = {
         );
     },
 };
+
+export const TooltipInSvg: Story = {
+    render: () => {
+        const title = 'Tooltip inside an SVG';
+
+        const center = { x: 50, y: 50 };
+        const circleSize = 8;
+        const circleRadius = circleSize / 2;
+        const tooltipHitSize = 3 * circleSize;
+
+        return (
+            <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                <circle r={circleRadius} cx={center.x} cy={center.y} fill="blue"></circle>
+
+                {/* Position on top of the circle */}
+                <foreignObject
+                    x={center.x - tooltipHitSize / 2}
+                    y={center.y - tooltipHitSize / 2}
+                    width={tooltipHitSize}
+                    height={tooltipHitSize}
+                >
+                    <Tooltip title={title} arrow placement="top">
+                        <span
+                            style={{
+                                display: 'block',
+                                width: '100%',
+                                height: '100%',
+                                borderRadius: '50%',
+                                border: '1px dotted #0000ff4d',
+                            }}
+                        ></span>
+                    </Tooltip>
+                </foreignObject>
+            </svg>
+        );
+    },
+};
