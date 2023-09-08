@@ -28,8 +28,19 @@ export const BlockInstanceName = (props: { onChange?: (instanceName: string) => 
 
 export const BlockStatus = () => {
     const block = useBlock();
+
+    const titleMapping = {
+        [InstanceStatus.STARTING]: 'Block is starting',
+        [InstanceStatus.READY]: 'Block is ready',
+        [InstanceStatus.UNHEALTHY]: 'Block is unhealthy',
+        [InstanceStatus.EXITED]: 'Block has exited',
+        [InstanceStatus.STOPPED]: 'Block has stopped',
+    };
+
     return block.status ? (
-        <circle className={`instance_${block.status || InstanceStatus.STOPPED}`} r={4} cx={10} cy={40} />
+        <circle className={`instance_${block.status || InstanceStatus.STOPPED}`} r={4} cx={10} cy={40}>
+            <title>{titleMapping[block.status] || ''}</title>
+        </circle>
     ) : (
         <></>
     );
