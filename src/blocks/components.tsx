@@ -5,6 +5,7 @@ import { BlockContextProvider } from './context';
 import { BlockDefinition, BlockInstance } from '@kapeta/schemas';
 import { parseKapetaUri } from '@kapeta/nodejs-utils';
 import { InstanceStatus } from '@kapeta/ui-web-context';
+import { Tooltip } from '../tooltip/Tooltip';
 
 export const BlockInstanceName = (props: { onChange?: (instanceName: string) => void }) => {
     const block = useBlock();
@@ -37,10 +38,41 @@ export const BlockStatus = () => {
         [InstanceStatus.STOPPED]: 'Block has stopped',
     };
 
+    const title = titleMapping[block.status] || '';
+
+    const center = { x: 10, y: 40 };
+    const circleSize = 8;
+    const tooltipHitSize = 3 * circleSize; // The size of the hitbox for the tooltip
+    const circleRadius = circleSize / 2;
+
     return block.status ? (
-        <circle className={`instance_${block.status || InstanceStatus.STOPPED}`} r={4} cx={10} cy={40}>
-            <title>{titleMapping[block.status] || ''}</title>
-        </circle>
+        <>
+            <circle
+                className={`instance_${block.status || InstanceStatus.STOPPED}`}
+                r={circleRadius}
+                cx={center.x}
+                cy={center.y}
+            ></circle>
+
+            {/* Position on top of the circle */}
+            <foreignObject
+                x={center.x - tooltipHitSize / 2}
+                y={center.y - tooltipHitSize / 2}
+                width={tooltipHitSize}
+                height={tooltipHitSize}
+            >
+                <Tooltip title={title} arrow placement="top">
+                    <span
+                        style={{
+                            display: 'block',
+                            width: '100%',
+                            height: '100%',
+                            borderRadius: '50%',
+                        }}
+                    ></span>
+                </Tooltip>
+            </foreignObject>
+        </>
     ) : (
         <></>
     );
