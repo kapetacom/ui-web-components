@@ -182,6 +182,12 @@ export namespace DSLConverters {
                 });
             }
 
+            if (value.global) {
+                annotations.push({
+                    type: '@global',
+                });
+            }
+
             if (isList(value)) {
                 const typeName = stringType.substring(0, stringType.length - 2);
                 return {
@@ -254,6 +260,7 @@ export namespace DSLConverters {
                         ...typeLike,
                         secret,
                         required,
+                        global,
                         properties: property.properties ? toSchemaProperties(property.properties) : null,
                     },
                 };
