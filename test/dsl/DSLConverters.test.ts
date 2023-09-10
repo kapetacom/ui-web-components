@@ -82,7 +82,7 @@ describe('DSLConverters', () => {
                     {
                         type: 'string',
                         name: 'name',
-                        annotations: [{ type: '@secret' }],
+                        annotations: [{ type: '@secret' }, { type: '@global' }],
                         defaultValue: {
                             type: 'literal',
                             value: '"test"',
@@ -129,12 +129,14 @@ describe('DSLConverters', () => {
                         properties: null,
                         required: false,
                         secret: true,
+                        global: true,
                     },
                     tags: {
                         description: 'Tags',
                         type: 'array',
                         items: {
                             type: 'string',
+                            global: false,
                             properties: null,
                             required: false,
                             secret: false,
@@ -147,6 +149,7 @@ describe('DSLConverters', () => {
                             type: 'object',
                             required: false,
                             secret: false,
+                            global: false,
                             properties: {
                                 id: {
                                     type: 'string',
@@ -155,6 +158,7 @@ describe('DSLConverters', () => {
                                     properties: null,
                                     required: false,
                                     secret: false,
+                                    global: false,
                                 },
                             },
                         },
@@ -171,6 +175,7 @@ describe('DSLConverters', () => {
                                 properties: null,
                                 required: false,
                                 secret: false,
+                                global: false,
                             },
                         },
                     },
@@ -194,6 +199,7 @@ describe('DSLConverters', () => {
                         type: 'string[]',
                         required: true,
                         secret: true,
+                        global: true,
                     },
                     children: {
                         description: 'Children',
@@ -237,6 +243,10 @@ describe('DSLConverters', () => {
                             {
                                 type: '@secret',
                             },
+                            {
+                                type: '@global',
+                            },
+                            ,
                         ],
                         description: 'Tags',
                     },

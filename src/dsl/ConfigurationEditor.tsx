@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { DSLEditor } from './DSLEditor';
-import { DSLDataTypeProperty, DSLResult, FIELD_ANNOTATIONS, PEGValidationEntity } from './types';
+import { DSLDataTypeProperty, DSLResult, CONFIG_FIELD_ANNOTATIONS, PEGValidationEntity } from './types';
 import { isBuiltInType, isStringableType, TypeLike } from '@kapeta/schemas';
 
 export const TYPE_INSTANCE = 'Instance';
@@ -61,7 +61,7 @@ export const ConfigurationEditor = (props: ConfigurationEditorProps) => {
     return (
         <DSLEditor
             types={true}
-            fieldAnnotations={FIELD_ANNOTATIONS}
+            fieldAnnotations={CONFIG_FIELD_ANNOTATIONS.map((a) => a.name)}
             validTypes={[TYPE_INSTANCE, TYPE_INSTANCE_PROVIDER, ...(props.validTypes ?? [])]}
             validator={fieldValidator}
             onChange={props.onChange}
