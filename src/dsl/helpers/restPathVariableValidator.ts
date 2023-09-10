@@ -18,7 +18,7 @@ export const restPathVariableValidator = (entity: PEGValidationEntity<DSLMethod>
         return;
     }
 
-    const restAnnotation = method.annotations.find((a) => REST_METHOD_ANNOTATIONS.indexOf(a.type) > -1);
+    const restAnnotation = method.annotations.find((a) => REST_METHOD_ANNOTATIONS.some((rMA) => rMA.name === a.type));
     if (!restAnnotation) {
         return;
     }
@@ -96,7 +96,7 @@ export const restPathVariableValidator = (entity: PEGValidationEntity<DSLMethod>
             reportError(
                 `Parameter type can not be used in paths for parameter ${
                     parameter.name
-                }. Supported types are ${STRINGABLE_TYPES.join(', ')}`,
+                }. Supported types are ${STRINGABLE_TYPES.map((t) => t.name).join(', ')}`,
                 getLocation(parameter)
             );
         }

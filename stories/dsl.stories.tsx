@@ -356,14 +356,12 @@ export default {
 };
 
 export const DslEditor = () => (
-    <div>
-        <DSLEditor
-            types={true}
-            methods={true}
-            onChange={(result) => console.log('result', result)}
-            value={'## Types\n' + DATA_TYPES + '\n\n## Methods\n' + METHODS}
-        />
-    </div>
+    <DSLEditor
+        types={true}
+        methods={true}
+        onChange={(result) => console.log('result', result)}
+        value={'## Types\n' + DATA_TYPES + '\n\n## Methods\n' + METHODS}
+    />
 );
 
 DslEditor.story = {
@@ -371,17 +369,15 @@ DslEditor.story = {
 };
 
 export const DslEditorObject = () => (
-    <div>
-        <DSLEditor
-            types={true}
-            methods={true}
-            onChange={(result) => console.log('result', result)}
-            value={{
-                code: '',
-                entities: [...DATA_TYPE_ENTITIES, ...METHOD_ENTITIES],
-            }}
-        />
-    </div>
+    <DSLEditor
+        types={true}
+        methods={true}
+        onChange={(result) => console.log('result', result)}
+        value={{
+            code: '',
+            entities: [...DATA_TYPE_ENTITIES, ...METHOD_ENTITIES],
+        }}
+    />
 );
 
 DslEditorObject.story = {
@@ -389,15 +385,13 @@ DslEditorObject.story = {
 };
 
 export const DslEditorRest = () => (
-    <div>
-        <DSLEditor
-            types={true}
-            methods={true}
-            rest={true}
-            onChange={(result) => console.log('result', result)}
-            value={'## Types\n' + DATA_TYPES + '\n\n## REST methods\n' + REST_METHODS}
-        />
-    </div>
+    <DSLEditor
+        types={true}
+        methods={true}
+        rest={true}
+        onChange={(result) => console.log('result', result)}
+        value={'## Types\n' + DATA_TYPES + '\n\n## REST methods\n' + REST_METHODS}
+    />
 );
 
 DslEditorRest.story = {
@@ -405,18 +399,16 @@ DslEditorRest.story = {
 };
 
 export const DslEditorRestObject = () => (
-    <div>
-        <DSLEditor
-            types={true}
-            methods={true}
-            rest={true}
-            onChange={(result) => console.log('result', result)}
-            value={{
-                code: '',
-                entities: [...DATA_TYPE_ENTITIES, ...REST_METHOD_ENTITIES],
-            }}
-        />
-    </div>
+    <DSLEditor
+        types={true}
+        methods={true}
+        rest={true}
+        onChange={(result) => console.log('result', result)}
+        value={{
+            code: '',
+            entities: [...DATA_TYPE_ENTITIES, ...REST_METHOD_ENTITIES],
+        }}
+    />
 );
 
 DslEditorRestObject.story = {
@@ -424,14 +416,12 @@ DslEditorRestObject.story = {
 };
 
 export const RestMethodEditor = () => (
-    <div>
-        <MethodEditor
-            value={REST_METHODS}
-            validTypes={['Todo']}
-            onChange={(result) => console.log('result', result)}
-            restMethods={true}
-        />
-    </div>
+    <MethodEditor
+        value={REST_METHODS}
+        validTypes={['Todo']}
+        onChange={(result) => console.log('result', result)}
+        restMethods={true}
+    />
 );
 
 RestMethodEditor.story = {
@@ -439,14 +429,12 @@ RestMethodEditor.story = {
 };
 
 export const RestMethodEditorObject = () => (
-    <div>
-        <MethodEditor
-            value={{ code: '', entities: REST_METHOD_ENTITIES }}
-            validTypes={['Todo']}
-            onChange={(result) => console.log('result', result)}
-            restMethods={true}
-        />
-    </div>
+    <MethodEditor
+        value={{ code: '', entities: REST_METHOD_ENTITIES }}
+        validTypes={['Todo']}
+        onChange={(result) => console.log('result', result)}
+        restMethods={true}
+    />
 );
 
 RestMethodEditorObject.story = {
@@ -454,19 +442,15 @@ RestMethodEditorObject.story = {
 };
 
 export const _MethodEditor = () => (
-    <div>
-        <MethodEditor value={METHODS} onChange={(result) => console.log('result', result)} validTypes={['TreeNode']} />
-    </div>
+    <MethodEditor value={METHODS} onChange={(result) => console.log('result', result)} validTypes={['TreeNode']} />
 );
 
 export const MethodEditorObject = () => (
-    <div>
-        <MethodEditor
-            value={{ code: '', entities: METHOD_ENTITIES }}
-            onChange={(result) => console.log('result', result)}
-            validTypes={['TreeNode']}
-        />
-    </div>
+    <MethodEditor
+        value={{ code: '', entities: METHOD_ENTITIES }}
+        onChange={(result) => console.log('result', result)}
+        validTypes={['TreeNode']}
+    />
 );
 
 MethodEditorObject.story = {
@@ -474,18 +458,14 @@ MethodEditorObject.story = {
 };
 
 export const _DataTypeEditor = () => (
-    <div>
-        <DataTypeEditor value={DATA_TYPES} onChange={(result) => console.log('result', result)} />
-    </div>
+    <DataTypeEditor value={DATA_TYPES} onChange={(result) => console.log('result', result)} />
 );
 
 export const DataTypeEditorObject = () => (
-    <div>
-        <DataTypeEditor
-            value={{ entities: DATA_TYPE_ENTITIES, code: '' }}
-            onChange={(result) => console.log('result', result)}
-        />
-    </div>
+    <DataTypeEditor
+        value={{ entities: DATA_TYPE_ENTITIES, code: '' }}
+        onChange={(result) => console.log('result', result)}
+    />
 );
 
 DataTypeEditorObject.story = {
@@ -493,18 +473,14 @@ DataTypeEditorObject.story = {
 };
 
 export const _ConfigurationEditor = () => (
-    <div>
-        <ConfigurationEditor value={CONFIGURATION} onChange={(result) => console.log('result', result)} />
-    </div>
+    <ConfigurationEditor value={CONFIGURATION} onChange={(result) => console.log('result', result)} />
 );
 
 export const ConfigurationEditorObject = () => (
-    <div>
-        <ConfigurationEditor
-            value={{ entities: CONFIGURATION_ENTITIES, code: '' }}
-            onChange={(result) => console.log('result', result)}
-        />
-    </div>
+    <ConfigurationEditor
+        value={{ entities: CONFIGURATION_ENTITIES, code: '' }}
+        onChange={(result) => console.log('result', result)}
+    />
 );
 
 ConfigurationEditorObject.story = {

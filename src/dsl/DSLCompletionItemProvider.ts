@@ -1,5 +1,5 @@
 import { IDisposable, Position, CancellationToken, languages, editor } from 'monaco-editor';
-import { BUILT_IN_TYPES, FIELD_ANNOTATIONS, METHOD_ANNOTATIONS, PARAMETER_ANNOTATIONS } from './types';
+import { BUILT_IN_TYPES, CONFIG_FIELD_ANNOTATIONS, METHOD_ANNOTATIONS, PARAMETER_ANNOTATIONS } from './types';
 import { TokenParser } from './TokenParser';
 
 type CompletionContext = languages.CompletionContext;
@@ -49,21 +49,68 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
 
         let suggestions: languages.CompletionItem[] = [];
 
-        const TYPES = [...BUILT_IN_TYPES, ...dataTypeNames, ...additionalTypes];
+        const TYPES = [...BUILT_IN_TYPES.map((t) => t.name), ...dataTypeNames, ...additionalTypes];
 
         const typeChoice = TYPES.join(',');
 
-        const methodAnnotationChoice = METHOD_ANNOTATIONS.map((a) => a.substring(1)).join(',');
+        const methodAnnotationChoice = METHOD_ANNOTATIONS.map((a) => a.name.substring(1)).join(',');
+
+        suggestions.push(
+            {
+                label: '# Insert: Function',
+                kind: languages.CompletionItemKind.Function,
+                documentation: 'Insert function',
+                insertText: '${1:name}( $0 ):${2|' + typeChoice + '|}',
+                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                range: null,
+            },
+
+            {
+                label: '# Insert: REST method',
+                kind: languages.CompletionItemKind.Function,
+                documentation: 'Insert REST method',
+                insertText:
+                    '@${1|' + methodAnnotationChoice + "|}('/${2:path}')\n${3:name}( $0 ):${4|" + typeChoice + '|}',
+                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                range: null,
+            },
+            {
+                label: '# Insert: Data type',
+                kind: languages.CompletionItemKind.Struct,
+                documentation: 'Insert data type',
+                insertText: '${1:name} {\n\t$0\n}',
+                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                range: null,
+            },
+            {
+                label: '# Insert: Enum type',
+                kind: languages.CompletionItemKind.Enum,
+                documentation: 'Insert enum type',
+                insertText: 'enum ${1:name} {\n\t$0\n}',
+                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                range: null,
+            },
+            {
+                label: '# Insert: Variable',
+                kind: languages.CompletionItemKind.Variable,
+                insertText: '${1:name}:${2|' + typeChoice + '|}',
+                documentation: 'Insert variable with type',
+                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                range: null,
+            }
+        );
 
         //Type
-        suggestions = TYPES.map((type) => {
-            return {
-                label: type,
-                insertText: type,
-                kind: languages.CompletionItemKind.TypeParameter,
-                range: null,
-            };
-        });
+        suggestions.push(
+            ...TYPES.map((type) => {
+                return {
+                    label: type,
+                    insertText: type,
+                    kind: languages.CompletionItemKind.TypeParameter,
+                    range: null,
+                };
+            })
+        );
 
         suggestions.push(
             ...enumNames.map((type) => {
@@ -81,6 +128,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
                 return {
                     label: 'Annotate: ' + type,
                     insertText: type + '("/$0")',
+                    documentation: type.description,
                     kind: languages.CompletionItemKind.TypeParameter,
                     insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
                     range: null,
@@ -91,8 +139,9 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
         suggestions.push(
             ...PARAMETER_ANNOTATIONS.map((type) => {
                 return {
-                    label: 'Annotate: ' + type,
-                    insertText: type,
+                    label: 'Annotate: ' + type.name,
+                    insertText: type.name,
+                    documentation: type.description,
                     kind: languages.CompletionItemKind.TypeParameter,
                     insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
                     range: null,
@@ -101,56 +150,16 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
         );
 
         suggestions.push(
-            ...FIELD_ANNOTATIONS.map((type) => {
+            ...CONFIG_FIELD_ANNOTATIONS.map((type) => {
                 return {
-                    label: 'Annotate: ' + type,
-                    insertText: type,
+                    label: 'Annotate: ' + type.name,
+                    insertText: type.name,
+                    documentation: type.description,
                     kind: languages.CompletionItemKind.TypeParameter,
                     insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
                     range: null,
                 };
             })
-        );
-
-        suggestions.push(
-            {
-                label: 'method',
-                kind: languages.CompletionItemKind.Function,
-                insertText: '${1:name}( $0 ):${2|' + typeChoice + '|}',
-                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                range: null,
-            },
-
-            {
-                label: 'REST method',
-                kind: languages.CompletionItemKind.Function,
-                insertText:
-                    '@${1|' + methodAnnotationChoice + "|}('/${2:path}')\n${3:name}( $0 ):${4|" + typeChoice + '|}',
-                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                range: null,
-            },
-            {
-                label: 'type',
-                kind: languages.CompletionItemKind.Struct,
-                insertText: '${1:name} {\n\t$0\n}',
-                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                range: null,
-            },
-            {
-                label: 'enum',
-                kind: languages.CompletionItemKind.Enum,
-                insertText: 'enum ${1:name} {\n\t$0\n}',
-                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                range: null,
-            },
-            {
-                label: 'variable',
-                kind: languages.CompletionItemKind.Variable,
-                insertText: '${1:name}:${2|' + typeChoice + '|}',
-                documentation: 'Insert variable with type',
-                insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                range: null,
-            }
         );
 
         return {

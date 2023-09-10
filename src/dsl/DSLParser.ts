@@ -27,11 +27,11 @@ export const DSLParser = {
         }
 
         if (!options.parameterAnnotations) {
-            options.parameterAnnotations = PARAMETER_ANNOTATIONS;
+            options.parameterAnnotations = PARAMETER_ANNOTATIONS.map((a) => a.name);
         }
 
         if (!options.methodAnnotations) {
-            options.methodAnnotations = METHOD_ANNOTATIONS;
+            options.methodAnnotations = METHOD_ANNOTATIONS.map((a) => a.name);
         }
 
         if (!options.typeAnnotations) {
@@ -48,7 +48,7 @@ export const DSLParser = {
             options.validTypes = [...options.validTypes];
         }
 
-        options.validTypes.push(...BUILT_IN_TYPES);
+        options.validTypes.push(...BUILT_IN_TYPES.map((t) => t.name));
 
         const entities = parser.parse(code, { ...options });
 

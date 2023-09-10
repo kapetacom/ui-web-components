@@ -108,7 +108,7 @@ export namespace DSLConverters {
             return { type: type };
         }
 
-        if (BUILT_IN_TYPES.indexOf(onlyType) === -1) {
+        if (!BUILT_IN_TYPES.some((t) => t.name === onlyType)) {
             return { ref: type };
         }
 
@@ -215,6 +215,7 @@ export namespace DSLConverters {
             let typeLike = toSchemaType(property.type);
             const secret = property.annotations?.some((annotation) => annotation.type === '@secret') || false;
             const required = property.annotations?.some((annotation) => annotation.type === '@required') || false;
+            const global = property.annotations?.some((annotation) => annotation.type === '@global') || false;
 
             if (typeof property.type === 'string' || !property.type.list) {
                 const defaultValue =
@@ -230,6 +231,7 @@ export namespace DSLConverters {
                 if (!property.properties) {
                     out[property.name].secret = secret;
                     out[property.name].required = required;
+                    out[property.name].global = global;
                 }
             } else {
                 //Normally this includes [] if its a list - we want to strip that off for properties
