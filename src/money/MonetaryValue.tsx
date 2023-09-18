@@ -1,6 +1,25 @@
 import React, { ComponentProps } from 'react';
-import { FormatMonetaryValueOptions, formatMonetaryValue } from '../utils/money';
+
 import { Box } from '@mui/material';
+
+export interface FormatMonetaryValueOptions extends Intl.NumberFormatOptions {
+    /**
+     * The locale to use. If undefined, the browser's locale is used.
+     */
+    locale?: string;
+}
+
+export const formatMonetaryValue = (value: number, currency: string, options: FormatMonetaryValueOptions = {}) => {
+    const { locale, ...intlOptions } = options;
+    if (typeof value !== 'number' || !currency) {
+        throw new Error('value and currency are required');
+    }
+    return new Intl.NumberFormat(locale, {
+        ...intlOptions,
+        style: 'currency',
+        currency,
+    }).format(value);
+};
 
 export interface MonetaryValueProps extends ComponentProps<'span'> {
     value: number;

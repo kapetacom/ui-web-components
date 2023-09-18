@@ -106,6 +106,8 @@ export * from './confirm';
 
 export * from './dates';
 
+export * from './money';
+
 export * from './dialogs/KapDialog';
 export * from './dialogs/KapFormDialog';
 export * from './dialogs/KapSimpleDialog';
