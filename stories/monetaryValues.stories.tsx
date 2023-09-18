@@ -19,7 +19,7 @@ export const MonetaryValues: Story = {
             // No options
             { value, currency },
 
-            // compact
+            // notation
             { value, currency, options: { notation: 'compact' } },
             { value, currency, options: { notation: 'standard' } },
 
