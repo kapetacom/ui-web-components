@@ -56,7 +56,7 @@
         "@jest/globals": "^29.1.2",
         "@kapeta/prettier-config": "^0.6.0",
         "@kapeta/schemas": "<2",
-        "@kapeta/style": "^0.87.0",
+        "@kapeta/style": "^0.92.0",
         "@kapeta/ui-web-context": "<2",
         "@kapeta/ui-web-types": "<2",
         "@kapeta/ui-web-utils": "<2",
@@ -129,7 +129,7 @@
     "prettier": "@kapeta/prettier-config",
     "dependencies": {
         "@kapeta/nodejs-utils": "^0.0.10",
-        "@kapeta/style": "^0.84.0",
+        "@kapeta/style": "^0.92.0",
         "monaco-editor": "^0.37.1"
     }
 }
