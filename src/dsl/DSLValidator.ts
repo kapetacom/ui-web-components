@@ -32,7 +32,6 @@ export class DSLValidator {
                             severity = MarkerSeverity.Info;
                             break;
                     }
-
                     delete error.type;
                     errors.push({
                         code: '2',

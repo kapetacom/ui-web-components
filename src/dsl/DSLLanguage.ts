@@ -6,6 +6,7 @@ import { BUILT_IN_TYPES } from './types';
 import { DSLCompletionItemProvider } from './DSLCompletionItemProvider';
 import { DSLDocumentFormattingEditProvider } from './DSLDocumentFormattingEditProvider';
 import { DSL_LANGUAGE_ID } from './interfaces';
+import CodeAction = languages.CodeAction;
 
 const configuration: IRichLanguageConfiguration = {
     comments: {
@@ -182,5 +183,46 @@ loader.init().then((monaco) => {
 
         //Auto-complete:
         languages.registerCompletionItemProvider(DSL_LANGUAGE_ID, completionItemProvider);
+
+        languages.registerCodeActionProvider(DSL_LANGUAGE_ID, {
+            provideCodeActions(model, range, context, token): languages.ProviderResult<languages.CodeActionList> {
+                const actions: CodeAction[] = context.markers
+                    .map((marker): CodeAction => {
+                        const value = model.getValueInRange(marker).trim();
+                        console.log(marker, value);
+
+                        const GO_ARRAY_RX = /^\[]([a-z][a-z0-9_]*)$/i;
+
+                        if (GO_ARRAY_RX.test(value)) {
+                            const [, name] = GO_ARRAY_RX.exec(value);
+                            //Go-Style array definition - suggest to replace with DSL-style array definition
+                            return {
+                                kind: 'quickfix',
+                                diagnostics: [marker],
+                                title: 'Fix array definition',
+                                edit: {
+                                    edits: [
+                                        {
+                                            resource: model.uri,
+                                            versionId: model.getVersionId(),
+                                            textEdit: {
+                                                range: marker,
+                                                text: name + '[]',
+                                            },
+                                        },
+                                    ],
+                                },
+                                isPreferred: true,
+                            };
+                        }
+                    })
+                    .filter((action) => action !== undefined);
+
+                return {
+                    actions,
+                    dispose() {},
+                };
+            },
+        });
     });
 });
