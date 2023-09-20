@@ -201,6 +201,9 @@ fieldType
 	= type:id list:(_ '[' _ ']')? { const out = !!list ? {name:type, list: !!list} : type; checkType(out); return {type:out}  }
     / body:dataTypeBody { return {type:'object' ,...body} }
     / body:dataTypeBodyList { return {type:{name:'object', list: true},...body} }
+    / '[' _ ']' _ type:id {
+        _error(`Invalid array syntax. Did you mean ${type}[]?`);
+      }
 
 enum_type
 	= description:comments?
@@ -266,6 +269,9 @@ method_returnType
         checkType(out, true);
         return out;
     }
+    / '[' _ ']' _ type:id {
+            _error(`Invalid array syntax. Did you mean ${type}[]?`);
+          }
 
 method "method"
     = 	description:comments?
@@ -462,6 +468,9 @@ parameter_type
         checkType(out, true);
         return out;
     }
+    / '[' _ ']' _ type:id {
+        _error(`Invalid array syntax. Did you mean ${type}[]?`);
+      }
 
 parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:parameter_type _ {
     if (!options.ignoreSemantics) {
