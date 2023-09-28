@@ -29,7 +29,7 @@ export const WithButton: Story = {
     args: {
         title: 'Nothing here yet',
         description: 'Slightly longer body text goes here',
-        button: (
+        actions: (
             <Button variant="text" color="primary">
                 Button
             </Button>
@@ -50,7 +50,7 @@ export const WithCardIcon: Story = {
         title: 'No stored cards',
         description: 'Add a payment card to get the full benefit out of Kapeta',
         icon: 'card',
-        button: (
+        actions: (
             <Button variant="text" color="primary">
                 Add card now
             </Button>

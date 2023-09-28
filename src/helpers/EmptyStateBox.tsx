@@ -5,13 +5,13 @@ import { EmptyStateIcon, EmptyStateIconName } from './EmptyStateIcon';
 export interface EmptyStateBoxProps extends PaperProps {
     title: string;
     description?: string;
-    button?: React.ReactNode;
+    actions?: React.ReactNode;
     icon?: EmptyStateIconName;
     size?: number;
 }
 
 export const EmptyStateBox = (props: EmptyStateBoxProps) => {
-    const { title, description, button, icon = 'default', size = 100, sx, ...otherPaperProps } = props;
+    const { title, description, actions, icon = 'default', size = 100, sx, ...otherPaperProps } = props;
 
     return (
         <Paper
@@ -42,7 +42,7 @@ export const EmptyStateBox = (props: EmptyStateBoxProps) => {
                 </Typography>
             )}
 
-            {button && <Box sx={{ mt: 0.5 }}>{button}</Box>}
+            {actions && <Box sx={{ mt: 0.5 }}>{actions}</Box>}
         </Paper>
     );
 };
