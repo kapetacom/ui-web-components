@@ -36,6 +36,8 @@ export * from './form/DefaultFormLayout';
 export * from './helpers/Loader';
 export * from './helpers/SimpleLoader';
 export * from './helpers/ElementList';
+export * from './helpers/EmptyStateBox';
+export * from './helpers/EmptyStateIcon';
 
 export * from './stack/StackContainer';
 export * from './stack/StackPage';
