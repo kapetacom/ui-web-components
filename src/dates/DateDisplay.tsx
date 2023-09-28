@@ -1,20 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DateTime, ToRelativeOptions, DateTimeFormatOptions } from 'luxon';
-import { Tooltip } from '../tooltip/Tooltip';
+import { Tooltip, TooltipProps } from '../tooltip/Tooltip';
 
 export const KapDateTime = DateTime;
 export type KapDateTimeFormatOptions = DateTimeFormatOptions;
 
 const DEFAULT_TIME_DIFF_RELATIVE = 1000 * 60 * 60 * 24;
-interface Props {
+
+export interface DateDisplayProps {
     date?: Date | number | string;
     format?: DateTimeFormatOptions;
     timeDiffRelative?: number;
     relativeOptions?: ToRelativeOptions;
     allowRelative?: boolean;
+    tooltipPlacement?: TooltipProps['placement'];
 }
 
-export const toDateText = (props: Props | Date | number): string | null => {
+export const toDateText = (props: DateDisplayProps | Date | number): string | null => {
     let innerProps = {};
     if (props instanceof Date || typeof props === 'number') {
         innerProps = { date: props };
@@ -24,7 +26,7 @@ export const toDateText = (props: Props | Date | number): string | null => {
     return toDateTextInner(innerProps)?.text ?? null;
 };
 
-export const toDateTextInner = (props: Props) => {
+export const toDateTextInner = (props: DateDisplayProps) => {
     let date: number = -1;
     if (props.date instanceof Date) {
         date = props.date.getTime();
@@ -64,8 +66,18 @@ export const toDateTextInner = (props: Props) => {
     };
 };
 
-export const DateDisplay = (props: Props) => {
-    const dateText = toDateTextInner(props);
+export const DateDisplay = (props: DateDisplayProps) => {
+    const [dateText, setDateText] = useState(toDateTextInner(props));
+
+    useEffect(() => {
+        let interval: NodeJS.Timer;
+        if (props.allowRelative !== false) {
+            interval = setInterval(() => {
+                setDateText(toDateTextInner(props));
+            }, 1000);
+        }
+        return () => clearInterval(interval);
+    }, [props]);
 
     if (dateText === null) {
         return null;
@@ -75,7 +87,7 @@ export const DateDisplay = (props: Props) => {
         // If date is relative - show full date on hover
         const fullDate = toDateTextInner({ ...props, allowRelative: false });
         return (
-            <Tooltip title={fullDate.text}>
+            <Tooltip title={fullDate.text} placement={props.tooltipPlacement || 'top'} arrow>
                 <span className={'date-display'}>{dateText.text}</span>
             </Tooltip>
         );
