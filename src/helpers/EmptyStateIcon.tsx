@@ -369,13 +369,13 @@ export const EmptyStateIcon = (props: EmptyStateIconProps) => {
                     fill="none"
                     viewBox="0 0 101 100"
                 >
-                    <g clip-path="url(#a)">
+                    <g clipPath="url(#a)">
                         <rect width="74.396" height="7.048" x="7.82" y="78.16" fill="#F1F1F1" rx="3.046" />
                         <rect width="62.977" height="7.129" x="29.462" y="92.41" fill="#F1F1F1" rx="3.046" />
                         <path
                             fill="#F1F1F1"
                             stroke="#BDBDBD"
-                            stroke-width=".254"
+                            strokeWidth=".254"
                             d="M22.154 96.435a3.438 3.438 0 1 1-6.875 0 3.438 3.438 0 0 1 6.875 0Z"
                         />
                         <circle cx="88.496" cy="81.716" r="3.565" fill="#F1F1F1" />
@@ -383,7 +383,7 @@ export const EmptyStateIcon = (props: EmptyStateIconProps) => {
                             <path
                                 fill="#fff"
                                 stroke="#EEE"
-                                stroke-width=".958"
+                                strokeWidth=".958"
                                 d="M23.17 23.503h53.878a2.653 2.653 0 0 1 2.653 2.653V91.94a2.653 2.653 0 0 1-2.653 2.653H23.169a2.653 2.653 0 0 1-2.653-2.653V26.156a2.653 2.653 0 0 1 2.653-2.653Z"
                             />
                         </g>
@@ -422,10 +422,10 @@ export const EmptyStateIcon = (props: EmptyStateIconProps) => {
                             height="74.931"
                             x="18.595"
                             y="23.024"
-                            color-interpolation-filters="sRGB"
+                            colorInterpolationFilters="sRGB"
                             filterUnits="userSpaceOnUse"
                         >
-                            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                            <feFlood floodOpacity="0" result="BackgroundImageFix" />
                             <feColorMatrix
                                 in="SourceAlpha"
                                 result="hardAlpha"
