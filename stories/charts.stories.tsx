@@ -29,7 +29,7 @@ export const Inverted: Story = {
                     background.
                 </Typography>
                 <Typography variant="body1" sx={{ mt: 4, mb: 2 }}>
-                    <pre>inverted = false</pre>
+                    <code>inverted = false</code>
                 </Typography>
                 <Grid container spacing={1} sx={{ '.MuiGrid-item': { m: 0.5, p: 0.5 } }}>
                     {Array.from({ length: 21 }, (_, i) => i * 5).map((value) => (
@@ -43,7 +43,7 @@ export const Inverted: Story = {
                 </Grid>
 
                 <Typography variant="body1" sx={{ mt: 4, mb: 2 }}>
-                    <pre>inverted = true</pre>
+                    <code>inverted = true</code>
                 </Typography>
                 <Grid container spacing={1} sx={{ '.MuiGrid-item': { m: 0.5, p: 0.5 } }}>
                     {Array.from({ length: 21 }, (_, i) => i * 5).map((value) => (
