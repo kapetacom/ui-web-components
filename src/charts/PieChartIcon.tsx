@@ -1,6 +1,6 @@
 import React, { useId } from 'react';
 import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
-import { clamp } from 'lodash';
+import { clamp, isFinite } from 'lodash';
 import { keyframes } from '@mui/material';
 
 const pulsateAnimation = keyframes`
@@ -58,7 +58,7 @@ export const PieChartIcon = (props: PieChartIconProps) => {
     const { value, pulsate = false, pulsateSpeed = 1500, inverted = false, sx, ...svgIconProps } = props;
 
     // The percentage of the pie slice, between 0 and 1
-    const percentage = clamp(value / 100, 0, 1);
+    const percentage = isFinite(value) ? clamp(value / 100, 0, 1) : 0;
 
     // The size of the svg icon. The size of the icon will be controlled by the consumer like a
     // regular MUI Icon.
