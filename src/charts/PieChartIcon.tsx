@@ -65,7 +65,7 @@ export const PieChartIcon = (props: PieChartIconProps) => {
     const size = 24;
 
     // Circle
-    const circleRadius = 9;
+    const circleRadius = 10;
     const circleStrokeWidth = 2;
 
     // Pie slice
