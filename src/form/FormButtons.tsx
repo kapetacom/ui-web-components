@@ -36,7 +36,7 @@ export const FormButtons = (formButtonProps: Props) => {
                                 ? // If the consumer passes the disabled prop we use it.
                                   props.disabled
                                 : // Otherwise we use the form context.
-                                  isSubmitButton && (!context.isDirty || !context.valid || context.processing)
+                                  isSubmitButton && context.processing
                         }
                     >
                         {props.children}
