@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { PieChartIcon, PieChartIconProps } from '../src/charts/PieChartIcon';
+import { PieChartIcon, PieChartIconProps } from '../../src/charts/PieChartIcon';
 import { Box, Button, Grid, Typography } from '@mui/material';
 
 const meta: Meta = {
