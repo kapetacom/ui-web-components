@@ -17,7 +17,7 @@ export interface DateDisplayProps {
      */
     timeDiffRelative?: number;
     /**
-     * A list of options to pass to `luxon/toRelative`
+     * Options that is passed to `luxon/toRelative`
      */
     relativeOptions?: ToRelativeOptions;
     /**
@@ -94,7 +94,7 @@ export const toDateTextInner = (props: DateDisplayProps) => {
         }
 
         if (increaseRelativePrecision && timeDiff < timeDiffRelative) {
-            const duration = dt.diff(DateTime.now(), ['days', 'hours', 'minutes', 'seconds', 'milliseconds']);
+            const duration = dt.diffNow(['days', 'hours', 'minutes', 'seconds', 'milliseconds']);
 
             let durationString = '';
 
