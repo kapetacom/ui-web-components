@@ -18,6 +18,8 @@ export interface DateDisplayProps {
     timeDiffRelative?: number;
     /**
      * Options that is passed to `luxon/toRelative`
+     * (https://moment.github.io/luxon/api-docs/index.html#datetimetorelative)
+     * Note: These options are not used if `increaseRelativePrecision` is set to true.
      */
     relativeOptions?: ToRelativeOptions;
     /**
