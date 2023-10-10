@@ -1,11 +1,11 @@
 import { SvgIcon, SvgIconProps } from '@mui/material';
-import React, { useId } from 'react';
+import React, { ForwardedRef, forwardRef, useId } from 'react';
 
-export const InfinityIcon = (props: SvgIconProps) => {
+export const InfinityIcon = forwardRef((props: SvgIconProps, ref: ForwardedRef<SVGSVGElement>) => {
     const maskId = useId();
 
     return (
-        <SvgIcon {...props}>
+        <SvgIcon {...props} ref={ref}>
             <svg viewBox="0 0 24 24" fill="currentColor">
                 <defs>
                     <mask id={maskId}>
@@ -20,4 +20,4 @@ export const InfinityIcon = (props: SvgIconProps) => {
             </svg>
         </SvgIcon>
     );
-};
+});

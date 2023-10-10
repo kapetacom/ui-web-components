@@ -2,6 +2,7 @@ import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { PieChartIcon, PieChartIconProps } from '../../src/charts/PieChartIcon';
 import { Box, Button, Grid, Typography } from '@mui/material';
+import { Tooltip } from '../../src';
 
 const meta: Meta = {
     title: 'Charts/PieChartIcon',
@@ -102,6 +103,19 @@ export const OnButton: Story = {
             <Button variant="contained" color="primary" endIcon={<PieChartIcon value={75} />}>
                 Deploy
             </Button>
+        );
+    },
+};
+
+export const WithTooltip: Story = {
+    args: {
+        value: 25,
+    },
+    render: (args) => {
+        return (
+            <Tooltip title="This is a tooltip" placement="right">
+                <PieChartIcon {...args} />
+            </Tooltip>
         );
     },
 };

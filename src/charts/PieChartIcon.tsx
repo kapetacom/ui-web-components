@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import React, { ForwardedRef, forwardRef, useId } from 'react';
 import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 import { clamp, isFinite } from 'lodash';
 import { keyframes } from '@mui/material';
@@ -54,7 +54,7 @@ export interface PieChartIconProps extends SvgIconProps {
     inverted?: boolean;
 }
 
-export const PieChartIcon = (props: PieChartIconProps) => {
+export const PieChartIcon = forwardRef((props: PieChartIconProps, ref: ForwardedRef<SVGSVGElement>) => {
     const { value, pulsate = false, pulsateSpeed = 1500, inverted = false, sx, ...svgIconProps } = props;
 
     // The percentage of the pie slice, between 0 and 1
@@ -84,6 +84,7 @@ export const PieChartIcon = (props: PieChartIconProps) => {
                 ...sx,
                 animation: pulsate ? `${pulsateAnimation} ${pulsateSpeed}ms ease-in-out infinite` : 'none',
             }}
+            ref={ref}
             {...svgIconProps}
         >
             <svg viewBox={`0 0 ${size} ${size}`} fill="currentColor">
@@ -121,4 +122,4 @@ export const PieChartIcon = (props: PieChartIconProps) => {
             </svg>
         </SvgIcon>
     );
-};
+});
