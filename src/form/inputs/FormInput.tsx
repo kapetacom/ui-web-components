@@ -15,7 +15,7 @@ export enum Type {
 
 const NON_TEXT_TYPES = [Type.DATE];
 
-type PickedMuiTextFieldProps = Pick<TextFieldProps, 'variant' | 'onFocus' | 'onBlur' | 'autoFocus'>;
+type PickedMuiTextFieldProps = Pick<TextFieldProps, 'variant' | 'onFocus' | 'onBlur' | 'autoFocus' | 'autoComplete'>;
 
 export interface FormInputProps extends PickedMuiTextFieldProps {
     onChange?: (inputName: string, userInput: any) => void;
@@ -28,8 +28,32 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
         setShowPassword((prev) => !prev);
     };
 
+    let value = controller.value;
+
+    /**
+     * The reason we track if the FormInput has a value and if it has been autofilled by the browser
+     * is because of a styling bug where the label doesn't animate up to its shrink state when the
+     * browser is autofilling. So the user see the label on top of the value in the input.
+     * * Chromium bug ticket: https://bugs.chromium.org/p/chromium/issues/detail?id=1166619
+     * * Workaround inspired by: https://stackoverflow.com/a/76927964
+     */
+    const [hasValue, setHasValue] = useState(Boolean(value));
+    const animationStartHandler = (e: React.AnimationEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        if (e.target instanceof Element) {
+            const autofilled = !!e.target?.matches('*:-webkit-autofill');
+            if (e.animationName === 'mui-auto-fill') {
+                setHasValue(autofilled);
+            }
+
+            if (e.animationName === 'mui-auto-fill-cancel') {
+                setHasValue(autofilled);
+            }
+        }
+    };
+
     const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
         emitChange(evt.target.value);
+        setHasValue(Boolean(evt.target.value));
     };
 
     function toValueType(value: any) {
@@ -55,8 +79,6 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
         }
     }
 
-    let value = controller.value;
-
     const inputRef = useRef<HTMLInputElement>(null);
 
     return (
@@ -74,6 +96,7 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
                 onChange={onChange}
                 onFocus={controller.onFocus || undefined}
                 onBlur={controller.onBlur || undefined}
+                autoComplete={controller.autoComplete || undefined}
                 variant={controller.variant || 'standard'}
                 label={controller.label}
                 helperText={controller.help}
@@ -84,10 +107,11 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
                 value={value}
                 type={props.type === Type.PASSWORD && showPassword ? 'text' : props.type}
                 InputLabelProps={{
-                    shrink: NON_TEXT_TYPES.includes(props.type) ? true : undefined,
+                    shrink: hasValue || NON_TEXT_TYPES.includes(props.type) ? true : undefined,
                 }}
                 inputProps={{
                     readOnly: controller.readOnly,
+                    onAnimationStart: animationStartHandler,
                 }}
                 InputProps={
                     props.type === Type.PASSWORD

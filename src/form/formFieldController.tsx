@@ -23,6 +23,7 @@ export interface FormFieldControllerProps<V = any> {
     variant?: FormInputProps['variant'];
     onFocus?: FormInputProps['onFocus'];
     onBlur?: FormInputProps['onBlur'];
+    autoComplete?: FormInputProps['autoComplete'];
 }
 
 export interface FormFieldController<V = any> {
@@ -43,6 +44,7 @@ export interface FormFieldController<V = any> {
     variant?: FormInputProps['variant'];
     onFocus?: FormInputProps['onFocus'];
     onBlur?: FormInputProps['onBlur'];
+    autoComplete?: FormInputProps['autoComplete'];
 }
 
 export const useFormFieldController = <T = any,>(props: FormFieldControllerProps<T>): FormFieldController<T> => {
@@ -184,6 +186,7 @@ export const useFormFieldController = <T = any,>(props: FormFieldControllerProps
         variant: props.variant,
         onFocus: props.onFocus,
         onBlur: props.onBlur,
+        autoComplete: props.autoComplete,
     };
 };
 
