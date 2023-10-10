@@ -30,6 +30,7 @@ interface SharedFormFieldProps {
     variant?: FormInputProps['variant'];
     onFocus?: FormInputProps['onFocus'];
     onBlur?: FormInputProps['onBlur'];
+    autoComplete?: FormInputProps['autoComplete'];
 }
 
 export interface FormFieldProps extends SharedFormFieldProps {

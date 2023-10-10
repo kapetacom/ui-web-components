@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState } from 'react';
-import { AsyncValidatorFunction, debouncedValidator, FormButtons, FormContainer } from '../src';
+import { AsyncValidatorFunction, debouncedValidator, FormButtons, FormContainer, FormInput, Type } from '../src';
 import { FormField, FormFieldType } from '../src/form/inputs/FormField';
 import { FormContext, FormContextWatcher, useFormContextField } from '../src/form/FormContext';
 import { Box, Button, Divider, Typography } from '@mui/material';
@@ -571,6 +571,47 @@ export const CustomFormValidation = () => {
             <FormField name={'fail'} label={'Fails'} validation={['required']} />
             <FormButtons>
                 <Button variant={'contained'} color={'error'}>
+                    Reset
+                </Button>
+                <Button variant={'contained'} type={'submit'} color={'primary'}>
+                    Save
+                </Button>
+            </FormButtons>
+        </FormContainer>
+    );
+};
+
+export const LoginAutocomplete = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    /**
+     * This story test that the autoComplete props gets passed to the input and show up in the DOM.
+     */
+
+    return (
+        <FormContainer>
+            <FormInput
+                name={'email'}
+                label={'E-mail'}
+                validation={['required', 'email']}
+                onChange={(fieldName: string, userInput: string) => setEmail(userInput)}
+                value={email}
+                variant="outlined"
+                autoComplete="email"
+            />
+            <FormInput
+                name={'password'}
+                label={'Password'}
+                type={Type.PASSWORD}
+                validation={['required']}
+                onChange={(fieldName: string, userInput: string) => setPassword(userInput)}
+                value={password}
+                variant="outlined"
+                autoComplete="current-password"
+            />
+            <FormButtons>
+                <Button variant={'text'} type="reset" color={'inherit'}>
                     Reset
                 </Button>
                 <Button variant={'contained'} type={'submit'} color={'primary'}>
