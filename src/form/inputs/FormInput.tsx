@@ -28,6 +28,8 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
         setShowPassword((prev) => !prev);
     };
 
+    let value = controller.value;
+
     /**
      * The reason we track if the FormInput has a value and if it has been autofilled by the browser
      * is because of a styling bug where the label doesn't animate up to its shrink state when the
@@ -35,7 +37,7 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
      * * Chromium bug ticket: https://bugs.chromium.org/p/chromium/issues/detail?id=1166619
      * * Workaround inspired by: https://stackoverflow.com/a/76927964
      */
-    const [hasValue, setHasValue] = useState(false);
+    const [hasValue, setHasValue] = useState(Boolean(value));
     const animationStartHandler = (e: React.AnimationEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         if (e.target instanceof Element) {
             const autofilled = !!e.target?.matches('*:-webkit-autofill');
@@ -76,8 +78,6 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
             props.onChange(controller.name, typedValue);
         }
     }
-
-    let value = controller.value;
 
     const inputRef = useRef<HTMLInputElement>(null);
 
