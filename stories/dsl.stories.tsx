@@ -83,8 +83,6 @@ CoreConfig {
     enabled:boolean = true
     
     gateway:Instance
-    
-    gatewayResource:InstanceProvider
 }`;
 
 const CONFIGURATION_ENTITIES: DSLEntity[] = [

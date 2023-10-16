@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { EntityEditor } from '../src/entities/EntityEditor';
 import { Entity, EntityType } from '@kapeta/schemas';
-import { TYPE_INSTANCE, TYPE_INSTANCE_PROVIDER } from '../src';
+import { TYPE_INSTANCE } from '../src';
 
 export default {
     title: 'Entity Editor',
@@ -37,11 +37,6 @@ const ENTITIES: Entity[] = [
             gateway: {
                 ref: TYPE_INSTANCE,
                 description: 'Gateway',
-            },
-            gatewayResource: {
-                ref: TYPE_INSTANCE_PROVIDER,
-                description: 'Gateway resource',
-                required: true,
             },
         },
     },
