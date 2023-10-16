@@ -62,7 +62,7 @@ export const ConfigurationEditor = (props: ConfigurationEditorProps) => {
         <DSLEditor
             types={true}
             fieldAnnotations={CONFIG_FIELD_ANNOTATIONS.map((a) => a.name)}
-            validTypes={[TYPE_INSTANCE, TYPE_INSTANCE_PROVIDER, ...(props.validTypes ?? [])]}
+            validTypes={[TYPE_INSTANCE, ...(props.validTypes ?? [])]}
             validator={fieldValidator}
             onChange={props.onChange}
             methods={false}
