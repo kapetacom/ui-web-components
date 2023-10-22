@@ -83,6 +83,8 @@ export * from './utils/hexagon';
 export * from './utils/rounding';
 export * from './utils/global-object';
 export * from './utils/desktop';
+export * from './utils/scroll-shadow';
+export * from './utils/InfoBox';
 
 export * from './special/Logo';
 export * from './special/Page';
