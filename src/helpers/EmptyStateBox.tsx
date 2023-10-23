@@ -2,9 +2,9 @@ import React from 'react';
 import { Box, Paper, PaperProps, Typography } from '@mui/material';
 import { EmptyStateIcon, EmptyStateIconName } from './EmptyStateIcon';
 
-export interface EmptyStateBoxProps extends PaperProps {
-    title: string;
-    description?: string;
+export interface EmptyStateBoxProps extends Omit<PaperProps, 'title'> {
+    title: React.ReactNode;
+    description?: React.ReactNode;
     actions?: React.ReactNode;
     icon?: EmptyStateIconName;
     size?: number;
