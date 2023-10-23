@@ -65,3 +65,19 @@ export const WithInvoiceIcon: Story = {
         icon: 'invoice',
     },
 };
+
+export const WithLaunchIcon: Story = {
+    args: {
+        title: 'More about plans',
+        description: '',
+        icon: 'launch',
+    },
+};
+
+export const WithLaunchpadIcon: Story = {
+    args: {
+        title: 'More about plans',
+        description: '',
+        icon: 'launchpad',
+    },
+};
