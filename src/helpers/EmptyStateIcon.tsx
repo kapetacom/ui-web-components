@@ -447,8 +447,8 @@ export const EmptyStateIcon = (props: EmptyStateIconProps) => {
             emptyStateSvg = (
                 <svg
                     style={{ marginLeft: '-10px' }}
-                    width={(100 / size) * 120}
-                    height={(100 / size) * 115}
+                    width={(size / 100) * 120}
+                    height={(size / 100) * 115}
                     viewBox="0 0 198 186"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -645,8 +645,8 @@ export const EmptyStateIcon = (props: EmptyStateIconProps) => {
         case 'launchpad':
             emptyStateSvg = (
                 <svg
-                    width={(100 / size) * 120}
-                    height={(100 / size) * 115}
+                    width={(size / 100) * 120}
+                    height={(size / 100) * 115}
                     viewBox="0 0 180 180"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
