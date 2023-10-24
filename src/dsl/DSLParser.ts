@@ -2,7 +2,14 @@ import Peggy, { ParserTracer } from 'peggy';
 
 // @ts-ignore
 import parser from './grammars/grammar_dsl.pegjs';
-import { BUILT_IN_TYPES, DSLLanguageOptions, DSLResult, METHOD_ANNOTATIONS, PARAMETER_ANNOTATIONS } from './types';
+import {
+    BUILT_IN_TYPES,
+    DSLLanguageOptions,
+    DSLResult,
+    METHOD_ANNOTATIONS,
+    PARAMETER_ANNOTATIONS,
+    STRINGABLE_TYPES,
+} from './types';
 
 interface SoftError {
     type: string;
@@ -48,6 +55,7 @@ export const DSLParser = {
             options.validTypes = [...options.validTypes];
         }
 
+        options.stringableTypes = STRINGABLE_TYPES.map((t) => t.name);
         options.validTypes.push(...BUILT_IN_TYPES.map((t) => t.name));
 
         const entities = parser.parse(code, { ...options });

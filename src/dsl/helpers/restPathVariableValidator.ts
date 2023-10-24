@@ -90,17 +90,6 @@ export const restPathVariableValidator = (entity: PEGValidationEntity<DSLMethod>
             return;
         }
 
-        const stdType = toStandardType(parameter.type);
-
-        if (!isStringableType(stdType.name)) {
-            reportError(
-                `Parameter type can not be used in paths for parameter ${
-                    parameter.name
-                }. Supported types are ${STRINGABLE_TYPES.map((t) => t.name).join(', ')}`,
-                getLocation(parameter)
-            );
-        }
-
         const pathVariableId = getPathVariableId(parameter);
 
         if (pathVariables.indexOf(pathVariableId) === -1) {

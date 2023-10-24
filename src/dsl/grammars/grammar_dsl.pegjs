@@ -473,10 +473,24 @@ parameter_type
       }
 
 parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:parameter_type _ {
+
+    console.log('Got here?', name, type, annotations)
     if (!options.ignoreSemantics) {
-        if (options.rest &&
-            annotations.length > 1) {
-            softError(`REST method parameters should have at most 1 annotation`);
+        if (options.rest) {
+            if (annotations.length > 1) {
+                _error(`REST method parameters should have at most 1 annotation`);
+            } else if (annotations.length < 1) {
+                _error(`REST method parameter must have exactly one of these annotations:  ${options.parameterAnnotations.join(', ')}`);
+            } else {
+                var parmType = annotations[0].type;
+                var valueType = typeof type === 'string' ? type : type?.name;
+                if (valueType &&
+                    options.stringableTypes &&
+                    parmType.toLowerCase() !== '@body' &&
+                    !options.stringableTypes.includes(valueType)) {
+                    _error(`Value type "${valueType}" can not be used with a ${parmType} annotation. Value must be one of these types: ${options.stringableTypes.join(', ')}`);
+                }
+            }
         }
     }
 
