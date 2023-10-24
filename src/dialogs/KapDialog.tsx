@@ -15,7 +15,7 @@ import CloseIcon from '@mui/icons-material/Close';
 const KapDialogContext = createContext<{ onClose?: (...args: any[]) => any }>({});
 
 export type KapDialogProps<OnCloseFn extends (...args: any[]) => any> = Omit<MuiDialogProps, 'onClose'> & {
-    onClose: OnCloseFn;
+    onClose?: OnCloseFn;
 };
 export type KapDialogTitleProps = MuiDialogTitleProps;
 export type KapDialogContentProps = MuiDialogContentProps;
@@ -34,25 +34,23 @@ export const KapDialog = <OnCloseFn extends (...args: any[]) => any>(props: KapD
 KapDialog.Title = ({ sx, children, ...props }: KapDialogTitleProps) => {
     const { onClose } = useContext(KapDialogContext);
 
-    if (!onClose) {
-        throw new Error('KapDialog.Title must be used inside a KapDialog component');
-    }
-
     return (
         <MuiDialogTitle sx={{ pr: 6, ...sx }} noWrap {...props}>
             {children}
-            <IconButton
-                aria-label="close"
-                onClick={(event) => onClose(event)}
-                sx={{
-                    position: 'absolute',
-                    right: 8,
-                    top: 8,
-                    color: 'action.active',
-                }}
-            >
-                <CloseIcon />
-            </IconButton>
+            {onClose && (
+                <IconButton
+                    aria-label="close"
+                    onClick={(event) => onClose(event)}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: 'action.active',
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            )}
         </MuiDialogTitle>
     );
 };
