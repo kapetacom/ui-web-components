@@ -100,6 +100,7 @@ export interface DSLOptions {
     types?: boolean;
     methods?: boolean;
     validTypes?: string[];
+    stringableTypes?: string[];
     ignoreSemantics?: boolean;
 }
 
