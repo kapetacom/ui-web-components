@@ -129,7 +129,7 @@ export const toDateTextInner = (props: DateDisplayProps) => {
         if (timeDiff < timeDiffRelative) {
             return {
                 relative: true,
-                text: dt.toRelative(relativeOptions),
+                text: dt.toRelative({ locale: 'en-US', ...relativeOptions }),
             };
         }
     }
