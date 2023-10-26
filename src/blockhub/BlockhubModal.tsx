@@ -1,13 +1,12 @@
 import { Plan } from '@kapeta/schemas';
 import { Button, Dialog, DialogActions, DialogContent, IconButton, Stack, Typography } from '@mui/material';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { AsyncState } from 'react-use/lib/useAsync';
 import { AssetDisplay, AssetFetcher } from './types';
 import { Blockhub, BlockhubCategory, BlockhubMode } from './Blockhub';
 import { InstallerService } from './AssetInstallButton';
-import { useWindowResize } from '../utils/resize-hook';
 import { BlockhubDetails, BlockHubDetailsPreviewer } from './BlockhubDetails';
 import Close from '@mui/icons-material/Close';
 import { Asset } from '@kapeta/ui-web-types';
@@ -38,14 +37,6 @@ export const BlockhubModal = (props: Props) => {
         setCurrentAssetTab('general');
     };
 
-    const height = useWindowResize(() => {
-        if (!props.open) {
-            return null;
-        }
-        //We force a fixed height
-        return window.innerHeight - 64 + 'px';
-    }, [props.open]);
-
     useEffect(() => {
         if (props.open) {
             resetState();
@@ -53,7 +44,16 @@ export const BlockhubModal = (props: Props) => {
     }, [props.open]);
 
     return (
-        <Dialog maxWidth={'xl'} fullWidth={true} open={props.open} onClose={props.onClose}>
+        <Dialog
+            open={props.open}
+            onClose={props.onClose}
+            className="blockhub-dialog"
+            sx={{
+                '& > .MuiDialog-container > .MuiPaper-root': {
+                    maxWidth: 'none',
+                },
+            }}
+        >
             <IconButton
                 sx={{
                     position: 'absolute',
@@ -68,14 +68,8 @@ export const BlockhubModal = (props: Props) => {
 
             <DialogContent
                 sx={{
-                    height,
+                    height: 'calc(100vh - 64px)',
                     padding: 0,
-                    '.blockhub-main': {
-                        paddingBottom: 0,
-                    },
-                    '.blockhub-grid': {
-                        pb: 1,
-                    },
                 }}
             >
                 {currentAsset ? (

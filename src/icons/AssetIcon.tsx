@@ -2,14 +2,14 @@ import React from 'react';
 import { IconValue, Kind } from '@kapeta/schemas';
 import './AssetIcon.less';
 
-interface Props {
+interface KindIconProps {
     kind: string;
     icon?: IconValue;
     size?: number;
     title?: string;
 }
 
-export const KindIcon = (props: Props) => {
+export const KindIcon = (props: KindIconProps) => {
     const size = props.size || 16;
     const style = {
         fontSize: size + 'px',
@@ -52,11 +52,11 @@ export const KindIcon = (props: Props) => {
     return <i style={style} className="asset-icon kap-icon-block" title={props.title} />;
 };
 
-interface PropsWithText extends Props {
+interface KindIconTextProps extends KindIconProps {
     title: string;
 }
 
-export const KindIconText = (props: PropsWithText) => {
+export const KindIconText = (props: KindIconTextProps) => {
     let text = props.title;
     if (props.kind === 'core/plan') {
         text = 'Plan';
@@ -69,11 +69,11 @@ export const KindIconText = (props: PropsWithText) => {
     );
 };
 
-interface AssetProps {
+interface AssetKindIconProps {
     asset: Kind;
     size?: number;
 }
-export const AssetKindIcon = (props: AssetProps) => {
+export const AssetKindIcon = (props: AssetKindIconProps) => {
     return (
         <KindIcon
             kind={props.asset.kind}
@@ -84,7 +84,7 @@ export const AssetKindIcon = (props: AssetProps) => {
     );
 };
 
-export const AssetKindIconText = (props: AssetProps) => {
+export const AssetKindIconText = (props: AssetKindIconProps) => {
     let title = props.asset.metadata.title ?? props.asset.metadata.name;
     return <KindIconText kind={props.asset.kind} icon={props.asset.spec.icon} size={props.size} title={title} />;
 };

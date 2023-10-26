@@ -3,9 +3,9 @@ import { Meta, StoryObj } from '@storybook/react';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
-import Tooltip from '@mui/material/Tooltip';
 import { ConfirmProvider, useConfirm } from '../src/confirm';
 import { useConfirmDelete, useConfirmInfo, useConfirmSuccess, useConfirmWarn } from '../src/confirm/useConfirm';
+import { Tooltip } from '../src';
 
 const meta: Meta = {
     title: 'Dialogs/Confirm',

@@ -9,6 +9,7 @@ import { AssetKindIconText } from '../icons/AssetIcon';
 
 import useSWR from 'swr';
 import { toClass } from '@kapeta/ui-web-utils';
+import { Tooltip } from '../tooltip/Tooltip';
 
 export function BlockhubStats(props: { stats: { rating?: number; downloads?: number } }) {
     return (
@@ -80,13 +81,14 @@ export function DependencyKindLabel(props: { dependency: { name: string }; fetch
 
 export interface BlockhubTileProps {
     title: string;
-    subtitle: string;
+    handle: string;
     description: string;
     version?: string;
 
     icon?: React.ReactNode;
     actionButton?: React.ReactNode;
-    labels?: React.ReactNode[];
+    assetKindLabel?: React.ReactNode;
+    languageTargetLabel?: React.ReactNode[];
 
     href?: string;
     onClick?: () => void;
@@ -141,37 +143,28 @@ export function BlockhubTile(props: BlockhubTileProps) {
                         sx={{ height: '100%', boxSizing: 'border-box' }}
                     >
                         {/* Title group */}
-                        <Stack direction={'row'} gap={2}>
-                            <div>{props.icon}</div>
+                        <Stack direction={'row'} gap={2} alignItems={'flex-start'}>
+                            {props.icon}
 
                             {/* Flexbox introduces a new initial value for min-width and min-height: auto. */}
                             {/* To make the overflow hidden work, we need to reset it to zero */}
                             <Stack flexGrow={1} minWidth={0}>
-                                <Stack direction={'row'} gap={1} alignItems={'center'} justifyContent={'space-between'}>
-                                    <Typography
-                                        variant="h6"
-                                        component="div"
-                                        sx={{
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            whiteSpace: 'nowrap',
-                                            flex: 1,
-                                        }}
-                                        title={props.title}
-                                    >
+                                <Tooltip title={props.title}>
+                                    <Typography variant="h6" component="div" noWrap>
                                         {props.title}
                                     </Typography>
+                                </Tooltip>
 
-                                    {props.actionButton}
-                                </Stack>
-                                <Typography
-                                    variant="body2"
-                                    color="text.secondary"
-                                    sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-                                >
-                                    {props.subtitle}
+                                <Typography variant="caption" color="text.primary" noWrap>
+                                    {props.assetKindLabel}
+                                </Typography>
+
+                                <Typography variant="caption" color="text.primary" noWrap>
+                                    By {props.handle}
                                 </Typography>
                             </Stack>
+
+                            {props.actionButton}
                         </Stack>
 
                         {/* Description group */}
@@ -204,12 +197,12 @@ export function BlockhubTile(props: BlockhubTileProps) {
                         {/* Footer group */}
 
                         <Stack direction={'row'} gap={2} justifyContent="space-between" alignItems={'flex-end'}>
-                            <Stack sx={{ fontSize: '12px' }} gap={'4px'}>
+                            <Stack sx={{ fontSize: '12px' }} gap={'4px'} minWidth={0}>
                                 {props.version ? (
                                     <Box sx={{ textDecoration: 'underline', lineHeight: '166%' }}>{props.version}</Box>
                                 ) : null}
                                 <Stack className="labels" direction={'row'} gap="5px" alignItems={'center'}>
-                                    {props.labels}
+                                    {props.languageTargetLabel}
                                 </Stack>
                             </Stack>
 
