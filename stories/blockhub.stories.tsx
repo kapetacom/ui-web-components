@@ -249,6 +249,31 @@ export const DetailBlockType = () => {
     );
 };
 
+export const DetailBlockTypeNotKapeta = () => {
+    const [currentTab, setCurrentTab] = React.useState('general');
+    return (
+        <DefaultContext>
+            <BlockhubDetails
+                asset={{
+                    ...FrontendBlockTypeAsset,
+                    content: {
+                        ...FrontendBlockTypeAsset.content,
+                        metadata: {
+                            ...FrontendBlockTypeAsset.content.metadata,
+                            name: 'not-kapeta/frontend',
+                        },
+                    },
+                }}
+                versionInfo={VersionInfo}
+                fetcher={assetFetcher}
+                {...getRelated(FrontendBlockTypeAsset)}
+                tabId={currentTab}
+                onTabChange={(tabId) => setCurrentTab(tabId)}
+            />
+        </DefaultContext>
+    );
+};
+
 export const DetailLanguageTargetDesktop = () => {
     const [currentTab, setCurrentTab] = React.useState('general');
     const { installerService } = createInstaller();
