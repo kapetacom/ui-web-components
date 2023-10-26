@@ -236,7 +236,7 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
                     minWidth: '465px',
                     maxWidth: '465px',
                     minHeight: '100%',
-                    boxSizing: 'border-box',
+
                     p: 8,
                 }}
                 gap={2}
@@ -248,7 +248,6 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
                         padding: 2,
                         height: '192px',
                         minHeight: '192px',
-                        boxSizing: 'border-box',
                     }}
                 >
                     {props.previewRenderer ? (

@@ -60,7 +60,6 @@ export function BlockhubGridContainer(props: BlockhubGridProps) {
             sx={{
                 width: '100%',
                 height: '100%',
-                boxSizing: 'border-box',
             }}
         >
             <Stack
@@ -117,7 +116,6 @@ export function BlockhubGridContainer(props: BlockhubGridProps) {
                         width: 'calc(100% + 44px)',
                         paddingRight: '22px',
                         '& > .blockhub-tile': {
-                            boxSizing: 'border-box',
                             display: 'block',
                             width: '366px',
                             minWidth: '366px',
