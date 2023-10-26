@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 import { AssetDisplay, CoreTypes } from './types';
-import { Box, Paper, Stack, Tooltip, TooltipProps, Typography, styled, tooltipClasses } from '@mui/material';
+import { Box, Paper, Stack, Typography } from '@mui/material';
 
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { AsyncState } from 'react-use/lib/useAsync';
@@ -10,6 +10,7 @@ import { AssetType, AssetTypeFilter, AssetTypes } from './AssetTypeFilter';
 import { AssetSortSelect, Sorting } from './AssetSortSelect';
 import { orderBy } from 'lodash';
 import { SimpleLoader } from '../helpers/SimpleLoader';
+import { Tooltip } from '../tooltip/Tooltip';
 
 export interface BlockhubGridProps {
     title?: string;
@@ -19,22 +20,6 @@ export interface BlockhubGridProps {
     assets: AsyncState<AssetDisplay[]>;
     renderAsset: (asset: AssetDisplay) => React.ReactNode;
 }
-
-const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-    [`& .${tooltipClasses.arrow}::before`]: {
-        color: '#fff',
-    },
-    [`& .${tooltipClasses.tooltip}`]: {
-        backgroundColor: '#fff',
-        color: 'rgba(0, 0, 0, 0.87)',
-        maxWidth: 220,
-        fontSize: theme.typography.pxToRem(12),
-        boxShadow: '0px 0px 20px rgba(5, 9, 13, 0.16)',
-        padding: theme.spacing(1, 2),
-    },
-}));
 
 export function BlockhubGridContainer(props: BlockhubGridProps) {
     const assetTypeFilter = props.filter ?? 'ALL';
@@ -73,7 +58,6 @@ export function BlockhubGridContainer(props: BlockhubGridProps) {
         <Box
             component="main"
             sx={{
-                maxWidth: '1152px',
                 width: '100%',
                 height: '100%',
                 boxSizing: 'border-box',
@@ -83,12 +67,11 @@ export function BlockhubGridContainer(props: BlockhubGridProps) {
                 sx={{
                     height: '100%',
                     '& > .MuiStack-root': {
-                        width: '100%',
                         flex: 0,
-                        paddingRight: '22px',
                         '&.blockhub-grid': {
                             flex: 1,
                             overflowY: 'auto',
+                            overflowX: 'hidden',
                         },
                     },
                 }}
@@ -97,7 +80,7 @@ export function BlockhubGridContainer(props: BlockhubGridProps) {
                 gap={2}
             >
                 {props.title && (
-                    <Stack direction="row" alignItems="center" gap={2}>
+                    <Stack direction="row" alignItems="center" gap={2} sx={{ width: '100%' }}>
                         <Typography
                             variant="h5"
                             sx={{
@@ -110,14 +93,14 @@ export function BlockhubGridContainer(props: BlockhubGridProps) {
                         </Typography>
 
                         {props.tooltip ? (
-                            <HtmlTooltip title={props.tooltip} arrow placement="right">
+                            <Tooltip title={props.tooltip} placement="right">
                                 <InfoIcon />
-                            </HtmlTooltip>
+                            </Tooltip>
                         ) : null}
                     </Stack>
                 )}
 
-                <Stack direction="row">
+                <Stack direction="row" sx={{ width: '100%' }}>
                     <AssetTypeFilter value={assetTypeFilter} onChange={(t) => props.onFilterChange(t)} />
                     <Box sx={{ flexGrow: 1 }} />
                     <AssetSortSelect value={sorting} onChange={(s) => setSorting(s)} />
@@ -130,11 +113,14 @@ export function BlockhubGridContainer(props: BlockhubGridProps) {
                     alignContent={'flex-start'}
                     className={'blockhub-grid'}
                     sx={{
-                        pb: 1,
+                        mb: 2,
+                        width: 'calc(100% + 44px)',
+                        paddingRight: '22px',
                         '& > .blockhub-tile': {
                             boxSizing: 'border-box',
                             display: 'block',
                             width: '366px',
+                            minWidth: '366px',
                             maxWidth: '366px',
                             height: '246px',
                         },

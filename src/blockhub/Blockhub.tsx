@@ -28,7 +28,6 @@ import { parseKapetaUri } from '@kapeta/nodejs-utils';
 import { Asset } from '@kapeta/ui-web-types';
 import { useAsync } from 'react-use';
 import { AsyncState } from 'react-use/lib/useAsync';
-import { Tooltip } from '../tooltip/Tooltip';
 import { AssetType } from './AssetTypeFilter';
 
 const toId = (asset: AssetDisplay) => {
@@ -166,179 +165,194 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
     const selectBlocksForPlan = props.mode === BlockhubMode.MODAL_SELECTION && isForPlan;
 
     return (
-        <div
+        <Stack
             ref={ref}
             className={'blockhub-container'}
-            style={{
+            direction={'row'}
+            sx={{
                 width: '100%',
                 height: '100%',
                 backgroundColor: 'white',
             }}
         >
-            <Stack
-                direction={'row'}
+            <Box
+                className="blockhub-details"
                 sx={{
-                    width: '100%',
-                    height: '100%',
-                    '& > .blockhub-main': {
-                        boxSizing: 'content-box',
-                        flex: 1,
-                        bgcolor: '#EFEFEF',
-                        padding: '29px 44px 0px 44px',
+                    width: 256,
+                    minWidth: 256,
+                    maxWidth: 256,
+                }}
+            >
+                <List
+                    sx={{
+                        gap: '24px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                        alignSelf: 'stretch',
+                        padding: '24px 16px',
+                        '.MuiListItem-root,.MuiListSubheader-root': {
+                            display: 'block',
+                            width: '100%',
+                        },
+                        '.MuiButtonBase-root': {
+                            borderRadius: '10px',
+                        },
+                    }}
+                >
+                    <ListSubheader
+                        sx={{
+                            padding: '0',
+                        }}
+                    >
+                        <Typography
+                            sx={{
+                                fontSize: '20px',
+                                fontWeight: '500',
+                                lineHeight: '150%',
+                                letterSpacing: '0.15px',
+                                marginBottom: '16px',
+                                color: 'text.primary',
+                            }}
+                        >
+                            Block Hub
+                        </Typography>
+                        <Divider variant={'fullWidth'} />
+                    </ListSubheader>
+                    {tabs.map((tabInfo, index) => (
+                        <ListItem disablePadding={true} key={`nav_${index}`}>
+                            <ListItemButton
+                                disabled={tabInfo.type === BlockhubCategory.PREMIUM}
+                                selected={tab === index}
+                                onClick={() => {
+                                    setTab(index);
+                                    props.onCategoryChange?.(tabInfo.type);
+                                }}
+                            >
+                                <ListItemIcon>{tabInfo.icon}</ListItemIcon>
+                                <ListItemText>
+                                    <Typography>{tabInfo.title}</Typography>
+                                    {tabInfo.type === BlockhubCategory.PREMIUM && (
+                                        <Typography variant={'caption'} color={'secondary.text'}>
+                                            Coming soon!
+                                        </Typography>
+                                    )}
+                                </ListItemText>
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                </List>
+            </Box>
+            <Box
+                className={'blockhub-main'}
+                sx={{
+                    flex: 1,
+                    pb: 2,
+                    bgcolor: '#EFEFEF',
+                    padding: '29px 88px 16px 44px',
+                    overflowX: 'hidden',
+                    transition: 'width 200ms ease-in-out',
+                    width: '500px',
+                    '@media (min-width: 1200px)': {
+                        width: '879px',
+                    },
+                    '@media (min-width: 1600px)': {
+                        width: '1263px',
+                    },
+                    '@media (min-width: 2000px)': {
+                        width: '1644px',
+                    },
+                    '@media (min-width: 2400px)': {
+                        width: '2027px',
+                    },
+                    '@media (min-width: 2800px)': {
+                        width: '2408px',
                     },
                 }}
             >
-                <Box
-                    sx={{
-                        width: 256,
-                    }}
-                >
-                    <List
-                        sx={{
-                            gap: '24px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'flex-start',
-                            alignSelf: 'stretch',
-                            padding: '24px 16px',
-                            '.MuiListItem-root,.MuiListSubheader-root': {
-                                display: 'block',
-                                width: '100%',
-                            },
-                            '.MuiButtonBase-root': {
-                                borderRadius: '10px',
-                            },
-                        }}
-                    >
-                        <ListSubheader
-                            sx={{
-                                padding: '0',
-                            }}
-                        >
-                            <Typography
-                                sx={{
-                                    fontSize: '20px',
-                                    fontWeight: '500',
-                                    lineHeight: '150%',
-                                    letterSpacing: '0.15px',
-                                    marginBottom: '16px',
-                                    color: 'text.primary',
+                <BlockhubGridContainer
+                    assets={props.assets}
+                    filter={props.filter ?? (selectBlocksForPlan ? 'BLOCK' : undefined)}
+                    title={currentTab.title}
+                    onFilterChange={props.onFilterChange}
+                    tooltip={currentTab.tooltip}
+                    renderAsset={(asset) => {
+                        const url = props.linkMaker
+                            ? props.linkMaker(asset)
+                            : `/${asset.content.metadata.name}/${asset.version}`;
+                        const id = toId(asset);
+                        const uri = parseKapetaUri(asset.content.metadata.name);
+                        const title = asset.content.metadata.title || uri.name;
+                        const isBlock = !asset.content.kind.startsWith('core/');
+                        const showCheckbox = props.mode === BlockhubMode.MODAL_SELECTION && (isBlock || !isForPlan);
+
+                        const isSelected = showCheckbox ? currentSelection.some((a) => toId(a) === id) : false;
+
+                        const actionButton = showCheckbox ? (
+                            <TileCheckbox
+                                service={props.installerService}
+                                checked={isSelected}
+                                assetRef={id}
+                                onChange={(checked) => {
+                                    if (!props.onSelectionChange) {
+                                        return;
+                                    }
+                                    if (checked) {
+                                        props.onSelectionChange([...currentSelection, asset]);
+                                    } else {
+                                        props.onSelectionChange(currentSelection.filter((item) => toId(item) !== id));
+                                    }
                                 }}
-                            >
-                                Block Hub
-                            </Typography>
-                            <Divider variant={'fullWidth'} />
-                        </ListSubheader>
-                        {tabs.map((tabInfo, index) => (
-                            <ListItem disablePadding={true} key={`nav_${index}`}>
-                                <ListItemButton
-                                    disabled={tabInfo.type === BlockhubCategory.PREMIUM}
-                                    selected={tab === index}
-                                    onClick={() => {
-                                        setTab(index);
-                                        props.onCategoryChange?.(tabInfo.type);
-                                    }}
-                                >
-                                    <ListItemIcon>{tabInfo.icon}</ListItemIcon>
-                                    <ListItemText>
-                                        <Typography>{tabInfo.title}</Typography>
-                                        {tabInfo.type === BlockhubCategory.PREMIUM && (
-                                            <Typography variant={'caption'} color={'secondary.text'}>
-                                                Coming soon!
-                                            </Typography>
-                                        )}
-                                    </ListItemText>
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
-                </Box>
-                <Box className={'blockhub-main'}>
-                    <BlockhubGridContainer
-                        assets={props.assets}
-                        filter={props.filter ?? (selectBlocksForPlan ? 'BLOCK' : undefined)}
-                        title={currentTab.title}
-                        onFilterChange={props.onFilterChange}
-                        tooltip={currentTab.tooltip}
-                        renderAsset={(asset) => {
-                            const url = props.linkMaker
-                                ? props.linkMaker(asset)
-                                : `/${asset.content.metadata.name}/${asset.version}`;
-                            const id = toId(asset);
-                            const uri = parseKapetaUri(asset.content.metadata.name);
-                            const title = asset.content.metadata.title || uri.name;
-                            const isBlock = !asset.content.kind.startsWith('core/');
-                            const showCheckbox = props.mode === BlockhubMode.MODAL_SELECTION && (isBlock || !isForPlan);
+                            />
+                        ) : (
+                            <AssetInstallButton
+                                subscriptions={props.subscriptions}
+                                contextHandle={props.contextHandle}
+                                service={props.installerService}
+                                asset={asset}
+                                type={'chip'}
+                            />
+                        );
 
-                            const isSelected = showCheckbox ? currentSelection.some((a) => toId(a) === id) : false;
-
-                            const actionButton = showCheckbox ? (
-                                <TileCheckbox
-                                    service={props.installerService}
-                                    checked={isSelected}
-                                    assetRef={id}
-                                    onChange={(checked) => {
-                                        if (!props.onSelectionChange) {
-                                            return;
-                                        }
-                                        if (checked) {
-                                            props.onSelectionChange([...currentSelection, asset]);
-                                        } else {
-                                            props.onSelectionChange(
-                                                currentSelection.filter((item) => toId(item) !== id)
-                                            );
-                                        }
-                                    }}
-                                />
-                            ) : (
-                                <AssetInstallButton
-                                    subscriptions={props.subscriptions}
-                                    contextHandle={props.contextHandle}
-                                    service={props.installerService}
-                                    asset={asset}
-                                    type={'chip'}
-                                />
-                            );
-
-                            return (
-                                <BlockhubTile
-                                    title={title}
-                                    onClick={() => {
-                                        props.onAssetClick?.(asset);
-                                    }}
-                                    subtitle={`By ${uri.handle}`}
-                                    description={asset.content.metadata.description!}
-                                    icon={<AssetKindIcon size={64} asset={asset.content} />}
-                                    version={asset.version}
-                                    // AssetStats
-                                    stats={{
-                                        downloads: asset.downloadCount,
-                                        rating: asset.rating,
-                                    }}
-                                    href={props.disableNavigation ? undefined : url}
-                                    actionButton={actionButton}
-                                    labels={[
-                                        <DependencyKindLabel
-                                            fetcher={props.fetcher}
-                                            key={'kind'}
-                                            dependency={{ name: asset.content.kind }}
-                                        />,
-                                        ...(asset.dependencies?.map((dep) =>
-                                            dep.type === 'Language target' ? (
-                                                <DependencyKindLabel
-                                                    fetcher={props.fetcher}
-                                                    key={'language-target'}
-                                                    dependency={{ name: dep.name }}
-                                                />
-                                            ) : null
-                                        ) || []),
-                                    ]}
-                                />
-                            );
-                        }}
-                    />
-                </Box>
-            </Stack>
-        </div>
+                        return (
+                            <BlockhubTile
+                                title={title}
+                                onClick={() => {
+                                    props.onAssetClick?.(asset);
+                                }}
+                                handle={uri.handle}
+                                description={asset.content.metadata.description!}
+                                icon={<AssetKindIcon size={64} asset={asset.content} />}
+                                version={asset.version}
+                                // AssetStats
+                                stats={{
+                                    downloads: asset.downloadCount,
+                                    rating: asset.rating,
+                                }}
+                                href={props.disableNavigation ? undefined : url}
+                                actionButton={actionButton}
+                                assetKindLabel={
+                                    <DependencyKindLabel
+                                        fetcher={props.fetcher}
+                                        dependency={{ name: asset.content.kind }}
+                                    />
+                                }
+                                languageTargetLabel={
+                                    asset.dependencies?.map((dep) =>
+                                        dep.type === 'Language target' ? (
+                                            <DependencyKindLabel
+                                                fetcher={props.fetcher}
+                                                key={dep.name}
+                                                dependency={{ name: dep.name }}
+                                            />
+                                        ) : null
+                                    ) || []
+                                }
+                            />
+                        );
+                    }}
+                />
+            </Box>
+        </Stack>
     );
 });

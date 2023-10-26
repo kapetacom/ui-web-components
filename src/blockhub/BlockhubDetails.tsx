@@ -66,19 +66,23 @@ const AutoLoadingTile = (props: Props) => {
     return (
         <BlockhubTile
             title={asset?.content.metadata.title || asset?.content.metadata.name || 'Loading...'}
-            subtitle={`By ${parseKapetaUri(props.asset.name).handle}`}
+            handle={parseKapetaUri(props.asset.name).handle}
             description={asset?.content.metadata.description!}
             icon={asset && <AssetKindIcon size={64} asset={asset.content} />}
             version={version}
             stats={stats}
-            labels={[
-                asset && { name: asset.content.kind },
-                asset?.dependencies?.find((dep) => dep.type === 'Language target'),
-            ].map((dependency) =>
-                dependency ? (
-                    <DependencyKindLabel fetcher={props.fetcher} key={dependency.name} dependency={dependency} />
-                ) : null
-            )}
+            assetKindLabel={
+                asset ? <DependencyKindLabel fetcher={props.fetcher} dependency={{ name: asset.content.kind }} /> : null
+            }
+            languageTargetLabel={
+                asset.dependencies
+                    ? asset.dependencies?.map((dep) =>
+                          dep.type === 'Language target' ? (
+                              <DependencyKindLabel fetcher={props.fetcher} key={dep.name} dependency={dep} />
+                          ) : null
+                      )
+                    : []
+            }
             onClick={
                 props.onAssetClick
                     ? () => {
