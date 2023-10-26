@@ -11,7 +11,6 @@ export function BlockhubSidebar(props) {
                 flexShrink: 0,
                 '& .MuiDrawer-paper': {
                     width: drawerWidth,
-                    boxSizing: 'border-box',
                 },
             }}
             variant="permanent"

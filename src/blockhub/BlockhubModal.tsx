@@ -49,6 +49,9 @@ export const BlockhubModal = (props: Props) => {
             onClose={props.onClose}
             className="blockhub-dialog"
             sx={{
+                '*': {
+                    boxSizing: 'border-box',
+                },
                 '& > .MuiDialog-container > .MuiPaper-root': {
                     maxWidth: 'none',
                 },

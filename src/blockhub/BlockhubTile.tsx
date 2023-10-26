@@ -115,7 +115,6 @@ export function BlockhubTile(props: BlockhubTileProps) {
                     display: 'inline-block',
                     width: '100%',
                     height: '100%',
-                    boxSizing: 'border-box',
                 }}
             >
                 {content}
@@ -131,7 +130,7 @@ export function BlockhubTile(props: BlockhubTileProps) {
                     sx={(theme) => ({
                         width: '100%',
                         height: '100%',
-                        boxSizing: 'border-box',
+
                         border: `1px solid ${props.selected ? theme.palette.primary.main : theme.palette.divider}`,
                     })}
                     elevation={0}
@@ -140,7 +139,10 @@ export function BlockhubTile(props: BlockhubTileProps) {
                         gap={2}
                         justifyContent="space-between"
                         p={2}
-                        sx={{ height: '100%', boxSizing: 'border-box' }}
+                        sx={{
+                            height: '100%',
+                            // boxSizing: 'border-box'
+                        }}
                     >
                         {/* Title group */}
                         <Stack direction={'row'} gap={2} alignItems={'flex-start'}>
