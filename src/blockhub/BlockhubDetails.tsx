@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Button, Stack, Tab, Tabs, Typography } from '@mui/material';
 import VerifiedIcon from '@mui/icons-material/VerifiedOutlined';
+import PeopleIcon from '@mui/icons-material/People';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import styled from '@emotion/styled';
 
@@ -16,6 +17,7 @@ import useSWR from 'swr';
 import { AssetInstallButton, InstallerService } from './AssetInstallButton';
 import { Size } from '@kapeta/ui-web-types';
 import { toDateText } from '../dates';
+import { Tooltip } from '../tooltip/Tooltip';
 
 export type BlockHubDetailsPreviewer = (asset: AssetDisplay, size: Size) => React.ReactNode;
 
@@ -111,6 +113,8 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
     const isPublicAsset = isPublic(props.asset.content);
     const currentTab = props.tabId || 'general';
 
+    const handle = parseKapetaUri(props.asset.content.metadata.name).handle;
+
     return (
         <Stack direction={'row'} alignItems={'stretch'} sx={{ minHeight: '100%', width: '100%' }}>
             <Box p={3} position={'fixed'}>
@@ -121,7 +125,17 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
             </Box>
             <Box flexBasis={120} p={3} />
             <Stack direction="row" sx={{ p: 2, pt: 8 }} gap={2}>
-                <VerifiedIcon sx={{ width: '35px', height: '35px' }} color="secondary" />
+                {handle === 'kapeta' && (
+                    <Tooltip title={'This asset is maintained by Kapeta'}>
+                        <VerifiedIcon sx={{ width: '35px', height: '35px' }} color="secondary" />
+                    </Tooltip>
+                )}
+
+                {handle !== 'kapeta' && (
+                    <Tooltip title={'This asset is maintained by a member of the Kapeta community'}>
+                        <PeopleIcon sx={{ width: '35px', height: '35px' }} color="inherit" />
+                    </Tooltip>
+                )}
 
                 <Box width={'614px'}>
                     <Stack gap={2}>
@@ -129,7 +143,7 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
                             {props.asset.content.metadata.title || props.asset.content.metadata.name}
                         </Typography>
 
-                        <Typography>By {parseKapetaUri(props.asset.content.metadata.name).handle}</Typography>
+                        <Typography>By {handle}</Typography>
 
                         <Typography variant="body2">
                             {props.asset.content.metadata.description || 'No description provided.'}
