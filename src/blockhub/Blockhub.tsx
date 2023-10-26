@@ -181,6 +181,7 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                     width: 256,
                     minWidth: 256,
                     maxWidth: 256,
+                    overflowY: 'auto',
                 }}
             >
                 <List
