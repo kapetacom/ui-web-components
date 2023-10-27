@@ -18,11 +18,18 @@ import MoreVertRounded from '@mui/icons-material/MoreVertRounded';
 import { grey } from '@mui/material/colors';
 import { useConfirm } from '../confirm';
 import { parseKapetaUri } from '@kapeta/nodejs-utils';
+import { ArrowUpward } from '@mui/icons-material';
+
+export enum AssetInstallStatus {
+    NOT_INSTALLED = 1,
+    UPGRADABLE = 2,
+    INSTALLED = 3,
+}
 
 export interface InstallerService {
     install(assetRef: string): Promise<void>;
 
-    get(assetRef: string): Promise<boolean>;
+    get(assetRef: string): Promise<AssetInstallStatus>;
 
     uninstall?: (assetRef: string) => Promise<void>;
     onChange?: (assetRef: string, cb: () => void | Promise<void>) => () => void;
@@ -62,11 +69,17 @@ export const AssetInstallButton = (props: Props) => {
     });
 
     useEffect(() => {
+        console.log('service or active changed', active);
+        installedAsset.mutate();
+    }, [props.service?.get, active]);
+
+    useEffect(() => {
         if (!props.service?.onChange) {
             return () => {};
         }
 
         return props.service?.onChange(assetRef, async () => {
+            console.log('Asset changed', assetRef);
             await installedAsset.mutate();
         });
     }, [props.service?.onChange, installedAsset]);
@@ -108,23 +121,33 @@ export const AssetInstallButton = (props: Props) => {
     const isProcessing =
         props.forceLoading === true || !installTask.ready || installTask.active || installedAsset.isLoading;
 
+    const isLatestVersion = installedAsset.data === AssetInstallStatus.INSTALLED;
+    const canUpgrade = installedAsset.data === AssetInstallStatus.UPGRADABLE;
+    const isInstalled = isLatestVersion || canUpgrade;
+
     let icon = active ? (
-        installedAsset.data ? (
+        isLatestVersion ? (
             <DownloadDone />
+        ) : canUpgrade ? (
+            <ArrowUpward />
         ) : (
             <ArrowDownward />
         )
     ) : props.subscriptions ? (
         <DownloadDone />
+    ) : canUpgrade ? (
+        <ArrowUpward />
     ) : (
         <InstallDesktop />
     );
 
     let longText = active
-        ? installedAsset.data
+        ? isLatestVersion
             ? props.subscriptions
                 ? 'Added'
                 : 'Installed'
+            : canUpgrade
+            ? `Upgrade ${kindNameLC}`
             : props.subscriptions
             ? `Add ${kindNameLC}`
             : `Install ${kindNameLC}`
@@ -133,16 +156,18 @@ export const AssetInstallButton = (props: Props) => {
         : 'Open desktop app to install';
 
     let shortText: string | React.ReactNode | null = active
-        ? installedAsset.data
+        ? isLatestVersion
             ? 'Open'
+            : canUpgrade
+            ? `Upgrade`
             : props.subscriptions
             ? `Add`
             : `Get`
         : '';
 
-    let chipBgColor = active ? (installedAsset.data ? 'primary.main' : `tertiary.main`) : grey[500];
+    let chipBgColor = active ? (isLatestVersion ? 'primary.main' : `tertiary.main`) : grey[500];
 
-    let chipFgColor: string = active ? (installedAsset.data ? grey[100] : grey[100]) : grey[100];
+    let chipFgColor: string = active ? (isLatestVersion ? grey[100] : grey[100]) : grey[100];
 
     if (installedAsset.isLoading) {
         longText = 'Checking...';
@@ -161,34 +186,43 @@ export const AssetInstallButton = (props: Props) => {
     }
 
     const subMenu: SubMenuItem[] = useMemo(() => {
-        const canRemove = !!(props.service?.uninstall && active && installedAsset.data);
+        const canRemove = !!(props.service?.uninstall && active && isInstalled);
+        const out: SubMenuItem[] = [];
         if (canRemove) {
-            return [
-                {
-                    label: 'Remove',
-                    icon: <Delete />,
-                    onClick: async () => {
-                        const ok = await confirm({
-                            title: props.subscriptions ? `Remove ${kindNameLC}` : `Uninstall ${kindNameLC}`,
-                            content: `
+            out.push({
+                label: 'Remove',
+                icon: <Delete />,
+                onClick: async () => {
+                    const ok = await confirm({
+                        title: `Remove ${kindNameLC}`,
+                        content: `
                         Are you sure you want to remove ${props.asset.content.metadata.name}? 
                         This will not delete anything from your disk.
                         `,
-                            confirmationText: props.subscriptions ? 'Remove' : 'Uninstall',
-                        });
+                        confirmationText: 'Remove',
+                    });
 
-                        if (!ok) {
-                            return;
-                        }
+                    if (!ok) {
+                        return;
+                    }
 
-                        await props.service?.uninstall(assetRef);
-                        await installedAsset.mutate();
-                    },
+                    await props.service?.uninstall(assetRef);
+                    await installedAsset.mutate();
                 },
-            ];
+            });
         }
-        return [];
-    }, [props.service?.uninstall, active, installedAsset, installedAsset.data]);
+
+        if (canUpgrade) {
+            out.push({
+                label: 'Upgrade',
+                icon: <ArrowUpward />,
+                onClick: async () => {
+                    await installAction();
+                },
+            });
+        }
+        return out;
+    }, [props.service?.uninstall, active, installedAsset, isInstalled, canUpgrade]);
 
     if (subMenu.length > 0) {
         icon = <MoreVertRounded />;
@@ -222,13 +256,13 @@ export const AssetInstallButton = (props: Props) => {
                 return;
             }
 
-            if (!installedAsset.data) {
+            if (!isLatestVersion) {
                 evt.stopPropagation();
                 evt.preventDefault();
                 await installAction();
             }
         },
-        [installAction, subMenu, active, installedAsset.data]
+        [installAction, subMenu, active, isLatestVersion]
     );
 
     const onSecondaryClick = useCallback(
@@ -349,11 +383,13 @@ export const AssetInstallButton = (props: Props) => {
                                 display: 'block',
                             },
                             '.label': {
-                                marginRight: '2px',
+                                mr: '2px',
+                                ml: 1,
                             },
-                            '.MuiSvgIcon-root': {
+                            '& > .MuiSvgIcon-root': {
                                 display: 'inline-block',
                                 fontSize: active ? '24px' : '20px',
+                                mr: 1,
                             },
                             '&:hover': {
                                 opacity: active ? 0.8 : 1,

@@ -60,7 +60,7 @@ const AutoLoadingTile = (props: Props) => {
               downloads: assetReq.data.downloadCount,
           }
         : undefined;
-    const asset = assetReq.data;
+    const asset: AssetDisplay<any> | undefined = assetReq.isLoading ? undefined : assetReq.data;
 
     const url = props.linkMaker ? props.linkMaker(fullName, version) : `/${fullName}/${version}`;
 
@@ -76,8 +76,8 @@ const AutoLoadingTile = (props: Props) => {
                 asset ? <DependencyKindLabel fetcher={props.fetcher} dependency={{ name: asset.content.kind }} /> : null
             }
             languageTargetLabel={
-                asset.dependencies
-                    ? asset.dependencies?.map((dep) =>
+                asset?.dependencies
+                    ? asset.dependencies.map((dep) =>
                           dep.type === 'Language target' ? (
                               <DependencyKindLabel fetcher={props.fetcher} key={dep.name} dependency={dep} />
                           ) : null

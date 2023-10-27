@@ -20,7 +20,7 @@ import {
     VersionInfo,
 } from './blockhub.data';
 import { AssetCoreDisplay, AssetDisplay, AssetSimpleDisplay, CoreTypes } from '../src/blockhub/types';
-import { AssetInstallButton, InstallerService } from '../src/blockhub/AssetInstallButton';
+import { AssetInstallButton, AssetInstallStatus, InstallerService } from '../src/blockhub/AssetInstallButton';
 import { BlockhubTileActionButton } from '../src/blockhub/BlockhubTileActionButton';
 import { AssetType, DefaultContext, DesktopContainer } from '../src';
 import { BlockhubModal } from '../src/blockhub/BlockhubModal';
@@ -65,7 +65,7 @@ function getRelated(asset: AssetDisplay) {
     };
 }
 
-const createInstaller = () => {
+const createInstaller = (installStatus: AssetInstallStatus = AssetInstallStatus.NOT_INSTALLED) => {
     const asset = {
         path: '',
         kind: ServiceBlockTypeAsset.content.kind,
@@ -82,7 +82,7 @@ const createInstaller = () => {
         },
         get: async (ref: string) => {
             await new Promise((resolve) => setTimeout(resolve, 2000));
-            return null;
+            return installStatus;
         },
         uninstall: async (ref: string) => {
             await new Promise((resolve) => setTimeout(resolve, 4000));
@@ -99,7 +99,7 @@ const createInstaller = () => {
         },
         get: async (ref: string) => {
             await new Promise((resolve) => setTimeout(resolve, 2000));
-            return true;
+            return AssetInstallStatus.INSTALLED;
         },
         uninstall: async (ref: string) => {
             await new Promise((resolve) => setTimeout(resolve, 4000));
@@ -231,6 +231,44 @@ export const ModalPlan = () => {
     );
 };
 
+export const ModalPlanUpgrade = () => {
+    const { asset, installerService, installerServiceExists } = createInstaller(AssetInstallStatus.UPGRADABLE);
+    const [assetTypeFilter, setAssetTypeFilter] = useState<AssetType>('ALL');
+    return (
+        <DefaultContext>
+            <DesktopContainer version={'1.2.3'}>
+                <BlockhubModal
+                    filter={assetTypeFilter}
+                    onFilterChange={setAssetTypeFilter}
+                    plan={{
+                        kind: CoreTypes.PLAN,
+                        ref: `${PlanAsset.content.metadata.name}:${PlanAsset.version}`,
+                        data: PlanAsset.content,
+                        exists: true,
+                        ymlPath: '',
+                        path: '',
+                        version: PlanAsset.version,
+                        editable: true,
+                    }}
+                    fetcher={assetFetcher}
+                    installerService={installerService}
+                    assets={{
+                        loading: false,
+                        value: Assets.map((a) => {
+                            return {
+                                ...a,
+                                version: '2.0.1',
+                            };
+                        }),
+                    }}
+                    open={true}
+                    onClose={() => {}}
+                />
+            </DesktopContainer>
+        </DefaultContext>
+    );
+};
+
 /** DETAIL VIEWS **/
 
 export const DetailBlockType = () => {
@@ -281,7 +319,27 @@ export const DetailLanguageTargetDesktop = () => {
         <DefaultContext>
             <DesktopContainer version={'1.2.3'}>
                 <BlockhubDetails
-                    asset={LanguageTargetAsset}
+                    asset={{ ...LanguageTargetAsset, version: '1.0.1' }}
+                    versionInfo={VersionInfo}
+                    service={installerService}
+                    fetcher={assetFetcher}
+                    {...getRelated(LanguageTargetAsset)}
+                    tabId={currentTab}
+                    onTabChange={(tabId) => setCurrentTab(tabId)}
+                />
+            </DesktopContainer>
+        </DefaultContext>
+    );
+};
+
+export const DetailLanguageTargetDesktopUpgrade = () => {
+    const [currentTab, setCurrentTab] = React.useState('general');
+    const { installerService } = createInstaller(AssetInstallStatus.UPGRADABLE);
+    return (
+        <DefaultContext>
+            <DesktopContainer version={'1.2.3'}>
+                <BlockhubDetails
+                    asset={{ ...LanguageTargetAsset, version: '1.0.2' }}
                     versionInfo={VersionInfo}
                     service={installerService}
                     fetcher={assetFetcher}
@@ -449,6 +507,8 @@ export const HelperTileButtons = () => {
 export const HelperInstallButtons = () => {
     const { asset, installerService, installerServiceExists } = createInstaller();
 
+    const { installerService: upgradeService } = createInstaller(AssetInstallStatus.UPGRADABLE);
+
     return (
         <DefaultContext>
             <div>
@@ -504,25 +564,49 @@ export const HelperInstallButtons = () => {
                     </div>
                 </div>
                 <div>
+                    <h3>Desktop Upgrade</h3>
+                    <div style={{ padding: '5px' }}>
+                        <AssetInstallButton
+                            service={upgradeService}
+                            asset={{ ...ServiceBlockTypeAsset, version: '2.0.1' }}
+                            type={'icon'}
+                        />
+                    </div>
+                    <div style={{ padding: '5px' }}>
+                        <AssetInstallButton
+                            asset={{ ...ServiceBlockTypeAsset, version: '2.0.1' }}
+                            service={upgradeService}
+                            type={'chip'}
+                        />
+                    </div>
+                    <div style={{ padding: '5px' }}>
+                        <AssetInstallButton
+                            service={upgradeService}
+                            asset={{ ...ServiceBlockTypeAsset, version: '2.0.1' }}
+                            type={'button'}
+                        />
+                    </div>
+                </div>
+                <div>
                     <h3>Desktop Installed</h3>
                     <div style={{ padding: '5px' }}>
                         <AssetInstallButton
                             service={installerServiceExists}
-                            asset={ServiceBlockTypeAsset}
+                            asset={{ ...ServiceBlockTypeAsset, version: '1.0.1' }}
                             type={'icon'}
                         />
                     </div>
                     <div style={{ padding: '5px' }}>
                         <AssetInstallButton
                             service={installerServiceExists}
-                            asset={ServiceBlockTypeAsset}
+                            asset={{ ...ServiceBlockTypeAsset, version: '1.0.1' }}
                             type={'chip'}
                         />
                     </div>
                     <div style={{ padding: '5px' }}>
                         <AssetInstallButton
                             service={installerServiceExists}
-                            asset={ServiceBlockTypeAsset}
+                            asset={{ ...ServiceBlockTypeAsset, version: '1.0.1' }}
                             type={'button'}
                         />
                     </div>
@@ -534,6 +618,7 @@ export const HelperInstallButtons = () => {
 
 export const HelperTiles = () => {
     const props = {
+        handle: 'openai',
         title: 'ChatGPT',
         subtitle: 'OpenAI',
         description: `The Datree app allows engineering teams to automatically identify errors in newly committed YAML configs, including k8s manifests.`,
