@@ -120,7 +120,17 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
     const handle = parseKapetaUri(props.asset.content.metadata.name).handle;
 
     return (
-        <Stack direction={'row'} alignItems={'stretch'} sx={{ minHeight: '100%', width: '100%' }}>
+        <Stack
+            direction={'row'}
+            alignItems={'stretch'}
+            sx={{
+                minHeight: '100%',
+                width: '100%',
+                '*': {
+                    boxSizing: 'border-box',
+                },
+            }}
+        >
             <Box p={3} position={'fixed'}>
                 <Button color="inherit" onClick={props.onBackAction}>
                     <ArrowBack />

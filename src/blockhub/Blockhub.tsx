@@ -173,6 +173,9 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                 width: '100%',
                 height: '100%',
                 backgroundColor: 'white',
+                '*': {
+                    boxSizing: 'border-box',
+                },
             }}
         >
             <Box
