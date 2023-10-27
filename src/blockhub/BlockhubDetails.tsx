@@ -8,7 +8,7 @@ import styled from '@emotion/styled';
 import { AssetDisplay, AssetFetcher, AssetVersionInfo, CoreTypes, Dependency } from './types';
 import { BlockhubStats, BlockhubTile, DependencyKindLabel } from './BlockhubTile';
 import { parseKapetaUri } from '@kapeta/nodejs-utils';
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
+
 import { isPublic, renderArtifact, renderDatetime, renderRepository } from './asset-helpers';
 import { KeyValue, KeyValueRow } from './KeyValue';
 import { VersionGraph } from './Versions';
@@ -18,6 +18,7 @@ import { AssetInstallButton, InstallerService } from './AssetInstallButton';
 import { Size } from '@kapeta/ui-web-types';
 import { toDateText } from '../dates';
 import { Tooltip } from '../tooltip/Tooltip';
+import { Markdown } from '../markdown/Markdown';
 
 export type BlockHubDetailsPreviewer = (asset: AssetDisplay, size: Size) => React.ReactNode;
 
@@ -199,7 +200,7 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
 
                     <TabContainer open={currentTab === 'general'}>
                         {props.asset?.readme?.type === 'markdown' && (
-                            <ReactMarkdown children={props.asset.readme?.content?.trim()} />
+                            <Markdown content={props.asset.readme?.content?.trim()} />
                         )}
                         {props.asset?.readme?.type === 'text' && <pre>{props.asset.readme?.content?.trim()}</pre>}
 
