@@ -42,14 +42,6 @@ interface TileCheckboxProps {
 }
 
 const TileCheckbox = (props: TileCheckboxProps) => {
-    const asset = useAsync(async () => {
-        return await props.service.get(props.assetRef);
-    }, [props.assetRef, props.service]);
-
-    if (asset.loading) {
-        return <CircularProgress size={20} />;
-    }
-
     return (
         <Checkbox
             checked={props.checked}
