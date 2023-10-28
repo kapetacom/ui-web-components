@@ -474,7 +474,6 @@ parameter_type
 
 parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:parameter_type _ {
 
-    console.log('Got here?', name, type, annotations)
     if (!options.ignoreSemantics) {
         if (options.rest) {
             if (annotations.length > 1) {
