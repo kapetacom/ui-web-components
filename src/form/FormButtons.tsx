@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useContext } from 'react';
 import { FormContext } from './FormContext';
 import { Box, BoxProps, Button } from '@mui/material';

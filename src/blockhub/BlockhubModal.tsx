@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { Plan } from '@kapeta/schemas';
 import { Button, Dialog, DialogActions, DialogContent, IconButton, Stack, Typography } from '@mui/material';
 

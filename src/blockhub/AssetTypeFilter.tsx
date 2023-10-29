@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from 'react';
 import { Box, MenuItem, Select } from '@mui/material';
 import { CoreTypes } from './types';

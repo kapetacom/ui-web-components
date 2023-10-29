@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useState } from 'react';
 import { Detail, DetailButtons, DetailRow, DetailRowListValue, DetailRowValue, DetailSize } from '../src/detail/Detail';
 import { DefaultContext, ToastContainer } from '../src';

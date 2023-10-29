@@ -19,6 +19,11 @@
         "kapeta"
     ],
     "license": "MIT",
+    "author": {
+        "email": "engineering@kapeta.com",
+        "name": "Kapeta",
+        "url": "https://kapeta.com"
+    },
     "scripts": {
         "storybook": "storybook dev -s ../stories/assets -p 6006",
         "build-storybook": "storybook build",

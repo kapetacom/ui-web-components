@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { Box, Button, CircularProgress, Fab, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import { Tooltip } from '../tooltip/Tooltip';
 import { showToasty, ToastType } from '../toast/ToastComponent';

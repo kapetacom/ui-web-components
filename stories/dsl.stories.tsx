@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from 'react';
 import { DataTypeEditor, DSLDataType, DSLEntity, DSLEntityType, DSLMethod, DSLRichEntity, MethodEditor } from '../src';
 import { DSLEditor } from '../src/dsl/DSLEditor';

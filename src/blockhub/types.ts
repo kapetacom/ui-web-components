@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { Asset, SchemaKind } from '@kapeta/ui-web-types';
 
 export type AssetFetcher = (name: string, version: string) => Promise<AssetDisplay>;

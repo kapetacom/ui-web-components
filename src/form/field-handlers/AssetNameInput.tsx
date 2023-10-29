@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Type } from '../inputs/FormInput';
 import { useFormContextField } from '../FormContext';

@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useState } from 'react';
 import { Checkbox, Stack } from '@mui/material';
 import { BlockhubTile, DependencyKindLabel } from '../src/blockhub/BlockhubTile';

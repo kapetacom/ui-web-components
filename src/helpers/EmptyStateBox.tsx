@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from 'react';
 import { Box, Paper, PaperProps, Typography } from '@mui/material';
 import { EmptyStateIcon, EmptyStateIconName } from './EmptyStateIcon';

@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 export * from './asset-helpers';
 export * from './AssetSortSelect';
 export * from './AssetTypeFilter';

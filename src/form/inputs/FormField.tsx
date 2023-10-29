@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from 'react';
 import { FormSelect } from './FormSelect';
 import { FormInput, FormInputProps, Type } from './FormInput';

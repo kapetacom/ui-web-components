@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from 'react';
 import { AssetVersionInfo, Version } from './types';
 import { toClass } from '@kapeta/ui-web-utils';
@@ -80,6 +85,11 @@ export const VersionList = (props: ListProps) => {
                 {props.versions.map((v, ix) => {
                     return <VersionElement key={`version_${ix}`} version={v} />;
                 })}
+            </div>
+        </BranchContainer>
+    );
+};
+           })}
             </div>
         </BranchContainer>
     );

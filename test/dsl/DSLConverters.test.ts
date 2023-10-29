@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { describe, expect, test } from '@jest/globals';
 import { DSLConverters } from '../../src/dsl/DSLConverters';
 import { DSLDataType, DSLEntityType, DSLEnum, DSLMethod } from '../../src/dsl/types';

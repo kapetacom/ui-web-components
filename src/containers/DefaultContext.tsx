@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from 'react';
 import { ToastContainer } from '../toast/ToastComponent';
 import { ConfirmProvider } from '../confirm';

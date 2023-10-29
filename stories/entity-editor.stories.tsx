@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useState } from 'react';
 import { EntityEditor } from '../src/entities/EntityEditor';
 import { Entity, EntityType } from '@kapeta/schemas';

@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useRef, useState } from 'react';
 import { withFormFieldController } from '../formFieldController';
 import { FormFieldProcessingContainer } from './FormFieldProcessingContainer';

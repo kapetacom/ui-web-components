@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useEffect, useState, useRef } from 'react';
 import { Terminal, ITerminalOptions, ITerminalInitOnlyOptions } from 'xterm';
 import { WebLinksAddon } from 'xterm-addon-web-links';

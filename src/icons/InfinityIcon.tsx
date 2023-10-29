@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { SvgIcon, SvgIconProps } from '@mui/material';
 import React, { ForwardedRef, forwardRef, useId } from 'react';
 

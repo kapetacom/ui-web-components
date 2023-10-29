@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from 'react';
 import { Box, Button, Stack, Tab, Tabs, Typography } from '@mui/material';
 import VerifiedIcon from '@mui/icons-material/VerifiedOutlined';

@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 type ColorRGB = [number, number, number];
 
 export const createVerticalScrollShadow = (

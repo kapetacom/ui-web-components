@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { createContext, useContext } from 'react';
 import {
     Dialog as MuiDialog,

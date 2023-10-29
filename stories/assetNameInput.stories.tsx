@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useCallback, useContext, useState } from 'react';
 import { AssetNameInput, AsyncValidatorFunction, FormContainer, FormContext } from '../src';
 

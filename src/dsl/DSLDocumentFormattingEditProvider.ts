@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { languages, CancellationToken, editor } from 'monaco-editor';
 import { DSLParser } from './DSLParser';
 import { DSLWriter } from './DSLWriter';

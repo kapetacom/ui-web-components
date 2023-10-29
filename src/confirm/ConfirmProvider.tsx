@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useState, useCallback } from 'react';
 import { ConfirmContext } from './ConfirmContext';
 import { ConfirmationDialog } from './ConfirmationDialog';

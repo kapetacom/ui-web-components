@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useEffect, useState } from 'react';
 import { DateTime, ToRelativeOptions, DateTimeFormatOptions } from 'luxon';
 import { Tooltip, TooltipProps } from '../tooltip/Tooltip';

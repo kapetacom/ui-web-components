@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useMemo, useState } from 'react';
 import { XTerm, XTermStream } from '../src/terminal/XTerm';
 import { EventEmitter } from 'events';

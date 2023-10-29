@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useContext, useMemo, useState } from 'react';
 import { AsyncValidatorFunction, debouncedValidator, FormButtons, FormContainer, FormInput, Type } from '../src';
 import { FormField, FormFieldType } from '../src/form/inputs/FormField';
