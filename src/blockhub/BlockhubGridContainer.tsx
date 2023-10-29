@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { ReactNode, useState } from 'react';
 import { AssetDisplay, CoreTypes } from './types';
 import { Box, Paper, Stack, Typography } from '@mui/material';

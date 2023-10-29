@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 export const DSL_LANGUAGE_ID = 'kapeta-dsl';
 
 export interface DSLAnnotation {

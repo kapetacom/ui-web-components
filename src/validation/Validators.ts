@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import _ from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useAsync } from 'react-use';

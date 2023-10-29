@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from 'react';
 import DnDContext, { DnDContextType } from './DnDContext';
 import { asHTMLElement, DOMElement } from '@kapeta/ui-web-utils';

@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { Dimensions } from '@kapeta/schemas';
 import { DOMElement } from '@kapeta/ui-web-utils';
 

@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { DSLMethod, DSLParameter, PEGValidationEntity, toStandardType } from '../interfaces';
 import { REST_METHOD_ANNOTATIONS, STRINGABLE_TYPES } from '../types';
 import { isStringableType } from '@kapeta/schemas';

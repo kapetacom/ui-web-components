@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useMemo } from 'react';
 import { useBlock } from './hooks';
 import { SVGAutoSizeText } from '../svg/SVGAutoSizeText';

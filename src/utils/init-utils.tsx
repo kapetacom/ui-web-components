@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { ComponentType } from 'react';
 import ReactDOM from 'react-dom/client';
 

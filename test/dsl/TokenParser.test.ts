@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { describe, test, expect } from '@jest/globals';
 import { TokenParser } from '../../src/dsl/TokenParser';
 

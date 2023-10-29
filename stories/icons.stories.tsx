@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from 'react';
 import { AssetKindIcon, AssetKindIconText } from '../src/icons/AssetIcon';
 import { IconType, IconValue, Kind } from '@kapeta/schemas';

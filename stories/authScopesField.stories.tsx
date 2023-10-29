@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from 'react';
 import { FormContainer } from '../src/form/FormContainer';
 import { AuthScopesField } from '../src/special/oauth/AuthScopesField';

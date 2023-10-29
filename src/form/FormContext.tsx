@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { Context, useContext, useEffect, useMemo } from 'react';
 import { FormContainer } from './FormContainer';
 import { ValidatorList } from '../validation/Validators';

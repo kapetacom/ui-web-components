@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { Context, PropsWithChildren, useContext } from 'react';
 import { Task } from '@kapeta/ui-web-context';
 

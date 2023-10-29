@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { Box, FormControlLabel, Grid, Stack, Switch, Typography } from '@mui/material';

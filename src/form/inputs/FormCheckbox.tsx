@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React from 'react';
 import { useFormFieldController, withFormFieldController } from '../formFieldController';
 import { Checkbox, FormControl, FormControlLabel, FormHelperText } from '@mui/material';

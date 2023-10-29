@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { FormFieldController } from '../formFieldController';
 import { Box, CircularProgress } from '@mui/material';

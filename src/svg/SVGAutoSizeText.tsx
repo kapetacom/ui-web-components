@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { KeyboardEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { toClass } from '@kapeta/ui-web-utils';

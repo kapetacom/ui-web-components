@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import githubRemarkPlugin from 'remark-gfm';

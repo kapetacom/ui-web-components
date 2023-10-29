@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { PropsWithChildren } from 'react';
 import { Typography } from '@mui/material';
 import { SxProps } from '@mui/system';

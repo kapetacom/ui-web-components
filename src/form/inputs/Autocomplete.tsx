@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { default as MuiAutocomplete, AutocompleteProps as MuiAutocompleteProps } from '@mui/material/Autocomplete';
 import { default as MuiTextField, TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
 

@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useCallback, useRef, useState } from 'react';
 import { Avatar, Box, CircularProgress, Fab, FormControl, FormHelperText, InputLabel, Zoom } from '@mui/material';
 import { FormFieldControllerProps, useFormFieldController } from '../form/formFieldController';

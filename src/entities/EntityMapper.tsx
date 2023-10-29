@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { EntityDTO, EntityProperties, EntityProperty, isCompatibleTypes, typeName } from '@kapeta/schemas';
 import React from 'react';
 

@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { Box, Button, ButtonProps, CircularProgress } from '@mui/material';
 import React, { ElementType } from 'react';
 import { CSSTransition } from 'react-transition-group';

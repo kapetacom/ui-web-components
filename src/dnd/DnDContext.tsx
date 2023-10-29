@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { Context } from 'react';
 import { DnDContainer } from './DnDContainer';
 import { DnDDrop } from './DnDDrop';

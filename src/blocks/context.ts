@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { BlockDefinition, BlockInstance } from '@kapeta/schemas';
 import { InstanceStatus } from '@kapeta/ui-web-context';
 import { createContext } from 'react';

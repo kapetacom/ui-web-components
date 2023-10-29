@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { PropsWithChildren, ReactNode } from 'react';
 import { KapDialog, KapDialogProps } from './KapDialog';
 import { FormContainer, FormContainerProps } from '../form/FormContainer';

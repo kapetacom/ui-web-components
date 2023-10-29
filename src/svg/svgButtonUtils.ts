@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { useEffect, useRef } from 'react';
 import { SVGButtonProps } from './types';
 

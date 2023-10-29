@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { ReactNode } from 'react';
 import { Box, Paper, Rating, Stack, Typography } from '@mui/material';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';

@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { Context, createContext, useContext, useState } from 'react';
 import _ from 'lodash';
 import './Detail.less';

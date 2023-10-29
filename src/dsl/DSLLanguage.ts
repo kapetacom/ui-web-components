@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { languages, editor } from 'monaco-editor';
 import loader from '@monaco-editor/loader';
 import IRichLanguageConfiguration = languages.LanguageConfiguration;

@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { Point, Size } from '@kapeta/ui-web-types';
 import { DOMElement, toDOMElement } from '@kapeta/ui-web-utils';
 import { DraggableContext } from './DraggableContext';

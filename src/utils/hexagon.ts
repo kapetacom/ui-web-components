@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 export function createHexagon(width: number, height: number, pointSize: number) {
     const points = [];
 

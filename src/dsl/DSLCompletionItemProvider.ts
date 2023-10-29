@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { IDisposable, Position, CancellationToken, languages, editor } from 'monaco-editor';
 import { BUILT_IN_TYPES, CONFIG_FIELD_ANNOTATIONS, METHOD_ANNOTATIONS, PARAMETER_ANNOTATIONS } from './types';
 import { TokenParser } from './TokenParser';

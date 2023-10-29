@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useContext } from 'react';
 import { FormContainer, FormContext } from '../src';
 import { AssetVersionSelector } from '../src/form/field-handlers/AssetVersionSelector';

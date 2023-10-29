@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { ReactElement, SyntheticEvent, useState } from 'react';
 import MoreVert from '@mui/icons-material/MoreVert';
 import { Box, Chip, CircularProgress, Menu, MenuItem } from '@mui/material';

@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 let Z_INDEX = 1000;
 
 let BACKDROP_COUNTER = 0;
