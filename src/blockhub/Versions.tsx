@@ -89,8 +89,3 @@ export const VersionList = (props: ListProps) => {
         </BranchContainer>
     );
 };
-           })}
-            </div>
-        </BranchContainer>
-    );
-};

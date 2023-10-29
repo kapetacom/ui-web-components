@@ -15,5 +15,3 @@ export const Markdown = (props: Props) => {
     const remarkPlugins = useMemo(() => [githubRemarkPlugin], []);
     return <ReactMarkdown remarkPlugins={remarkPlugins} children={props.content} />;
 };
-Markdown remarkPlugins={remarkPlugins} children={props.content} />;
-};
