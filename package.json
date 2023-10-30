@@ -32,7 +32,8 @@
         "prebuild": "rm -rf dist",
         "build": "rollup -c",
         "test": "jest",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "lint:tsc": "tsc --noEmit"
     },
     "peerDependencies": {
         "@emotion/react": "^11.11.1",
