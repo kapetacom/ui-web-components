@@ -21,13 +21,20 @@ export function BlockhubStats(props: { stats: { rating?: number; downloads?: num
         <Stack className="metrics">
             {/* Downloads */}
             {typeof props.stats.downloads !== 'undefined' ? (
-                <Stack direction={'row'} gap={1} alignItems={'center'} justifyContent={'flex-end'}>
+                <Stack
+                    direction={'row'}
+                    gap={1}
+                    alignItems={'center'}
+                    justifyContent={'flex-end'}
+                    data-kap-id="blockhub-download-count"
+                >
                     <Typography variant="caption">{props.stats.downloads.toLocaleString()}</Typography>
                     <TrendingUpIcon sx={(theme) => ({ color: theme.palette.success.light })} />
                 </Stack>
             ) : null}
             {typeof props.stats.rating !== 'undefined' ? (
                 <Rating
+                    data-kap-id="blockhub-tile-rating"
                     name="read-only"
                     title={`${props.stats.rating} / 5`}
                     value={props.stats.rating}
@@ -121,6 +128,7 @@ export function BlockhubTile(props: BlockhubTileProps) {
                     width: '100%',
                     height: '100%',
                 }}
+                data-kap-id="blockhub-tile-link"
             >
                 {content}
             </Link>
@@ -206,7 +214,12 @@ export function BlockhubTile(props: BlockhubTileProps) {
                         <Stack direction={'row'} gap={2} justifyContent="space-between" alignItems={'flex-end'}>
                             <Stack sx={{ fontSize: '12px' }} gap={'4px'} minWidth={0}>
                                 {props.version ? (
-                                    <Box sx={{ textDecoration: 'underline', lineHeight: '166%' }}>{props.version}</Box>
+                                    <Box
+                                        sx={{ textDecoration: 'underline', lineHeight: '166%' }}
+                                        data-kap-id="blockhub-tile-version"
+                                    >
+                                        {props.version}
+                                    </Box>
                                 ) : null}
                                 <Stack className="labels" direction={'row'} gap="5px" alignItems={'center'}>
                                     {props.languageTargetLabel}

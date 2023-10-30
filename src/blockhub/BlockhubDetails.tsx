@@ -138,7 +138,7 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
             }}
         >
             <Box p={3} position={'fixed'}>
-                <Button color="inherit" onClick={props.onBackAction}>
+                <Button color="inherit" onClick={props.onBackAction} data-kap-id="blockhub-details-back-button">
                     <ArrowBack />
                     Back
                 </Button>
@@ -195,12 +195,19 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
                         sx={(theme) => ({ borderBottom: '1px solid ' + theme.palette.divider })}
                         onChange={(_e, tabValue) => props.onTabChange(tabValue)}
                     >
-                        <KapetaTab value={'general'} label={'General'} />
+                        <KapetaTab value={'general'} label={'General'} data-kap-id="blockhub-details-tab-general" />
                         <KapetaTab
                             value={'dependencies'}
                             label={[props.asset.dependencies?.length || '', 'Dependencies'].filter(Boolean).join(' ')}
+                            data-kap-id="blockhub-details-tab-dependencies"
                         />
-                        {props.versionInfo && <KapetaTab value={'versions'} label={'Versions'} />}
+                        {props.versionInfo && (
+                            <KapetaTab
+                                value={'versions'}
+                                label={'Versions'}
+                                data-kap-id="blockhub-details-tab-versions"
+                            />
+                        )}
                     </Tabs>
 
                     <TabContainer open={currentTab === 'general'}>

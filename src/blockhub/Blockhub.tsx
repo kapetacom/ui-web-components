@@ -57,6 +57,7 @@ const TileCheckbox = (props: TileCheckboxProps) => {
             onChange={(evt, checked) => {
                 props.onChange(checked);
             }}
+            data-kap-id="blockhub-tile-checkbox"
         />
     );
 };
@@ -229,6 +230,7 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                                     setTab(index);
                                     props.onCategoryChange?.(tabInfo.type);
                                 }}
+                                data-kap-id={`category-${tabInfo.type}`}
                             >
                                 <ListItemIcon>{tabInfo.icon}</ListItemIcon>
                                 <ListItemText>

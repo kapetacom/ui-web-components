@@ -317,6 +317,7 @@ export const AssetInstallButton = (props: Props) => {
                             closeSubmenu();
                             await item.onClick();
                         }}
+                        data-kap-id={`asset-submenu-${item.label}`}
                     >
                         <ListItemIcon>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.label} />
@@ -338,7 +339,13 @@ export const AssetInstallButton = (props: Props) => {
                 >
                     <Tooltip title={longText}>
                         <span>
-                            <Fab color={'primary'} onClick={onPrimaryClick} size={'small'} disabled={isDisabled}>
+                            <Fab
+                                color={'primary'}
+                                onClick={onPrimaryClick}
+                                size={'small'}
+                                disabled={isDisabled}
+                                data-kap-id={`asset-actionbutton-${shortText}`}
+                            >
                                 {icon}
                             </Fab>
                         </span>
@@ -367,6 +374,7 @@ export const AssetInstallButton = (props: Props) => {
             <>
                 <Tooltip title={longText}>
                     <Box
+                        data-kap-id={`asset-box-${shortText}`}
                         onClick={onPrimaryClick}
                         sx={{
                             display: 'inline-flex',
@@ -414,7 +422,9 @@ export const AssetInstallButton = (props: Props) => {
                         {isProcessing ? (
                             <CircularProgress size={18} />
                         ) : subMenu.length > 0 ? (
-                            <a onClick={onSecondaryClick}>{icon}</a>
+                            <a onClick={onSecondaryClick} data-kap-id={`asset-box-icon-${shortText}`}>
+                                {icon}
+                            </a>
                         ) : (
                             icon
                         )}
@@ -427,7 +437,13 @@ export const AssetInstallButton = (props: Props) => {
 
     return (
         <>
-            <Button variant="contained" onClick={onPrimaryClick} endIcon={icon} disabled={isDisabled}>
+            <Button
+                variant="contained"
+                onClick={onPrimaryClick}
+                endIcon={icon}
+                disabled={isDisabled}
+                data-kap-id={`asset-button-${shortText}`}
+            >
                 {longText}
                 {isProcessing && (
                     <CircularProgress

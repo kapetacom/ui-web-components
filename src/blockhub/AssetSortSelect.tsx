@@ -32,6 +32,7 @@ export function AssetSortSelect(props: AssetSortSelectProps) {
 
     return (
         <Select
+            data-kap-id="blockhub-asset-sort"
             size="small"
             renderValue={(v) => {
                 return (
