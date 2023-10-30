@@ -67,7 +67,7 @@ export function renderRepository(repository: AssetRepositoryInfo) {
 
     return (
         <div className={'repository'}>
-            <a href={url} target={'_blank'}>
+            <a href={url} target={'_blank'} data-kap-id="blockhub-asset-github-link">
                 <i className={iconClass} />
                 {shortUrl}
             </a>

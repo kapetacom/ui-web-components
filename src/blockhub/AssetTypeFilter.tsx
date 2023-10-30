@@ -43,6 +43,7 @@ export function AssetTypeFilter(props: AssetTypeFilterProps) {
     const options = props.options || (Object.keys(AssetTypeLabels) as AssetType[]);
     return (
         <Select
+            data-kap-id="blockhub-asset-type-filter"
             size="small"
             renderValue={(v) => {
                 return (
