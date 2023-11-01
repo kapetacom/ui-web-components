@@ -4,9 +4,9 @@
  */
 
 import React from 'react';
-import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ListSubheader } from '@mui/material';
+import { Drawer } from '@mui/material';
 
-export function BlockhubSidebar(props) {
+export function BlockhubSidebar(props: React.PropsWithChildren) {
     const drawerWidth = '256px';
 
     return (

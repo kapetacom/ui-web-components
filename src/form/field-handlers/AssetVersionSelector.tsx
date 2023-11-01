@@ -162,7 +162,7 @@ export const AssetVersionSelector = (props: Props) => {
     }, [assetUriTypes]);
 
     const getVersionsForName = useCallback(
-        (assetName: string) => {
+        (assetName?: string) => {
             if (!assetName) {
                 return [];
             }
@@ -272,7 +272,7 @@ export const AssetVersionSelector = (props: Props) => {
                         value={assetName ?? ''}
                         labelId={inputLabelId}
                         disabled={controller.disabled}
-                        readOnly={controller.readOnly || (assetName && assetNames.length === 1)}
+                        readOnly={controller.readOnly || !!(assetName && assetNames.length === 1)}
                         onChange={(evt) => {
                             setAssetName(evt.target.value);
                             const versions = getVersionsForName(evt.target.value);
