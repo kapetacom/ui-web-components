@@ -25,9 +25,7 @@ interface DetailContextData {
     isProcessing: (field: string) => boolean;
 }
 
-export interface DetailContextType extends Context<DetailContextData> {}
-
-const DetailContext: DetailContextType = createContext({
+const DetailContext = createContext<DetailContextData>({
     onValueChanged: () => {},
     isEditing: () => false,
     setEditing: () => {},

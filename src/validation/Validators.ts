@@ -8,9 +8,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useAsync } from 'react-use';
 export type AsyncValidationContext = { cancel: () => void; promise: Promise<any> };
 export type ValidationContext = { cancel: () => void; errors: Promise<string[]>; hasAsync: boolean };
-export type AsyncValidatorFunction = (fieldName: string, value: any) => AsyncValidationContext;
-export type SyncValidatorFunction = (fieldName: string, value: any) => void;
-export type ValidatorFunction = AsyncValidatorFunction | SyncValidatorFunction | string;
+export type AsyncValidatorFunction = (fieldName: string, value: any) => AsyncValidationContext | void;
+export type ValidatorFunction = AsyncValidatorFunction | string;
 export type ValidatorList = ValidatorFunction[];
 export type ValidatorListUnresolved = ValidatorList | string | ValidatorFunction;
 
@@ -84,7 +83,7 @@ export function debouncedValidator(delay: number, func: AsyncValidatorFunction):
         const promise = new Promise((resolve, reject) => {
             resolver = resolve;
             timer = setTimeout(() => {
-                realContext = func(fieldName, value);
+                realContext = func(fieldName, value)!;
                 resolve(realContext.promise);
             }, delay);
         });

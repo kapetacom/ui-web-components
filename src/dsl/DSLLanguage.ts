@@ -221,7 +221,7 @@ loader.init().then((monaco) => {
                             };
                         }
                     })
-                    .filter((action) => action !== undefined);
+                    .filter((action) => action !== undefined) as CodeAction[];
 
                 return {
                     actions,
