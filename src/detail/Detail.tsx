@@ -78,7 +78,7 @@ export const Detail = (props: DetailProps) => {
                 if (typeof err === 'string') {
                     message = err;
                 } else {
-                    message = err.message;
+                    message = (err as Error).message;
                 }
 
                 showToasty({

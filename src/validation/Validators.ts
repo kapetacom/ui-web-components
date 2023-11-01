@@ -34,7 +34,7 @@ validators.email = (fieldName: string, value: any) => {
 
 export const Validators = validators;
 
-export function normaliseValidators(validation: ValidatorListUnresolved): ValidatorList {
+export function normaliseValidators(validation?: ValidatorListUnresolved): ValidatorList {
     let validators: ValidatorList = [];
     if (validation) {
         if (Array.isArray(validation)) {

@@ -97,7 +97,7 @@ export const AssetVersionSelector = (props: Props) => {
     const formField = useFormContextField<string>(props.name);
     const rawValue = formField.get('');
     const value = rawValue ? parseKapetaUri(rawValue) : null;
-    const [assetName, setAssetName] = useState(value?.fullName);
+    const [assetName, setAssetName] = useState(value?.fullName || '');
     useEffect(() => {
         if (value?.fullName && assetName !== value.fullName) {
             setAssetName(value.fullName);
@@ -119,7 +119,7 @@ export const AssetVersionSelector = (props: Props) => {
     const onChange = useCallback(
         (fullName: string, version?: string) => {
             if (!fullName || !version) {
-                formField.set(null);
+                formField.set('');
                 return;
             }
 

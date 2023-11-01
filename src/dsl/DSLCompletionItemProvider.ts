@@ -38,7 +38,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
         context: CompletionContext,
         token: CancellationToken
     ) {
-        let tokens = [];
+        let tokens: { type: string; value: string }[] = [];
         const code = model.getValue();
 
         const additionalTypes = this._additionalTypes[model.id] || [];
@@ -52,6 +52,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
 
         const enumNames: string[] = tokens.filter((t) => 'enum_name' === t.type).map((t) => t.value);
 
+        // TODO: These completions seem to work without range, so we're casting ranges to any
         let suggestions: languages.CompletionItem[] = [];
 
         const TYPES = [...BUILT_IN_TYPES.map((t) => t.name), ...dataTypeNames, ...additionalTypes];
@@ -67,7 +68,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
                 documentation: 'Insert function',
                 insertText: '${1:name}( $0 ):${2|' + typeChoice + '|}',
                 insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                range: null,
+                range: null as any,
             },
 
             {
@@ -77,7 +78,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
                 insertText:
                     '@${1|' + methodAnnotationChoice + "|}('/${2:path}')\n${3:name}( $0 ):${4|" + typeChoice + '|}',
                 insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                range: null,
+                range: null as any,
             },
             {
                 label: '# Insert: Data type',
@@ -85,7 +86,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
                 documentation: 'Insert data type',
                 insertText: '${1:name} {\n\t$0\n}',
                 insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                range: null,
+                range: null as any,
             },
             {
                 label: '# Insert: Enum type',
@@ -93,7 +94,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
                 documentation: 'Insert enum type',
                 insertText: 'enum ${1:name} {\n\t$0\n}',
                 insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                range: null,
+                range: null as any,
             },
             {
                 label: '# Insert: Variable',
@@ -101,7 +102,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
                 insertText: '${1:name}:${2|' + typeChoice + '|}',
                 documentation: 'Insert variable with type',
                 insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                range: null,
+                range: null as any,
             }
         );
 
@@ -112,7 +113,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
                     label: type,
                     insertText: type,
                     kind: languages.CompletionItemKind.TypeParameter,
-                    range: null,
+                    range: null as any,
                 };
             })
         );
@@ -123,7 +124,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
                     label: type,
                     insertText: type,
                     kind: languages.CompletionItemKind.Enum,
-                    range: null,
+                    range: null as any,
                 };
             })
         );
@@ -136,7 +137,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
                     documentation: type.description,
                     kind: languages.CompletionItemKind.TypeParameter,
                     insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                    range: null,
+                    range: null as any,
                 };
             })
         );
@@ -149,7 +150,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
                     documentation: type.description,
                     kind: languages.CompletionItemKind.TypeParameter,
                     insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                    range: null,
+                    range: null as any,
                 };
             })
         );
@@ -162,7 +163,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
                     documentation: type.description,
                     kind: languages.CompletionItemKind.TypeParameter,
                     insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                    range: null,
+                    range: null as any,
                 };
             })
         );

@@ -192,14 +192,14 @@ loader.init().then((monaco) => {
         languages.registerCodeActionProvider(DSL_LANGUAGE_ID, {
             provideCodeActions(model, range, context, token): languages.ProviderResult<languages.CodeActionList> {
                 const actions: CodeAction[] = context.markers
-                    .map((marker): CodeAction => {
+                    .map((marker): CodeAction | undefined => {
                         const value = model.getValueInRange(marker).trim();
                         console.log(marker, value);
 
                         const GO_ARRAY_RX = /^\[]([a-z][a-z0-9_]*)$/i;
 
                         if (GO_ARRAY_RX.test(value)) {
-                            const [, name] = GO_ARRAY_RX.exec(value);
+                            const [, name] = GO_ARRAY_RX.exec(value)!;
                             //Go-Style array definition - suggest to replace with DSL-style array definition
                             return {
                                 kind: 'quickfix',

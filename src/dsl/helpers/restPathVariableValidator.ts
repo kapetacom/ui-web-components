@@ -4,8 +4,7 @@
  */
 
 import { DSLMethod, DSLParameter, PEGValidationEntity, toStandardType } from '../interfaces';
-import { REST_METHOD_ANNOTATIONS, STRINGABLE_TYPES } from '../types';
-import { isStringableType } from '@kapeta/schemas';
+import { REST_METHOD_ANNOTATIONS } from '../types';
 
 /**
  * Validates that REST methods contain valid path variables both in the path definition
@@ -82,7 +81,9 @@ export const restPathVariableValidator = (entity: PEGValidationEntity<DSLMethod>
             try {
                 new RegExp(pattern, 'ig');
             } catch (e) {
-                reportError(`Invalid regular expression provided as pattern: ${pattern}. Error: ${e.message}`);
+                reportError(
+                    `Invalid regular expression provided as pattern: ${pattern}. Error: ${(e as Error).message}`
+                );
             }
         }
     }

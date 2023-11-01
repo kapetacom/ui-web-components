@@ -73,7 +73,7 @@ export class DSLValidator {
         this.editor.setModelMarkers(model, DSL_LANGUAGE_ID, errors);
     }
 
-    bind(model: any) {
+    bind(model: ITextModel) {
         let validationHandle: NodeJS.Timeout | undefined;
 
         //Syntax and semantic validation
