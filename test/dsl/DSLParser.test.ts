@@ -251,7 +251,7 @@ describe('DSLParser', () => {
                     methods: true,
                     rest: true,
                 }).entities
-        ).toThrow('Invalid path specified. Must start with "/" and be well formed: "invalid path"');
+        ).toThrow('Invalid URL path specified. Must start with "/" and not end with "/"');
     });
 
     test('throws if method is defined and not allowed', () => {
