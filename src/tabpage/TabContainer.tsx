@@ -14,7 +14,7 @@ import './TabContainer.less';
 
 interface TabContainerProps {
     defaultTab?: string;
-    onTabChange?: (tabId) => void;
+    onTabChange?: (tabId: string) => void;
     currentTabId?: string;
     children: any;
 }

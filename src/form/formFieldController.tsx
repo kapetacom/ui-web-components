@@ -163,7 +163,7 @@ export const useFormFieldController = <T = any,>(props: FormFieldControllerProps
             setReadyState(false);
         } else {
             setReadyState(errors.value?.length === 0);
-            if (touched && errors.value?.length > 0) {
+            if (touched && errors.value && errors.value.length > 0) {
                 setErrorMessage(errors.value[0]);
             } else {
                 setErrorMessage('');
@@ -179,7 +179,7 @@ export const useFormFieldController = <T = any,>(props: FormFieldControllerProps
         required,
         errors,
         processing: errors.loading,
-        showError: formSubmitAttempted && errors.value?.length > 0,
+        showError: formSubmitAttempted && !!errors.value && errors.value.length > 0,
         help,
         status: errorMessage && errorMessage.length > 0 ? StatusType.ERROR : StatusType.OK,
         label: props.label,

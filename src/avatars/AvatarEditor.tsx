@@ -40,13 +40,14 @@ async function readFile(file: File, type: AvatarResultType): Promise<AvatarFileI
     return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = (e) => {
-            const url = type === AvatarResultType.DATA_URL ? (e.target.result as string) : URL.createObjectURL(file);
+            const data = e.target ? e.target.result : null;
+            const url = type === AvatarResultType.DATA_URL ? (data as string) : URL.createObjectURL(file);
             const fileInfo: AvatarFileInfo = {
                 name: file.name,
                 size: file.size,
                 mimeType: file.type,
                 url,
-                data: e.target.result,
+                data: data,
             };
             resolve(fileInfo);
         };

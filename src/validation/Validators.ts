@@ -35,7 +35,7 @@ validators.email = (fieldName: string, value: any) => {
 export const Validators = validators;
 
 export function normaliseValidators(validation: ValidatorListUnresolved): ValidatorList {
-    let validators = [];
+    let validators: ValidatorList = [];
     if (validation) {
         if (Array.isArray(validation)) {
             validators = validation;
@@ -79,7 +79,7 @@ export function useValidation(active: boolean, validation: ValidatorListUnresolv
  */
 export function debouncedValidator(delay: number, func: AsyncValidatorFunction): AsyncValidatorFunction {
     return (fieldName: string, value: any) => {
-        let resolver, timer;
+        let resolver: (value?: unknown) => void, timer: NodeJS.Timeout;
         let realContext: AsyncValidationContext | undefined;
         const promise = new Promise((resolve, reject) => {
             resolver = resolve;
@@ -105,7 +105,7 @@ export function debouncedValidator(delay: number, func: AsyncValidatorFunction):
 export function applyValidation(validation: ValidatorListUnresolved, name: string, value: any): ValidationContext {
     let validators = normaliseValidators(validation);
     let cancelled = false;
-    let doResolve;
+    let doResolve: (value: string[]) => void;
     let anyAsync = false;
     let currentAsyncContext: AsyncValidationContext | undefined;
     const promise = new Promise<string[]>(async (resolve) => {
