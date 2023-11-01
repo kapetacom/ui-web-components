@@ -234,7 +234,7 @@ export const DetailRowValue = (props: DetailRowValueProps) => {
 
             {isEditing && !isProcessing && (
                 <SaveCancelButtons
-                    invalid={invalid}
+                    invalid={!!invalid}
                     onSave={async () => {
                         await context.onValueChanged(props.name, value);
                     }}
@@ -329,7 +329,7 @@ export const DetailRowListValueEntry = (props: DetailRowListValueEntryProps) => 
                     )}
                     {isEditing && !props.processing && (
                         <SaveCancelButtons
-                            invalid={invalid}
+                            invalid={!!invalid}
                             onSave={async () => {
                                 const newValue = [...props.originalValue];
                                 newValue[props.index] = listEntryValue;
@@ -416,7 +416,7 @@ export const DetailRowListValue = (props: DetailRowListValueProps) => {
 
                                 {!isProcessing && (
                                     <SaveCancelButtons
-                                        invalid={invalid}
+                                        invalid={!!invalid}
                                         onSave={async () => {
                                             const newValue = [...originalValue, newListEntry];
                                             await context.onValueChanged(props.name, newValue);

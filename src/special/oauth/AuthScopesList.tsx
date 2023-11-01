@@ -44,7 +44,7 @@ type AuthScopesListProps = {
     scopes: AuthScope[];
     editable?: boolean;
     onChange?: (scopes: AuthScope[]) => void;
-    onHoverScope?: (scope: AuthScope) => void;
+    onHoverScope: (scope: AuthScope | null) => void;
 };
 
 export const AuthScopesList = ({ scopes, editable, onChange, onHoverScope }: AuthScopesListProps) => {

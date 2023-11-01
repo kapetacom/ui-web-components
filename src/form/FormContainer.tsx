@@ -397,7 +397,8 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
                         onReadyStateChanged: (fieldName: string, ready: boolean) =>
                             this.onReadyStateChanged(fieldName, ready),
                         onValueChanged: (name, value) => this.onValueChanged(name, value),
-                        onReset: (name: string, callback: (value) => void) => this.addResetListener(name, callback),
+                        onReset: (name: string, callback: (value: any) => void) =>
+                            this.addResetListener(name, callback),
                     }}
                 >
                     {this.renderFormContainer()}
