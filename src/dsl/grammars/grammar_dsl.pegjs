@@ -393,8 +393,8 @@ method_annotation
             } else if (options.rest && !usedName) {
                 _error(`Annotation ${type} requires 1 argument: path`);
             } else if (options.rest && usedName &&
-                !/^\/([a-z_{}][a-z0-9_-{}]*(\/[a-z_{}][a-z0-9_-{}]*)*)?$/i.test(usedName)) {
-                _error(`Invalid path specified. Must start with "/" and be well formed: "${usedName}"`);
+                !/^\/([a-z0-9_\-~\.{}%]+(\/[a-z0-9_\-~\.{}%]+)*)?$/i.test(usedName)) {
+                _error(`Invalid URL path specified. Must start with "/" and not end with "/"`);
             }
         }
 
