@@ -86,7 +86,7 @@ export enum ButtonSize {
 
 interface ButtonProps {
     text: string;
-    width?: number;
+    width: number;
     disabled?: boolean;
     style?: ButtonStyle;
     type?: ButtonType;
@@ -94,7 +94,7 @@ interface ButtonProps {
     onClick?: () => void;
 }
 
-const ButtonHexagon = (props: ButtonProps & { width: number }) => {
+const ButtonHexagon = (props: ButtonProps) => {
     const cssMask = createCSSMask(props.width);
 
     return (
@@ -119,7 +119,7 @@ const ButtonSquare = (props: ButtonProps) => {
     );
 };
 
-const ButtonIcon = (props: ButtonProps & { width: number }) => {
+const ButtonIcon = (props: ButtonProps) => {
     const size = props.width + 'px';
     const fontSize = props.width / 2 + 'px';
     return (
@@ -163,7 +163,7 @@ const ButtonInner = (props: ButtonProps) => {
 /**
  * @deprecated Use MUI Button instead
  */
-export const Button = (props: ButtonProps) => {
+export const Button = (props: Omit<ButtonProps, 'width'> & { width?: number }) => {
     const width = props.width ? props.width : props.shape === ButtonShape.ICON ? ButtonSize.ICON : ButtonSize.MEDIUM;
 
     const style = props.style || ButtonStyle.DEFAULT;

@@ -89,11 +89,11 @@ export namespace DSLConverters {
         return type.name + (type.list ? '[]' : '');
     }
 
-    export function fromSchemaType(type: TypeLike): string {
+    export function fromSchemaType(type?: TypeLike): string {
         if (!type || type.type === '') {
             return 'void';
         }
-        return type && type.ref ? type.ref : type.type;
+        return type && type.ref ? type.ref : type.type || 'void';
     }
 
     export function toSchemaType(dslType: DSLType): TypeLike {
@@ -120,7 +120,7 @@ export namespace DSLConverters {
         return { type: type };
     }
 
-    export function toSchemaEntity(entity: DSLEntity): Entity {
+    export function toSchemaEntity(entity: DSLEntity): Entity | undefined {
         switch (entity.type) {
             case DSLEntityType.ENUM:
                 return {
@@ -144,14 +144,14 @@ export namespace DSLConverters {
         }
     }
 
-    export function fromSchemaEntity(entity: Entity): DSLEntity {
+    export function fromSchemaEntity(entity: Entity): DSLEntity | undefined {
         switch (entity.type) {
             case EntityType.Enum:
                 return {
                     type: DSLEntityType.ENUM,
                     name: entity.name,
                     description: entity.description,
-                    values: entity.values,
+                    values: entity.values || [],
                 };
 
             case EntityType.Dto:
@@ -220,7 +220,7 @@ export namespace DSLConverters {
     }
 
     export function toSchemaProperties(properties: DSLDataTypeProperty[]): EntityProperties {
-        const out = {};
+        const out: EntityProperties = {};
 
         properties.forEach((property) => {
             let typeLike = toSchemaType(property.type);
@@ -254,7 +254,7 @@ export namespace DSLConverters {
                         };
                     }
                 } else {
-                    if (typeLike.ref.endsWith('[]')) {
+                    if (typeLike.ref?.endsWith('[]')) {
                         typeLike.ref = typeLike.ref.substring(0, typeLike.ref.length - 2);
                     }
                 }
@@ -341,7 +341,7 @@ export namespace DSLConverters {
         const out: SchemaMethods = {};
 
         methods.forEach((method) => {
-            const args = {};
+            const args: RESTMethod['arguments'] = {};
             if (method.parameters) {
                 method.parameters.forEach((arg) => {
                     args[arg.name] = {

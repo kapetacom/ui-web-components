@@ -7,9 +7,10 @@ import React from 'react';
 import { DnDContainer, DnDDrag, DnDDrop } from '../src';
 
 import './styles.less';
+import { Dimensions } from '@kapeta/schemas';
 
-const dropHandler = (string, value, dimensions) => {
-    console.log('DROPPED', string, value, dimensions);
+const dropHandler = (type: string, value: any, dimensions: Dimensions) => {
+    console.log('DROPPED', type, value, dimensions);
 };
 
 export default {

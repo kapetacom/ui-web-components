@@ -4,7 +4,7 @@
  */
 
 import { describe, test, expect } from '@jest/globals';
-import { DSLParser } from '../../src/dsl/DSLParser';
+import { DSLParser, SoftError } from '../../src/dsl/DSLParser';
 import { DSLEntityType } from '../../src/dsl/types';
 
 describe('DSLParser', () => {
@@ -291,7 +291,7 @@ describe('DSLParser', () => {
     });
 
     test('can get soft errors as array for semantic errors', () => {
-        const errors: Error[] = [];
+        const errors: SoftError[] = [];
         DSLParser.parse(`@DoesntExist doGet():MyType\notherMethod(@NotReal id:Unknown):void\n`, {
             methods: true,
             softErrorHandler: (error) => errors.push(error),

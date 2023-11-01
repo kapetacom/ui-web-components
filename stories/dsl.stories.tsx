@@ -134,7 +134,7 @@ const CONFIGURATION_ENTITIES: DSLEntity[] = [
             {
                 name: 'state',
                 annotations: [],
-                description: null,
+                description: undefined,
                 type: 'Status',
                 defaultValue: {
                     type: 'enum',

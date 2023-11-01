@@ -38,7 +38,7 @@ export const FormFieldProcessingContainer = ({ controller, inputElement: element
                         bottom: parseFloat(paddingBottom) + (innerHeight - spinnerSize) / 2 + 'px',
                         left: rect.width - parseFloat(paddingRight) - spinnerSize + 'px',
                     });
-                } else if (tagName === 'textarea') {
+                } else if (tagName === 'textarea' && element.parentElement) {
                     // We use the parent element instead for the textarea because the padding is not
                     // in the textarea element but in the parent element.
                     const rect = element.parentElement.getBoundingClientRect();

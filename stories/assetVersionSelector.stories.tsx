@@ -167,7 +167,6 @@ export const SingleNameMultiVersionsWithValue = () => {
                             ref: 'kapeta/block-type-service:local',
                             title: 'Service',
                         },
-                        ,
                     ]}
                 />
                 <FormState />

@@ -139,7 +139,7 @@ export function applyValidation(validation: ValidatorListUnresolved, name: strin
                 if (typeof err === 'string') {
                     errors.push(err);
                 } else {
-                    errors.push(err.message);
+                    errors.push((err as Error).message);
                 }
             }
         }
