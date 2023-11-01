@@ -60,7 +60,7 @@ export const ConfirmationDialog = ({ open, options, onCancel, onConfirm, onClose
         </>
     );
 
-    const dialogActions = buttonOrder.map((buttonType) => {
+    const dialogActions = buttonOrder?.map((buttonType) => {
         if (buttonType === 'cancel') {
             return (
                 !hideCancelButton && (
@@ -76,7 +76,7 @@ export const ConfirmationDialog = ({ open, options, onCancel, onConfirm, onClose
                 <Button
                     key="confirm"
                     color="primary"
-                    disabled={confirmationButtonDisabled}
+                    disabled={!!confirmationButtonDisabled}
                     {...confirmationButtonProps}
                     onClick={onConfirm}
                 >
@@ -94,7 +94,7 @@ export const ConfirmationDialog = ({ open, options, onCancel, onConfirm, onClose
             maxWidth="xs"
             {...dialogProps}
             open={open}
-            onClose={allowClose ? onClose : null}
+            onClose={allowClose ? onClose : undefined}
             PaperProps={{
                 elevation: 23,
             }}

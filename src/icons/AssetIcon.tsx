@@ -82,7 +82,7 @@ export const AssetKindIcon = (props: AssetKindIconProps) => {
     return (
         <KindIcon
             kind={props.asset.kind}
-            icon={props.asset.spec.icon}
+            icon={props.asset.spec?.icon}
             size={props.size}
             title={props.asset.metadata.title}
         />
@@ -91,5 +91,5 @@ export const AssetKindIcon = (props: AssetKindIconProps) => {
 
 export const AssetKindIconText = (props: AssetKindIconProps) => {
     let title = props.asset.metadata.title ?? props.asset.metadata.name;
-    return <KindIconText kind={props.asset.kind} icon={props.asset.spec.icon} size={props.size} title={title} />;
+    return <KindIconText kind={props.asset.kind} icon={props.asset.spec?.icon} size={props.size} title={title} />;
 };

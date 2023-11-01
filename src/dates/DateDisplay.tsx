@@ -168,11 +168,11 @@ export const DateDisplay = (props: DateDisplayProps) => {
             allowRelative: false,
             format: props.tooltipDateFormat ?? DateTime.DATETIME_SHORT,
         });
-        return (
+        return fullDate ? (
             <Tooltip title={fullDate.text} placement={props.tooltipPlacement || 'top'} arrow>
                 <span className={'date-display'}>{dateText.text}</span>
             </Tooltip>
-        );
+        ) : null;
     }
 
     return <span className={'date-display'}>{dateText.text}</span>;

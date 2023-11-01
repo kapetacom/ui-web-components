@@ -176,7 +176,7 @@ const FieldEditor = (props: FieldProps) => {
         );
     }
 
-    if (isNumber(props.field.type)) {
+    if (isNumber(props.field.type || '')) {
         return (
             <input
                 className={'value'}
@@ -252,55 +252,61 @@ export const EntityEditor = (props: Props) => {
                         <pre className={'entity'} key={entity.name}>
                             {entity.description && <span className={'comment'}>// {entity.description}</span>}
                             <span className={'field-name'}>{entity.name}:</span>
-                            {Object.entries(entity.properties).map(([fieldId, field]: [string, EntityProperty]) => {
-                                const fullId = `${entity.name}.${fieldId}`;
-                                let value = _.get(props.value, fullId);
-                                if (value === undefined) {
-                                    if (field.defaultValue) {
-                                        value = toDefaultValue(field);
-                                    } else {
-                                        if (field.type === 'boolean') {
-                                            value = false;
+                            {Object.entries(entity.properties || {}).map(
+                                ([fieldId, field]: [string, EntityProperty]) => {
+                                    const fullId = `${entity.name}.${fieldId}`;
+                                    let value = _.get(props.value, fullId);
+                                    if (value === undefined) {
+                                        if (field.defaultValue) {
+                                            value = toDefaultValue(field);
                                         } else {
-                                            value = '';
+                                            if (field.type === 'boolean') {
+                                                value = false;
+                                            } else {
+                                                value = '';
+                                            }
                                         }
                                     }
-                                }
 
-                                return (
-                                    <div className={'field'} key={fieldId}>
-                                        {field.description && <span className={'comment'}>// {field.description}</span>}
-                                        <span className={'field-value'}>
-                                            <span className={'field-name'}>
-                                                {fieldId}
-                                                {field.required ? '*' : ''}
-                                            </span>
-                                            <span>:</span>
-                                            <FieldEditor
-                                                entities={props.entities}
-                                                instances={props.instances}
-                                                field={field}
-                                                value={value}
-                                                onChange={(value) => {
-                                                    const newValue = _.cloneDeep(props.value);
-                                                    _.set(newValue, fullId, value);
-                                                    Object.entries(defaultValues).forEach(([section, defaultValue]) => {
-                                                        Object.entries(defaultValue).forEach(
-                                                            ([fieldId, defaultValue]) => {
-                                                                const fullId = `${section}.${fieldId}`;
-                                                                if (!_.has(newValue, fullId)) {
-                                                                    _.set(newValue, fullId, defaultValue);
-                                                                }
+                                    return (
+                                        <div className={'field'} key={fieldId}>
+                                            {field.description && (
+                                                <span className={'comment'}>// {field.description}</span>
+                                            )}
+                                            <span className={'field-value'}>
+                                                <span className={'field-name'}>
+                                                    {fieldId}
+                                                    {field.required ? '*' : ''}
+                                                </span>
+                                                <span>:</span>
+                                                <FieldEditor
+                                                    entities={props.entities}
+                                                    instances={props.instances}
+                                                    field={field}
+                                                    value={value}
+                                                    onChange={(value) => {
+                                                        const newValue = _.cloneDeep(props.value);
+                                                        _.set(newValue, fullId, value);
+                                                        Object.entries(defaultValues).forEach(
+                                                            ([section, defaultValue]) => {
+                                                                Object.entries(defaultValue).forEach(
+                                                                    ([fieldId, defaultValue]) => {
+                                                                        const fullId = `${section}.${fieldId}`;
+                                                                        if (!_.has(newValue, fullId)) {
+                                                                            _.set(newValue, fullId, defaultValue);
+                                                                        }
+                                                                    }
+                                                                );
                                                             }
                                                         );
-                                                    });
-                                                    props.onChange(newValue);
-                                                }}
-                                            />
-                                        </span>
-                                    </div>
-                                );
-                            })}
+                                                        props.onChange(newValue);
+                                                    }}
+                                                />
+                                            </span>
+                                        </div>
+                                    );
+                                }
+                            )}
                         </pre>
                     );
                 })}

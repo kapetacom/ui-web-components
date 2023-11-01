@@ -103,7 +103,7 @@ export const AssetInstallButton = (props: Props) => {
                 showToasty({
                     type: ToastType.ALERT,
                     title: props.subscriptions ? `Failed to add ${kindNameLC}` : `Failed to install ${kindNameLC}`,
-                    message: task.errorMessage,
+                    message: task.errorMessage || 'Unknown error',
                 });
             }
 
@@ -211,7 +211,7 @@ export const AssetInstallButton = (props: Props) => {
                         return;
                     }
 
-                    await props.service?.uninstall(assetRef);
+                    await props.service?.uninstall?.(assetRef);
                     await installedAsset.mutate();
                 },
             });
@@ -243,7 +243,7 @@ export const AssetInstallButton = (props: Props) => {
             showToasty({
                 type: ToastType.ALERT,
                 title: props.subscriptions ? `Failed to add ${kindNameLC}` : `Failed to install ${kindNameLC}`,
-                message: e.message,
+                message: (e as Error).message || 'Unknown error',
             });
         }
     }, [assetRef, props.service, kindNameLC]);

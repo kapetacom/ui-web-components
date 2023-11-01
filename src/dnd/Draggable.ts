@@ -48,9 +48,9 @@ export class Draggable<T> {
 
     private startPosition: Point = { x: 0, y: 0 };
 
-    private lastMouseMoveEvent: MouseEvent = null;
+    private lastMouseMoveEvent: MouseEvent | null = null;
 
-    private lastScrollPoint: Point = null;
+    private lastScrollPoint: Point | null = null;
 
     private initialSize: Size = { width: -1, height: -1 };
 
@@ -193,8 +193,8 @@ export class Draggable<T> {
     private getGlobalScrollDelta() {
         const globalScroll = this.getGlobalScroll();
         return {
-            y: globalScroll.y - this.lastScrollPoint.y,
-            x: globalScroll.x - this.lastScrollPoint.x,
+            y: globalScroll.y - (this.lastScrollPoint?.y || 0),
+            x: globalScroll.x - (this.lastScrollPoint?.x || 0),
         };
     }
 
@@ -223,8 +223,8 @@ export class Draggable<T> {
         }
 
         //Get offset relative to container
-        x -= this.containerDimensions.left;
-        y -= this.containerDimensions.top;
+        x -= this.containerDimensions?.left || 0;
+        y -= this.containerDimensions?.top || 0;
 
         //Handle in-container scroll
         x += scrolling.left;
@@ -401,7 +401,12 @@ export class Draggable<T> {
         this.dragging = false;
         this.lastScrollPoint = null;
         this.lastMouseMoveEvent = null;
-        this.containerDimensions = null;
+        this.containerDimensions = {
+            top: 0,
+            left: 0,
+            width: 0,
+            height: 0,
+        };
 
         if (!(this.options.onDragEnd && this.options.onDragEnd(dimensions))) {
             this.updateDraggingTarget(dimensions);

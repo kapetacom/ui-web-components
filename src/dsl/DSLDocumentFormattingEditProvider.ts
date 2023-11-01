@@ -28,7 +28,7 @@ export class DSLDocumentFormattingEditProvider implements DocumentFormattingEdit
                 methods: true,
                 ignoreSemantics: true,
             });
-            formattedCode = DSLWriter.write(result.entities);
+            formattedCode = result.entities ? DSLWriter.write(result.entities) : '';
         } catch (e) {
             console.warn('Failed to parse while formatting', e);
             //Ignore this

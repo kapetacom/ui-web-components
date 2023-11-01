@@ -62,7 +62,7 @@ export const coreNames: Record<CoreTypes, string> = {
 };
 
 export const getNameForKind = (kind: string) => {
-    return coreNames[kind] ?? 'Asset';
+    return kind in coreNames ? coreNames[kind as CoreTypes] : 'Asset';
 };
 
 export function DependencyKindLabel(props: { dependency: { name: string }; fetcher: AssetFetcher }) {
@@ -74,7 +74,7 @@ export function DependencyKindLabel(props: { dependency: { name: string }; fetch
                 return {
                     content: {
                         kind: fullName,
-                        metadata: { name: coreNames[fullName] },
+                        metadata: { name: coreNames[fullName as CoreTypes] },
                         spec: {},
                     },
                 } as AssetDisplay;
@@ -115,7 +115,7 @@ export interface BlockhubTileProps {
 export function BlockhubTile(props: BlockhubTileProps) {
     const containerClass = toClass({
         'blockhub-tile': true,
-        selected: props.selected,
+        selected: !!props.selected,
     });
     const link = (content: ReactNode) =>
         props.href ? (

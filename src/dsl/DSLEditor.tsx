@@ -30,7 +30,7 @@ export const DSLEditor = (props: DSLEditorProps) => {
         let value: string;
         const result = props.value as DSLResult;
         if (typeof result === 'object') {
-            value = result.code ? result.code : DSLWriter.write(result.entities);
+            value = result.code ? result.code : DSLWriter.write(result.entities || []);
         } else {
             value = props.value as string;
         }

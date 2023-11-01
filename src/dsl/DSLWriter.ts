@@ -26,7 +26,7 @@ function toAnnotationCode(data: DSLAnnotation) {
     if (args.length > 0) {
         out.push('(');
         out.push(
-            data.arguments
+            args
                 .map((arg) => {
                     return JSON.stringify(arg);
                 })

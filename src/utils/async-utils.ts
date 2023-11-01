@@ -11,7 +11,7 @@ export const asyncTimeout = (ms: number) => {
 
 export const asyncInterval = (callback: () => Promise<any>, ms: number) => {
     let out = {
-        resource: null,
+        resource: null as null | NodeJS.Timeout,
         cancel() {
             if (this.resource) {
                 clearTimeout(this.resource);

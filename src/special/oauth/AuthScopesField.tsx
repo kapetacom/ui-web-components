@@ -31,12 +31,12 @@ function getScopeExplanation(scope: AuthScope | null): ScopeExplanation {
     }
     return {
         title: scope.name,
-        description: scope.description,
+        description: scope.description || '',
     };
 }
 
 export const AuthScopesField = (props: AuthScopesFieldProps) => {
-    const [hoveredScope, setHoveredScope] = useState<AuthScope>(null);
+    const [hoveredScope, setHoveredScope] = useState<AuthScope | null>(null);
     const hoveredScopeExplanation = getScopeExplanation(hoveredScope);
 
     return (

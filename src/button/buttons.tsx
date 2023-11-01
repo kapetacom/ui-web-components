@@ -94,7 +94,7 @@ interface ButtonProps {
     onClick?: () => void;
 }
 
-const ButtonHexagon = (props: ButtonProps) => {
+const ButtonHexagon = (props: ButtonProps & { width: number }) => {
     const cssMask = createCSSMask(props.width);
 
     return (
@@ -119,7 +119,7 @@ const ButtonSquare = (props: ButtonProps) => {
     );
 };
 
-const ButtonIcon = (props: ButtonProps) => {
+const ButtonIcon = (props: ButtonProps & { width: number }) => {
     const size = props.width + 'px';
     const fontSize = props.width / 2 + 'px';
     return (

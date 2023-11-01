@@ -291,7 +291,7 @@ describe('DSLParser', () => {
     });
 
     test('can get soft errors as array for semantic errors', () => {
-        const errors = [];
+        const errors: Error[] = [];
         DSLParser.parse(`@DoesntExist doGet():MyType\notherMethod(@NotReal id:Unknown):void\n`, {
             methods: true,
             softErrorHandler: (error) => errors.push(error),

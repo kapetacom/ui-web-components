@@ -5,7 +5,7 @@
 
 import { Asset, SchemaKind } from '@kapeta/ui-web-types';
 
-export type AssetFetcher = (name: string, version: string) => Promise<AssetDisplay>;
+export type AssetFetcher = (name: string, version: string) => Promise<AssetDisplay | undefined>;
 
 export enum CoreTypes {
     CORE = 'core/core',

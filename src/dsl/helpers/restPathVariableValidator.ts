@@ -45,11 +45,11 @@ export const restPathVariableValidator = (entity: PEGValidationEntity<DSLMethod>
             return null;
         }
 
-        return pathAnnotation.arguments?.length > 0 && pathAnnotation.arguments[0]
+        return pathAnnotation.arguments?.length && pathAnnotation.arguments?.length > 0 && pathAnnotation.arguments[0]
             ? pathAnnotation.arguments[0]
             : parameter.name;
     }
-    function reportError(message, loc?: any) {
+    function reportError(message: string, loc?: any) {
         if (!loc) {
             loc = getLocation(restAnnotation);
         }
@@ -60,7 +60,7 @@ export const restPathVariableValidator = (entity: PEGValidationEntity<DSLMethod>
     }
 
     //1. Validate that all variables in path has a corresponding path variable parameter
-    const pathVariables = [];
+    const pathVariables: string[] = [];
     let result;
     while ((result = rx.exec(path)) != null) {
         const [_, variableName, pattern] = result;
@@ -97,7 +97,7 @@ export const restPathVariableValidator = (entity: PEGValidationEntity<DSLMethod>
 
         const pathVariableId = getPathVariableId(parameter);
 
-        if (pathVariables.indexOf(pathVariableId) === -1) {
+        if (pathVariableId !== null && pathVariables.indexOf(pathVariableId) === -1) {
             reportError(
                 `Parameter defines path variable "${pathVariableId}" which is never used in path`,
                 getLocation(parameter)

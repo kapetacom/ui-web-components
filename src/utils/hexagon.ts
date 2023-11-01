@@ -40,7 +40,7 @@ export function createHexagon(width: number, height: number, pointSize: number) 
         y: height / 2,
     });
 
-    const first = points.shift();
+    const first = points.shift()!;
 
     //@ts-ignore
     return (

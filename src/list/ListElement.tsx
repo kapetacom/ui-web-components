@@ -25,7 +25,7 @@ interface Props {
 }
 
 export const ListElement = (props: Props) => {
-    const hasAnyAction = props.actions && props.actions.length > 0;
+    const hasAnyAction = !!props.actions && props.actions.length > 0;
 
     const classNames = toClass({
         'component-list-element': true,
@@ -39,7 +39,7 @@ export const ListElement = (props: Props) => {
 
                 {hasAnyAction && (
                     <Actions>
-                        {props.actions.map((a, ix) => (
+                        {props.actions?.map((a, ix) => (
                             <IconButton
                                 key={`action_${ix}`}
                                 sx={{

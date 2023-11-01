@@ -106,7 +106,7 @@ const AutoLoadingTile = (props: Props) => {
 export interface BlockhubDetailsProps {
     asset: AssetDisplay;
     service?: InstallerService;
-    fetcher?: AssetFetcher;
+    fetcher: AssetFetcher;
     versionInfo?: AssetVersionInfo;
     tabId?: 'general' | 'dependencies' | 'versions' | string;
     onTabChange: (tabId: 'general' | 'dependencies' | 'versions') => void;

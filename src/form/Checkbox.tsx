@@ -21,14 +21,14 @@ export const Checkbox = (props: CheckboxProps) => {
         'checkbox-icon': true,
         check: true,
         checked: value,
-        disabled: props.disabled,
+        disabled: !!props.disabled,
     });
 
     const checkBoxBoxClassName = toClass({
         'checkbox-icon': true,
         box: true,
         checked: value,
-        disabled: props.disabled,
+        disabled: !!props.disabled,
     });
 
     return (
