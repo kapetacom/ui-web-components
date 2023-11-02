@@ -40,6 +40,10 @@ export const STRINGABLE_TYPES: TypeDefinition[] = [
             'A small number without decimals. Will be converted to the closest possible representation in the target language',
     },
     {
+        name: 'boolean',
+        description: 'A true or false value',
+    },
+    {
         name: 'string',
         description: 'A string of characters',
     },
@@ -54,10 +58,6 @@ export const BUILT_IN_TYPES: TypeDefinition[] = [
     {
         name: 'byte',
         description: 'A single byte',
-    },
-    {
-        name: 'boolean',
-        description: 'A true or false value',
     },
     {
         name: 'date',
