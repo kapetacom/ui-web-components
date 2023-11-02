@@ -8,7 +8,11 @@ import { useFormContextField } from '../FormContext';
 import { Autocomplete, AutocompleteProps } from './Autocomplete';
 
 type FormAutocompleteProps<Option> = Omit<AutocompleteProps<Option>, 'value'>;
-export function FormAutocomplete<Option>({ name, onChange, ...otherAutocompleteProps }: FormAutocompleteProps<Option>) {
+export function FormAutocomplete<Option>({
+    name,
+    onChange,
+    ...otherAutocompleteProps
+}: FormAutocompleteProps<Option> & { name: string }) {
     const formField = useFormContextField<Option | NonNullable<string | Option> | (string | Option)[] | null>(
         name,
         (value) => {

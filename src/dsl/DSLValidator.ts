@@ -6,6 +6,7 @@
 import { editor, MarkerSeverity } from 'monaco-editor';
 import { DSLParser } from './DSLParser';
 import { DSL_LANGUAGE_ID, DSLLanguageOptions } from './types';
+import { GrammarError } from 'peggy';
 
 type ITextModel = editor.ITextModel;
 type Editor = typeof editor;
@@ -26,7 +27,8 @@ export class DSLValidator {
                 ...options,
                 softErrorHandler: (error) => {
                     let severity: MarkerSeverity = MarkerSeverity.Error;
-                    switch (error.type) {
+                    const { type, ...err } = error;
+                    switch (type) {
                         case 'warning':
                             severity = MarkerSeverity.Warning;
                             break;
@@ -37,15 +39,15 @@ export class DSLValidator {
                             severity = MarkerSeverity.Info;
                             break;
                     }
-                    delete error.type;
                     errors.push({
                         code: '2',
                         severity,
-                        ...error,
+                        ...err,
                     });
                 },
             });
-        } catch (ex) {
+        } catch (e) {
+            const ex = e as GrammarError;
             if (!ex.location) {
                 throw ex;
             }
@@ -71,8 +73,8 @@ export class DSLValidator {
         this.editor.setModelMarkers(model, DSL_LANGUAGE_ID, errors);
     }
 
-    bind(model) {
-        let validationHandle;
+    bind(model: ITextModel) {
+        let validationHandle: NodeJS.Timeout | undefined;
 
         //Syntax and semantic validation
 

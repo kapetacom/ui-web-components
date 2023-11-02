@@ -126,7 +126,7 @@ export class EntityMapper extends React.Component<EntityMapperProps, EntityMappe
                 value={this.getMapping(id)}
                 options={targetFieldsList}
                 validation={['required']}
-                onChange={(userInput) => this.updateMapping(id, userInput)}
+                onChange={(userInput: string) => this.updateMapping(id, userInput)}
                 help={'Choose source value to map from'}
             />
         );

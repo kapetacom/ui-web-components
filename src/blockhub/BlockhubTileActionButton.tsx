@@ -49,7 +49,7 @@ export function BlockhubTileActionButton(props: BlockhubTileActionButtonProps) {
                     } catch (e) {
                         showToasty({
                             type: ToastType.ALERT,
-                            message: e.message,
+                            message: (e as Error).message,
                             title: 'Error',
                         });
                     } finally {

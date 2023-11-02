@@ -40,7 +40,6 @@ const toId = (asset: AssetDisplay) => {
 };
 
 interface TileCheckboxProps {
-    service: InstallerService;
     checked: boolean;
     assetRef: string;
     onChange: (checked: boolean) => void;
@@ -293,7 +292,6 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
 
                         const actionButton = showCheckbox ? (
                             <TileCheckbox
-                                service={props.installerService}
                                 checked={isSelected}
                                 assetRef={id}
                                 onChange={(checked) => {

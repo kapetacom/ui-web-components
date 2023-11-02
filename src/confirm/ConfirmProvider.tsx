@@ -41,7 +41,7 @@ const DEFAULT_OPTIONS: ConfirmOptions = {
     buttonOrder: ['cancel', 'confirm'],
 };
 
-const buildOptions = (defaultOptions, options) => {
+const buildOptions = (defaultOptions: ConfirmOptions, options: ConfirmOptions) => {
     const dialogProps = {
         ...(defaultOptions.dialogProps || DEFAULT_OPTIONS.dialogProps),
         ...(options.dialogProps || {}),

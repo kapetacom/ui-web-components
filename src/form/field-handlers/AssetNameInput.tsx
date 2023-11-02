@@ -33,7 +33,7 @@ export const AssetNameInput = (props: Props) => {
 
     // Add a fake option for unknown namespaces (e.g. loading an asset that you can no longer access)
     const validateNamespace = useCallback(
-        (name, value) => {
+        (name: string, value: string) => {
             const [namespace] = value.split('/');
             if (!(props.namespaces || []).includes(namespace)) {
                 throw 'Namespace not available';

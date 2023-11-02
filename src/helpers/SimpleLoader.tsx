@@ -51,10 +51,11 @@ interface Props {
 export const SimpleLoader = (props: Props) => {
     let loading = !!props.loading;
 
-    if (props.loader) {
-        const [uncontrolledLoading, setUncontrolledLoading] = useState(true);
-        loading = uncontrolledLoading;
-        useEffect(() => {
+    const [uncontrolledLoading, setUncontrolledLoading] = useState(true);
+
+    useEffect(() => {
+        if (props.loader) {
+            loading = uncontrolledLoading;
             setUncontrolledLoading(true);
             props
                 .loader()
@@ -64,8 +65,8 @@ export const SimpleLoader = (props: Props) => {
                 .catch(() => {
                     setUncontrolledLoading(false);
                 });
-        }, []);
-    }
+        }
+    }, [props.loader]);
 
     const type: LoaderType = props.type || LoaderType.RIPPLE;
 

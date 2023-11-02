@@ -84,7 +84,7 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
         }
     }
 
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement>();
 
     return (
         <FormFieldProcessingContainer controller={controller} inputElement={inputRef.current}>
@@ -112,7 +112,7 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
                 value={value}
                 type={props.type === Type.PASSWORD && showPassword ? 'text' : props.type}
                 InputLabelProps={{
-                    shrink: hasValue || NON_TEXT_TYPES.includes(props.type) ? true : undefined,
+                    shrink: hasValue || (props.type && NON_TEXT_TYPES.includes(props.type)) ? true : undefined,
                 }}
                 inputProps={{
                     readOnly: controller.readOnly,

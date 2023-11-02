@@ -34,7 +34,7 @@ interface Props {
 
 export const BlockhubModal = (props: Props) => {
     const [selection, setSelection] = useState<AssetDisplay[]>([]);
-    const [currentAsset, setCurrentAsset] = useState<AssetDisplay>(null);
+    const [currentAsset, setCurrentAsset] = useState<AssetDisplay | null>(null);
     const [currentAssetTab, setCurrentAssetTab] = useState<string>('general');
 
     const resetState = () => {
@@ -124,7 +124,7 @@ export const BlockhubModal = (props: Props) => {
                             variant={'contained'}
                             disabled={selection.length === 0}
                             onClick={() => {
-                                props.onSelect(selection);
+                                props.onSelect?.(selection);
                                 props.onClose();
                                 setSelection([]);
                             }}

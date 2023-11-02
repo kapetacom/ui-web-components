@@ -26,13 +26,12 @@ const FormState = () => {
 };
 
 const createStory =
-    (description, props, initialState = defaultState) =>
+    (description: string, _props: any, initialState = defaultState) =>
     () => {
         const [state, setState] = useState(initialState);
-        const onChange = useCallback((name, value) => setState((state) => ({ ...state, [name]: value })), [setState]);
 
         const checkUnique: AsyncValidatorFunction = (name: string, value: string) => {
-            let timeout;
+            let timeout: NodeJS.Timeout;
             const promise = new Promise((resolve, reject) => {
                 timeout = setTimeout(() => {
                     if (value === 'kapeta/exists') {

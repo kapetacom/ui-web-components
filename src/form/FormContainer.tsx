@@ -190,7 +190,7 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
         );
     }
 
-    private async processingWhile(callback) {
+    private async processingWhile(callback: () => Promise<void>) {
         this.setState({ processing: true });
         try {
             await callback();
@@ -215,7 +215,7 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
 
         if (this.shouldSubmitForm()) {
             this.emitFormStateChange('submit', true);
-            const formElm = this.container.closest('form');
+            const formElm = this.container?.closest('form');
             if (formElm) {
                 formElm.submit();
             }
@@ -397,7 +397,8 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
                         onReadyStateChanged: (fieldName: string, ready: boolean) =>
                             this.onReadyStateChanged(fieldName, ready),
                         onValueChanged: (name, value) => this.onValueChanged(name, value),
-                        onReset: (name: string, callback: (value) => void) => this.addResetListener(name, callback),
+                        onReset: (name: string, callback: (value: any) => void) =>
+                            this.addResetListener(name, callback),
                     }}
                 >
                     {this.renderFormContainer()}

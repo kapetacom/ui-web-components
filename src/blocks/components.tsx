@@ -26,8 +26,8 @@ export const BlockInstanceName = (props: { onChange?: (instanceName: string) => 
             maxWidth={150}
             maxChars={15}
             maxLines={2}
-            onChange={block.readOnly && onChange ? undefined : (name) => onChange.call(null, name)}
-            value={block.instance?.name}
+            onChange={block.readOnly && onChange ? undefined : (name) => onChange?.call(null, name)}
+            value={block.instance?.name || ''}
         />
     );
 };

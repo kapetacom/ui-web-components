@@ -1,3 +1,6 @@
+// @ts-nocheck
+// Ignore the internal types in this file since it's a copy-pasta
+
 /*****************************************************************************
  *                                                                            *
  *  SVG Path Rounding Function                                                *
@@ -31,7 +34,7 @@
  *               the previous and next points.
  * @returns A new SVG path string with the rounding
  */
-export function roundPathCorners(pathString, radius, useFractionalRadius) {
+export function roundPathCorners(pathString: string, radius: number, useFractionalRadius: boolean): string {
     function moveTowardsLength(movingPoint, targetPoint, amount) {
         let width = targetPoint.x - movingPoint.x;
         let height = targetPoint.y - movingPoint.y;

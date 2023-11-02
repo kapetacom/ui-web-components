@@ -273,7 +273,7 @@ export const FormWithConditionals = () => {
     );
 };
 
-function failValidation(name, value) {
+function failValidation(_name: string, value: string) {
     if (value === 'fail') throw new Error('Cannot be "fail"');
 }
 
@@ -333,9 +333,9 @@ export const FormWithAsyncValidation = () => {
 
     const asyncValidation: AsyncValidatorFunction = useMemo(
         () =>
-            debouncedValidator(500, (name, value) => {
+            debouncedValidator(500, (_name, value) => {
                 console.log('Start async validation', value);
-                let doResolve, timer;
+                let doResolve: (value?: null) => void, timer: NodeJS.Timeout;
                 const promise = new Promise((resolve, reject) => {
                     doResolve = resolve;
                     timer = setTimeout(() => {
@@ -411,7 +411,7 @@ export const FormWithActiveAsyncValidation = () => {
     const asyncValidation: AsyncValidatorFunction = useMemo(
         () =>
             debouncedValidator(500, () => {
-                let doResolve;
+                let doResolve: (value?: null) => void;
 
                 const promise = new Promise((resolve) => {
                     doResolve = resolve;

@@ -30,7 +30,7 @@ export const DSLEditor = (props: DSLEditorProps) => {
         let value: string;
         const result = props.value as DSLResult;
         if (typeof result === 'object') {
-            value = result.code ? result.code : DSLWriter.write(result.entities);
+            value = result.code ? result.code : DSLWriter.write(result.entities || []);
         } else {
             value = props.value as string;
         }
@@ -75,8 +75,8 @@ export const DSLEditor = (props: DSLEditorProps) => {
                 options={options}
                 value={current}
                 onChange={(code) => {
-                    setCurrent(code);
-                    if (props.onChange) {
+                    setCurrent(code || '');
+                    if (props.onChange && code) {
                         try {
                             props.onChange(DSLParser.parse(code, parsingOptions));
                         } catch (e) {
@@ -88,12 +88,15 @@ export const DSLEditor = (props: DSLEditorProps) => {
                 onMount={(editor, m) => {
                     //Syntax and semantic validation
                     const validator = new DSLValidator(m.editor, parsingOptions);
-                    validator.bind(editor.getModel());
+                    const model = editor.getModel();
+                    if (model) {
+                        validator.bind(model);
 
-                    if (props.validTypes && props.validTypes.length > 0) {
-                        withAdditionalTypes(editor.getModel(), props.validTypes);
-                    } else {
-                        withAdditionalTypes(editor.getModel(), []);
+                        if (props.validTypes && props.validTypes.length > 0) {
+                            withAdditionalTypes(model, props.validTypes);
+                        } else {
+                            withAdditionalTypes(model, []);
+                        }
                     }
                 }}
             />

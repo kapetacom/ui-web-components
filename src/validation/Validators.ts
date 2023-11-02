@@ -8,9 +8,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useAsync } from 'react-use';
 export type AsyncValidationContext = { cancel: () => void; promise: Promise<any> };
 export type ValidationContext = { cancel: () => void; errors: Promise<string[]>; hasAsync: boolean };
-export type AsyncValidatorFunction = (fieldName: string, value: any) => AsyncValidationContext;
-export type SyncValidatorFunction = (fieldName: string, value: any) => void;
-export type ValidatorFunction = AsyncValidatorFunction | SyncValidatorFunction | string;
+export type AsyncValidatorFunction = (fieldName: string, value: any) => AsyncValidationContext | void;
+export type ValidatorFunction = AsyncValidatorFunction | string;
 export type ValidatorList = ValidatorFunction[];
 export type ValidatorListUnresolved = ValidatorList | string | ValidatorFunction;
 
@@ -34,8 +33,8 @@ validators.email = (fieldName: string, value: any) => {
 
 export const Validators = validators;
 
-export function normaliseValidators(validation: ValidatorListUnresolved): ValidatorList {
-    let validators = [];
+export function normaliseValidators(validation?: ValidatorListUnresolved): ValidatorList {
+    let validators: ValidatorList = [];
     if (validation) {
         if (Array.isArray(validation)) {
             validators = validation;
@@ -79,12 +78,12 @@ export function useValidation(active: boolean, validation: ValidatorListUnresolv
  */
 export function debouncedValidator(delay: number, func: AsyncValidatorFunction): AsyncValidatorFunction {
     return (fieldName: string, value: any) => {
-        let resolver, timer;
+        let resolver: (value?: unknown) => void, timer: NodeJS.Timeout;
         let realContext: AsyncValidationContext | undefined;
         const promise = new Promise((resolve, reject) => {
             resolver = resolve;
             timer = setTimeout(() => {
-                realContext = func(fieldName, value);
+                realContext = func(fieldName, value)!;
                 resolve(realContext.promise);
             }, delay);
         });
@@ -105,7 +104,7 @@ export function debouncedValidator(delay: number, func: AsyncValidatorFunction):
 export function applyValidation(validation: ValidatorListUnresolved, name: string, value: any): ValidationContext {
     let validators = normaliseValidators(validation);
     let cancelled = false;
-    let doResolve;
+    let doResolve: (value: string[]) => void;
     let anyAsync = false;
     let currentAsyncContext: AsyncValidationContext | undefined;
     const promise = new Promise<string[]>(async (resolve) => {
@@ -139,7 +138,7 @@ export function applyValidation(validation: ValidatorListUnresolved, name: strin
                 if (typeof err === 'string') {
                     errors.push(err);
                 } else {
-                    errors.push(err.message);
+                    errors.push((err as Error).message);
                 }
             }
         }

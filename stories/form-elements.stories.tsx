@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { State, Store } from '@sambego/storybook-state';
 
 import {
@@ -155,9 +155,9 @@ export const FormSelects = () => {
 };
 
 export const MixedInputs = () => {
-    let inputReturnCallback = (inputReturn) => {};
+    let inputReturnCallback = (inputReturn: string) => {};
 
-    let handleSubmit = (event) => {
+    let handleSubmit = (event: FormEvent) => {
         event.preventDefault();
     };
     return (
@@ -323,7 +323,7 @@ export const CountrySelects = () => {
                             help={'this is another message'}
                             disabled={true}
                             options={countryList}
-                            onChange={(name, input) => {}}
+                            onChange={() => {}}
                         />,
                         <br></br>,
                         <br></br>,

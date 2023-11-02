@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { useCallback, useRef, useState } from 'react';
+import React, { SyntheticEvent, useCallback, useRef, useState } from 'react';
 import { Avatar, Box, CircularProgress, Fab, FormControl, FormHelperText, InputLabel, Zoom } from '@mui/material';
 import { FormFieldControllerProps, useFormFieldController } from '../form/formFieldController';
 import { IconType, IconValue } from '@kapeta/schemas';
@@ -40,13 +40,14 @@ async function readFile(file: File, type: AvatarResultType): Promise<AvatarFileI
     return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = (e) => {
-            const url = type === AvatarResultType.DATA_URL ? (e.target.result as string) : URL.createObjectURL(file);
+            const data = e.target ? e.target.result : null;
+            const url = type === AvatarResultType.DATA_URL ? (data as string) : URL.createObjectURL(file);
             const fileInfo: AvatarFileInfo = {
                 name: file.name,
                 size: file.size,
                 mimeType: file.type,
                 url,
-                data: e.target.result,
+                data: data || '',
             };
             resolve(fileInfo);
         };
@@ -76,7 +77,7 @@ export const AvatarEditor = (props: Props) => {
     const [filePickerKey, setFilePickerKey] = useState(1);
     const [selectedValue, setSelectedValue] = useState<AvatarFileInfo>();
 
-    const inputRef = useRef<HTMLInputElement>();
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const size = props.size ?? 100;
 
@@ -86,18 +87,18 @@ export const AvatarEditor = (props: Props) => {
         }, 1000);
 
     const onFileChange = useCallback(
-        async (evt) => {
+        async (evt: SyntheticEvent<HTMLInputElement>) => {
             if (props.disabled || props.readOnly) {
                 return;
             }
 
-            const files = evt.target.files;
+            const files = evt.currentTarget.files;
             if (files && files.length > 0) {
                 const file = files[0];
                 setState(UploadStatus.PREPARING);
 
                 const fileInfo = await readFile(file, props.resultType ?? AvatarResultType.RAW);
-                if (props.maxFileSize > 0 && fileInfo.size > props.maxFileSize) {
+                if (props.maxFileSize && props.maxFileSize > 0 && fileInfo.size > props.maxFileSize) {
                     setState(UploadStatus.ERROR);
 
                     showToasty({
@@ -253,7 +254,7 @@ export const AvatarEditor = (props: Props) => {
                                         setState(UploadStatus.ERROR);
                                         showToasty({
                                             type: ToastType.DANGER,
-                                            message: e.message,
+                                            message: (e as Error).message,
                                             title: 'Failed to upload file',
                                         });
                                     } finally {
@@ -303,7 +304,7 @@ export const FormAvatarEditor = (props: FormProps) => {
         validation: props.validation,
         defaultValue: {
             type: IconType.Fontawesome5,
-            value: props.fallbackIcon,
+            value: props.fallbackIcon || '',
         },
         label: props.label,
         disabled: props.disabled,

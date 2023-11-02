@@ -86,7 +86,7 @@ export enum ButtonSize {
 
 interface ButtonProps {
     text: string;
-    width?: number;
+    width: number;
     disabled?: boolean;
     style?: ButtonStyle;
     type?: ButtonType;
@@ -163,7 +163,7 @@ const ButtonInner = (props: ButtonProps) => {
 /**
  * @deprecated Use MUI Button instead
  */
-export const Button = (props: ButtonProps) => {
+export const Button = (props: Omit<ButtonProps, 'width'> & { width?: number }) => {
     const width = props.width ? props.width : props.shape === ButtonShape.ICON ? ButtonSize.ICON : ButtonSize.MEDIUM;
 
     const style = props.style || ButtonStyle.DEFAULT;

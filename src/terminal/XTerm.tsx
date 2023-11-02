@@ -20,7 +20,7 @@ interface Props {
     terminalOptions?: ITerminalOptions & ITerminalInitOnlyOptions;
     lines?: string[];
     stream?: XTermStream;
-    onData?: (string) => void;
+    onData?: (data: string) => void;
 }
 
 export const escapeSequence = (str: string) => {
@@ -29,7 +29,7 @@ export const escapeSequence = (str: string) => {
 
 export const XTerm = (props: Props) => {
     const xtermContainer = useRef<HTMLDivElement>(null);
-    const [terminal, setTerminal] = useState<Terminal>(undefined);
+    const [terminal, setTerminal] = useState<Terminal | undefined>(undefined);
 
     useEffect(() => {
         if (!xtermContainer.current) {
@@ -97,7 +97,7 @@ export const XTerm = (props: Props) => {
         });
 
         const disposer = terminal.onData((data) => {
-            props.stream.write(data);
+            props.stream!.write(data);
         });
 
         return () => {

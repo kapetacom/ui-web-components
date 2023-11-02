@@ -16,7 +16,7 @@ import {
     STRINGABLE_TYPES,
 } from './types';
 
-interface SoftError {
+export interface SoftError {
     type: string;
     endColumn: number;
     endLineNumber: number;

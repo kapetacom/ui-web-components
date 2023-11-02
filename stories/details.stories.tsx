@@ -34,7 +34,7 @@ export const FullDetail = () => {
         phones: ['+1 (123) 12312-123', '+45 2123321'],
     });
 
-    const onChange = async (name, value, data) => {
+    const onChange = async (name: string, value: any, data: any) => {
         console.log('Changed', name, value);
 
         await new Promise((resolve, reject) =>
@@ -102,7 +102,7 @@ export const SmallDetail = () => {
         phones: ['+1 (123) 12312-123', '+45 2123321'],
     });
 
-    const onChange = async (name, value, data) => {
+    const onChange = async (name: string, value: any, data: any) => {
         console.log('Changed', name, value);
 
         await new Promise((resolve) => setTimeout(resolve, 3000));
