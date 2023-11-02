@@ -20,25 +20,28 @@ export interface FormStateChangeEvent {
 
 export type FormData = { [key: string]: any };
 
-export interface FormContainerProps {
+export interface FormContainerProps<TData> {
     onSubmit?: () => void | Promise<void>;
     onReset?: () => void;
     validators?: ValidatorList;
-    initialValue?: FormData;
-    onSubmitData?: (data: FormData) => void | Promise<void>;
-    onChange?: (data: FormData) => void;
+    initialValue?: TData;
+    onSubmitData?: (data: TData) => void | Promise<void>;
+    onChange?: (data: TData) => void;
     children: any;
 }
 
-interface State {
-    formData: FormData;
+interface State<TData> {
+    formData: TData;
     readyStates: { [key: string]: boolean };
     valid: boolean;
     processing: boolean;
     isDirty: boolean;
 }
 
-export class FormContainer extends React.Component<FormContainerProps, State> {
+export class FormContainer<TData extends FormData = any> extends React.Component<
+    FormContainerProps<TData>,
+    State<TData>
+> {
     static contextType = FormContext;
     context!: React.ContextType<FormContextType>;
 
@@ -52,7 +55,7 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
 
     private readonly resetListeners: { [key: string]: ResetListener[] } = {};
 
-    constructor(props: FormContainerProps) {
+    constructor(props: FormContainerProps<TData>) {
         super(props);
 
         this.submitClickHandler = {
@@ -68,7 +71,7 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
         };
 
         this.state = {
-            formData: props.initialValue ? cloneDeep(props.initialValue) : {},
+            formData: props.initialValue ? cloneDeep(props.initialValue) : ({} as TData),
             readyStates: {},
             processing: false,
             valid: true,
@@ -89,7 +92,7 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
     private onValueChanged(name: string, value: any) {
         this.setState(
             (state) => {
-                const nextState: State = {
+                const nextState: State<TData> = {
                     ...state,
                     formData: _.set({ ...state.formData }, name, value),
                 };
@@ -109,7 +112,7 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
             return;
         }
 
-        this.setState((state: State) => {
+        this.setState((state: State<TData>) => {
             state.readyStates[fieldName] = ready;
             state.valid = this.isValid(state.readyStates);
             return state;
@@ -247,7 +250,7 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
     }
 
     public reset() {
-        const originalData = this.props.initialValue ? cloneDeep(this.props.initialValue) : {};
+        const originalData = this.props.initialValue ? cloneDeep(this.props.initialValue) : ({} as TData);
         Object.entries(this.resetListeners).forEach(([name, listeners]) => {
             listeners.forEach((listener) => {
                 listener(_.has(originalData, name) ? _.get(originalData, name) : '');
@@ -349,8 +352,8 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
         });
     }
 
-    private hasParentContainer() {
-        return this.context.container && this.context.container !== this;
+    private hasParentContainer(): boolean {
+        return !!this.context.container && this.context.container !== this;
     }
 
     private focusFirstUnready() {
@@ -375,7 +378,7 @@ export class FormContainer extends React.Component<FormContainerProps, State> {
         this.focusFirstUnready();
     }
 
-    componentDidUpdate(prevProps: FormContainerProps) {
+    componentDidUpdate(prevProps: FormContainerProps<TData>) {
         this.bindButtons();
 
         if (this.props.initialValue !== prevProps.initialValue) {
