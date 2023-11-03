@@ -598,7 +598,7 @@ export const Assets: AssetDisplay[] = [
 ];
 
 export const assetFetcher: AssetFetcher = async (name: string, version: string) => {
-    return Assets.find((a) => a.version === version && a.content.metadata.name === name);
+    return Assets.find((a) => a.version === version && a.content.metadata.name === name) || null;
 };
 
 export const AssetAuthor = {

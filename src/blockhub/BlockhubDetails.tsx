@@ -65,7 +65,7 @@ const AutoLoadingTile = (props: Props) => {
               downloads: assetReq.data.downloadCount,
           }
         : undefined;
-    const asset: AssetDisplay<any> | undefined = assetReq.isLoading ? undefined : assetReq.data;
+    const asset = assetReq.data;
 
     const url = props.linkMaker ? props.linkMaker(fullName, version) : `/${fullName}/${version}`;
 
