@@ -7,13 +7,13 @@ import React, { PropsWithChildren, ReactNode } from 'react';
 import { KapDialog, KapDialogProps } from './KapDialog';
 import { FormContainer, FormContainerProps } from '../form/FormContainer';
 
-export type KapFormDialogProps<OnCloseFn extends (...args: any[]) => any> = PropsWithChildren<{
+export type KapFormDialogProps<OnCloseFn extends (...args: any[]) => any, TFormData = any> = PropsWithChildren<{
     open: KapDialogProps<OnCloseFn>['open'];
     onClose: OnCloseFn;
     title?: ReactNode;
     actions?: ReactNode;
 }> &
-    Omit<FormContainerProps, 'children'>;
+    Omit<FormContainerProps<TFormData>, 'children'>;
 
 export const KapFormDialog = <OnCloseFn extends (...args: any[]) => any>({
     open,
