@@ -60,13 +60,14 @@ export const AssetInstallButton = (props: Props) => {
     const confirm = useConfirm();
     const [submenuAnchorElm, setSubmenuAnchorElm] = useState<null | HTMLElement>(null);
 
-    const [isInstalling, setIsInstalling] = useState(false);
+    // Loading indicator for install/uninstall calls
+    const [isPreparing, setIsPreparing] = useState(false);
     const waitForInstall = useCallback(async (p: Promise<any> | undefined) => {
         try {
-            setIsInstalling(true);
+            setIsPreparing(true);
             await p;
         } finally {
-            setIsInstalling(false);
+            setIsPreparing(false);
         }
     }, []);
 
@@ -140,7 +141,7 @@ export const AssetInstallButton = (props: Props) => {
         !installTask.ready ||
         installTask.active ||
         installedAsset.isLoading ||
-        isInstalling;
+        isPreparing;
 
     const isLatestVersion = installedAsset.data === AssetInstallStatus.INSTALLED;
     const canUpgrade = installedAsset.data === AssetInstallStatus.UPGRADABLE;
