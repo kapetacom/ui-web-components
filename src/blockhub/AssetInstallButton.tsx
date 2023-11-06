@@ -59,6 +59,17 @@ export const AssetInstallButton = (props: Props) => {
     const desktop = useDesktop();
     const confirm = useConfirm();
     const [submenuAnchorElm, setSubmenuAnchorElm] = useState<null | HTMLElement>(null);
+
+    const [isInstalling, setIsInstalling] = useState(false);
+    const waitForInstall = useCallback(async (p: Promise<any> | undefined) => {
+        try {
+            setIsInstalling(true);
+            await p;
+        } finally {
+            setIsInstalling(false);
+        }
+    }, []);
+
     const submenuOpen = Boolean(submenuAnchorElm);
     const assetRef = `kapeta://${props.asset.content.metadata.name}:${props.asset.version}`;
     const assetUri = parseKapetaUri(assetRef);
@@ -125,7 +136,11 @@ export const AssetInstallButton = (props: Props) => {
         props.forceLoading === true || !installTask.ready || !active || installTask.active || installedAsset.isLoading;
 
     const isProcessing =
-        props.forceLoading === true || !installTask.ready || installTask.active || installedAsset.isLoading;
+        props.forceLoading === true ||
+        !installTask.ready ||
+        installTask.active ||
+        installedAsset.isLoading ||
+        isInstalling;
 
     const isLatestVersion = installedAsset.data === AssetInstallStatus.INSTALLED;
     const canUpgrade = installedAsset.data === AssetInstallStatus.UPGRADABLE;
@@ -212,7 +227,7 @@ export const AssetInstallButton = (props: Props) => {
                         return;
                     }
 
-                    await props.service?.uninstall?.(assetRef);
+                    await waitForInstall(props.service?.uninstall?.(assetRef));
                     await installedAsset.mutate();
                 },
             });
@@ -236,7 +251,7 @@ export const AssetInstallButton = (props: Props) => {
 
     const installAction = useCallback(async () => {
         try {
-            await props.service?.install(assetRef);
+            await waitForInstall(props.service?.install(assetRef));
             if (props.subscriptions) {
                 await installedAsset.mutate();
             }
