@@ -321,6 +321,7 @@ export namespace DSLConverters {
                                   ? [
                                         {
                                             type: fromSchemaTransport(arg.transport),
+                                            argument: arg.argument,
                                         },
                                     ]
                                   : [],
@@ -344,11 +345,13 @@ export namespace DSLConverters {
             const args: RESTMethod['arguments'] = {};
             if (method.parameters) {
                 method.parameters.forEach((arg) => {
+                   let restArgs = !(arg.annotations && arg.annotations.length > 0) ? "" : (arg.annotations[0].arguments && arg.annotations[0].arguments[0])
                     args[arg.name] = {
                         ...toSchemaType(arg.type),
                         transport: toSchemaTransport(
                             arg.annotations && arg.annotations.length > 0 ? arg.annotations[0].type : '@Query'
                         ),
+                        argument: restArgs,
                     };
                 });
             }
