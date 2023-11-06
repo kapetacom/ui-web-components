@@ -6,7 +6,7 @@
 import { Box, Button, CircularProgress, Fab, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import { Tooltip } from '../tooltip/Tooltip';
 import { showToasty, ToastType } from '../toast/ToastComponent';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { TaskState, useDesktop } from '../utils/desktop';
 import { TaskStatus } from '@kapeta/ui-web-context';
 import { getNameForKind } from './BlockhubTile';
@@ -62,7 +62,8 @@ export const AssetInstallButton = (props: Props) => {
     const submenuOpen = Boolean(submenuAnchorElm);
     const assetRef = `kapeta://${props.asset.content.metadata.name}:${props.asset.version}`;
     const assetUri = parseKapetaUri(assetRef);
-    const closeSubmenu = () => {
+    const closeSubmenu = (e: SyntheticEvent) => {
+        e.stopPropagation();
         setSubmenuAnchorElm(null);
     };
     const active = !!((props.subscriptions && props.contextHandle !== assetUri.handle) || desktop.version);
@@ -314,7 +315,7 @@ export const AssetInstallButton = (props: Props) => {
                         onClick={async (evt) => {
                             evt.preventDefault();
                             evt.stopPropagation();
-                            closeSubmenu();
+                            closeSubmenu(evt);
                             await item.onClick();
                         }}
                         data-kap-id={`asset-submenu-${item.label}`}
