@@ -63,7 +63,17 @@ export const DSLParser = {
         options.stringableTypes = STRINGABLE_TYPES.map((t) => t.name);
         options.validTypes.push(...BUILT_IN_TYPES.map((t) => t.name));
 
-        const entities = parser.parse(code, { ...options });
+        let entities;
+        if (options.types) {
+            // We parse it twice to get all types defined
+            // to avoid relying on order in which they are defined
+            const preParseOptions = { ...options, ignoreSemantics: true };
+            parser.parse(code, preParseOptions);
+            options.validTypes = preParseOptions.validTypes;
+            entities = parser.parse(code, { ...options });
+        } else {
+            entities = parser.parse(code, { ...options });
+        }
 
         return {
             code,

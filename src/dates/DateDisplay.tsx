@@ -149,7 +149,7 @@ export const DateDisplay = (props: DateDisplayProps) => {
     const [dateText, setDateText] = useState(toDateTextInner(props));
 
     useEffect(() => {
-        let interval: NodeJS.Timer;
+        let interval: NodeJS.Timeout;
         if (props.allowRelative !== false) {
             interval = setInterval(() => {
                 setDateText(toDateTextInner(props));

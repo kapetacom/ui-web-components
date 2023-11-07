@@ -297,7 +297,7 @@ export class FormContainer<TData extends FormData = any> extends React.Component
     private async handleKeyPress(evt: React.KeyboardEvent<HTMLElement>): Promise<void> {
         evt.stopPropagation();
 
-        if (evt.which !== 13) {
+        if (evt.key !== 'Enter') {
             //Only handle enter press
             return;
         }

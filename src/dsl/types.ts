@@ -3,12 +3,16 @@
  * SPDX-License-Identifier: MIT
  */
 
+import { DSLResult } from './interfaces';
+
 export * from './interfaces';
 
 interface TypeDefinition {
     name: string;
     description: string;
 }
+
+export type DSLFormEditorProps<T> = Omit<T, 'value' | 'onChange'> & { name: string; defaultValue?: DSLResult };
 
 /**
  * Types that can easily be converted to or from strings (E.g. in paths and similar)
@@ -47,14 +51,14 @@ export const STRINGABLE_TYPES: TypeDefinition[] = [
         name: 'string',
         description: 'A string of characters',
     },
-];
-
-export const BUILT_IN_TYPES: TypeDefinition[] = [
-    ...STRINGABLE_TYPES,
     {
         name: 'char',
         description: 'A single character',
     },
+];
+
+export const BUILT_IN_TYPES: TypeDefinition[] = [
+    ...STRINGABLE_TYPES,
     {
         name: 'byte',
         description: 'A single byte',
