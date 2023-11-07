@@ -115,6 +115,54 @@ describe('DSLParser', () => {
         ]);
     });
 
+    test('can parse REST method with Header', () => {
+        expect(
+            DSLParser.parse(
+                [
+                    '//Some',
+                    '//description',
+                    '@POST("/some/path")',
+                    'myMethod(@Header("My-Header") header: string, @Path id:string, @Query tags:string[], @Body entity:MyClass):void',
+                ].join('\n'),
+                {
+                    methods: true,
+                    rest: true,
+                    validTypes: ['MyClass'],
+                }
+            ).entities
+        ).toEqual([
+            {
+                type: DSLEntityType.METHOD,
+                description: 'Some\ndescription',
+                returnType: 'void',
+                name: 'myMethod',
+                annotations: [{ type: '@POST', arguments: ['/some/path'] }],
+                parameters: [
+                    {
+                        name: 'header',
+                        type: 'string',
+                        annotations: [{ type: '@Header', arguments: ['My-Header'] }],
+                    },
+                    {
+                        name: 'id',
+                        type: 'string',
+                        annotations: [{ type: '@Path', arguments: [] }],
+                    },
+                    {
+                        name: 'tags',
+                        type: { name: 'string', list: true },
+                        annotations: [{ type: '@Query', arguments: [] }],
+                    },
+                    {
+                        name: 'entity',
+                        type: 'MyClass',
+                        annotations: [{ type: '@Body', arguments: [] }],
+                    },
+                ],
+            },
+        ]);
+    });
+
     test('can parse data type', () => {
         expect(
             DSLParser.parse(
