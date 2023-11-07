@@ -6,15 +6,26 @@
 import React from 'react';
 
 import { DSLEditor } from './DSLEditor';
-import { DSLDataTypeProperty, DSLResult, CONFIG_FIELD_ANNOTATIONS, PEGValidationEntity } from './types';
+import {
+    DSLDataTypeProperty,
+    DSLResult,
+    CONFIG_FIELD_ANNOTATIONS,
+    PEGValidationEntity,
+    DSLFormEditorProps,
+} from './types';
 import { isBuiltInType, isStringableType, TypeLike } from '@kapeta/schemas';
+import { useFormContextField } from '../form/FormContext';
+import { DataTypeEditorProps } from './DataTypeEditor';
 
 export const TYPE_INSTANCE = 'Instance';
 export const TYPE_INSTANCE_PROVIDER = 'InstanceProvider';
 
 export interface ConfigurationEditorProps {
     value?: DSLResult | string;
+    readOnly?: boolean;
     onChange?: (structure: DSLResult) => any;
+    onCodeChange?: (code: string) => any;
+    onError?: (err: any) => any;
     validTypes?: string[];
 }
 
@@ -70,9 +81,32 @@ export const ConfigurationEditor = (props: ConfigurationEditorProps) => {
             validTypes={[TYPE_INSTANCE, ...(props.validTypes ?? [])]}
             validator={fieldValidator}
             onChange={props.onChange}
+            onError={props.onError}
+            onCodeChange={props.onCodeChange}
+            readOnly={props.readOnly}
             methods={false}
             rest={false}
             value={props.value}
+        />
+    );
+};
+
+export const ConfigurationEditorField = (props: DSLFormEditorProps<DataTypeEditorProps>) => {
+    const formField = useFormContextField<DSLResult>(props.name);
+    return (
+        <ConfigurationEditor
+            validTypes={props.validTypes}
+            onChange={(value) => {
+                formField.set(value);
+                formField.valid();
+            }}
+            onCodeChange={props.onCodeChange}
+            onError={(err) => {
+                props.onError?.(err);
+                formField.invalid();
+            }}
+            readOnly={props.readOnly}
+            value={formField.get(props.defaultValue)}
         />
     );
 };

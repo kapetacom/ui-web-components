@@ -160,7 +160,7 @@ datatype
 	}
 }
 
-dataTypeBody = bracket_start _ fields:fields? _ bracket_end { return {properties: fields ? fields : {}} }
+dataTypeBody = bracket_start _ fields:fields? _ bracket_end { return {properties: fields ? fields : []} }
 
 dataTypeBodyList = '[' _ body:dataTypeBody _ ']' { return body }
 

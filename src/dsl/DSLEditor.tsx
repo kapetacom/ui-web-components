@@ -23,6 +23,8 @@ export interface DSLEditorProps extends DSLLanguageOptions {
     readOnly?: boolean;
     validator?: (object: any) => void;
     onChange?: (structure: DSLResult) => any;
+    onCodeChange?: (code: string) => any;
+    onError?: (err: any) => any;
 }
 
 export const DSLEditor = (props: DSLEditorProps) => {
@@ -76,10 +78,14 @@ export const DSLEditor = (props: DSLEditorProps) => {
                 value={current}
                 onChange={(code) => {
                     setCurrent(code || '');
+                    if (props.onCodeChange) {
+                        props.onCodeChange(code || '');
+                    }
                     if (props.onChange && code) {
                         try {
                             props.onChange(DSLParser.parse(code, parsingOptions));
-                        } catch (e) {
+                        } catch (e: any) {
+                            props.onError && props.onError(e);
                             //Ignore
                         }
                     }

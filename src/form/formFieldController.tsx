@@ -52,10 +52,39 @@ export interface FormFieldController<V = any> {
     autoComplete?: FormInputProps['autoComplete'];
 }
 
-export const useFormFieldController = <T = any,>(props: FormFieldControllerProps<T>): FormFieldController<T> => {
+export const useIsFormSubmitAttempted = () => {
     const context = useContext(FormContext);
     const [formSubmitAttempted, setFormSubmitAttempted] = useState(false);
+    useEffect(() => {
+        if (!context.container) {
+            return;
+        }
+
+        return context.container.onFormStateChanged((evt: FormStateChangeEvent) => {
+            switch (evt.type) {
+                case 'submit':
+                    if (evt.value) {
+                        setFormSubmitAttempted(false);
+                    } else {
+                        setFormSubmitAttempted(true);
+                    }
+                    break;
+                case 'reset':
+                    setFormSubmitAttempted(false);
+                    break;
+            }
+        });
+    }, [context.container]);
+
+    return formSubmitAttempted;
+};
+
+export const useFormFieldController = <T = any,>(props: FormFieldControllerProps<T>): FormFieldController<T> => {
+    const context = useContext(FormContext);
+
     const [errorMessage, setErrorMessage] = useState('');
+
+    const formSubmitAttempted = useIsFormSubmitAttempted();
 
     const childValue = useMemo(() => {
         let value = props.value;
@@ -122,23 +151,7 @@ export const useFormFieldController = <T = any,>(props: FormFieldControllerProps
             return;
         }
 
-        const disposer = context.container.onFormStateChanged((evt: FormStateChangeEvent) => {
-            switch (evt.type) {
-                case 'submit':
-                    if (evt.value) {
-                        setFormSubmitAttempted(false);
-                    } else {
-                        setFormSubmitAttempted(true);
-                    }
-                    break;
-                case 'reset':
-                    setFormSubmitAttempted(false);
-                    break;
-            }
-        });
-
         return () => {
-            disposer();
             setReadyState(true); //Tell the form to not worry about this
         };
     }, [context.container]);

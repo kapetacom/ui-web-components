@@ -222,7 +222,7 @@ export namespace DSLConverters {
     export function toSchemaProperties(properties: DSLDataTypeProperty[]): EntityProperties {
         const out: EntityProperties = {};
 
-        properties.forEach((property) => {
+        properties?.forEach((property) => {
             let typeLike = toSchemaType(property.type);
             const secret = property.annotations?.some((annotation) => annotation.type === '@secret') || false;
             const required = property.annotations?.some((annotation) => annotation.type === '@required') || false;
@@ -345,7 +345,9 @@ export namespace DSLConverters {
             const args: RESTMethod['arguments'] = {};
             if (method.parameters) {
                 method.parameters.forEach((arg) => {
-                   let restArgs = !(arg.annotations && arg.annotations.length > 0) ? "" : (arg.annotations[0].arguments && arg.annotations[0].arguments[0])
+                    let restArgs = !(arg.annotations && arg.annotations.length > 0)
+                        ? ''
+                        : arg.annotations[0].arguments && arg.annotations[0].arguments[0];
                     args[arg.name] = {
                         ...toSchemaType(arg.type),
                         transport: toSchemaTransport(
