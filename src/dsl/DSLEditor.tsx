@@ -81,9 +81,16 @@ export const DSLEditor = (props: DSLEditorProps) => {
                     if (props.onCodeChange) {
                         props.onCodeChange(code || '');
                     }
-                    if (props.onChange && code) {
+                    if (props.onChange) {
                         try {
-                            props.onChange(DSLParser.parse(code, parsingOptions));
+                            props.onChange(
+                                code
+                                    ? DSLParser.parse(code, parsingOptions)
+                                    : {
+                                          code: '',
+                                          entities: [],
+                                      }
+                            );
                         } catch (e: any) {
                             props.onError && props.onError(e);
                             //Ignore
