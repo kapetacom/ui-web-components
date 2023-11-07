@@ -26,7 +26,7 @@ const config: StorybookConfig = {
             config.module.rules.push(
                 {
                     test: /\.pegjs$/,
-                    use: 'pegjs-loader',
+                    use: 'pegjs-loader?cache=false',
                 },
                 {
                     test: /\.ya?ml$/,
