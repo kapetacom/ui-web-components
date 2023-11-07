@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { PropsWithChildren, useEffect, useState } from 'react';
+import React, { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { FormFieldController } from '../formFieldController';
 import { Box, CircularProgress } from '@mui/material';
 
@@ -26,36 +26,50 @@ export const FormFieldProcessingContainer = ({ controller, inputElement: element
 
     const tagName = element?.tagName.toLowerCase() as 'input' | 'textarea';
 
+    const frameId = useRef(0); // Ref to store the requestAnimationFrame ID
+
     useEffect(() => {
-        const resizeObserver = new ResizeObserver(() => {
-            if (element) {
-                if (tagName === 'input') {
-                    const rect = element.getBoundingClientRect();
-                    const style = window.getComputedStyle(element);
-                    const { paddingTop, paddingRight, paddingBottom, paddingLeft } = style;
-                    const innerHeight = rect.height - parseFloat(paddingTop) - parseFloat(paddingBottom);
-                    setPosition({
-                        bottom: parseFloat(paddingBottom) + (innerHeight - spinnerSize) / 2 + 'px',
-                        left: rect.width - parseFloat(paddingRight) - spinnerSize + 'px',
-                    });
-                } else if (tagName === 'textarea' && element.parentElement) {
-                    // We use the parent element instead for the textarea because the padding is not
-                    // in the textarea element but in the parent element.
-                    const rect = element.parentElement.getBoundingClientRect();
-                    const { paddingRight, paddingBottom } = window.getComputedStyle(element.parentElement);
-                    setPosition({
-                        bottom: paddingBottom,
-                        left: rect.width - parseFloat(paddingRight) - spinnerSize + 'px',
-                    });
+        const observerCallback = () => {
+            const resizeLogic = () => {
+                if (element) {
+                    if (tagName === 'input') {
+                        const rect = element.getBoundingClientRect();
+                        const style = window.getComputedStyle(element);
+                        const { paddingTop, paddingRight, paddingBottom, paddingLeft } = style;
+                        const innerHeight = rect.height - parseFloat(paddingTop) - parseFloat(paddingBottom);
+                        setPosition({
+                            bottom: parseFloat(paddingBottom) + (innerHeight - spinnerSize) / 2 + 'px',
+                            left: rect.width - parseFloat(paddingRight) - spinnerSize + 'px',
+                        });
+                    } else if (tagName === 'textarea' && element.parentElement) {
+                        // We use the parent element instead for the textarea because the padding is not
+                        // in the textarea element but in the parent element.
+                        const rect = element.parentElement.getBoundingClientRect();
+                        const { paddingRight, paddingBottom } = window.getComputedStyle(element.parentElement);
+                        setPosition({
+                            bottom: paddingBottom,
+                            left: rect.width - parseFloat(paddingRight) - spinnerSize + 'px',
+                        });
+                    }
                 }
-            }
-        });
+            };
+
+            // Requesting the frame for resize logic to execute
+            frameId.current = window.requestAnimationFrame(resizeLogic);
+        };
+
+        const resizeObserver = new ResizeObserver(observerCallback);
 
         if (element) {
             resizeObserver.observe(element);
         }
 
-        return () => resizeObserver.disconnect();
+        return () => {
+            if (frameId.current) {
+                window.cancelAnimationFrame(frameId.current);
+            }
+            resizeObserver.disconnect();
+        };
     }, [element]);
 
     return (
