@@ -13,7 +13,6 @@ const packageJson = require('./package.json');
 export default [
     {
         input: 'src/index.ts',
-        external: ['monaco-editor'],
         inlineDynamicImports: true,
         output: [
             {

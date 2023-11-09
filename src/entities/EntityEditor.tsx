@@ -16,7 +16,9 @@ import {
 import './EntityEditor.less';
 import _ from 'lodash';
 import { useFormContextField } from '../form/FormContext';
-import { TYPE_INSTANCE, TYPE_INSTANCE_PROVIDER } from '@kapeta/kap-editor';
+
+const TYPE_INSTANCE = 'instance';
+const TYPE_INSTANCE_PROVIDER = 'instanceProvider';
 
 type Value = { [key: string]: any };
 
