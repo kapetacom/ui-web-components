@@ -25,7 +25,6 @@ export default [
             },
         ],
         plugins: [
-            pegjs(),
             external(),
             resolve(),
             commonjs(),
