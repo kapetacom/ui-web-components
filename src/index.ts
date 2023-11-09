@@ -126,3 +126,5 @@ export * from './dialogs/KapSimpleDialog';
 export * from './charts/PieChartIcon';
 
 export * from './markdown/Markdown';
+
+export * from './hooks/useUserAgent';
