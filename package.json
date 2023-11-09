@@ -2,6 +2,7 @@
     "name": "@kapeta/ui-web-components",
     "version": "0.0.147",
     "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
     "types": "dist/index.d.ts",
     "files": [
         "dist",
@@ -133,7 +134,6 @@
     "prettier": "@kapeta/prettier-config",
     "dependencies": {
         "@kapeta/nodejs-utils": "^0.0.10",
-        "@kapeta/style": "^0.94.0",
-        "monaco-editor": "^0.37.1"
+        "@kapeta/style": "^0.94.0"
     }
 }

@@ -13,7 +13,6 @@ const packageJson = require('./package.json');
 export default [
     {
         input: 'src/index.ts',
-        inlineDynamicImports: true,
         output: [
             {
                 file: packageJson.main,
@@ -21,6 +20,15 @@ export default [
                 name: packageJson.name,
                 generatedCode: 'es2015',
                 compact: false,
+                sourcemap: true,
+            },
+            {
+                file: packageJson.module,
+                format: 'esm',
+                name: packageJson.name,
+                generatedCode: 'es2015',
+                compact: false,
+                sourcemap: true,
             },
         ],
         plugins: [
