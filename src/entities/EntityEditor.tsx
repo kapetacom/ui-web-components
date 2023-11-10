@@ -18,8 +18,8 @@ import _ from 'lodash';
 import { useFormContextField } from '../form/FormContext';
 
 // TODO: duplicated from src/entities/EntityEditor.tsx
-const TYPE_INSTANCE = 'instance';
-const TYPE_INSTANCE_PROVIDER = 'instanceProvider';
+export const TYPE_INSTANCE = 'instance';
+export const TYPE_INSTANCE_PROVIDER = 'instanceProvider';
 
 type Value = { [key: string]: any };
 
