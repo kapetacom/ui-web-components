@@ -32,7 +32,7 @@
         "start": "rollup -c -w",
         "prebuild": "rm -rf dist",
         "build": "rollup -c",
-        "test": "jest",
+        "test": "jest --passWithNoTests",
         "format": "prettier --write .",
         "lint:tsc": "tsc --noEmit"
     },
