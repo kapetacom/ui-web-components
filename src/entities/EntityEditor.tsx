@@ -16,7 +16,10 @@ import {
 import './EntityEditor.less';
 import _ from 'lodash';
 import { useFormContextField } from '../form/FormContext';
-import { TYPE_INSTANCE, TYPE_INSTANCE_PROVIDER } from '../dsl/ConfigurationEditor';
+
+// TODO: duplicated from src/entities/EntityEditor.tsx
+export const TYPE_INSTANCE = 'instance';
+export const TYPE_INSTANCE_PROVIDER = 'instanceProvider';
 
 type Value = { [key: string]: any };
 

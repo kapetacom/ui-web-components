@@ -23,16 +23,10 @@ const config: StorybookConfig = {
 
     webpackFinal: async (config, { configType }) => {
         if (config.module && config.module.rules) {
-            config.module.rules.push(
-                {
-                    test: /\.pegjs$/,
-                    use: 'pegjs-loader?cache=false',
-                },
-                {
-                    test: /\.ya?ml$/,
-                    use: ['json-loader', 'yaml-loader'],
-                }
-            );
+            config.module.rules.push({
+                test: /\.ya?ml$/,
+                use: ['json-loader', 'yaml-loader'],
+            });
         }
         return config;
     },

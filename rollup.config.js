@@ -4,7 +4,7 @@ import typescript from '@rollup/plugin-typescript';
 import external from 'rollup-plugin-peer-deps-external';
 import styles from 'rollup-plugin-styles';
 import dts from 'rollup-plugin-dts';
-import pegjs from 'rollup-plugin-pegjs';
+
 const { visualizer } = require('rollup-plugin-visualizer');
 const bundleSize = require('rollup-plugin-bundle-size');
 
@@ -13,8 +13,6 @@ const packageJson = require('./package.json');
 export default [
     {
         input: 'src/index.ts',
-        external: ['monaco-editor'],
-        inlineDynamicImports: true,
         output: [
             {
                 file: packageJson.main,
@@ -22,10 +20,18 @@ export default [
                 name: packageJson.name,
                 generatedCode: 'es2015',
                 compact: false,
+                sourcemap: true,
+            },
+            {
+                file: packageJson.module,
+                format: 'esm',
+                name: packageJson.name,
+                generatedCode: 'es2015',
+                compact: false,
+                sourcemap: true,
             },
         ],
         plugins: [
-            pegjs(),
             external(),
             resolve(),
             commonjs(),
