@@ -49,15 +49,9 @@ export const AssetNameInput = (props: Props) => {
     }, [props.validation, validateNamespace]);
 
     const controller = useFormFieldController({
-        name: props.name,
         value: value,
-        help: props.help,
         validation: validators,
-        label: props.label,
-        readOnly: props.readOnly,
-        disabled: props.disabled,
-        defaultValue: props.defaultValue,
-        autoFocus: props.autoFocus,
+        ...props,
     });
 
     const [namespace, assetName] = useMemo(() => {
@@ -178,6 +172,9 @@ export const AssetNameInput = (props: Props) => {
                         type={Type.TEXT}
                         disabled={controller.disabled}
                         readOnly={controller.readOnly}
+                        autoFocus={controller.autoFocus}
+                        onFocus={controller.onFocus}
+                        onBlur={controller.onBlur}
                         name={'asset-name'}
                         value={assetName}
                         onChange={(evt) => onChange(namespace, evt.target.value)}

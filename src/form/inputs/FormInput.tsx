@@ -97,6 +97,7 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
                         width: '100%',
                     },
                 }}
+                className={controller.className}
                 autoFocus={controller.autoFocus}
                 onChange={onChange}
                 onFocus={controller.onFocus || undefined}

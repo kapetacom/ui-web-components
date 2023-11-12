@@ -105,15 +105,8 @@ export const AssetVersionSelector = (props: Props) => {
     }, [value?.id]);
 
     const controller = useFormFieldController({
-        name: props.name,
         value: value ? value.id : null,
-        help: props.help,
-        validation: props.validation,
-        label: props.label,
-        readOnly: props.readOnly,
-        disabled: props.disabled,
-        defaultValue: props.defaultValue,
-        autoFocus: props.autoFocus,
+        ...props,
     });
 
     const onChange = useCallback(
@@ -321,6 +314,10 @@ export const AssetVersionSelector = (props: Props) => {
                         labelId={inputLabelId}
                         disabled={controller.disabled || !assetName}
                         readOnly={controller.readOnly || versions.length < 2}
+                        autoFocus={controller.autoFocus}
+                        className={controller.className}
+                        onBlur={controller.onBlur}
+                        onFocus={controller.onFocus}
                         onChange={(evt) => onChange(assetName, evt.target.value)}
                         startAdornment={
                             controller.disabled || controller.readOnly || !value?.version ? null : hasNewerVersion ? (

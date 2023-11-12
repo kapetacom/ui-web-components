@@ -365,11 +365,30 @@ export class FormContainer<TData extends FormData = any> extends React.Component
             return;
         }
 
-        const firstUnready: HTMLInputElement | null = this.container.querySelector(
-            '.form-row.unready input[type=text]'
+        let firstAutoFocus: HTMLInputElement | null = this.container.querySelector(
+            [
+                '.form-field-auto-focus input',
+                '.form-field-auto-focus select',
+                '.form-field-auto-focus textarea',
+                'input.form-field-auto-focus',
+                'select.form-field-auto-focus',
+                'textarea.form-field-auto-focus',
+            ].join(',')
         );
-        if (firstUnready) {
-            firstUnready.focus();
+        if (!firstAutoFocus) {
+            firstAutoFocus = this.container.querySelector(
+                [
+                    'input[type=text]',
+                    'input[type=number]',
+                    'input[type=email]',
+                    'input[type=password]',
+                    'textarea',
+                    'select',
+                ].join(',')
+            );
+        }
+        if (firstAutoFocus) {
+            firstAutoFocus.focus();
         }
     }
 

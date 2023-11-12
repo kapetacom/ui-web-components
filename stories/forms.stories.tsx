@@ -84,7 +84,7 @@ export const SimpleForm = () => {
                 <FormContextWatcher onChange={(context) => console.log('Form context changed to:', context)} />
 
                 <FormField name={'name'} label={'Name'} validation={['required']} />
-                <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
+                <FormField name={'age'} autoFocus={true} label={'Age'} type={FormFieldType.NUMBER} />
                 <FormField
                     name={'enabled'}
                     label={'Enable?'}
@@ -295,7 +295,7 @@ export const FormWithValidation = () => {
                 }}
             >
                 <FormField name={'name'} label={'Name'} validation={['required', failValidation]} />
-                <FormField name={'email'} label={'E-mail'} validation={['required', 'email']} />
+                <FormField autoFocus={true} name={'email'} label={'E-mail'} validation={['required', 'email']} />
                 <FormField name={'enabled'} label={'Enable?'} type={FormFieldType.CHECKBOX} />
                 <CustomFormComponent />
 
@@ -439,7 +439,7 @@ export const FormWithActiveAsyncValidation = () => {
                 <Typography variant="body2" sx={{ mt: 4 }}>
                     input type="text"
                 </Typography>
-                <FormField name={'email'} label={'E-mail'} validation={validation} />
+                <FormField name={'email'} label={'E-mail'} validation={validation} help={'Some help here'} />
                 <FormField name={'email'} label={'E-mail'} validation={validation} variant="outlined" />
                 <FormField name={'email'} label={'E-mail'} validation={validation} variant="filled" />
 
@@ -452,6 +452,7 @@ export const FormWithActiveAsyncValidation = () => {
                     label="Password"
                     validation={validation}
                     variant="outlined"
+                    help={'Some help here'}
                     type={FormFieldType.PASSWORD}
                 />
                 <FormField
@@ -484,6 +485,7 @@ export const FormWithActiveAsyncValidation = () => {
                     label={'Description 3'}
                     validation={validation}
                     variant="filled"
+                    help={'Some help here'}
                     type={FormFieldType.TEXT}
                 />
             </FormContainer>

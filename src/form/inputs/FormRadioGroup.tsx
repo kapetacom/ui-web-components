@@ -85,6 +85,7 @@ export const FormRadioGroup = withFormFieldController((props: Props, controller)
                 sx={{
                     pt: 2,
                 }}
+                className={controller.className}
                 defaultValue={defaultValue}
                 value={currentValue}
                 name={controller.name}
