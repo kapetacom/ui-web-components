@@ -83,8 +83,13 @@ export function debouncedValidator(delay: number, func: AsyncValidatorFunction):
         const promise = new Promise((resolve, reject) => {
             resolver = resolve;
             timer = setTimeout(() => {
-                realContext = func(fieldName, value)!;
-                resolve(realContext.promise);
+                const result = func(fieldName, value);
+                if (result) {
+                    realContext = result;
+                } else {
+                    realContext = undefined;
+                }
+                resolve(realContext?.promise);
             }, delay);
         });
 

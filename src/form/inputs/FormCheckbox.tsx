@@ -44,7 +44,7 @@ export const FormCheckbox = withFormFieldController((props: Props, controller) =
             <FormControlLabel
                 onChange={(evt, checked) => onChange(checked)}
                 checked={checked}
-                control={<Checkbox />}
+                control={<Checkbox className={controller.className} />}
                 label={props.label}
             />
             {controller.help && <FormHelperText>{controller.help}</FormHelperText>}

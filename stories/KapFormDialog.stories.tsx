@@ -55,7 +55,7 @@ export const Basic: Story = {
                     }}
                 >
                     <FormField name={'name'} label={'Full name'} />
-                    <FormField name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
+                    <FormField autoFocus={true} name={'age'} label={'Age'} type={FormFieldType.NUMBER} />
                 </KapFormDialog>
             </>
         );

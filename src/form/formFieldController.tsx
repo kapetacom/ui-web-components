@@ -29,6 +29,7 @@ export interface FormFieldControllerProps<V = any> {
     onFocus?: FormInputProps['onFocus'];
     onBlur?: FormInputProps['onBlur'];
     autoComplete?: FormInputProps['autoComplete'];
+    className?: HTMLElement['className'];
 }
 
 export interface FormFieldController<V = any> {
@@ -50,6 +51,7 @@ export interface FormFieldController<V = any> {
     onFocus?: FormInputProps['onFocus'];
     onBlur?: FormInputProps['onBlur'];
     autoComplete?: FormInputProps['autoComplete'];
+    className?: HTMLElement['className'];
 }
 
 export const useIsFormSubmitAttempted = () => {
@@ -186,6 +188,14 @@ export const useFormFieldController = <T = any,>(props: FormFieldControllerProps
 
     let help = errorMessage && touched ? errorMessage : props.help;
 
+    let className: string[] = [];
+    if (props.className) {
+        className.push(props.className);
+    }
+    if (props.autoFocus) {
+        className.push('form-field-auto-focus');
+    }
+
     return {
         filled,
         touched,
@@ -205,6 +215,7 @@ export const useFormFieldController = <T = any,>(props: FormFieldControllerProps
         onFocus: props.onFocus,
         onBlur: props.onBlur,
         autoComplete: props.autoComplete,
+        className: className.join(' '),
     };
 };
 

@@ -35,6 +35,7 @@ export const FormTextarea = withFormFieldController((props: Props, controller) =
                 }}
                 onChange={onChange}
                 variant={controller.variant}
+                className={controller.className}
                 multiline={true}
                 label={controller.label}
                 autoFocus={controller.autoFocus}

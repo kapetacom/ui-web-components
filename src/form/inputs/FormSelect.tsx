@@ -44,6 +44,7 @@ export const FormSelect = withFormFieldController<string | string[]>((props: For
             fullWidth={true}
             onChange={onChange}
             variant={controller.variant}
+            className={controller.className}
             multiline={true}
             label={controller.label}
             autoFocus={controller.autoFocus}

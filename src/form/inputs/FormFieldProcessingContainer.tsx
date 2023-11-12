@@ -22,33 +22,48 @@ const spinnerSize = 16;
  * a textarea, otherwise at the middle of the element.
  */
 export const FormFieldProcessingContainer = ({ controller, inputElement: element, children }: Props) => {
-    const [position, setPosition] = useState({ bottom: '0px', left: '0px' });
+    const [position, setPosition] = useState({ top: '0px', left: '0px' });
 
     const tagName = element?.tagName.toLowerCase() as 'input' | 'textarea';
+
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const frameId = useRef(0); // Ref to store the requestAnimationFrame ID
 
     useEffect(() => {
+        if (!containerRef.current) {
+            return;
+        }
+
+        const containerElm = containerRef.current;
+
         const observerCallback = () => {
             const resizeLogic = () => {
                 if (element) {
+                    const elementRect = element.getBoundingClientRect();
+                    const containerRect = containerElm.getBoundingClientRect();
+                    const relative = {
+                        top: elementRect.top - containerRect.top,
+                        left: elementRect.left - containerRect.left,
+                    };
+
                     if (tagName === 'input') {
-                        const rect = element.getBoundingClientRect();
                         const style = window.getComputedStyle(element);
                         const { paddingTop, paddingRight, paddingBottom, paddingLeft } = style;
-                        const innerHeight = rect.height - parseFloat(paddingTop) - parseFloat(paddingBottom);
+                        const innerHeight = elementRect.height - parseFloat(paddingTop) - parseFloat(paddingBottom);
                         setPosition({
-                            bottom: parseFloat(paddingBottom) + (innerHeight - spinnerSize) / 2 + 'px',
-                            left: rect.width - parseFloat(paddingRight) - spinnerSize + 'px',
+                            top: relative.top + parseFloat(paddingTop) + (innerHeight - spinnerSize) / 2 + 'px',
+                            left: elementRect.width - parseFloat(paddingRight) - spinnerSize + 'px',
                         });
                     } else if (tagName === 'textarea' && element.parentElement) {
                         // We use the parent element instead for the textarea because the padding is not
                         // in the textarea element but in the parent element.
-                        const rect = element.parentElement.getBoundingClientRect();
-                        const { paddingRight, paddingBottom } = window.getComputedStyle(element.parentElement);
+                        const { paddingRight, paddingBottom, paddingTop } = window.getComputedStyle(
+                            element.parentElement
+                        );
                         setPosition({
-                            bottom: paddingBottom,
-                            left: rect.width - parseFloat(paddingRight) - spinnerSize + 'px',
+                            top: relative.top + 'px',
+                            left: elementRect.width - spinnerSize + parseFloat(paddingRight) + 'px',
                         });
                     }
                 }
@@ -70,16 +85,16 @@ export const FormFieldProcessingContainer = ({ controller, inputElement: element
             }
             resizeObserver.disconnect();
         };
-    }, [element]);
+    }, [element, containerRef.current]);
 
     return (
-        <Box position={'relative'}>
+        <Box position={'relative'} ref={containerRef}>
             {children}
             {controller.processing && (
                 <CircularProgress
                     sx={{
                         position: 'absolute',
-                        bottom: position.bottom,
+                        top: position.top,
                         left: position.left,
                     }}
                     size={spinnerSize}
