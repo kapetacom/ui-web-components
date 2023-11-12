@@ -228,48 +228,18 @@ export namespace DSLConverters {
             const required = property.annotations?.some((annotation) => annotation.type === '@required') || false;
             const global = property.annotations?.some((annotation) => annotation.type === '@global') || false;
 
-            if (typeof property.type === 'string' || !property.type.list) {
-                const defaultValue =
-                    property.defaultValue?.value !== undefined ? `${property.defaultValue?.value}` : undefined;
+            const defaultValue =
+                property.defaultValue?.value !== undefined ? `${property.defaultValue?.value}` : undefined;
 
-                out[property.name] = {
-                    ...typeLike,
-                    defaultValue,
-                    description: property.description,
-                    properties: property.properties ? toSchemaProperties(property.properties) : null,
-                };
+            out[property.name] = {
+                ...typeLike,
+                defaultValue,
+                description: property.description,
+            };
 
-                if (!property.properties) {
-                    out[property.name].secret = secret;
-                    out[property.name].required = required;
-                    out[property.name].global = global;
-                }
-            } else {
-                //Normally this includes [] if its a list - we want to strip that off for properties
-                //To not create a "List of Lists"
-                if (typeLike.type) {
-                    if (typeLike.type.endsWith('[]')) {
-                        typeLike = {
-                            type: typeLike.type.substring(0, typeLike.type.length - 2),
-                        };
-                    }
-                } else {
-                    if (typeLike.ref?.endsWith('[]')) {
-                        typeLike.ref = typeLike.ref.substring(0, typeLike.ref.length - 2);
-                    }
-                }
-                out[property.name] = {
-                    type: 'array',
-                    description: property.description,
-                    items: {
-                        ...typeLike,
-                        secret,
-                        required,
-                        global,
-                        properties: property.properties ? toSchemaProperties(property.properties) : null,
-                    },
-                };
-            }
+            out[property.name].secret = secret;
+            out[property.name].required = required;
+            out[property.name].global = global;
         });
 
         return out;

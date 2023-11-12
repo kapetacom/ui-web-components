@@ -131,58 +131,33 @@ describe('DSLConverters', () => {
                         type: 'string',
                         defaultValue: '"test"',
                         description: undefined,
-                        properties: null,
                         required: false,
                         secret: true,
                         global: true,
                     },
                     tags: {
                         description: 'Tags',
-                        type: 'array',
-                        items: {
-                            type: 'string',
-                            global: false,
-                            properties: null,
-                            required: false,
-                            secret: false,
-                        },
+                        type: 'string[]',
+                        defaultValue: undefined,
+                        global: false,
+                        required: false,
+                        secret: false,
                     },
                     children: {
+                        defaultValue: undefined,
                         description: 'Children',
-                        type: 'array',
-                        items: {
-                            type: 'object',
-                            required: false,
-                            secret: false,
-                            global: false,
-                            properties: {
-                                id: {
-                                    type: 'string',
-                                    defaultValue: undefined,
-                                    description: undefined,
-                                    properties: null,
-                                    required: false,
-                                    secret: false,
-                                    global: false,
-                                },
-                            },
-                        },
+                        type: 'object[]',
+                        global: false,
+                        required: false,
+                        secret: false,
                     },
                     parent: {
                         defaultValue: undefined,
                         description: 'Parent',
                         type: 'object',
-                        properties: {
-                            id: {
-                                type: 'string',
-                                defaultValue: undefined,
-                                description: undefined,
-                                properties: null,
-                                required: false,
-                                secret: false,
-                                global: false,
-                            },
-                        },
+                        global: false,
+                        required: false,
+                        secret: false,
                     },
                 },
             });
@@ -387,7 +362,7 @@ describe('DSLConverters', () => {
                         },
                     ],
                     returnType: { name: 'string', list: true },
-                }
+                },
             ];
             expect(DSLConverters.toSchemaMethods(methods)).toEqual({
                 test: {
@@ -398,7 +373,7 @@ describe('DSLConverters', () => {
                         tags: {
                             type: 'string[]',
                             transport: 'HEADER',
-                            argument: 'X-Kapeta-Tags'
+                            argument: 'X-Kapeta-Tags',
                         },
                     },
                     responseType: { type: 'string[]' },
@@ -486,9 +461,8 @@ describe('DSLConverters', () => {
                     tags: {
                         type: 'string[]',
                         transport: 'HEADER',
-                        argument: 'X-Kapeta-Tags'
+                        argument: 'X-Kapeta-Tags',
                     },
-
                 },
                 responseType: { type: 'string[]' },
             },
@@ -507,9 +481,7 @@ describe('DSLConverters', () => {
                 parameters: [
                     {
                         type: { name: 'string', list: true },
-                        annotations: [
-                            { type: '@Header' , argument: 'X-Kapeta-Tags' }
-                        ],
+                        annotations: [{ type: '@Header', argument: 'X-Kapeta-Tags' }],
                         name: 'tags',
                     },
                 ],
