@@ -4,6 +4,7 @@
  */
 
 import { languages, editor } from 'monaco-editor';
+import * as monaco from 'monaco-editor';
 import loader from '@monaco-editor/loader';
 import IRichLanguageConfiguration = languages.LanguageConfiguration;
 import ILanguage = languages.IMonarchLanguage;
@@ -174,8 +175,12 @@ export const withAdditionalTypes = (model: editor.ITextModel, types: string[]) =
     completionItemProvider.setAdditionalTypes(model, types);
 };
 
-loader.init().then((monaco) => {
-    const languages = monaco.languages;
+loader.config({
+    monaco
+});
+
+loader.init().then((monacoInstance) => {
+    const languages = monacoInstance.languages;
     languages.register({ id: DSL_LANGUAGE_ID });
 
     languages.onLanguage(DSL_LANGUAGE_ID, () => {
