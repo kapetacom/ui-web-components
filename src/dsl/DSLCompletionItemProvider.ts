@@ -132,8 +132,8 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
         suggestions.push(
             ...METHOD_ANNOTATIONS.map((type) => {
                 return {
-                    label: 'Annotate: ' + type,
-                    insertText: type + '("/$0")',
+                    label: 'Annotate method: ' + type.name,
+                    insertText: type.name + '("/$0")',
                     documentation: type.description,
                     kind: languages.CompletionItemKind.TypeParameter,
                     insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -145,7 +145,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
         suggestions.push(
             ...PARAMETER_ANNOTATIONS.map((type) => {
                 return {
-                    label: 'Annotate: ' + type.name,
+                    label: 'Annotate parameter: ' + type.name,
                     insertText: type.name,
                     documentation: type.description,
                     kind: languages.CompletionItemKind.TypeParameter,
@@ -158,7 +158,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
         suggestions.push(
             ...CONFIG_FIELD_ANNOTATIONS.map((type) => {
                 return {
-                    label: 'Annotate: ' + type.name,
+                    label: 'Annotate field: ' + type.name,
                     insertText: type.name,
                     documentation: type.description,
                     kind: languages.CompletionItemKind.TypeParameter,
