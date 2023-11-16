@@ -2,7 +2,6 @@
  * Copyright 2023 Kapeta Inc.
  * SPDX-License-Identifier: MIT
  */
-
 import React, { useEffect, useState, useRef } from 'react';
 import { Terminal, ITerminalOptions, ITerminalInitOnlyOptions } from 'xterm';
 import { WebLinksAddon } from 'xterm-addon-web-links';
@@ -31,27 +30,41 @@ export const XTerm = (props: Props) => {
     const xtermContainer = useRef<HTMLDivElement>(null);
     const [terminal, setTerminal] = useState<Terminal | undefined>(undefined);
 
-    useEffect(() => {
-        if (!xtermContainer.current) {
-            return () => {};
-        }
-        try {
-            const fitAddon = new FitAddon();
-            const term = new Terminal(props.terminalOptions);
-            term.loadAddon(new WebLinksAddon());
-            term.loadAddon(fitAddon);
-            term.open(xtermContainer.current);
-            fitAddon.fit();
-            setTerminal(term);
-            return () => {
-                setTerminal(undefined);
-                term.dispose();
-            };
-        } catch (e) {
-            console.error('Failed to open terminal', e);
-            return () => {};
-        }
-    }, [xtermContainer.current]);
+    useEffect(
+        function initXtermContainer() {
+            if (!xtermContainer.current) {
+                return () => {};
+            }
+            const container = xtermContainer.current;
+            try {
+                const fitAddon = new FitAddon();
+                const links = new WebLinksAddon();
+                const term = new Terminal(props.terminalOptions);
+                term.loadAddon(links);
+                term.loadAddon(fitAddon);
+                term.open(container);
+                fitAddon.fit();
+                setTerminal(term);
+                return () => {
+                    window.requestAnimationFrame(() => {
+                        try {
+                            fitAddon.dispose();
+                            links.dispose();
+                            term.dispose();
+                        } catch (e) {
+                            console.error('Failed to dispose terminal', e);
+                        }
+                    });
+
+                    setTerminal(undefined);
+                };
+            } catch (e) {
+                console.error('Failed to open terminal', e);
+                return () => {};
+            }
+        },
+        [xtermContainer.current, props.terminalOptions]
+    );
 
     useEffect(() => {
         if (!terminal) {
