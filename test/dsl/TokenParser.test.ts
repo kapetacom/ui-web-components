@@ -128,4 +128,35 @@ describe('TokenParser', () => {
             },
         ]);
     });
+
+    test('can parse generic types into tokens', () => {
+        const tokens = TokenParser.parse(`Map<string,string>`);
+
+        expect(tokens).toEqual([
+            {
+                type: 'id',
+                value: 'Map',
+            },
+            {
+                type: 'special_start',
+                value: '<',
+            },
+            {
+                type: 'id',
+                value: 'string',
+            },
+            {
+                type: 'special_comma',
+                value: ',',
+            },
+            {
+                type: 'id',
+                value: 'string',
+            },
+            {
+                type: 'special_end',
+                value: '>',
+            },
+        ]);
+    });
 });

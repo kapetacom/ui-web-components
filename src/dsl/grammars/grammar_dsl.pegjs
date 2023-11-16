@@ -68,11 +68,12 @@ test2(@Path id:string, @Path(more) other:number ):void
         }
 
         let isList = false;
+        let generics = [];
         if (typeof type !== 'string') {
             isList = type.list;
+            generics = type.generics ?? [];
             type = type.name;
         }
-
         if (!isReturn && type === 'void') {
             softError(`Void not allowed here`);
         }
@@ -81,7 +82,15 @@ test2(@Path id:string, @Path(more) other:number ):void
             softError(`Void can not be list`);
         }
 
-        if (options.validTypes.indexOf(type) === -1) {
+
+        if (generics.length > 0) {
+            const typeWithGenerics = type + '<' + generics.map(() => '*').join(',') + '>';
+            if (options.validTypes.indexOf(type) > -1) {
+                warning(`Generic arguments not supported for type: "${type}"`);
+            } else if (options.validTypes.indexOf(typeWithGenerics) === -1) {
+                warning(`Invalid number of generic arguments: "${type}"`);
+            }
+        } else if (options.validTypes.indexOf(type) === -1) {
             warning(`Type not found: "${type}"`);
         }
     }
@@ -198,7 +207,7 @@ field = description:comments? annotations:field_annotation* name:id _ ':' _ type
 }
 
 fieldType
-	= type:id list:(_ '[' _ ']')? { const out = !!list ? {name:type, list: !!list} : type; checkType(out); return {type:out}  }
+	= body:variable_type { return {type: body} }
     / body:dataTypeBody { return {type:'object' ,...body} }
     / body:dataTypeBodyList { return {type:{name:'object', list: true},...body} }
     / '[' _ ']' _ type:id {
@@ -262,21 +271,10 @@ method_name
         return {value:name, location: location()};
     }
 
-
-method_returnType
-    = type:id list:(_ '[' _ ']')? {
-        const out = !!list ? {name:type, list: !!list} : type;
-        checkType(out, true);
-        return out;
-    }
-    / '[' _ ']' _ type:id {
-            _error(`Invalid array syntax. Did you mean ${type}[]?`);
-          }
-
 method "method"
     = 	description:comments?
     	annotations:method_annotation*
-    	name:method_name _ parenthesis_start _ args:parameters? parenthesis_end _ colon _ returnType:method_returnType {
+    	name:method_name _ parenthesis_start _ args:parameters? parenthesis_end _ colon _ returnType:return_type {
 
     GLOBAL_IDS[name] = 'method'
 
@@ -331,6 +329,10 @@ method "method"
 
 forward_slash = '/'
 
+lower_than = '<'
+
+greater_than = '>'
+
 comment_char
 	= [^\n\r\f] { return text() }
 
@@ -368,14 +370,70 @@ string "string"
 	= '"' char:quote_double_char* '"' { return char.join('') }
     / "'" char:quote_single_char* "'" { return char.join('') }
 
-type
+id
     = start:name_start chars:name_char* {
       return start + chars.join("");
     }
 
-id
-    = start:name_start chars:name_char* {
-      return start + chars.join("");
+
+generic_type
+    = name:id {
+        checkType(name, false)
+      return name
+    }
+
+generic_types
+    = _ lower_than _ first_type:generic_type types:(_ comma _ generic_type)* _ greater_than {
+        let out = [first_type];
+        if (types) {
+            out.push(...types.map(type => {
+                return type[3];
+            }));
+        }
+        return out;
+    }
+
+
+full_type
+    = type:id generics:generic_types? list:(_ '[' _ ']')? {
+        return {name:type, generics: generics ?? [], list: !!list};
+    }
+    / '[' _ ']' _ type:id {
+        _error(`Invalid array syntax. Did you mean ${type}[]?`);
+      }
+
+variable_type
+    = out:full_type {
+        out && checkType(out, false);
+        if (!out.list && out.generics.length < 1) {
+            return out.name;
+        }
+
+        if (out.generics.length < 1) {
+            delete out.generics;
+        }
+
+        if (!out.list) {
+            delete out.list;
+        }
+        return out;
+    }
+
+return_type
+    = out:full_type {
+        out && checkType(out, true);
+        if (!out.list && out.generics.length < 1) {
+            return out.name;
+        }
+
+        if (out.generics.length < 1) {
+            delete out.generics;
+        }
+
+        if (!out.list) {
+            delete out.list;
+        }
+        return out;
     }
 
 annotationType
@@ -462,17 +520,7 @@ argument
 
 colon = ':'
 
-parameter_type
-    = type:id list:(_ '[' _ ']')? {
-        const out = !!list ? {name:type, list: !!list} : type;
-        checkType(out, true);
-        return out;
-    }
-    / '[' _ ']' _ type:id {
-        _error(`Invalid array syntax. Did you mean ${type}[]?`);
-      }
-
-parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:parameter_type _ {
+parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:variable_type _ {
 
     if (!options.ignoreSemantics) {
         if (options.rest) {
@@ -485,7 +533,7 @@ parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:paramet
                 var valueType = typeof type === 'string' ? type : type?.name;
                 if (valueType &&
                     options.stringableTypes &&
-                    parmType.toLowerCase() !== '@body' &&
+                    parmType.toLowerCase() === '@path' &&
                     !options.stringableTypes.includes(valueType)) {
                     _error(`Value type "${valueType}" can not be used with a ${parmType} annotation. Value must be one of these types: ${options.stringableTypes.join(', ')}`);
                 }

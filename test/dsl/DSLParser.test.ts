@@ -38,7 +38,11 @@ describe('DSLParser', () => {
     test('can parse normal method', () => {
         expect(
             DSLParser.parse(
-                ['//Some', '//description', 'myMethod(id:string, tags:string[], entity:MyClass):void'].join('\n'),
+                [
+                    '//Some',
+                    '//description',
+                    'myMethod(id:string, tags:string[], entity:MyClass, headers:Map<string,string>):void',
+                ].join('\n'),
                 {
                     methods: true,
                     validTypes: ['MyClass'],
@@ -67,6 +71,14 @@ describe('DSLParser', () => {
                         type: 'MyClass',
                         annotations: [],
                     },
+                    {
+                        name: 'headers',
+                        type: {
+                            name: 'Map',
+                            generics: ['string', 'string'],
+                        },
+                        annotations: [],
+                    },
                 ],
             },
         ]);
@@ -79,7 +91,7 @@ describe('DSLParser', () => {
                     '//Some',
                     '//description',
                     '@POST("/some/path")',
-                    'myMethod(@Path id:string, @Query tags:string[], @Body entity:MyClass):void',
+                    'myMethod(@Path id:string, @Query tags:string[], @Header headers:Map<string,string>, @Body entity:MyClass):void',
                 ].join('\n'),
                 {
                     methods: true,
@@ -104,6 +116,11 @@ describe('DSLParser', () => {
                         name: 'tags',
                         type: { name: 'string', list: true },
                         annotations: [{ type: '@Query', arguments: [] }],
+                    },
+                    {
+                        name: 'headers',
+                        type: { name: 'Map', generics: ['string', 'string'] },
+                        annotations: [{ type: '@Header', arguments: [] }],
                     },
                     {
                         name: 'entity',
@@ -336,6 +353,26 @@ describe('DSLParser', () => {
                     methods: true,
                 }).entities
         ).toThrow('Type not found: "MyType"');
+    });
+
+    test('throws if type does not have generics', () => {
+        expect(
+            () =>
+                DSLParser.parse(`doGet():MyType<string>`, {
+                    methods: true,
+                    validTypes: ['MyType'],
+                }).entities
+        ).toThrow('Generic arguments not supported for type: "MyType"');
+    });
+
+    test('throws if type has wrong amount of generics', () => {
+        expect(
+            () =>
+                DSLParser.parse(`doGet():MyType<string>`, {
+                    methods: true,
+                    validTypes: ['MyType<*,*>'],
+                }).entities
+        ).toThrow('Invalid number of generic arguments: "MyType"');
     });
 
     test('can get soft errors as array for semantic errors', () => {

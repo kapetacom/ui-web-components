@@ -23,6 +23,7 @@ const configuration: IRichLanguageConfiguration = {
         ['{', '}'],
         ['[', ']'],
         ['(', ')'],
+        ['<', '>'],
     ],
     autoClosingPairs: [
         { open: '{', close: '}' },
@@ -30,6 +31,7 @@ const configuration: IRichLanguageConfiguration = {
         { open: '(', close: ')' },
         { open: '"', close: '"' },
         { open: "'", close: "'" },
+        { open: '<', close: '>' },
     ],
     surroundingPairs: [
         { open: '{', close: '}' },
@@ -56,6 +58,8 @@ const language: ILanguage = {
     // The main tokenizer for our languages
     tokenizer: {
         root: [
+            [/\b[A-Z]\b/, 'keyword'],
+
             //@Annotation
             [/@[a-zA-Z_][\w$]*/, 'annotation'],
 
@@ -67,7 +71,7 @@ const language: ILanguage = {
                     { token: 'whitespace' },
                     {
                         cases: {
-                            '@keywords': { token: 'keyword' },
+                            '@keywords': { token: 'keyword.$0' },
                             '@default': 'type',
                         },
                     },
@@ -78,19 +82,29 @@ const language: ILanguage = {
             [/\b(true|false|null)\b/, ['keyword']],
 
             //Enum name
-            [/(enum)(\s*)([a-zA-Z_][\w$]*)(?=\s*\{)/, ['keyword', '', 'entity']],
+            [/(enum)(\s*)([a-zA-Z_][\w$]+)(?=\s*\{)/, ['keyword', '', 'entity']],
 
             //Enum value
-            [/([a-zA-Z_][\w$]*)(\.)([a-zA-Z_][\w$]*)/, ['type', '', 'variable.name']],
+            [/([a-zA-Z_][\w$]*)(\.)([a-zA-Z_][\w$]+)/, ['type', '', 'variable.name']],
 
             //Method name
-            [/([a-zA-Z_][\w$]*)(?=\s*\()/, 'entity'],
+            [/([a-zA-Z_][\w$]+)(?=\s*\()/, 'entity'],
 
             //Data Type name
-            [/([a-zA-Z_][\w$]*)(?=\s*\{)/, 'entity'],
+            [/([a-zA-Z_][\w$]+)(?=\s*\{)/, 'entity'],
+
+            [
+                /[A-Z][\w$]+/,
+                {
+                    cases: {
+                        '@keywords': { token: 'keyword.$0' },
+                        '@default': 'type',
+                    },
+                },
+            ],
 
             //Variable name:
-            [/[a-zA-Z_][\w$]*(?=\s*:)/, 'variable.name'],
+            [/[a-zA-Z_][\w$]+(?=\s*:)/, 'variable.name'],
 
             { include: '@identifier' },
 
@@ -176,7 +190,7 @@ export const withAdditionalTypes = (model: editor.ITextModel, types: string[]) =
 };
 
 loader.config({
-    monaco
+    monaco,
 });
 
 loader.init().then((monacoInstance) => {
@@ -199,8 +213,6 @@ loader.init().then((monacoInstance) => {
                 const actions: CodeAction[] = context.markers
                     .map((marker): CodeAction | undefined => {
                         const value = model.getValueInRange(marker).trim();
-                        console.log(marker, value);
-
                         const GO_ARRAY_RX = /^\[]([a-z][a-z0-9_]*)$/i;
 
                         if (GO_ARRAY_RX.test(value)) {

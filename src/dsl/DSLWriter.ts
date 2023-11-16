@@ -16,6 +16,7 @@ import {
     DSLType,
     toStandardType,
 } from './types';
+import { DSLConverters } from './DSLConverters';
 
 function toAnnotationCode(data: DSLAnnotation) {
     const out = [];
@@ -69,8 +70,7 @@ function generateMetaCode(data: DSLRichEntity | DSLDataTypeProperty, prefix?: st
 }
 
 function toTypeString(type: DSLType) {
-    const dataType = toStandardType(type);
-    return dataType.name + (dataType.list ? '[]' : '');
+    return DSLConverters.fromDSLType(type);
 }
 
 function toPropertyCode(data: DSLDataTypeProperty, indent = 0) {
@@ -83,7 +83,7 @@ function toPropertyCode(data: DSLDataTypeProperty, indent = 0) {
             type = `[${type}]`;
         }
     } else {
-        type = dataType.name + (dataType.list ? '[]' : '');
+        type = DSLConverters.fromDSLType(dataType);
     }
 
     const metaCode = generateMetaCode(data, prefix);

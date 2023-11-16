@@ -18,18 +18,35 @@ describe('DSLConverters', () => {
                 name: 'string',
                 list: true,
             });
+            expect(DSLConverters.asDSLType('Map<string,integer>')).toEqual({
+                name: 'Map',
+                generics: ['string', 'integer'],
+            });
+
+            expect(DSLConverters.asDSLType('Map<string,integer>[]')).toEqual({
+                name: 'Map',
+                generics: ['string', 'integer'],
+                list: true,
+            });
         });
 
         test('can convert from DSLTypes', () => {
             expect(DSLConverters.fromDSLType('')).toBe('void');
             expect(DSLConverters.fromDSLType('string')).toBe('string');
             expect(DSLConverters.fromDSLType({ name: 'string', list: true })).toEqual('string[]');
+            expect(DSLConverters.fromDSLType({ name: 'Map', generics: ['string', 'long'] })).toEqual(
+                'Map<string,long>'
+            );
+            expect(DSLConverters.fromDSLType({ name: 'Set', generics: ['string'], list: true })).toEqual(
+                'Set<string>[]'
+            );
         });
 
         test('can convert from SchemaType', () => {
             expect(DSLConverters.fromSchemaType({ type: '' })).toBe('void');
             expect(DSLConverters.fromSchemaType({ type: 'string' })).toBe('string');
             expect(DSLConverters.fromSchemaType({ ref: 'MyClass' })).toEqual('MyClass');
+            expect(DSLConverters.fromSchemaType({ ref: 'Map<string,string>' })).toEqual('Map<string,string>');
         });
 
         test('can convert to SchemaType', () => {
@@ -40,6 +57,9 @@ describe('DSLConverters', () => {
                 type: 'string',
             });
             expect(DSLConverters.toSchemaType({ name: 'MyClass', list: true })).toEqual({ ref: 'MyClass[]' });
+            expect(DSLConverters.toSchemaType({ name: 'Map', generics: ['string', 'string'] })).toEqual({
+                ref: 'Map<string,string>',
+            });
         });
     });
 

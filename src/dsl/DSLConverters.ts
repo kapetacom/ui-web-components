@@ -14,7 +14,7 @@ import {
 } from './interfaces';
 import { HTTPMethod, HTTPTransport, RESTMethod, TypeLike } from '@kapeta/ui-web-types';
 
-import { Entity, EntityProperties, EntityType, EntityProperty, isList } from '@kapeta/schemas';
+import { Entity, EntityProperties, EntityType, EntityProperty } from '@kapeta/schemas';
 
 import { BUILT_IN_TYPES } from './types';
 
@@ -67,14 +67,30 @@ export namespace DSLConverters {
         if (!type) {
             return 'void';
         }
-        if (type.endsWith('[]')) {
-            return {
-                name: type.substring(0, type.length - 2),
-                list: true,
-            };
+
+        if (!type.endsWith('[]') && !type.includes('<')) {
+            return type;
         }
 
-        return type;
+        const out: DSLType = {
+            name: type,
+        };
+
+        if (out.name.endsWith('[]')) {
+            out.list = true;
+            out.name = out.name.substring(0, out.name.length - 2);
+        }
+
+        if (out.name.includes('<')) {
+            const [typeName, args] = out.name.split('<');
+            out.name = typeName;
+            out.generics = args
+                .substring(0, args.length - 1)
+                .split(',')
+                .map((a) => a.trim());
+        }
+
+        return out;
     }
 
     export function fromDSLType(type: DSLType): string {
@@ -86,7 +102,13 @@ export namespace DSLConverters {
             return type;
         }
 
-        return type.name + (type.list ? '[]' : '');
+        let name = type.name;
+
+        if (type.generics && type.generics.length > 0) {
+            name += '<' + type.generics.join(',') + '>';
+        }
+
+        return name + (type.list ? '[]' : '');
     }
 
     export function fromSchemaType(type?: TypeLike): string {
@@ -193,29 +215,23 @@ export namespace DSLConverters {
                 });
             }
 
-            if (isList(value)) {
-                const typeName = stringType.substring(0, stringType.length - 2);
-                return {
-                    name,
-                    description: value.description,
-                    annotations,
-                    type: {
-                        name: typeName,
-                        list: true,
-                    },
-                };
-            }
-
-            let defaultValue = fromSchemaDefaultValue(value);
-
-            return {
+            const out: DSLDataTypeProperty = {
                 name,
                 type: asDSLType(stringType),
                 annotations,
                 description: value.description,
-                defaultValue,
-                properties: value.properties ? fromSchemaProperties(value.properties) : undefined,
             };
+
+            let defaultValue = fromSchemaDefaultValue(value);
+            if (defaultValue) {
+                out.defaultValue = defaultValue;
+            }
+
+            if (value.properties) {
+                out.properties = fromSchemaProperties(value.properties);
+            }
+
+            return out;
         });
     }
 

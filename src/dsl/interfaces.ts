@@ -12,6 +12,7 @@ export interface DSLAnnotation {
 
 export interface DSLTypeComplex {
     name: string;
+    generics?: string[];
     list?: boolean;
 }
 
@@ -120,6 +121,7 @@ export function toStandardType(type: DSLType) {
     if (typeof type === 'string') {
         return {
             name: type,
+            generics: [],
             list: false,
         };
     } else {
