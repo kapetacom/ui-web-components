@@ -6,6 +6,7 @@
 import { IDisposable, Position, CancellationToken, languages, editor } from 'monaco-editor';
 import { BUILT_IN_TYPES, CONFIG_FIELD_ANNOTATIONS, METHOD_ANNOTATIONS, PARAMETER_ANNOTATIONS } from './types';
 import { TokenParser } from './TokenParser';
+import { DSLConverters } from './DSLConverters';
 
 type CompletionContext = languages.CompletionContext;
 type ITextModel = editor.ITextModel;
@@ -109,6 +110,20 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
         //Type
         suggestions.push(
             ...TYPES.map((type) => {
+                const parsedType = DSLConverters.asDSLType(type);
+                if (typeof parsedType !== 'string' && parsedType.generics && parsedType.generics?.length > 0) {
+                    const argsText = parsedType.generics.map((_, ix) => {
+                        return `$\{${ix + 1}|${typeChoice}|}`;
+                    });
+                    const text = parsedType.name + '<' + argsText.join(',') + '>';
+                    return {
+                        label: parsedType.name,
+                        kind: languages.CompletionItemKind.TypeParameter,
+                        insertText: text,
+                        insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        range: null as any,
+                    };
+                }
                 return {
                     label: type,
                     insertText: type,

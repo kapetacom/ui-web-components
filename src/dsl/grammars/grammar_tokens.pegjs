@@ -49,6 +49,11 @@ expression
     / _
     / char
 
+lower_than
+    = '<' { return {type: 'special_start', value: text()} }
+
+greater_than
+    = '>' { return {type: 'special_end', value: text()} }
 
 square_brackets_start
     = '[' { return {type: 'special_start', value: text()} }
@@ -113,12 +118,18 @@ annotation
 	= annotation_type argument?
 
 variable_type
-	= type:id (_* square_brackets_start _* square_brackets_end)? {
+	= type:id {
 	return {type: 'type', value: text()};
 }
 
+generic_types
+    = lower_than _ first_type:variable_type types:(_ comma _ variable_type)* _ greater_than _*
+
+array_ending
+    = square_brackets_start _* square_brackets_end
+
 variable_definition
-	= name:id ws1:_* colon:colon ws2:_* type:variable_type {
+	= name:id ws1:_* colon:colon ws2:_* type:variable_type ws3:_* generic:generic_types? list:array_ending? {
     	const out = [
         	{type: 'variable', value: name.value}
         ];
@@ -126,6 +137,9 @@ variable_definition
         out.push(colon);
         out.push(ws2);
         out.push({type: 'type', value: type.value})
+        out.push(ws3);
+        generic && out.push(...generic)
+        list && out.push(...list)
 		return out;
 	}
 

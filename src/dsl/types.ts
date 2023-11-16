@@ -71,6 +71,18 @@ export const BUILT_IN_TYPES: TypeDefinition[] = [
         name: 'void',
         description: 'A type representing no value. Usually only valid as a return type',
     },
+    {
+        name: 'any',
+        description: 'A type representing any value. Avoid whenever possible since this makes the code less type safe',
+    },
+    {
+        name: 'Map<*,*>',
+        description: 'A type representing a map of values. Define their types using generic arguments: <key,value>',
+    },
+    {
+        name: 'Set<*>',
+        description: 'A type representing a unique set of values. Define the type using a generic argument: <value>',
+    },
 ];
 
 export const REST_METHOD_ANNOTATIONS: TypeDefinition[] = [
