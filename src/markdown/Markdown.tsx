@@ -13,5 +13,16 @@ interface Props {
 
 export const Markdown = (props: Props) => {
     const remarkPlugins = useMemo(() => [githubRemarkPlugin], []);
-    return <ReactMarkdown remarkPlugins={remarkPlugins} children={props.content} />;
+    return (
+        <ReactMarkdown
+            remarkPlugins={remarkPlugins}
+            components={{
+                a: (props) => {
+                    const { node, ...rest } = props;
+                    return <a target="_blank" rel="noopener noreferrer" {...rest} />;
+                },
+            }}
+            children={props.content}
+        />
+    );
 };

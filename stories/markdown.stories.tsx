@@ -28,3 +28,18 @@ There are a couple of configuration values that can be set via environment varia
         />
     );
 };
+
+export const HasLinkSupport = () => {
+    return (
+        <Markdown
+            content={`
+## Links
+
+Links should open in a new tab (target="_blank").
+
+- [Kapeta](https://kapeta.com)
+- [LICENSE](LICENSE) (relative link to file in repo)    
+    `}
+        />
+    );
+};
