@@ -491,8 +491,8 @@ export const EmptyStateIcon = (props: EmptyStateIconProps) => {
                     <ellipse cx="162.457" cy="124.209" rx="6.48178" ry="6.48178" fill="#F1F1F1" />
                     <g opacity="0.5">
                         <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
+                            fillRule="evenodd"
+                            clipRule="evenodd"
                             d="M181.57 67.3492C225.446 113.419 160.969 178.584 121.847 129.633C55.9417 47.1706 -0.179413 109.133 -0.179413 109.133"
                             fill="black"
                             fillOpacity="0.01"
@@ -505,7 +505,7 @@ export const EmptyStateIcon = (props: EmptyStateIconProps) => {
                             strokeDasharray="2.72 10.88"
                         />
                     </g>
-                    <g clip-path="url(#clip0_1048_86897)">
+                    <g clipPath="url(#clip0_1048_86897)">
                         <path
                             d="M123.037 11.8162C121.804 16.4232 121.981 21.3285 123.565 25.8515H123.566L137.072 12.3458V12.3446C132.549 10.7606 127.644 10.5841 123.037 11.8162Z"
                             fill="#7E57C2"
@@ -656,7 +656,7 @@ export const EmptyStateIcon = (props: EmptyStateIconProps) => {
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                 >
-                    <g clip-path="url(#clip0_1053_98086)">
+                    <g clipPath="url(#clip0_1053_98086)">
                         <path
                             d="M20.2424 35.6916C20.2424 35.0794 20.6004 34.5322 21.1391 34.3212L30.5788 30.6237C30.8831 30.5045 31.2173 30.5045 31.5217 30.6237L40.9614 34.3212C41.5 34.5322 41.858 35.0794 41.858 35.6916V48.4091C41.858 49.0153 41.5068 49.5585 40.9756 49.7737L31.5359 53.5987C31.223 53.7255 30.8774 53.7255 30.5645 53.5987L21.1248 49.7737C20.5936 49.5585 20.2424 49.0153 20.2424 48.4091V35.6916Z"
                             fill="url(#paint1_linear_1053_98086)"
@@ -719,8 +719,8 @@ export const EmptyStateIcon = (props: EmptyStateIconProps) => {
                             />
                         </g>
                         <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
+                            fillRule="evenodd"
+                            clipRule="evenodd"
                             d="M77.0119 22.4077H157.804C159.4 22.4077 160.698 23.7063 160.698 25.302V161.471H159.909H154.91H137.527H134.624H131.73V28.2049H77.0119C75.4078 28.2049 74.1177 26.9061 74.1177 25.302C74.1177 23.7063 75.4078 22.4077 77.0119 22.4077ZM137.527 155.673H154.909V155.606L146.218 146.914L137.527 155.608V155.673ZM137.527 147.413L142.122 142.818L137.527 138.223V147.413ZM137.527 121.974L142.122 117.379L137.527 112.783V121.974ZM137.527 96.5315L142.12 91.9383L137.527 87.3451V96.5315ZM137.527 71.094L142.122 66.4986L137.527 61.9032V71.094ZM137.527 45.6515L142.122 41.056L137.527 36.4605V45.6515ZM137.527 28.2739V28.2049H154.909V28.2684L146.215 36.9627L137.527 28.2739ZM154.909 36.4568L150.31 41.0577L154.909 45.657V36.4568ZM154.909 61.8993L150.31 66.5003L154.909 71.0997V61.8993ZM154.909 87.3412L150.312 91.94L154.909 96.5372V87.3412ZM154.909 112.779L150.31 117.38L154.909 121.98V112.779ZM154.909 138.219L150.31 142.82L154.909 147.419V138.219ZM137.591 53.7814L146.218 45.1517L154.843 53.7772L146.215 62.4053L137.591 53.7814ZM137.594 79.2214L146.218 70.5943L154.841 79.2174L146.215 87.8428L137.594 79.2214ZM137.593 104.664L146.218 96.0362L154.841 104.66L146.215 113.285L137.593 104.664ZM137.593 130.102L146.218 121.474L154.841 130.098L146.215 138.725L137.593 130.102Z"
                             fill="#F0F0F0"
                         />
@@ -811,9 +811,9 @@ export const EmptyStateIcon = (props: EmptyStateIconProps) => {
                             width="20.5765"
                             height="60.2823"
                             filterUnits="userSpaceOnUse"
-                            color-interpolation-filters="sRGB"
+                            colorInterpolationFilters="sRGB"
                         >
-                            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                            <feFlood floodOpacity="0" result="BackgroundImageFix" />
                             <feColorMatrix
                                 in="SourceAlpha"
                                 type="matrix"
@@ -839,9 +839,9 @@ export const EmptyStateIcon = (props: EmptyStateIconProps) => {
                             width="20.5765"
                             height="26.7529"
                             filterUnits="userSpaceOnUse"
-                            color-interpolation-filters="sRGB"
+                            colorInterpolationFilters="sRGB"
                         >
-                            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                            <feFlood floodOpacity="0" result="BackgroundImageFix" />
                             <feColorMatrix
                                 in="SourceAlpha"
                                 type="matrix"
@@ -867,9 +867,9 @@ export const EmptyStateIcon = (props: EmptyStateIconProps) => {
                             width="41.5134"
                             height="52.5666"
                             filterUnits="userSpaceOnUse"
-                            color-interpolation-filters="sRGB"
+                            colorInterpolationFilters="sRGB"
                         >
-                            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                            <feFlood floodOpacity="0" result="BackgroundImageFix" />
                             <feColorMatrix
                                 in="SourceAlpha"
                                 type="matrix"
@@ -896,8 +896,8 @@ export const EmptyStateIcon = (props: EmptyStateIconProps) => {
                             y2="125.342"
                             gradientUnits="userSpaceOnUse"
                         >
-                            <stop stop-color="#651FFF" stop-opacity="0.18" />
-                            <stop offset="1" stop-color="#D9D9D9" stop-opacity="0" />
+                            <stop stopColor="#651FFF" stopOpacity="0.18" />
+                            <stop offset="1" stopColor="#D9D9D9" stopOpacity="0" />
                         </linearGradient>
                         <linearGradient
                             id="paint1_linear_1053_98086"
@@ -907,9 +907,9 @@ export const EmptyStateIcon = (props: EmptyStateIconProps) => {
                             y2="53.6938"
                             gradientUnits="userSpaceOnUse"
                         >
-                            <stop stop-color="#EDEDED" />
-                            <stop offset="0.151042" stop-color="#F5F4F4" />
-                            <stop offset="1" stop-color="#FFFEFE" />
+                            <stop stopColor="#EDEDED" />
+                            <stop offset="0.151042" stopColor="#F5F4F4" />
+                            <stop offset="1" stopColor="#FFFEFE" />
                         </linearGradient>
                         <clipPath id="clip0_1053_98086">
                             <rect width="180" height="180" fill="white" />
