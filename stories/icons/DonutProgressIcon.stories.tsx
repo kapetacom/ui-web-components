@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { DonutProgressIcon } from '../../src/icons/DonutProgressIcon';
 import { StoryObj } from '@storybook/react';
 import React from 'react';

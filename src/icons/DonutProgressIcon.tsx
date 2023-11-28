@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { ForwardedRef, forwardRef } from 'react';
 import { isFinite } from 'lodash';
 import { Box, CircularProgress, circularProgressClasses } from '@mui/material';
