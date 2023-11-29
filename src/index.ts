@@ -103,6 +103,7 @@ export * from './icons/AssetIcon';
 export * from './icons/AuthProviderIcon';
 export * from './icons/InfinityIcon';
 export * from './icons/PromoIcon';
+export * from './icons/DonutProgressIcon';
 export * from './avatars/AvatarEditor';
 
 export * from './terminal/XTerm';
