@@ -13,8 +13,14 @@ import { Box, BoxProps } from '@mui/material';
  * @example toTimeDuration(0, 86401000) // 1d, 1s
  */
 export const toTimeDuration = (from: number, to: number) => {
-    const duration = Duration.fromMillis(to - from).shiftTo('days', 'hours', 'minutes', 'seconds', 'milliseconds');
+    const totalMillis = to - from;
 
+    // Directly return "0s" for durations less than 1000 milliseconds
+    if (totalMillis < 1000) {
+        return '0s';
+    }
+
+    const duration = Duration.fromMillis(totalMillis).shiftTo('days', 'hours', 'minutes', 'seconds', 'milliseconds');
     const format = "d'd', h'h', m'm', s's'";
 
     let formattedDuration = duration.toFormat(format);

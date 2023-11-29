@@ -186,6 +186,9 @@ export const TimeDurationExamples = () => {
     return renderTimeDurationRows([
         { props: { from: 0, to: minutes(35) + seconds(15) } },
 
+        { props: { duration: 0 } },
+        { props: { duration: 999 } },
+
         { props: { duration: seconds(2) } },
 
         { props: { duration: minutes(35) } },
