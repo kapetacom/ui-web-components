@@ -9,6 +9,7 @@ import './styles.less';
 import { DateDisplay, DateDisplayProps } from '../src/dates/DateDisplay';
 import { DateTime } from 'luxon';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { TimeDuration, TimeDurationProps } from '../src/dates/TimeDuration';
 
 export default {
     title: 'Dates/DateDisplay',
@@ -21,7 +22,7 @@ const days = (day: number) => day * hours(24);
 const future = (ms: number) => new Date().getTime() + ms;
 const past = (ms: number) => new Date().getTime() - ms;
 
-const CodeCell = (props: DateDisplayProps) => (
+const CodeCell = (props: any) => (
     <TableCell>
         <pre>{JSON.stringify(props, null, 2)}</pre>
     </TableCell>
@@ -155,5 +156,48 @@ export const Tooltips = () => {
                 tooltipDateFormat: { year: 'numeric', month: 'numeric', day: 'numeric' },
             },
         },
+    ]);
+};
+
+const renderTimeDurationRows = (rows: { props: TimeDurationProps }[]) => {
+    return (
+        <Table size="small">
+            <TableHead>
+                <TableRow>
+                    <TableCell>Date</TableCell>
+                    <TableCell>Props</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {rows.map(({ props }) => (
+                    <TableRow>
+                        <TableCell>
+                            <TimeDuration {...props} />
+                        </TableCell>
+                        <CodeCell {...props} />
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    );
+};
+
+export const TimeDurationExamples = () => {
+    return renderTimeDurationRows([
+        { props: { from: 0, to: minutes(35) + seconds(15) } },
+
+        { props: { duration: seconds(2) } },
+
+        { props: { duration: minutes(35) } },
+        { props: { duration: minutes(35) + seconds(15) } },
+
+        { props: { duration: hours(2) + seconds(30) } },
+        { props: { duration: hours(2) + minutes(2) + seconds(30) } },
+
+        { props: { duration: days(2) + seconds(30) } },
+        { props: { duration: days(2) + minutes(2) + seconds(30) } },
+        { props: { duration: days(2) + hours(2) + minutes(2) + seconds(30) } },
+
+        { props: { duration: 5000, component: 'p', sx: { fontWeight: 'bold', color: '#FF0000' } } },
     ]);
 };

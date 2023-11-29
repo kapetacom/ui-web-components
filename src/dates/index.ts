@@ -4,3 +4,4 @@
  */
 
 export * from './DateDisplay';
+export * from './TimeDuration';
