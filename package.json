@@ -139,6 +139,7 @@
     "dependencies": {
         "@kapeta/nodejs-utils": "<2",
         "@kapeta/style": "^0.94.0",
+        "@types/ua-parser-js": "^0.7.39",
         "monaco-editor": "^0.37.1"
     }
 }
