@@ -83,24 +83,24 @@ export function SVGAutoSizeText(props: SVGTextProps) {
     });
 
     function onKeyDown(evt: KeyboardEvent<HTMLInputElement>) {
-        if (evt.which === 27) {
-            //ESC
+        if (evt.key === 'Escape') {
             setEditedValue(props.value);
             setEditing(false);
         }
 
-        if (props.onChange && evt.which === 13) {
+        if (props.onChange && evt.key === 'Enter') {
             if (!editedValue) {
                 return;
             }
-            //Enter
             props.onChange(editedValue);
             setEditing(false);
         }
     }
 
     function onBlur() {
-        setEditedValue(props.value);
+        if (props.onChange && editedValue) {
+            props.onChange(editedValue);
+        }
         setEditing(false);
     }
 
