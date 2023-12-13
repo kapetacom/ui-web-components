@@ -84,7 +84,7 @@ export function DependencyKindLabel(props: { dependency: { name: string }; fetch
         { keepPreviousData: true, revalidateOnFocus: false }
     );
     const asset = assetReq.data;
-    return asset ? (
+    return asset?.content ? (
         <div style={{ overflowX: 'hidden', whiteSpace: 'nowrap' }}>
             <AssetKindIconText size={12} asset={asset.content} />
         </div>
