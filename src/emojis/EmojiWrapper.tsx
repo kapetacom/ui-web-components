@@ -13,36 +13,49 @@ type Dimension = {
     height: number;
 };
 
+const EMOJI_SIZES = {
+    small: 20,
+    medium: 24,
+    large: 35,
+};
+
 const getEmojiSizeInPx = (size: EmojiSize): number => {
-    switch (size) {
-        case 'small':
-            return 20;
-        case 'medium':
-            return 24;
-        case 'large':
-            return 35;
-        default:
-            return size;
+    if (typeof size === 'number') {
+        return size;
     }
+
+    if (!EMOJI_SIZES[size]) {
+        throw new Error(`Invalid EmojiSize: ${size}`);
+    }
+
+    return EMOJI_SIZES[size];
+};
+
+const calculateAspectRatio = (width: number, height: number): number => {
+    if (height === 0) {
+        throw new Error('Height cannot be zero for aspect ratio calculation.');
+    }
+    return width / height;
 };
 
 const getEmojiSize = (svgDimension: Dimension, size: EmojiSize): Dimension => {
-    const sizeInPx = getEmojiSizeInPx(size);
-    const ratio = svgDimension.width / svgDimension.height;
-
-    let width, height;
-
-    if (svgDimension.width > svgDimension.height) {
-        width = sizeInPx;
-        height = sizeInPx / ratio;
-    } else {
-        width = sizeInPx * ratio;
-        height = sizeInPx;
+    if (!svgDimension || svgDimension.width <= 0 || svgDimension.height <= 0) {
+        throw new Error('Invalid svgDimension provided.');
     }
 
-    // Ensure the dimensions do not exceed the max size
-    width = Math.min(width, sizeInPx);
-    height = Math.min(height, sizeInPx);
+    const sizeInPx = getEmojiSizeInPx(size);
+    const ratio = calculateAspectRatio(svgDimension.width, svgDimension.height);
+
+    let width = sizeInPx;
+    let height = sizeInPx;
+
+    if (ratio > 1) {
+        // Width is greater than height
+        height = sizeInPx / ratio;
+    } else if (ratio < 1) {
+        // Height is greater than width
+        width = sizeInPx * ratio;
+    }
 
     return { width, height };
 };
