@@ -129,3 +129,5 @@ export * from './charts/PieChartIcon';
 export * from './markdown/Markdown';
 
 export * from './hooks/useUserAgent';
+
+export * from './emojis/KapEmoji';
