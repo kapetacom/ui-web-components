@@ -4,23 +4,39 @@
  */
 
 import React from 'react';
-import { Table, TableCell, TableHead, TableRow } from '@mui/material';
+import { Box, Paper, Table, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import { KapEmoji, KapEmojiName } from '../../src/emojis/KapEmoji';
 import { WaveEmoji } from '../../src/emojis/WaveEmoji';
 import { EmojiSize } from '../../src/emojis/EmojiWrapper';
 import { Tooltip } from '../../src';
 
 export default {
-    title: 'Emojis',
+    title: 'KapEmojis',
 };
 
 export const All = () => (
     <>
-        {(Object.keys(KapEmoji) as KapEmojiName[]).map((emojiName) => (
-            <Tooltip title={emojiName} placement="bottom">
-                {React.createElement(KapEmoji[emojiName], { size: 100 })}
-            </Tooltip>
-        ))}
+        <Typography variant="h3">All KapEmojis</Typography>
+        <Box
+            sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, 132px)',
+                gap: 2,
+                pt: 4,
+            }}
+        >
+            {(Object.keys(KapEmoji) as KapEmojiName[]).map((emojiName) => (
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }} elevation={1}>
+                    <Tooltip title={emojiName} placement="top">
+                        {React.createElement(KapEmoji[emojiName], { size: 100 })}
+                    </Tooltip>
+
+                    <Box component="pre" sx={{ m: 0, fontWeight: 'bold' }}>
+                        {emojiName}
+                    </Box>
+                </Paper>
+            ))}
+        </Box>
     </>
 );
 
