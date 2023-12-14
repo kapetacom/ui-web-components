@@ -49,8 +49,8 @@ const getEmojiSize = (svgDimension: Dimension, size: EmojiSize): Dimension => {
 
 export interface EmojiWrapperProps extends Omit<BoxProps, 'children'> {
     /**
-     * The size of the emoji. If a number is provided, the size will be in pixels. Otherwise, the
-     * size will be one of the following: `small`, `medium`, `large`.
+     * Defines the size of the emoji. If a numeric value is provided, it represents the size in
+     * pixels. Alternatively, it can be one of the predefined sizes: `small`, `medium`, or `large`.
      */
     size?: EmojiSize;
     /**
@@ -70,7 +70,7 @@ export interface EmojiWrapperProps extends Omit<BoxProps, 'children'> {
 export type EmojiProps = Omit<EmojiWrapperProps, 'children'>;
 
 export const EmojiWrapper = (props: EmojiWrapperProps) => {
-    const { forwardedRef, size = 'medium', 'data-kap-id': dataKapId, sx, children, ...otherBoxProps } = props;
+    const { size = 'medium', children, 'data-kap-id': dataKapId, forwardedRef, sx, ...otherBoxProps } = props;
 
     const { width, height } = getEmojiSize(
         {
