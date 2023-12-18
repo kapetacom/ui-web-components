@@ -8,6 +8,7 @@ export const DSL_LANGUAGE_ID = 'kapeta-dsl';
 export interface DSLAnnotation {
     arguments?: string[];
     type: string;
+    options?: { [key: string]: string };
 }
 
 export interface DSLTypeComplex {

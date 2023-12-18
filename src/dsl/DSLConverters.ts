@@ -12,11 +12,11 @@ import {
     DSLMethod,
     DSLType,
 } from './interfaces';
-import { HTTPMethod, HTTPTransport, RESTMethod, TypeLike } from '@kapeta/ui-web-types';
+import {HTTPMethod, HTTPTransport, RESTMethod, TypeLike} from '@kapeta/ui-web-types';
 
-import { Entity, EntityProperties, EntityType, EntityProperty } from '@kapeta/schemas';
+import {Entity, EntityProperties, EntityProperty, EntityType} from '@kapeta/schemas';
 
-import { BUILT_IN_TYPES } from './types';
+import {BUILT_IN_TYPES} from './types';
 
 type SchemaMethods = { [p: string]: RESTMethod };
 
@@ -340,6 +340,7 @@ export namespace DSLConverters {
                             arg.annotations && arg.annotations.length > 0 ? arg.annotations[0].type : '@Query'
                         ),
                         argument: restArgs,
+                        optional: toOptional(arg.annotations)
                     };
                 });
             }
@@ -365,5 +366,13 @@ export namespace DSLConverters {
         });
 
         return out;
+    }
+
+    function toOptional(input?: DSLAnnotation[]): boolean | undefined {
+        if (!input || input.length == 0 || !input[0].options) {
+            return undefined;
+        }
+
+        return input[0].options?.optional === 'true';
     }
 }
