@@ -107,6 +107,7 @@ export * from './icons/DonutProgressIcon';
 export * from './avatars/AvatarEditor';
 
 export * from './terminal/XTerm';
+export * from './terminal/TerminalOutput';
 
 export * from './avatars/UserAvatar';
 

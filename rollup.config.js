@@ -7,7 +7,7 @@ import dts from 'rollup-plugin-dts';
 import pegjs from 'rollup-plugin-pegjs';
 const { visualizer } = require('rollup-plugin-visualizer');
 const bundleSize = require('rollup-plugin-bundle-size');
-
+const json = require('@rollup/plugin-json');
 const packageJson = require('./package.json');
 
 export default [
@@ -27,6 +27,7 @@ export default [
         plugins: [
             pegjs(),
             external(),
+            json(),
             resolve(),
             commonjs(),
             typescript({

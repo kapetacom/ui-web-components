@@ -3,10 +3,11 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { useMemo, useState } from 'react';
-import { XTerm, XTermStream } from '../src/terminal/XTerm';
+import React, { useMemo } from 'react';
+import { XTerm } from '../src/terminal/XTerm';
 import { EventEmitter } from 'events';
-import { useInterval } from 'react-use';
+import { useInterval, useList } from 'react-use';
+import { TerminalOutput } from '../src/terminal/TerminalOutput';
 
 export default {
     title: 'Terminal',
@@ -14,46 +15,20 @@ export default {
 
 export const LogView = () => {
     return (
-        <XTerm
-            terminalOptions={{
-                disableStdin: true,
-                convertEol: true,
-            }}
-            lines={['Hello World', 'This is a test', 'This is a test']}
+        <TerminalOutput
+            data={['\x1b[1;34mHello World', '\x1b[0;32mThis is a \x1b[39;42;4mtest\x1b[0m', 'This is not formatted']}
         />
     );
 };
 
 export const StreamLogView = () => {
-    const stream = useMemo(() => {
-        const em = new EventEmitter();
-
-        return {
-            write: (data: string) => {
-                em.emit('data', data);
-            },
-            on: (listener: (line: string) => void) => {
-                em.on('data', listener);
-                return () => {
-                    em.off('data', listener);
-                };
-            },
-        };
-    }, []);
+    const [data, dataActions] = useList<string>([]);
 
     useInterval(() => {
-        stream.write('Hello World: ' + Math.random() + '\n');
+        dataActions.push('Hello World: ' + Math.random() + '\n');
     }, 1000);
 
-    return (
-        <XTerm
-            terminalOptions={{
-                disableStdin: true,
-                convertEol: true,
-            }}
-            stream={stream}
-        />
-    );
+    return <TerminalOutput data={data} />;
 };
 
 export const Terminal = () => {
