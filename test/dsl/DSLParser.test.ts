@@ -180,6 +180,39 @@ describe('DSLParser', () => {
         ]);
     });
 
+    test('can parse REST method with optional Query', () => {
+        expect(
+            DSLParser.parse(
+                [
+                    '@GET("/some/path")',
+                    'search(@Query(optional = true) type: string): string[]'
+                ].join('\n'),
+                {
+                    methods: true,
+                    rest: true
+                }
+            ).entities
+        ).toEqual([
+            {
+                type: DSLEntityType.METHOD,
+                description: null,
+                returnType: {
+                    "list": true,
+                    "name": "string"
+                },
+                name: 'search',
+                annotations: [{ type: '@GET', arguments: ['/some/path'] }],
+                parameters: [
+                    {
+                        name: 'type',
+                        type: 'string',
+                        annotations: [{ type: '@Query', arguments: [], options: {'optional': 'true'}}],
+                    },
+                ],
+            },
+        ]);
+    })
+
     test('can parse data type', () => {
         expect(
             DSLParser.parse(

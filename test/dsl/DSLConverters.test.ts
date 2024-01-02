@@ -293,6 +293,45 @@ describe('DSLConverters', () => {
             });
         });
 
+        test('converts annotation options', () => {
+            const methods: DSLMethod[] = [
+                {
+                    type: DSLEntityType.METHOD,
+                    name: 'list',
+                    annotations: [
+                        {
+                            type: '@GET',
+                            arguments: ['/path'],
+                        },
+                    ],
+                    description: 'Optional',
+                    parameters: [
+                        {
+                            type: { name: 'string' },
+                            annotations: [{ type: '@Query', options: { 'optional':  'true' } }],
+                            name: 'type',
+                        },
+                    ],
+                    returnType: { name: 'string', list: true },
+                },
+            ];
+            expect(DSLConverters.toSchemaMethods(methods)).toEqual({
+                list: {
+                    description: 'Optional',
+                    method: 'GET',
+                    path: '/path',
+                    arguments: {
+                        type: {
+                            type: 'string',
+                            transport: 'QUERY',
+                            optional: true
+                        },
+                    },
+                    responseType: { type: 'string[]' },
+                },
+            });
+        });
+
         test('can convert methods to schema', () => {
             const methods: DSLMethod[] = [
                 {

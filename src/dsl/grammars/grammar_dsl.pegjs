@@ -491,17 +491,22 @@ field_annotation
 parameter_annotation
   = type:annotationType _ name:argument? _ {
         let usedName = name ? name[3] : null;
+        let args = undefined;
         if (!options.ignoreSemantics) {
             if (!options.rest) {
                 _error(`Annotations not allowed on parameters`);
             } else if (options.parameterAnnotations.indexOf(type) === -1) {
                 _error(`Invalid parameter annotation - must be one of ${options.parameterAnnotations.join(', ')}`);
+            } else if (usedName && /^(\w+)\s*=\s*(\w+)$/.test(usedName)) {
+                const [, key, value] = usedName.match(/^(\w+)\s*=\s*(\w+)$/);
+                args = { [key]: value };
+                usedName = null;
             } else if (usedName &&
                 !/^[a-z_][a-z0-9_-]*$/i.test(usedName)) {
                 _error(`Invalid variable name. Must start with an alpha character ([a-z]) and only contain alphanumeric characters, dash and underscore. ([a-z0-9_-]) "`);
             }
         }
-        return { type, arguments: usedName ? [usedName] : [] };
+        return { type, arguments: usedName ? [usedName] : [], options: args };
     }
 
 
@@ -521,7 +526,6 @@ argument
 colon = ':'
 
 parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:variable_type _ {
-
     if (!options.ignoreSemantics) {
         if (options.rest) {
             if (annotations.length > 1) {
