@@ -46,6 +46,7 @@ describe('DSLWriter', () => {
                         {
                             type: { name: 'Map', generics: ['string', 'string'] },
                             name: 'headers',
+                            optional: true,
                             annotations: [{ type: '@Headers', arguments: [] }],
                         },
                     ],
@@ -53,7 +54,7 @@ describe('DSLWriter', () => {
             ])
         ).toBe(`//Some description\n//on Multiple Lines
 @GET("/path")
-myMethod(@ID("value") id:string, @Tags("value") tags:string[], @Headers headers:Map<string,string>):MyClass[]`);
+myMethod(@ID("value") id:string, @Tags("value") tags:string[], @Headers headers?:Map<string,string>):MyClass[]`);
     });
 
     test('can write enum type', () => {
@@ -101,6 +102,7 @@ enum myType {
                         },
                         {
                             name: 'metadata',
+                            optional: true,
                             type: { name: 'Map', generics: ['string', 'string'] },
                         },
                         {
@@ -128,7 +130,7 @@ enum Status {
 MyDataType {
 \tid: string
 \ttags: string[]
-\tmetadata: Map<string,string>
+\tmetadata?: Map<string,string>
 \tchildren: {
 \t\tchildId: integer
 \t}

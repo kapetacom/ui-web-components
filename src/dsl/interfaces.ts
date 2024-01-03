@@ -48,12 +48,14 @@ export interface DSLDataTypeProperty {
     properties?: DSLDataTypeProperty[];
     annotations?: DSLAnnotation[];
     description?: string;
+    optional?: boolean;
 }
 
 export interface DSLParameter {
     name: string;
     type: DSLType;
     annotations?: DSLAnnotation[];
+    optional?: boolean;
 }
 
 export enum DSLEntityType {

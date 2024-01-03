@@ -12,11 +12,11 @@ import {
     DSLMethod,
     DSLType,
 } from './interfaces';
-import {HTTPMethod, HTTPTransport, RESTMethod, TypeLike} from '@kapeta/ui-web-types';
+import { HTTPMethod, HTTPTransport, RESTMethod, TypeLike } from '@kapeta/ui-web-types';
 
-import {Entity, EntityProperties, EntityProperty, EntityType} from '@kapeta/schemas';
+import { Entity, EntityProperties, EntityProperty, EntityType } from '@kapeta/schemas';
 
-import {BUILT_IN_TYPES} from './types';
+import { BUILT_IN_TYPES } from './types';
 
 type SchemaMethods = { [p: string]: RESTMethod };
 
@@ -197,12 +197,6 @@ export namespace DSLConverters {
 
             let annotations: DSLAnnotation[] = [];
 
-            if (value.required) {
-                annotations.push({
-                    type: '@required',
-                });
-            }
-
             if (value.secret) {
                 annotations.push({
                     type: '@secret',
@@ -220,6 +214,7 @@ export namespace DSLConverters {
                 type: asDSLType(stringType),
                 annotations,
                 description: value.description,
+                optional: !value.required,
             };
 
             let defaultValue = fromSchemaDefaultValue(value);
@@ -241,8 +236,9 @@ export namespace DSLConverters {
         properties?.forEach((property) => {
             let typeLike = toSchemaType(property.type);
             const secret = property.annotations?.some((annotation) => annotation.type === '@secret') || false;
-            const required = property.annotations?.some((annotation) => annotation.type === '@required') || false;
             const global = property.annotations?.some((annotation) => annotation.type === '@global') || false;
+
+            const required = Boolean(!property.optional);
 
             const defaultValue =
                 property.defaultValue?.value !== undefined ? `${property.defaultValue?.value}` : undefined;
@@ -340,7 +336,7 @@ export namespace DSLConverters {
                             arg.annotations && arg.annotations.length > 0 ? arg.annotations[0].type : '@Query'
                         ),
                         argument: restArgs,
-                        optional: toOptional(arg.annotations)
+                        optional: arg.optional,
                     };
                 });
             }

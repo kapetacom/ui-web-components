@@ -65,7 +65,7 @@ const language: ILanguage = {
 
             //:type
             [
-                /(:)(\s*)([a-zA-Z_][\w$]*)/,
+                /(\??:)(\s*)([a-zA-Z_][\w$]*)/,
                 [
                     { token: 'colon' },
                     { token: 'whitespace' },
@@ -104,7 +104,7 @@ const language: ILanguage = {
             ],
 
             //Variable name:
-            [/[a-zA-Z_][\w$]+(?=\s*:)/, 'variable.name'],
+            [/[a-zA-Z_][\w$]+(?=\s*\??:)/, 'variable.name'],
 
             { include: '@identifier' },
 

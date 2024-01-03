@@ -193,9 +193,10 @@ reference_value = value:(variable_name '.' variable_name) { return {type: 'refer
 
 default_value = _ '=' _ value:(literal / reference_value) { return value }
 
-field = description:comments? annotations:field_annotation* name:id _ ':' _ type:fieldType defaultValue:default_value? {
+field = description:comments? annotations:field_annotation* name:id _ optionalString:('?' _)? _ ':' _ type:fieldType defaultValue:default_value? {
 
-    const out = {name,annotations,description, ...type, defaultValue};
+    const optional = optionalString && optionalString[0] === '?' ? true : false;
+    const out = {name,annotations,description, ...type, optional, defaultValue};
 
     validate({
          type:'field',
@@ -296,6 +297,41 @@ method "method"
 
         if (!options.rest && annotations.length > 0) {
             _error(`Annotations not allowed on methods`, annotations[0].location);
+        }
+
+        if (args) {
+            if (options.rest) {
+                // Check type of parameters
+                let anyRequired = false;
+                for(let i = args.length; i--; i >= 0) {
+                    const arg = args[i];
+                    if (!arg.optional) {
+                        continue;
+                    }
+
+                    const type = arg.annotations && arg.annotations[0] ? arg.annotations[0].type : null;
+
+                    if (!type) {
+                        continue;
+                    }
+
+                    if (['@body','@path'].includes(type.toLowerCase())) {
+                        _error(`${type} parameter can not be optional`, arg.location);
+                    }
+                }
+            } else {
+                // Check order of parameters
+                let anyRequired = false;
+                for(let i = args.length; i--; i >= 0) {
+                    const arg = args[i];
+                    if (!arg.optional) {
+                        anyRequired = true
+                    } else if (anyRequired) {
+                        _error(`Optional parameters must be at the end of the parameter list`, arg.location);
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -525,7 +561,7 @@ argument
 
 colon = ':'
 
-parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:variable_type _ {
+parameter = _ annotations:parameter_annotation* _ name:id _ optionalString:('?' _)? colon _ type:variable_type _ {
     if (!options.ignoreSemantics) {
         if (options.rest) {
             if (annotations.length > 1) {
@@ -545,7 +581,9 @@ parameter = _ annotations:parameter_annotation* _ name:id _ colon _ type:variabl
         }
     }
 
-    return {name, type, location: location(), annotations}
+    const optional = optionalString && optionalString[0] === '?' ? true : false;
+
+    return {name, type, optional, location: location(), annotations}
 }
 
 parameters

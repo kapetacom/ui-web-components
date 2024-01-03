@@ -140,10 +140,6 @@ export const CONFIG_FIELD_ANNOTATIONS: TypeDefinition[] = [
         description: 'Defines a secret field. The value will be stored encrypted',
     },
     {
-        name: '@required',
-        description: 'Defines a required field. The field must be set',
-    },
-    {
         name: '@global',
         description: 'Defines a global field. The fields value will be set in the plan - instead of each environment',
     },

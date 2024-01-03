@@ -117,6 +117,7 @@ describe('DSLConverters', () => {
                         type: { name: 'string', list: true },
                         name: 'tags',
                         description: 'Tags',
+                        optional: true,
                     },
                     {
                         type: { name: 'object', list: true },
@@ -151,7 +152,7 @@ describe('DSLConverters', () => {
                         type: 'string',
                         defaultValue: '"test"',
                         description: undefined,
-                        required: false,
+                        required: true,
                         secret: true,
                         global: true,
                     },
@@ -168,7 +169,7 @@ describe('DSLConverters', () => {
                         description: 'Children',
                         type: 'object[]',
                         global: false,
-                        required: false,
+                        required: true,
                         secret: false,
                     },
                     parent: {
@@ -176,7 +177,7 @@ describe('DSLConverters', () => {
                         description: 'Parent',
                         type: 'object',
                         global: false,
-                        required: false,
+                        required: true,
                         secret: false,
                     },
                 },
@@ -221,13 +222,9 @@ describe('DSLConverters', () => {
                     {
                         type: 'string',
                         name: 'name',
-                        properties: undefined,
                         description: undefined,
-                        annotations: [
-                            {
-                                type: '@required',
-                            },
-                        ],
+                        optional: false,
+                        annotations: [],
                         defaultValue: {
                             type: 'literal',
                             value: '"test"',
@@ -236,23 +233,21 @@ describe('DSLConverters', () => {
                     {
                         type: { name: 'string', list: true },
                         name: 'tags',
+                        optional: false,
                         annotations: [
-                            {
-                                type: '@required',
-                            },
                             {
                                 type: '@secret',
                             },
                             {
                                 type: '@global',
                             },
-                            ,
                         ],
                         description: 'Tags',
                     },
                     {
                         type: { name: 'Node', list: true },
                         annotations: [],
+                        optional: true,
                         name: 'children',
                         description: 'Children',
                     },
@@ -260,7 +255,7 @@ describe('DSLConverters', () => {
                         type: 'Node',
                         annotations: [],
                         name: 'parent',
-                        properties: undefined,
+                        optional: true,
                         description: 'Parent',
                         defaultValue: {
                             type: 'reference',
@@ -293,7 +288,7 @@ describe('DSLConverters', () => {
             });
         });
 
-        test('converts annotation options', () => {
+        test('converts optional state', () => {
             const methods: DSLMethod[] = [
                 {
                     type: DSLEntityType.METHOD,
@@ -308,7 +303,8 @@ describe('DSLConverters', () => {
                     parameters: [
                         {
                             type: { name: 'string' },
-                            annotations: [{ type: '@Query', options: { 'optional':  'true' } }],
+                            annotations: [{ type: '@Query' }],
+                            optional: true,
                             name: 'type',
                         },
                     ],
@@ -324,7 +320,7 @@ describe('DSLConverters', () => {
                         type: {
                             type: 'string',
                             transport: 'QUERY',
-                            optional: true
+                            optional: true,
                         },
                     },
                     responseType: { type: 'string[]' },
