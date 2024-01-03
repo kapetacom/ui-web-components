@@ -45,7 +45,10 @@ function toAnnotationsCode(data: DSLAnnotation[]) {
 
 function toParameterCode(data: DSLParameter) {
     const typeString = toTypeString(data.type);
-    return [data.annotations ? data.annotations.map(toAnnotationCode).join(' ') : '', data.name + ':' + typeString]
+    return [
+        data.annotations ? data.annotations.map(toAnnotationCode).join(' ') : '',
+        data.name + (data.optional ? '?' : '') + ':' + typeString,
+    ]
         .join(' ')
         .trim();
 }
@@ -98,7 +101,7 @@ function toPropertyCode(data: DSLDataTypeProperty, indent = 0) {
         postfix = ' = ' + data.defaultValue.value;
     }
 
-    out.push(prefix + data.name + ': ' + type + postfix);
+    out.push(prefix + data.name + (data.optional ? '?' : '') + ': ' + type + postfix);
 
     return out.join('\n');
 }

@@ -15,4 +15,3 @@ jobs:
           holder: 'Kapeta Inc.'
           license: 'MIT'
           sources: 'src/**/* stories/* test/*'
-

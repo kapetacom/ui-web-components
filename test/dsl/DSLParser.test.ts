@@ -60,16 +60,19 @@ describe('DSLParser', () => {
                         name: 'id',
                         type: 'string',
                         annotations: [],
+                        optional: false,
                     },
                     {
                         name: 'tags',
                         type: { name: 'string', list: true },
                         annotations: [],
+                        optional: false,
                     },
                     {
                         name: 'entity',
                         type: 'MyClass',
                         annotations: [],
+                        optional: false,
                     },
                     {
                         name: 'headers',
@@ -78,6 +81,7 @@ describe('DSLParser', () => {
                             generics: ['string', 'string'],
                         },
                         annotations: [],
+                        optional: false,
                     },
                 ],
             },
@@ -111,21 +115,25 @@ describe('DSLParser', () => {
                         name: 'id',
                         type: 'string',
                         annotations: [{ type: '@Path', arguments: [] }],
+                        optional: false,
                     },
                     {
                         name: 'tags',
                         type: { name: 'string', list: true },
                         annotations: [{ type: '@Query', arguments: [] }],
+                        optional: false,
                     },
                     {
                         name: 'headers',
                         type: { name: 'Map', generics: ['string', 'string'] },
                         annotations: [{ type: '@Header', arguments: [] }],
+                        optional: false,
                     },
                     {
                         name: 'entity',
                         type: 'MyClass',
                         annotations: [{ type: '@Body', arguments: [] }],
+                        optional: false,
                     },
                 ],
             },
@@ -159,46 +167,44 @@ describe('DSLParser', () => {
                         name: 'header',
                         type: 'string',
                         annotations: [{ type: '@Header', arguments: ['My-Header'] }],
+                        optional: false,
                     },
                     {
                         name: 'id',
                         type: 'string',
                         annotations: [{ type: '@Path', arguments: [] }],
+                        optional: false,
                     },
                     {
                         name: 'tags',
                         type: { name: 'string', list: true },
                         annotations: [{ type: '@Query', arguments: [] }],
+                        optional: false,
                     },
                     {
                         name: 'entity',
                         type: 'MyClass',
                         annotations: [{ type: '@Body', arguments: [] }],
+                        optional: false,
                     },
                 ],
             },
         ]);
     });
 
-    test('can parse REST method with optional Query', () => {
+    test('can parse REST method with annotation options', () => {
         expect(
-            DSLParser.parse(
-                [
-                    '@GET("/some/path")',
-                    'search(@Query(optional = true) type: string): string[]'
-                ].join('\n'),
-                {
-                    methods: true,
-                    rest: true
-                }
-            ).entities
+            DSLParser.parse(['@GET("/some/path")', 'search(@Query(test = this) type: string): string[]'].join('\n'), {
+                methods: true,
+                rest: true,
+            }).entities
         ).toEqual([
             {
                 type: DSLEntityType.METHOD,
                 description: null,
                 returnType: {
-                    "list": true,
-                    "name": "string"
+                    list: true,
+                    name: 'string',
                 },
                 name: 'search',
                 annotations: [{ type: '@GET', arguments: ['/some/path'] }],
@@ -206,12 +212,13 @@ describe('DSLParser', () => {
                     {
                         name: 'type',
                         type: 'string',
-                        annotations: [{ type: '@Query', arguments: [], options: {'optional': 'true'}}],
+                        annotations: [{ type: '@Query', arguments: [], options: { test: 'this' } }],
+                        optional: false,
                     },
                 ],
             },
         ]);
-    })
+    });
 
     test('can parse data type', () => {
         expect(
@@ -224,7 +231,7 @@ describe('DSLParser', () => {
                     '\tid:string',
                     '',
                     '\t//Some other type',
-                    '\tother:MyClass[]',
+                    '\tother?:MyClass[]',
                     '',
                     '\tentry: {',
                     '\t\tid:string = "test"',
@@ -253,6 +260,7 @@ describe('DSLParser', () => {
                         description: null,
                         defaultValue: null,
                         annotations: [],
+                        optional: false,
                     },
                     {
                         name: 'other',
@@ -260,6 +268,7 @@ describe('DSLParser', () => {
                         defaultValue: null,
                         type: { name: 'MyClass', list: true },
                         annotations: [],
+                        optional: true,
                     },
                     {
                         name: 'entry',
@@ -267,6 +276,7 @@ describe('DSLParser', () => {
                         description: null,
                         defaultValue: null,
                         annotations: [],
+                        optional: false,
                         properties: [
                             {
                                 name: 'id',
@@ -277,6 +287,7 @@ describe('DSLParser', () => {
                                 },
                                 description: null,
                                 annotations: [],
+                                optional: false,
                             },
                         ],
                     },
@@ -286,6 +297,7 @@ describe('DSLParser', () => {
                         description: null,
                         defaultValue: null,
                         annotations: [],
+                        optional: false,
                         properties: [
                             {
                                 name: 'name',
@@ -293,6 +305,7 @@ describe('DSLParser', () => {
                                 description: null,
                                 defaultValue: null,
                                 annotations: [],
+                                optional: false,
                             },
                         ],
                     },
@@ -406,6 +419,41 @@ describe('DSLParser', () => {
                     validTypes: ['MyType<*,*>'],
                 }).entities
         ).toThrow('Invalid number of generic arguments: "MyType"');
+    });
+
+    test('throws if method has optional parameters that isnt at the end', () => {
+        expect(
+            () =>
+                DSLParser.parse(`doGet(test?:string,req:string):void`, {
+                    methods: true,
+                }).entities
+        ).toThrow('Optional parameters must be at the end of the parameter list');
+    });
+
+    test('throws if REST method has optional parameters that is @body or @path', () => {
+        expect(
+            () =>
+                DSLParser.parse(`@GET('/') doGet(@Body test?:string,@Query req:string):void`, {
+                    methods: true,
+                    rest: true,
+                }).entities
+        ).toThrow('@Body parameter can not be optional');
+
+        expect(
+            () =>
+                DSLParser.parse(`@GET('/{test}') doGet(@Path test?:string,@Query req:string):void`, {
+                    methods: true,
+                    rest: true,
+                }).entities
+        ).toThrow('@Path parameter can not be optional');
+
+        expect(
+            () =>
+                DSLParser.parse(`@GET('/{test}') doGet(@Query req?:string, @Path test:string):void`, {
+                    methods: true,
+                    rest: true,
+                }).entities
+        ).not.toThrow();
     });
 
     test('can get soft errors as array for semantic errors', () => {

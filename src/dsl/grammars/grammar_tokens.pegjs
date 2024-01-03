@@ -76,6 +76,9 @@ parenthesis_end
 colon
     = ':' { return {type: 'special_colon', value: text()} }
 
+question
+    = '?' { return {type: 'special_question', value: text()} }
+
 comma
     = ',' { return {type: 'special_comma', value: text()} }
 
@@ -88,6 +91,7 @@ char
 	= [<{\[] { return {type: 'special_start', value: text()} }
     / [>}\]] { return {type: 'special_end', value: text()} }
     / colon
+    / question
     / comma
     / '-' { return {type: 'special_dash', value: text()} }
 	/ . { return {type: 'special_other', value: text()} }
@@ -129,15 +133,17 @@ array_ending
     = square_brackets_start _* square_brackets_end
 
 variable_definition
-	= name:id ws1:_* colon:colon ws2:_* type:variable_type ws3:_* generic:generic_types? list:array_ending? {
+	= name:id ws1:_* question:question? ws2:_* colon:colon ws3:_* type:variable_type ws4:_* generic:generic_types? list:array_ending? {
     	const out = [
         	{type: 'variable', value: name.value}
         ];
         out.push(ws1);
-        out.push(colon);
+        out.push(question);
         out.push(ws2);
-        out.push({type: 'type', value: type.value})
+        out.push(colon);
         out.push(ws3);
+        out.push({type: 'type', value: type.value})
+        out.push(ws4);
         generic && out.push(...generic)
         list && out.push(...list)
 		return out;
@@ -153,7 +159,8 @@ method = name:id ws1:_*
 		start:parenthesis_start ws2:_*
         parameters:parameters? ws3:_*
         end:parenthesis_end ws4:_*
-        colon:colon ws5:_* type:id {
+        question:question? ws5:_*
+        colon:colon ws6:_* type:id {
     	const out = [
         	{type: 'method_name', value: name.value}
         ];
@@ -164,8 +171,10 @@ method = name:id ws1:_*
     	out.push(ws3);
 		out.push(end);
         out.push(ws4);
-		out.push(colon);
+		out.push(question);
         out.push(ws5);
+		out.push(colon);
+        out.push(ws6);
         out.push({type: 'return_type', value: type.value});
 		return out;
 	}
@@ -204,13 +213,15 @@ datatype_body_list
 
 field_definition
 	= variable_definition
-	/ name:id ws1:_* colon:colon ws2:_* type:(datatype_body/datatype_body_list) {
+	/ name:id ws1:_* question:question? ws2:_* colon:colon ws3:_* type:(datatype_body/datatype_body_list) {
     	const out = [
         	{type: 'variable', value: name.value}
         ];
         out.push(ws1);
-        out.push(colon);
+        out.push(question);
         out.push(ws2);
+        out.push(colon);
+        out.push(ws3);
         out.push(type)
 		return out;
 	}
