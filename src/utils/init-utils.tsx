@@ -9,18 +9,22 @@ import ReactDOM from 'react-dom/client';
 import { DefaultContext } from '../containers/DefaultContext';
 import { globalObject } from './global-object';
 
-export const initApplication = (Application: ComponentType) => {
-    if (!globalObject.Kapeta) {
-        throw new Error('Global object not initialised. Make sure you load shared libraries first');
-    }
-
-    const root = (
+export const wrapApplication = (Application: ComponentType) => {
+    return (
         <React.StrictMode>
             <DefaultContext>
                 <Application />
             </DefaultContext>
         </React.StrictMode>
     );
+};
+
+export const initApplication = (Application: ComponentType) => {
+    if (!globalObject.Kapeta) {
+        throw new Error('Global object not initialised. Make sure you load shared libraries first');
+    }
+
+    const root = wrapApplication(Application);
 
     const rootElm = document.getElementById('root');
     if (rootElm && root) {
