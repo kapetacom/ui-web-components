@@ -80,7 +80,7 @@ export const FormFieldProcessingContainer = ({ controller, inputElement: element
         }
 
         return () => {
-            if (frameId.current) {
+            if (typeof window !== 'undefined' && frameId.current) {
                 window.cancelAnimationFrame(frameId.current);
             }
             resizeObserver.disconnect();
