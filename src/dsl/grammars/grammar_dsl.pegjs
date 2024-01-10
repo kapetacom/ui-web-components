@@ -277,7 +277,7 @@ method "method"
     	annotations:method_annotation*
     	name:method_name _ parenthesis_start _ args:parameters? parenthesis_end _ colon _ returnType:return_type {
 
-    GLOBAL_IDS[name] = 'method'
+    GLOBAL_IDS[name.value] = 'method'
 
     if (!options.ignoreSemantics) {
         if (!options.methods) {
