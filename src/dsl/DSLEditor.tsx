@@ -14,14 +14,8 @@ import './DSLLanguage';
 import { DSLValidator } from './DSLValidator';
 
 import { withAdditionalTypes } from './DSLLanguage';
-import {
-    DSL_LANGUAGE_ID,
-    DSLLanguageOptions,
-    DSLParser,
-    DSLParserOptions,
-    DSLResult,
-    KaplangWriter,
-} from '@kapeta/kaplang-core';
+import { DSLLanguageOptions, DSLParser, DSLParserOptions, DSLResult, KaplangWriter } from '@kapeta/kaplang-core';
+import { DSL_LANGUAGE_ID } from './types';
 
 export interface DSLEditorProps extends DSLLanguageOptions {
     value?: DSLResult | string;

@@ -5,7 +5,8 @@
 
 import { editor, MarkerSeverity } from 'monaco-editor';
 import { GrammarError } from 'peggy';
-import { DSL_LANGUAGE_ID, DSLLanguageOptions, DSLParser } from '@kapeta/kaplang-core';
+import { DSLLanguageOptions, DSLParser } from '@kapeta/kaplang-core';
+import { DSL_LANGUAGE_ID } from './types';
 
 type ITextModel = editor.ITextModel;
 type Editor = typeof editor;

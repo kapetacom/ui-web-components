@@ -12,7 +12,8 @@ import { DSLCompletionItemProvider } from './DSLCompletionItemProvider';
 import { DSLDocumentFormattingEditProvider } from './DSLDocumentFormattingEditProvider';
 
 import CodeAction = languages.CodeAction;
-import { BUILT_IN_TYPES, DSL_LANGUAGE_ID } from '@kapeta/kaplang-core';
+import { BUILT_IN_TYPES } from '@kapeta/kaplang-core';
+import { DSL_LANGUAGE_ID } from './types';
 
 const configuration: IRichLanguageConfiguration = {
     comments: {
