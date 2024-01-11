@@ -12,6 +12,8 @@ import {
     DSLMethod,
     DSLType,
     BUILT_IN_TYPES,
+    DataTypePropertyReader,
+    RESTMethodReader,
 } from '@kapeta/kaplang-core';
 
 import { HTTPMethod, HTTPTransport, RESTMethod, TypeLike } from '@kapeta/ui-web-types';
@@ -234,24 +236,20 @@ export namespace DSLConverters {
         const out: EntityProperties = {};
 
         properties?.forEach((property) => {
-            let typeLike = toSchemaType(property.type);
-            const secret = property.annotations?.some((annotation) => annotation.type === '@secret') || false;
-            const global = property.annotations?.some((annotation) => annotation.type === '@global') || false;
+            const reader = new DataTypePropertyReader(property);
+            let typeLike = toSchemaType(reader.type);
 
-            const required = Boolean(!property.optional);
+            const defaultValue = reader.defaultValue?.value !== undefined ? `${reader.defaultValue?.value}` : undefined;
 
-            const defaultValue =
-                property.defaultValue?.value !== undefined ? `${property.defaultValue?.value}` : undefined;
-
-            out[property.name] = {
+            out[reader.name] = {
                 ...typeLike,
                 defaultValue,
-                description: property.description,
+                description: reader.description,
             };
 
-            out[property.name].secret = secret;
-            out[property.name].required = required;
-            out[property.name].global = global;
+            out[reader.name].secret = reader.secret;
+            out[reader.name].required = !reader.optional;
+            out[reader.name].global = reader.global;
         });
 
         return out;
@@ -270,21 +268,6 @@ export namespace DSLConverters {
         }
         //We default to query if the type is invalid
         return '@Query';
-    }
-
-    export function toSchemaTransport(transport: string): HTTPTransport {
-        switch (transport.toLowerCase()) {
-            case '@path':
-                return HTTPTransport.PATH;
-            case '@header':
-                return HTTPTransport.HEADER;
-            case '@query':
-                return HTTPTransport.QUERY;
-            case '@body':
-                return HTTPTransport.BODY;
-        }
-
-        return HTTPTransport.QUERY;
     }
 
     export function fromSchemaMethods(methods: SchemaMethods): DSLMethod[] {
@@ -324,38 +307,23 @@ export namespace DSLConverters {
         const out: SchemaMethods = {};
 
         methods.forEach((method) => {
+            const reader = new RESTMethodReader(method);
             const args: RESTMethod['arguments'] = {};
-            if (method.parameters) {
-                method.parameters.forEach((arg) => {
-                    let restArgs = !(arg.annotations && arg.annotations.length > 0)
-                        ? ''
-                        : arg.annotations[0].arguments && arg.annotations[0].arguments[0];
+            if (reader.parameters) {
+                reader.parameters.forEach((arg) => {
                     args[arg.name] = {
                         ...toSchemaType(arg.type),
-                        transport: toSchemaTransport(
-                            arg.annotations && arg.annotations.length > 0 ? arg.annotations[0].type : '@Query'
-                        ),
-                        argument: restArgs,
+                        transport: arg.transport.toUpperCase(),
+                        argument: arg.transportArgument,
                         optional: arg.optional,
                     };
                 });
             }
 
-            const annotations = method.annotations ?? [];
-            const firstAnnotation = annotations.length > 0 ? annotations[0] : null;
-
-            const path =
-                firstAnnotation && firstAnnotation.arguments && firstAnnotation.arguments.length > 0
-                    ? firstAnnotation.arguments[0]
-                    : '/';
-
-            const httpMethod =
-                firstAnnotation && firstAnnotation.type ? firstAnnotation.type.substring(1).toUpperCase() : 'GET';
-
             out[method.name] = {
                 responseType: toSchemaType(method.returnType),
-                method: httpMethod as HTTPMethod,
-                path,
+                method: reader.method as HTTPMethod,
+                path: reader.path,
                 description: method.description,
                 arguments: args,
             };

@@ -320,6 +320,7 @@ describe('DSLConverters', () => {
                         type: {
                             type: 'string',
                             transport: 'QUERY',
+                            argument: 'type',
                             optional: true,
                         },
                     },
@@ -378,6 +379,8 @@ describe('DSLConverters', () => {
                         tags: {
                             type: 'string[]',
                             transport: 'QUERY',
+                            optional: false,
+                            argument: 'tags',
                         },
                     },
                     responseType: { type: 'string[]' },
@@ -390,6 +393,8 @@ describe('DSLConverters', () => {
                         body: {
                             ref: 'Test[]',
                             transport: 'BODY',
+                            optional: false,
+                            argument: 'body',
                         },
                     },
                     responseType: { ref: 'Test[]' },
@@ -429,6 +434,7 @@ describe('DSLConverters', () => {
                             type: 'string[]',
                             transport: 'HEADER',
                             argument: 'X-Kapeta-Tags',
+                            optional: false,
                         },
                     },
                     responseType: { type: 'string[]' },
