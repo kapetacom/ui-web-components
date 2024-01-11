@@ -6,16 +6,11 @@
 import React from 'react';
 
 import { DSLEditor } from './DSLEditor';
-import {
-    DSLDataTypeProperty,
-    DSLResult,
-    CONFIG_FIELD_ANNOTATIONS,
-    PEGValidationEntity,
-    DSLFormEditorProps,
-} from './types';
+import { DSLDataTypeProperty, DSLResult, CONFIG_FIELD_ANNOTATIONS, PEGValidationEntity } from '@kapeta/kaplang-core';
 import { isBuiltInType, isStringableType, TypeLike } from '@kapeta/schemas';
 import { useFormContextField } from '../form/FormContext';
 import { DataTypeEditorProps } from './DataTypeEditor';
+import { DSLFormEditorProps } from './types';
 
 export const TYPE_INSTANCE = 'Instance';
 export const TYPE_INSTANCE_PROVIDER = 'InstanceProvider';

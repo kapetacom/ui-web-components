@@ -138,6 +138,7 @@
     },
     "prettier": "@kapeta/prettier-config",
     "dependencies": {
+        "@kapeta/kaplang-core": "^1.0.0",
         "@kapeta/nodejs-utils": "<2",
         "@kapeta/style": "^0.94.0",
         "@types/ua-parser-js": "^0.7.39",

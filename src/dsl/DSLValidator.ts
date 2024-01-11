@@ -4,9 +4,8 @@
  */
 
 import { editor, MarkerSeverity } from 'monaco-editor';
-import { DSLParser } from './DSLParser';
-import { DSL_LANGUAGE_ID, DSLLanguageOptions } from './types';
 import { GrammarError } from 'peggy';
+import { DSL_LANGUAGE_ID, DSLLanguageOptions, DSLParser } from '@kapeta/kaplang-core';
 
 type ITextModel = editor.ITextModel;
 type Editor = typeof editor;

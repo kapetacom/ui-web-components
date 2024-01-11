@@ -4,8 +4,7 @@
  */
 
 import { languages, CancellationToken, editor } from 'monaco-editor';
-import { DSLParser } from './DSLParser';
-import { DSLWriter } from './DSLWriter';
+import { DSLParser, KaplangWriter } from '@kapeta/kaplang-core';
 
 type DocumentFormattingEditProvider = languages.DocumentFormattingEditProvider;
 type FormattingOptions = languages.FormattingOptions;
@@ -28,7 +27,7 @@ export class DSLDocumentFormattingEditProvider implements DocumentFormattingEdit
                 methods: true,
                 ignoreSemantics: true,
             });
-            formattedCode = result.entities ? DSLWriter.write(result.entities) : '';
+            formattedCode = result.entities ? KaplangWriter.write(result.entities) : '';
         } catch (e) {
             console.warn('Failed to parse while formatting', e);
             //Ignore this

@@ -4,8 +4,13 @@
  */
 
 import { IDisposable, Position, CancellationToken, languages, editor } from 'monaco-editor';
-import { BUILT_IN_TYPES, CONFIG_FIELD_ANNOTATIONS, METHOD_ANNOTATIONS, PARAMETER_ANNOTATIONS } from './types';
-import { TokenParser } from './TokenParser';
+import {
+    TokenParser,
+    BUILT_IN_TYPES,
+    CONFIG_FIELD_ANNOTATIONS,
+    METHOD_ANNOTATIONS,
+    PARAMETER_ANNOTATIONS,
+} from '@kapeta/kaplang-core';
 import { DSLConverters } from './DSLConverters';
 
 type CompletionContext = languages.CompletionContext;
@@ -63,6 +68,16 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
         const methodAnnotationChoice = METHOD_ANNOTATIONS.map((a) => a.name.substring(1)).join(',');
 
         suggestions.push(
+            ...['type', 'enum', 'extends'].map((keyword) => ({
+                label: keyword,
+                kind: languages.CompletionItemKind.Keyword,
+                insertText: keyword,
+                insertTextRules: languages.CompletionItemInsertTextRule.None,
+                range: null as any,
+            }))
+        );
+
+        suggestions.push(
             {
                 label: '# Insert: Function',
                 kind: languages.CompletionItemKind.Function,
@@ -85,7 +100,7 @@ export class DSLCompletionItemProvider implements languages.CompletionItemProvid
                 label: '# Insert: Data type',
                 kind: languages.CompletionItemKind.Struct,
                 documentation: 'Insert data type',
-                insertText: '${1:name} {\n\t$0\n}',
+                insertText: 'type ${1:name} {\n\t$0\n}',
                 insertTextRules: languages.CompletionItemInsertTextRule.InsertAsSnippet,
                 range: null as any,
             },

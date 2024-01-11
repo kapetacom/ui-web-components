@@ -6,21 +6,21 @@
 import {
     DSLAnnotation,
     DSLDataTypeProperty,
-    DSLDefaultValue,
+    DSLValue,
     DSLEntity,
     DSLEntityType,
     DSLMethod,
     DSLType,
-} from './interfaces';
+    BUILT_IN_TYPES,
+} from '@kapeta/kaplang-core';
+
 import { HTTPMethod, HTTPTransport, RESTMethod, TypeLike } from '@kapeta/ui-web-types';
 
 import { Entity, EntityProperties, EntityProperty, EntityType } from '@kapeta/schemas';
 
-import { BUILT_IN_TYPES } from './types';
-
 type SchemaMethods = { [p: string]: RESTMethod };
 
-function fromSchemaDefaultValue(value: EntityProperty): DSLDefaultValue | null {
+function fromSchemaDefaultValue(value: EntityProperty): DSLValue | null {
     if (value.defaultValue === undefined) {
         return null;
     }
@@ -362,13 +362,5 @@ export namespace DSLConverters {
         });
 
         return out;
-    }
-
-    function toOptional(input?: DSLAnnotation[]): boolean | undefined {
-        if (!input || input.length == 0 || !input[0].options) {
-            return undefined;
-        }
-
-        return input[0].options?.optional === 'true';
     }
 }

@@ -5,7 +5,7 @@
 
 import { describe, expect, test } from '@jest/globals';
 import { DSLConverters } from '../../src/dsl/DSLConverters';
-import { DSLDataType, DSLEntityType, DSLEnum, DSLMethod } from '../../src/dsl/types';
+import { DSLDataType, DSLEntityType, DSLEnum, DSLMethod } from '@kapeta/kaplang-core';
 import { HTTPMethod, RESTMethod } from '@kapeta/ui-web-types';
 import { EntityDTO, EntityEnum, EntityType } from '@kapeta/schemas';
 

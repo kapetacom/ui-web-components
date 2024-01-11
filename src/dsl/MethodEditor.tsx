@@ -6,9 +6,9 @@
 import React from 'react';
 
 import { DSLEditor } from './DSLEditor';
-import { DSLFormEditorProps, DSLResult } from './types';
-import { restPathVariableValidator } from './helpers/restPathVariableValidator';
+import { DSLFormEditorProps } from './types';
 import { useFormContextField } from '../form/FormContext';
+import { DSLResult, restPathVariableValidator } from '@kapeta/kaplang-core';
 
 export interface MethodEditorProps {
     value?: DSLResult | string;

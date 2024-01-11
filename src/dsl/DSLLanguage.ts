@@ -8,11 +8,11 @@ import * as monaco from 'monaco-editor';
 import loader from '@monaco-editor/loader';
 import IRichLanguageConfiguration = languages.LanguageConfiguration;
 import ILanguage = languages.IMonarchLanguage;
-import { BUILT_IN_TYPES } from './types';
 import { DSLCompletionItemProvider } from './DSLCompletionItemProvider';
 import { DSLDocumentFormattingEditProvider } from './DSLDocumentFormattingEditProvider';
-import { DSL_LANGUAGE_ID } from './interfaces';
+
 import CodeAction = languages.CodeAction;
+import { BUILT_IN_TYPES, DSL_LANGUAGE_ID } from '@kapeta/kaplang-core';
 
 const configuration: IRichLanguageConfiguration = {
     comments: {
@@ -47,7 +47,7 @@ const language: ILanguage = {
     // Set defaultToken to invalid to see what you do not tokenize yet
     defaultToken: 'invalid',
 
-    keywords: ['enum', 'true', 'false', 'null'],
+    keywords: ['enum', 'true', 'false', 'null', 'type', 'extends', 'controller'],
     operators: [],
     typeKeywords: BUILT_IN_TYPES.map((t) => t.name),
 
@@ -83,6 +83,9 @@ const language: ILanguage = {
 
             //Enum name
             [/(enum)(\s*)([a-zA-Z_][\w$]+)(?=\s*\{)/, ['keyword', '', 'entity']],
+
+            //Type name
+            [/(type)(\s*)([a-zA-Z_][\w$]+)(?=\s*(?:\bextends\b|\{|<))/, ['keyword', '', 'entity']],
 
             //Enum value
             [/([a-zA-Z_][\w$]*)(\.)([a-zA-Z_][\w$]+)/, ['type', '', 'variable.name']],
