@@ -68,7 +68,6 @@ export * from './list/List';
 export * from './containers/DefaultContext';
 
 export * from './dsl/types';
-export * from './dsl/DSLConverters';
 
 // For backwards compatibility
 export * from '@kapeta/kaplang-core';

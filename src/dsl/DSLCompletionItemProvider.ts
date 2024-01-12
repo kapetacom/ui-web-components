@@ -10,8 +10,8 @@ import {
     CONFIG_FIELD_ANNOTATIONS,
     METHOD_ANNOTATIONS,
     PARAMETER_ANNOTATIONS,
+    DSLConverters,
 } from '@kapeta/kaplang-core';
-import { DSLConverters } from './DSLConverters';
 
 type CompletionContext = languages.CompletionContext;
 type ITextModel = editor.ITextModel;
