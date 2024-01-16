@@ -71,7 +71,7 @@ export * from './dsl/types';
 
 // For backwards compatibility
 export * from '@kapeta/kaplang-core';
-export { KaplangWriter as DSLWriter } from '@kapeta/kaplang-core';
+export { KaplangWriter as DSLWriter, DSLConverters } from '@kapeta/kaplang-core';
 
 //Requires browser environment due to monaco editor
 export * from './dsl/DSLEditor';

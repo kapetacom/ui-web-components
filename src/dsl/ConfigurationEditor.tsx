@@ -6,14 +6,19 @@
 import React from 'react';
 
 import { DSLEditor } from './DSLEditor';
-import { DSLDataTypeProperty, DSLResult, CONFIG_FIELD_ANNOTATIONS, PEGValidationEntity } from '@kapeta/kaplang-core';
-import { isBuiltInType, isStringableType, TypeLike } from '@kapeta/schemas';
+import {
+    DSLDataTypeProperty,
+    DSLResult,
+    CONFIG_FIELD_ANNOTATIONS,
+    PEGValidationEntity,
+    TypeLike,
+    EntityHelpers,
+    TYPE_INSTANCE,
+} from '@kapeta/kaplang-core';
+
 import { useFormContextField } from '../form/FormContext';
 import { DataTypeEditorProps } from './DataTypeEditor';
 import { DSLFormEditorProps } from './types';
-
-export const TYPE_INSTANCE = 'Instance';
-export const TYPE_INSTANCE_PROVIDER = 'InstanceProvider';
 
 export interface ConfigurationEditorProps {
     value?: DSLResult | string;
@@ -48,7 +53,7 @@ function fieldValidator(entity: PEGValidationEntity<DSLDataTypeProperty>) {
                 throw new Error(`Default value for field ${property.name} must be a boolean`);
             }
 
-            if (!isBuiltInType(property as TypeLike)) {
+            if (!EntityHelpers.isBuiltInType(property as TypeLike)) {
                 if (
                     typeof property.defaultValue.value !== 'string' ||
                     !property.defaultValue.value.startsWith(property.type)
