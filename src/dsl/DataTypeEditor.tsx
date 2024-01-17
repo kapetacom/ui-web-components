@@ -8,7 +8,7 @@ import React from 'react';
 import { DSLEditor } from './DSLEditor';
 import { DSLFormEditorProps } from './types';
 import { useFormContextField } from '../form/FormContext';
-import { DSLResult } from '@kapeta/kaplang-core';
+import { DATATYPE_CONFIGURATION, DSLResult } from '@kapeta/kaplang-core';
 
 export interface DataTypeEditorProps {
     value?: DSLResult | string;
@@ -22,14 +22,12 @@ export interface DataTypeEditorProps {
 export const DataTypeEditor = (props: DataTypeEditorProps) => {
     return (
         <DSLEditor
-            types={true}
+            {...DATATYPE_CONFIGURATION}
             validTypes={props.validTypes}
             onError={props.onError}
             onCodeChange={props.onCodeChange}
             readOnly={props.readOnly}
             onChange={props.onChange}
-            methods={false}
-            rest={false}
             value={props.value}
         />
     );

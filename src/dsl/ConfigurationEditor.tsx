@@ -14,6 +14,7 @@ import {
     TypeLike,
     EntityHelpers,
     TYPE_INSTANCE,
+    CONFIG_CONFIGURATION,
 } from '@kapeta/kaplang-core';
 
 import { useFormContextField } from '../form/FormContext';
@@ -76,16 +77,13 @@ function fieldValidator(entity: PEGValidationEntity<DSLDataTypeProperty>) {
 export const ConfigurationEditor = (props: ConfigurationEditorProps) => {
     return (
         <DSLEditor
-            types={true}
-            fieldAnnotations={CONFIG_FIELD_ANNOTATIONS.map((a) => a.name)}
-            validTypes={[TYPE_INSTANCE, ...(props.validTypes ?? [])]}
+            {...CONFIG_CONFIGURATION}
+            validTypes={[...(CONFIG_CONFIGURATION.validTypes ?? []), ...(props.validTypes ?? [])]}
             validator={fieldValidator}
             onChange={props.onChange}
             onError={props.onError}
             onCodeChange={props.onCodeChange}
             readOnly={props.readOnly}
-            methods={false}
-            rest={false}
             value={props.value}
         />
     );
