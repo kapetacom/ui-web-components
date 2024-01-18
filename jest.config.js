@@ -1,5 +1,5 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
-module.exports = {
+export default {
     preset: 'ts-jest',
     moduleNameMapper: {
         '\\.(css|less)$': '<rootDir>/__mocks__/styles.js',
