@@ -13,7 +13,7 @@ import { AssetDisplay, AssetFetcher } from './types';
 import { Blockhub, BlockhubCategory, BlockhubMode } from './Blockhub';
 import { InstallerService } from './AssetInstallButton';
 import { BlockhubDetails, BlockHubDetailsPreviewer } from './BlockhubDetails';
-import Close from '@mui/icons-material/Close';
+import { Close } from '@mui/icons-material';
 import { Asset } from '@kapeta/ui-web-types';
 import { AssetType } from './AssetTypeFilter';
 
@@ -32,7 +32,7 @@ interface Props {
     onFilterChange: (filter: AssetType) => void;
 }
 
-export const BlockhubModal = (props: Props) => {
+export const BlockhubModal: React.FC<Props> = (props: Props) => {
     const [selection, setSelection] = useState<AssetDisplay[]>([]);
     const [currentAsset, setCurrentAsset] = useState<AssetDisplay | null>(null);
     const [currentAssetTab, setCurrentAssetTab] = useState<string>('general');

@@ -6,7 +6,7 @@
 import { Box, MenuItem, Select } from '@mui/material';
 import React from 'react';
 
-import SortIcon from '@mui/icons-material/Sort';
+import { Sort } from '@mui/icons-material';
 
 const sortingOptions = {
     '-lastModified': 'Most recent',
@@ -37,7 +37,7 @@ export function AssetSortSelect(props: AssetSortSelectProps) {
             renderValue={(v) => {
                 return (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: '.5em' }}>
-                        <SortIcon />
+                        <Sort />
                         <span className="Value">Sort: {sortingOptions[props.value]}</span>
                     </Box>
                 );

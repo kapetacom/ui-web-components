@@ -26,8 +26,7 @@ import { parseKapetaUri } from '@kapeta/nodejs-utils';
 import semverGt from 'semver/functions/gt';
 import { KindIcon } from '../../icons/AssetIcon';
 import { IconValue } from '@kapeta/schemas';
-import ArrowCircleUp from '@mui/icons-material/ArrowCircleUp';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { ArrowCircleUp, CheckCircle } from '@mui/icons-material';
 import { Tooltip } from '../../tooltip/Tooltip';
 import { Asset } from '@kapeta/ui-web-types';
 
@@ -351,7 +350,7 @@ export const AssetVersionSelector = (props: Props) => {
                                         textAlign={'center'}
                                         lineHeight={'14px'}
                                     >
-                                        <CheckCircleIcon
+                                        <CheckCircle
                                             sx={{
                                                 fontSize: '14px',
                                             }}

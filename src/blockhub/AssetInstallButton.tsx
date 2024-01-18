@@ -10,20 +10,15 @@ import React, { SyntheticEvent, useCallback, useEffect, useMemo, useState } from
 import { TaskState, useDesktop } from '../utils/desktop';
 import { TaskStatus } from '@kapeta/ui-web-context';
 import { getNameForKind } from './BlockhubTile';
-import DownloadingIcon from '@mui/icons-material/Downloading';
+import { Downloading } from '@mui/icons-material';
 
 import { AssetDisplay } from './types';
 import useSWR from 'swr';
-import ArrowDownward from '@mui/icons-material/ArrowDownward';
-import Delete from '@mui/icons-material/Delete';
-import DownloadDone from '@mui/icons-material/DownloadDone';
-import InstallDesktop from '@mui/icons-material/InstallDesktop';
-import MoreVertRounded from '@mui/icons-material/MoreVertRounded';
+import { ArrowDownward, Delete, DownloadDone, InstallDesktop, MoreVertRounded, ArrowUpward } from '@mui/icons-material';
 
 import { grey } from '@mui/material/colors';
 import { useConfirm } from '../confirm';
 import { parseKapetaUri } from '@kapeta/nodejs-utils';
-import { ArrowUpward } from '@mui/icons-material';
 
 export enum AssetInstallStatus {
     NOT_INSTALLED = 1,
@@ -193,7 +188,7 @@ export const AssetInstallButton = (props: Props) => {
 
     if (installedAsset.isLoading) {
         longText = 'Checking...';
-        icon = <DownloadingIcon />;
+        icon = <Downloading />;
         shortText = '...';
     }
 

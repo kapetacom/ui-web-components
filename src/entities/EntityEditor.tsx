@@ -4,19 +4,11 @@
  */
 
 import React, { useMemo, useState } from 'react';
-import {
-    Entity,
-    EntityType,
-    EntityProperty,
-    createDefaultValue,
-    toRefValue,
-    isNumber,
-    toDefaultValue,
-} from '@kapeta/schemas';
+import { Entity, EntityType, EntityProperty } from '@kapeta/schemas';
 import './EntityEditor.less';
 import _ from 'lodash';
 import { useFormContextField } from '../form/FormContext';
-import { TYPE_INSTANCE, TYPE_INSTANCE_PROVIDER } from '../dsl/ConfigurationEditor';
+import { EntityHelpers, TYPE_INSTANCE, TYPE_INSTANCE_PROVIDER } from '@kapeta/kaplang-core';
 
 type Value = { [key: string]: any };
 
@@ -146,7 +138,7 @@ const FieldEditor = (props: FieldProps) => {
             );
         }
 
-        let value = toRefValue(props.field.ref, props.value);
+        let value = EntityHelpers.toRefValue(props.field.ref, props.value);
         return (
             <select
                 className={'value'}
@@ -176,7 +168,7 @@ const FieldEditor = (props: FieldProps) => {
         );
     }
 
-    if (isNumber(props.field.type || '')) {
+    if (EntityHelpers.isNumber(props.field.type || '')) {
         return (
             <input
                 className={'value'}
@@ -238,7 +230,7 @@ export const EntityEditor = (props: Props) => {
                 return;
             }
 
-            Object.assign(out, createDefaultValue(entity));
+            Object.assign(out, EntityHelpers.createDefaultValue(entity));
         });
         return out;
     }, [props.entities]);
@@ -258,7 +250,7 @@ export const EntityEditor = (props: Props) => {
                                     let value = _.get(props.value, fullId);
                                     if (value === undefined) {
                                         if (field.defaultValue) {
-                                            value = toDefaultValue(field);
+                                            value = EntityHelpers.toDefaultValue(field);
                                         } else {
                                             if (field.type === 'boolean') {
                                                 value = false;

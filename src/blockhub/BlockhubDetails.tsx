@@ -5,9 +5,8 @@
 
 import React from 'react';
 import { Box, Button, Stack, Tab, Tabs, Typography } from '@mui/material';
-import VerifiedIcon from '@mui/icons-material/VerifiedOutlined';
-import PeopleIcon from '@mui/icons-material/People';
-import ArrowBack from '@mui/icons-material/ArrowBack';
+import { VerifiedOutlined, People, ArrowBack } from '@mui/icons-material';
+
 import styled from '@emotion/styled';
 
 import { AssetDisplay, AssetFetcher, AssetVersionInfo, CoreTypes, Dependency } from './types';
@@ -147,13 +146,13 @@ export function BlockhubDetails(props: BlockhubDetailsProps) {
             <Stack direction="row" sx={{ p: 2, pt: 8 }} gap={2}>
                 {handle === 'kapeta' && (
                     <Tooltip title={'This asset is maintained by Kapeta'}>
-                        <VerifiedIcon sx={{ width: '35px', height: '35px' }} color="secondary" />
+                        <VerifiedOutlined sx={{ width: '35px', height: '35px' }} color="secondary" />
                     </Tooltip>
                 )}
 
                 {handle !== 'kapeta' && (
                     <Tooltip title={'This asset is maintained by a member of the Kapeta community'}>
-                        <PeopleIcon sx={{ width: '35px', height: '35px' }} color="inherit" />
+                        <People sx={{ width: '35px', height: '35px' }} color="inherit" />
                     </Tooltip>
                 )}
 

@@ -9,14 +9,13 @@ import './DSLEditor.less';
 
 import Monaco from '@monaco-editor/react';
 import { editor } from 'monaco-editor';
-import { DSL_LANGUAGE_ID, DSLLanguageOptions, DSLOptions, DSLResult } from './types';
 
 import './DSLLanguage';
 import { DSLValidator } from './DSLValidator';
-import { DSLParser, DSLParserOptions } from './DSLParser';
-import { DSLWriter } from './DSLWriter';
+
 import { withAdditionalTypes } from './DSLLanguage';
-import { restPathVariableValidator } from './helpers/restPathVariableValidator';
+import { DSLLanguageOptions, DSLParser, DSLParserOptions, DSLResult, KaplangWriter } from '@kapeta/kaplang-core';
+import { DSL_LANGUAGE_ID } from './types';
 
 export interface DSLEditorProps extends DSLLanguageOptions {
     value?: DSLResult | string;
@@ -32,7 +31,7 @@ export const DSLEditor = (props: DSLEditorProps) => {
         let value: string;
         const result = props.value as DSLResult;
         if (typeof result === 'object') {
-            value = result.code ? result.code : DSLWriter.write(result.entities || []);
+            value = result.code ? result.code : KaplangWriter.write(result.entities || []);
         } else {
             value = props.value as string;
         }

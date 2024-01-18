@@ -68,9 +68,10 @@ export * from './list/List';
 export * from './containers/DefaultContext';
 
 export * from './dsl/types';
-export * from './dsl/DSLConverters';
-export * from './dsl/DSLWriter';
-export * from './dsl/DSLParser';
+
+// For backwards compatibility
+export * from '@kapeta/kaplang-core';
+export { KaplangWriter as DSLWriter, DSLConverters } from '@kapeta/kaplang-core';
 
 //Requires browser environment due to monaco editor
 export * from './dsl/DSLEditor';

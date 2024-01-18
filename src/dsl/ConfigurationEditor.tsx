@@ -9,16 +9,15 @@ import { DSLEditor } from './DSLEditor';
 import {
     DSLDataTypeProperty,
     DSLResult,
-    CONFIG_FIELD_ANNOTATIONS,
     PEGValidationEntity,
-    DSLFormEditorProps,
-} from './types';
-import { isBuiltInType, isStringableType, TypeLike } from '@kapeta/schemas';
+    TypeLike,
+    EntityHelpers,
+    CONFIG_CONFIGURATION,
+} from '@kapeta/kaplang-core';
+
 import { useFormContextField } from '../form/FormContext';
 import { DataTypeEditorProps } from './DataTypeEditor';
-
-export const TYPE_INSTANCE = 'Instance';
-export const TYPE_INSTANCE_PROVIDER = 'InstanceProvider';
+import { DSLFormEditorProps } from './types';
 
 export interface ConfigurationEditorProps {
     value?: DSLResult | string;
@@ -53,7 +52,7 @@ function fieldValidator(entity: PEGValidationEntity<DSLDataTypeProperty>) {
                 throw new Error(`Default value for field ${property.name} must be a boolean`);
             }
 
-            if (!isBuiltInType(property as TypeLike)) {
+            if (!EntityHelpers.isBuiltInType(property as TypeLike)) {
                 if (
                     typeof property.defaultValue.value !== 'string' ||
                     !property.defaultValue.value.startsWith(property.type)
@@ -76,16 +75,13 @@ function fieldValidator(entity: PEGValidationEntity<DSLDataTypeProperty>) {
 export const ConfigurationEditor = (props: ConfigurationEditorProps) => {
     return (
         <DSLEditor
-            types={true}
-            fieldAnnotations={CONFIG_FIELD_ANNOTATIONS.map((a) => a.name)}
-            validTypes={[TYPE_INSTANCE, ...(props.validTypes ?? [])]}
+            {...CONFIG_CONFIGURATION}
+            validTypes={[...(CONFIG_CONFIGURATION.validTypes ?? []), ...(props.validTypes ?? [])]}
             validator={fieldValidator}
             onChange={props.onChange}
             onError={props.onError}
             onCodeChange={props.onCodeChange}
             readOnly={props.readOnly}
-            methods={false}
-            rest={false}
             value={props.value}
         />
     );

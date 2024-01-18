@@ -15,7 +15,7 @@ import {
     DialogActionsProps as MuiDialogActionsProps,
     IconButton,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { Close } from '@mui/icons-material';
 
 const KapDialogContext = createContext<{ onClose?: (...args: any[]) => any }>({});
 
@@ -53,7 +53,7 @@ KapDialog.Title = ({ sx, children, ...props }: KapDialogTitleProps) => {
                         color: 'action.active',
                     }}
                 >
-                    <CloseIcon />
+                    <Close />
                 </IconButton>
             )}
         </MuiDialogTitle>

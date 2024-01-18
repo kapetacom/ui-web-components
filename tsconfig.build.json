@@ -6,7 +6,7 @@
         "sourceMap": true,
         "declaration": true,
         "inlineSourceMap": false,
-        "declarationDir": "types",
+        "declarationDir": ".",
         "outDir": "dist",
         "strict": false,
         "moduleResolution": "node",

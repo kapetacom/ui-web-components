@@ -4,7 +4,7 @@
  */
 
 import React, { ReactElement, SyntheticEvent, useState } from 'react';
-import MoreVert from '@mui/icons-material/MoreVert';
+import { MoreVert } from '@mui/icons-material';
 import { Box, Chip, CircularProgress, Menu, MenuItem } from '@mui/material';
 import { showToasty, ToastType } from '../toast/ToastComponent';
 
