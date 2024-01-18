@@ -9,11 +9,9 @@ import { DSLEditor } from './DSLEditor';
 import {
     DSLDataTypeProperty,
     DSLResult,
-    CONFIG_FIELD_ANNOTATIONS,
     PEGValidationEntity,
     TypeLike,
     EntityHelpers,
-    TYPE_INSTANCE,
     CONFIG_CONFIGURATION,
 } from '@kapeta/kaplang-core';
 

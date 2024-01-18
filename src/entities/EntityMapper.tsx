@@ -3,10 +3,11 @@
  * SPDX-License-Identifier: MIT
  */
 
-import { EntityDTO, EntityProperties, EntityProperty, isCompatibleTypes, typeName } from '@kapeta/schemas';
+import { EntityDTO, EntityProperties, EntityProperty } from '@kapeta/schemas';
 import React from 'react';
 
 import { FormSelect } from '../form/inputs/FormSelect';
+import { EntityHelpers } from '@kapeta/kaplang-core';
 
 interface IDEntry {
     id: string;
@@ -116,9 +117,16 @@ export class EntityMapper extends React.Component<EntityMapperProps, EntityMappe
                 return this.renderEntry(id + '[]', items);
         }
         const targetFields = this.toTargetFlatList(this.props.from).filter((targetField) => {
-            return isCompatibleTypes(targetField.type, entry, this.props.fromEntities, this.props.toEntities);
+            return EntityHelpers.isCompatibleTypes(
+                targetField.type,
+                entry,
+                this.props.fromEntities,
+                this.props.toEntities
+            );
         });
-        let targetFieldsList: string[] = targetFields.map((target) => `${target.id}:${typeName(target.type)}`);
+        let targetFieldsList: string[] = targetFields.map(
+            (target) => `${target.id}:${EntityHelpers.typeName(target.type)}`
+        );
         return (
             <FormSelect
                 name={id}
