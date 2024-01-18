@@ -10,7 +10,7 @@ import { Box, Paper, Stack, Typography } from '@mui/material';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { AsyncState } from 'react-use/lib/useAsync';
 
-import InfoIcon from '@mui/icons-material/InfoOutlined';
+import { InfoOutlined } from '@mui/icons-material';
 import { AssetType, AssetTypeFilter, AssetTypes } from './AssetTypeFilter';
 import { AssetSortSelect, Sorting } from './AssetSortSelect';
 import { orderBy } from 'lodash';
@@ -98,7 +98,7 @@ export function BlockhubGridContainer(props: BlockhubGridProps) {
 
                         {props.tooltip ? (
                             <Tooltip title={props.tooltip} placement="right">
-                                <InfoIcon />
+                                <InfoOutlined />
                             </Tooltip>
                         ) : null}
                     </Stack>

@@ -5,7 +5,7 @@
 
 import React, { ReactNode } from 'react';
 import { Box, Paper, Rating, Stack, Typography } from '@mui/material';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import { TrendingUp } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 import { parseKapetaUri } from '@kapeta/nodejs-utils';
@@ -29,7 +29,7 @@ export function BlockhubStats(props: { stats: { rating?: number; downloads?: num
                     data-kap-id="blockhub-download-count"
                 >
                     <Typography variant="caption">{props.stats.downloads.toLocaleString()}</Typography>
-                    <TrendingUpIcon sx={(theme) => ({ color: theme.palette.success.light })} />
+                    <TrendingUp sx={(theme) => ({ color: theme.palette.success.light })} />
                 </Stack>
             ) : null}
             {typeof props.stats.rating !== 'undefined' ? (

@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import { FormFieldHandler } from '../../form/inputs/FormFieldHandler';
 import { AuthScope } from './scopes';
 import { Box, Divider, Typography } from '@mui/material';
-import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
+import { BadgeOutlined } from '@mui/icons-material';
 
 type AuthScopesFieldProps = {
     name: string;
@@ -83,7 +83,7 @@ export const AuthScopesField = (props: AuthScopesFieldProps) => {
                         my: 1,
                     }}
                 >
-                    <BadgeOutlinedIcon fontSize="large" />
+                    <BadgeOutlined fontSize="large" />
                 </Box>
 
                 <Typography variant="subtitle2" sx={{ mt: 3, mb: 1 }}>

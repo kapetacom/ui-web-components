@@ -10,10 +10,7 @@ import { toClass } from '@kapeta/ui-web-utils';
 import { useValidation } from '../validation/Validators';
 import { showToasty, ToastType } from '../toast/ToastComponent';
 import { IconButton, Stack } from '@mui/material';
-import CloseRounded from '@mui/icons-material/CloseRounded';
-import DeleteRounded from '@mui/icons-material/DeleteRounded';
-import Edit from '@mui/icons-material/Edit';
-import Save from '@mui/icons-material/Save';
+import { CloseRounded, DeleteRounded, Edit, Save } from '@mui/icons-material';
 import { useConfirmDelete } from '../confirm/useConfirm';
 
 interface DetailContextData {

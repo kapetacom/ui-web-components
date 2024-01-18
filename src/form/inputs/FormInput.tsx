@@ -7,8 +7,7 @@ import React, { useRef, useState } from 'react';
 import { withFormFieldController } from '../formFieldController';
 import { FormFieldProcessingContainer } from './FormFieldProcessingContainer';
 import { TextField, InputAdornment, IconButton, TextFieldProps } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export enum Type {
     DATE = 'date',
@@ -134,7 +133,7 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
                                               },
                                           }}
                                       >
-                                          {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                          {showPassword ? <VisibilityOff /> : <Visibility />}
                                       </IconButton>
                                   </InputAdornment>
                               ),
