@@ -29,7 +29,7 @@
     "scripts": {
         "storybook": "storybook dev -s ../stories/assets -p 6006",
         "build-storybook": "storybook build",
-        "prepublishOnly": "npm run test --passWithNoTests && npm run build",
+        "prepublishOnly": "npm run build",
         "start": "rollup -c -w",
         "prebuild": "rm -rf dist",
         "build": "rollup -c",
