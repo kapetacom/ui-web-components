@@ -10,9 +10,8 @@ import {
     DSLDataTypeProperty,
     DSLResult,
     PEGValidationEntity,
-    TypeLike,
-    EntityHelpers,
     CONFIG_CONFIGURATION,
+    DSLTypeHelper,
 } from '@kapeta/kaplang-core';
 
 import { useFormContextField } from '../form/FormContext';
@@ -52,7 +51,7 @@ function fieldValidator(entity: PEGValidationEntity<DSLDataTypeProperty>) {
                 throw new Error(`Default value for field ${property.name} must be a boolean`);
             }
 
-            if (!EntityHelpers.isBuiltInType(property as TypeLike)) {
+            if (!DSLTypeHelper.isBuiltInType(property)) {
                 if (
                     typeof property.defaultValue.value !== 'string' ||
                     !property.defaultValue.value.startsWith(property.type)
