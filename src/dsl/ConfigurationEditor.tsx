@@ -42,16 +42,11 @@ function fieldValidator(entity: PEGValidationEntity<DSLDataTypeProperty>) {
 
             if (property.type === 'string' && typeof property.defaultValue.value !== 'string') {
                 throw new Error(`Default value for field ${property.name} must be a string`);
-            } else if (
-                ['integer', 'float', 'double', 'number', 'bigint'].includes(property.type) &&
-                typeof property.defaultValue.value !== 'number'
-            ) {
+            } else if (DSLTypeHelper.isNumericType(property.type) && typeof property.defaultValue.value !== 'number') {
                 throw new Error(`Default value for field ${property.name} must be a ${property.type}`);
             } else if (property.type === 'boolean' && typeof property.defaultValue.value !== 'boolean') {
                 throw new Error(`Default value for field ${property.name} must be a boolean`);
-            }
-
-            if (!DSLTypeHelper.isBuiltInType(property)) {
+            } else if (!DSLTypeHelper.isBuiltInType(property.type)) {
                 if (
                     typeof property.defaultValue.value !== 'string' ||
                     !property.defaultValue.value.startsWith(property.type)
