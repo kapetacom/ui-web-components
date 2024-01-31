@@ -82,7 +82,6 @@ export const AssetInstallButton = (props: Props) => {
     });
 
     useEffect(() => {
-        console.log('service or active changed', active);
         installedAsset.mutate();
     }, [props.service?.get, active]);
 
