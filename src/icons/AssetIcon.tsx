@@ -43,6 +43,7 @@ export const KindIcon = (props: KindIconProps) => {
 
             case 'core/block-type':
             case 'core/block-type-operator':
+            case 'core/block-type-executable':
                 return <i style={style} className="asset-icon kap-icon-block" title={props.title} />;
 
             case 'core/resource-type-operator':

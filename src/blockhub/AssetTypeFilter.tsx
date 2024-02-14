@@ -15,6 +15,7 @@ export const AssetTypes = {
     PROVIDERS: [
         CoreTypes.BLOCK_TYPE,
         CoreTypes.BLOCK_TYPE_OPERATOR,
+        CoreTypes.BLOCK_TYPE_EXECUTABLE,
         CoreTypes.PROVIDER_INTERNAL,
         CoreTypes.PROVIDER_OPERATOR,
         CoreTypes.PROVIDER_EXTENSION,
