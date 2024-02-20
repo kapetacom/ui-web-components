@@ -52,6 +52,7 @@ export const coreNames: Record<CoreTypes, string> = {
     [CoreTypes.BLOCK_GROUP]: 'Block group',
     [CoreTypes.BLOCK_TYPE]: 'Block type',
     [CoreTypes.BLOCK_TYPE_OPERATOR]: 'Block type',
+    [CoreTypes.BLOCK_TYPE_EXECUTABLE]: 'Block type',
     [CoreTypes.CORE]: 'Concept',
     [CoreTypes.DEPLOYMENT]: 'Deployment',
     [CoreTypes.DEPLOYMENT_TARGET]: 'Deployment target',

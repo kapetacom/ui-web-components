@@ -36,6 +36,12 @@ const BLOCK_TYPE_OPERATOR: Kind = {
     spec: {},
 };
 
+const BLOCK_TYPE_EXECUTABLE: Kind = {
+    kind: 'core/block-type-executable',
+    metadata: { name: 'kapeta/my-block-executable', title: 'Executable' },
+    spec: {},
+};
+
 const RESOURCE_TYPE_INTERNAL: Kind = {
     kind: 'core/resource-type-internal',
     metadata: { name: 'kapeta/my-resource-type', title: 'REST API' },
@@ -86,6 +92,10 @@ export const AssetIcons = () => {
                 <span style={{ marginLeft: '5px' }}>Block type operator</span>
             </p>
             <p>
+                <AssetKindIcon size={size} asset={BLOCK_TYPE_EXECUTABLE} />
+                <span style={{ marginLeft: '5px' }}>Block type executable</span>
+            </p>
+            <p>
                 <AssetKindIcon size={size} asset={LANGUAGE_TARGET} />
                 <span style={{ marginLeft: '5px' }}>Language target</span>
             </p>
@@ -121,6 +131,9 @@ export const AssetIconTexts = () => {
             </p>
             <p>
                 <AssetKindIconText size={size} asset={BLOCK_TYPE_OPERATOR} />
+            </p>
+            <p>
+                <AssetKindIconText size={size} asset={BLOCK_TYPE_EXECUTABLE} />
             </p>
             <p>
                 <AssetKindIconText size={size} asset={LANGUAGE_TARGET} />

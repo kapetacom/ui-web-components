@@ -11,6 +11,7 @@ export enum CoreTypes {
     CORE = 'core/core',
     BLOCK_TYPE = 'core/block-type',
     BLOCK_TYPE_OPERATOR = 'core/block-type-operator',
+    BLOCK_TYPE_EXECUTABLE = 'core/block-type-executable',
     BLOCK_GROUP = 'core/block-type-group',
     PLAN = 'core/plan',
     LANGUAGE_TARGET = 'core/language-target',
