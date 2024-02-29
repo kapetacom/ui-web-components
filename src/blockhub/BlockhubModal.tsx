@@ -30,6 +30,7 @@ interface Props {
     onClose: () => void;
     filter?: AssetType;
     onFilterChange: (filter: AssetType) => void;
+    onAssetImport?: () => void;
 }
 
 export const BlockhubModal: React.FC<Props> = (props: Props) => {
@@ -98,6 +99,7 @@ export const BlockhubModal: React.FC<Props> = (props: Props) => {
                         disableNavigation={true}
                         selection={selection}
                         onAssetClick={setCurrentAsset}
+                        onAssetImport={props.onAssetImport}
                         onSelectionChange={setSelection}
                         mode={props.plan ? BlockhubMode.MODAL_SELECTION : BlockhubMode.MODAL_STANDALONE}
                     />
