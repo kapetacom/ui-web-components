@@ -135,6 +135,9 @@ export const PageView = () => {
                 onFilterChange={setAssetTypeFilter}
                 fetcher={assetFetcher}
                 installerService={installerService}
+                onAssetImport={() => {
+                    console.log('import');
+                }}
                 assets={{
                     loading: false,
                     value: Assets,

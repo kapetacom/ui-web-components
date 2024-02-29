@@ -5,7 +5,7 @@
 
 import React, { ReactNode, useState } from 'react';
 import { AssetDisplay, CoreTypes } from './types';
-import { Box, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { AsyncState } from 'react-use/lib/useAsync';
@@ -24,6 +24,7 @@ export interface BlockhubGridProps {
     onFilterChange: (filter: AssetType) => void;
     assets: AsyncState<AssetDisplay[]>;
     renderAsset: (asset: AssetDisplay) => React.ReactNode;
+    onAssetImport?: () => void;
 }
 
 export function BlockhubGridContainer(props: BlockhubGridProps) {
@@ -71,7 +72,6 @@ export function BlockhubGridContainer(props: BlockhubGridProps) {
                 sx={{
                     height: '100%',
                     '& > .MuiStack-root': {
-                        flex: 0,
                         '&.blockhub-grid': {
                             flex: 1,
                             overflowY: 'auto',
@@ -84,23 +84,36 @@ export function BlockhubGridContainer(props: BlockhubGridProps) {
                 gap={2}
             >
                 {props.title && (
-                    <Stack direction="row" alignItems="center" gap={2} sx={{ width: '100%' }}>
-                        <Typography
-                            variant="h5"
-                            sx={{
-                                display: 'inline-block',
-                                padding: '16px 0',
-                                fontWeight: 500,
-                            }}
-                        >
-                            {props.title}
-                        </Typography>
+                    <Stack flex={0} direction={'row'} alignItems={'center'} alignSelf={'stretch'} gap={4}>
+                        <Stack direction="row" alignItems="center" alignContent={'center'} gap={2}>
+                            <Typography
+                                variant="h5"
+                                sx={{
+                                    display: 'inline-block',
+                                    padding: '16px 0',
+                                    fontWeight: 500,
+                                }}
+                            >
+                                {props.title}
+                            </Typography>
 
-                        {props.tooltip ? (
-                            <Tooltip title={props.tooltip} placement="right">
-                                <InfoOutlined />
-                            </Tooltip>
-                        ) : null}
+                            {props.tooltip ? (
+                                <Tooltip title={props.tooltip} placement="right">
+                                    <InfoOutlined />
+                                </Tooltip>
+                            ) : null}
+                        </Stack>
+                        <Box sx={{ flexGrow: 1 }} />
+                        {props.onAssetImport && (
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                onClick={props.onAssetImport}
+                                data-kap-id="blockhub-import-asset"
+                            >
+                                Import asset
+                            </Button>
+                        )}
                     </Stack>
                 )}
 

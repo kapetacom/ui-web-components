@@ -87,6 +87,7 @@ interface Props {
     contextHandle?: string;
     filter?: AssetType;
     onFilterChange: (filter: AssetType) => void;
+    onAssetImport?: () => void;
 }
 
 export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) => {
@@ -156,7 +157,7 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
 
     const isForPlan = !!props.plan;
     const selectBlocksForPlan = props.mode === BlockhubMode.MODAL_SELECTION && isForPlan;
-
+    const isInstalled = currentTab.type === BlockhubCategory.INSTALLED;
     return (
         <Stack
             ref={ref}
@@ -274,6 +275,7 @@ export const Blockhub = forwardRef<HTMLDivElement, Props>((props: Props, ref) =>
                     title={currentTab.title}
                     onFilterChange={props.onFilterChange}
                     tooltip={currentTab.tooltip}
+                    onAssetImport={isInstalled ? props.onAssetImport : undefined}
                     renderAsset={(asset) => {
                         const url = props.linkMaker
                             ? props.linkMaker(asset)

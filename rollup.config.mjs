@@ -5,10 +5,10 @@ import external from 'rollup-plugin-peer-deps-external';
 import css from 'rollup-plugin-styler';
 import { dts } from 'rollup-plugin-dts';
 import sizes from 'rollup-plugin-sizes';
-import {visualizer} from "rollup-plugin-visualizer";
-import bundleSize from "rollup-plugin-bundle-size";
-import json from "@rollup/plugin-json";
-import packageJson from "./package.json" assert { type: "json" };
+import { visualizer } from 'rollup-plugin-visualizer';
+import bundleSize from 'rollup-plugin-bundle-size';
+import json from '@rollup/plugin-json';
+import packageJson from './package.json' assert { type: 'json' };
 
 export default [
     {
