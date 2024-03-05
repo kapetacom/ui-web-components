@@ -1,3 +1,8 @@
+/**
+ * Copyright 2024 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import React, { useCallback } from 'react';
 import { Box, BoxProps, FormControlLabel, FormHelperText, IconButton, Switch } from '@mui/material';
 import CodeIcon from '@mui/icons-material/Code';

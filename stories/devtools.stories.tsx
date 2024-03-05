@@ -1,3 +1,8 @@
+/**
+ * Copyright 2024 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { Meta } from '@storybook/react';
 import { DevTools } from '../src/devtools/DevTools';
 import React from 'react';
