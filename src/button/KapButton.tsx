@@ -12,7 +12,7 @@ export type KapButtonProps<C extends ElementType = 'button'> = ButtonProps<C, { 
 };
 
 export const KapButton = (props: KapButtonProps<ElementType>) => {
-    const { children, loading, ...buttonProps } = props;
+    const { children, loading, sx, ...buttonProps } = props;
 
     const sizeToSpinnerSize = {
         small: 16,
@@ -27,6 +27,7 @@ export const KapButton = (props: KapButtonProps<ElementType>) => {
         <Button
             {...buttonProps}
             sx={{
+                ...sx,
                 overflow: 'hidden',
                 '.button-text': {
                     opacity: 0,
