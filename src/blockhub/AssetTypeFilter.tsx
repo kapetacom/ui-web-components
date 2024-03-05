@@ -6,8 +6,7 @@
 import React from 'react';
 import { Box, MenuItem, Select } from '@mui/material';
 import { CoreTypes } from './types';
-
-import { FilterList } from '@mui/icons-material';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 export const AssetTypes = {
     PLAN: [CoreTypes.PLAN],
@@ -49,7 +48,7 @@ export function AssetTypeFilter(props: AssetTypeFilterProps) {
             renderValue={(v) => {
                 return (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: '.5em' }}>
-                        <FilterList />
+                        <FilterListIcon />
                         <span className="Value">Filter: {AssetTypeLabels[v]}</span>
                     </Box>
                 );
