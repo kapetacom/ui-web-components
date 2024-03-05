@@ -133,3 +133,5 @@ export * from './markdown/Markdown';
 export * from './hooks/useUserAgent';
 
 export * from './emojis/KapEmoji';
+
+export * from './devtools/DevTools';
