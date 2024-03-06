@@ -7,7 +7,6 @@ import React, { ComponentType } from 'react';
 import ReactDOM from 'react-dom/client';
 
 import { DefaultContext } from '../containers/DefaultContext';
-import { globalObject } from './global-object';
 
 export const wrapApplication = (Application: ComponentType) => {
     return (
@@ -20,7 +19,7 @@ export const wrapApplication = (Application: ComponentType) => {
 };
 
 export const initApplication = (Application: ComponentType) => {
-    if (!globalObject.Kapeta) {
+    if (!window.Kapeta) {
         throw new Error('Global object not initialised. Make sure you load shared libraries first');
     }
 

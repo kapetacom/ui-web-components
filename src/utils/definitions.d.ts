@@ -10,6 +10,8 @@ declare interface KapetaDesktop {
 declare global {
     interface Window {
         KapetaDesktop?: KapetaDesktop;
+        // Defined in web-microfrontend
+        Kapeta?: any;
     }
 }
 
