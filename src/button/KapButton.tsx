@@ -3,15 +3,15 @@
  * SPDX-License-Identifier: MIT
  */
 
+import React, { ElementType, forwardRef } from 'react';
 import { Box, Button, ButtonProps, CircularProgress } from '@mui/material';
-import React, { ElementType } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 export type KapButtonProps<C extends ElementType = 'button'> = ButtonProps<C, { component?: C }> & {
     loading?: boolean;
 };
 
-export const KapButton = (props: KapButtonProps<ElementType>) => {
+export const KapButton = forwardRef<HTMLButtonElement, KapButtonProps<ElementType>>((props, buttonRef) => {
     const { children, loading, sx, ...buttonProps } = props;
 
     const sizeToSpinnerSize = {
@@ -25,6 +25,7 @@ export const KapButton = (props: KapButtonProps<ElementType>) => {
 
     return (
         <Button
+            ref={buttonRef}
             {...buttonProps}
             sx={{
                 ...sx,
@@ -132,4 +133,6 @@ export const KapButton = (props: KapButtonProps<ElementType>) => {
             </CSSTransition>
         </Button>
     );
-};
+});
+
+KapButton.displayName = 'KapButton';
