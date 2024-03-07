@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { Box, FormControlLabel, Grid, Stack, Switch, Typography } from '@mui/material';
+import { Box, FormControlLabel, Stack, Switch } from '@mui/material';
 import { KapButton, KapButtonProps } from '../src/button/KapButton';
 
 const meta: Meta = {
@@ -101,9 +101,12 @@ export const CustomStyle: Story = {
         const [loading, setLoading] = useState(false);
         const [disabled, setDisabled] = useState(false);
 
+        // Adding a ref to the button to test that the ref is forwarded correctly
+        const ref = useRef<HTMLButtonElement>(null);
+
         return (
             <Box>
-                <Stack direction="column" spacing={0}>
+                <Stack direction="column" spacing={0} alignItems="flex-start">
                     <FormControlLabel
                         control={<Switch checked={loading} onChange={() => setLoading(!loading)} />}
                         label="Loading"
@@ -112,12 +115,24 @@ export const CustomStyle: Story = {
                         control={<Switch checked={disabled} onChange={() => setDisabled(!disabled)} />}
                         label="Disabled"
                     />
+                    <KapButton
+                        variant="link"
+                        onClick={() => {
+                            if (ref.current) {
+                                const isUnderlined = ref.current.style.textDecoration === 'underline';
+                                ref.current.style.textDecoration = isUnderlined ? 'none' : 'underline';
+                            }
+                        }}
+                    >
+                        Toggle underline
+                    </KapButton>
                 </Stack>
 
                 <KapButton
+                    ref={ref}
                     // Just some random styles to show that you can style the button as you like
                     sx={{
-                        mt: 2,
+                        mt: 4,
                         background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
                         color: 'white',
                         fontStyle: 'italic',
