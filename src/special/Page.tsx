@@ -3,22 +3,31 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React from 'react';
-import { Box, Typography } from '@mui/material';
+import React, { forwardRef } from 'react';
+import { Box, BoxProps, Typography } from '@mui/material';
 
-export interface PageProps {
+export interface PageProps extends BoxProps {
     title?: string;
     introduction?: string;
-    children: any;
     /**
      * @deprecated The `type` prop is deprecated (not used anymore)
      */
     type?: string;
 }
 
-export const Page = ({ title, introduction, children }: PageProps) => {
+export const Page = forwardRef<HTMLDivElement, PageProps>((props, ref) => {
+    const { title, introduction, children, sx, ...boxProps } = props;
+
     return (
-        <Box sx={{ p: 8, bgcolor: 'primary.contrast' }}>
+        <Box
+            ref={ref}
+            sx={{
+                ...sx,
+                p: 8,
+                bgcolor: 'primary.contrast',
+            }}
+            {...boxProps}
+        >
             {title && (
                 <Typography variant="h4" component="h2" sx={{ py: 2 }}>
                     {title}
@@ -32,4 +41,4 @@ export const Page = ({ title, introduction, children }: PageProps) => {
             {children}
         </Box>
     );
-};
+});

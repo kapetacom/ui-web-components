@@ -46,3 +46,28 @@ export const Default: Story = {
         ),
     },
 };
+
+export const WithCustomStyling: Story = {
+    args: {
+        title: 'Page title',
+        introduction: 'Page introduction',
+        sx: {
+            m: 4,
+            border: '5px dashed purple',
+        },
+        children: (
+            <div
+                style={{
+                    width: '100%',
+                    height: '200px',
+                    border: '1px dashed #ccc',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                Page content
+            </div>
+        ),
+    },
+};
