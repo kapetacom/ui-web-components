@@ -122,6 +122,8 @@ type CoreConfig {
     enabled:boolean = true
     
     gateway:Instance
+    
+    test:file
 }`;
 
 const CONFIGURATION_ENTITIES: DSLEntity[] = [
