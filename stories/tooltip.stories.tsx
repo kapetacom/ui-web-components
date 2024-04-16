@@ -174,3 +174,18 @@ export const TooltipInSvg: Story = {
         );
     },
 };
+
+export const CustomColor: Story = {
+    args: {
+        title: loremIpsum,
+        backgroundColor: 'green',
+        color: 'white',
+    },
+    render: ({ title, backgroundColor, color }) => (
+        <Stack sx={{ height: '300px' }} alignItems="center" justifyContent="center">
+            <Tooltip title={title} backgroundColor={backgroundColor} color={color}>
+                <InfoOutlinedIcon />
+            </Tooltip>
+        </Stack>
+    ),
+};
