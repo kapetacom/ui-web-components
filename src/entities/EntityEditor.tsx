@@ -143,60 +143,6 @@ const FieldEditor = (props: FieldProps) => {
             );
         }
 
-        if (props.field.ref === 'file') {
-            if (props.value) {
-                return (
-                    <Stack direction={'row'} gap={1}>
-                        <Tooltip title={'A path to the file will be available in your runtime configuration'}>
-                            {props.field.secret ? (
-                                <Typography className={'text-value'} color={'info'}>
-                                    Secret uploaded
-                                </Typography>
-                            ) : (
-                                <a className={'text-value'} href={props.value} download={`download.txt`}>
-                                    File uploaded
-                                </a>
-                            )}
-                        </Tooltip>
-
-                        <Tooltip title={'Click to reset value'}>
-                            <IconButton
-                                size={'small'}
-                                sx={{
-                                    p: 0,
-                                }}
-                                color={'error'}
-                                onClick={() => props.onChange(null)}
-                            >
-                                <Delete fontSize={'small'} />
-                            </IconButton>
-                        </Tooltip>
-                    </Stack>
-                );
-            }
-
-            return (
-                <input
-                    type={'file'}
-                    onChange={(evt) => {
-                        if (!evt.target.files?.length) {
-                            return;
-                        }
-                        const file = evt.target.files[0];
-                        if (file.size > MAX_FILE_SIZE) {
-                            alert('File size must be less than 60 Kb');
-                            return;
-                        }
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            props.onChange(e.target?.result);
-                        };
-                        reader.readAsDataURL(file);
-                    }}
-                />
-            );
-        }
-
         let value = EntityHelpers.toRefValue(props.field.ref, props.value);
         return (
             <select
@@ -214,6 +160,60 @@ const FieldEditor = (props: FieldProps) => {
                     );
                 })}
             </select>
+        );
+    }
+
+    if (props.field.type === 'file') {
+        if (props.value) {
+            return (
+                <Stack direction={'row'} gap={1}>
+                    <Tooltip title={'A path to the file will be available in your runtime configuration'}>
+                        {props.field.secret ? (
+                            <Typography className={'text-value'} color={'info'}>
+                                Secret uploaded
+                            </Typography>
+                        ) : (
+                            <a className={'text-value'} href={props.value} download={`download.txt`}>
+                                File uploaded
+                            </a>
+                        )}
+                    </Tooltip>
+
+                    <Tooltip title={'Click to reset value'}>
+                        <IconButton
+                            size={'small'}
+                            sx={{
+                                p: 0,
+                            }}
+                            color={'error'}
+                            onClick={() => props.onChange(null)}
+                        >
+                            <Delete fontSize={'small'} />
+                        </IconButton>
+                    </Tooltip>
+                </Stack>
+            );
+        }
+
+        return (
+            <input
+                type={'file'}
+                onChange={(evt) => {
+                    if (!evt.target.files?.length) {
+                        return;
+                    }
+                    const file = evt.target.files[0];
+                    if (file.size > MAX_FILE_SIZE) {
+                        alert('File size must be less than 60 Kb');
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        props.onChange(e.target?.result);
+                    };
+                    reader.readAsDataURL(file);
+                }}
+            />
         );
     }
 
