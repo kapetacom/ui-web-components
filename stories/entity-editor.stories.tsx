@@ -43,6 +43,15 @@ const ENTITIES: Entity[] = [
                 ref: TYPE_INSTANCE,
                 description: 'Gateway',
             },
+            configFile: {
+                type: 'file',
+                description: 'Config file',
+            },
+            secretFile: {
+                type: 'file',
+                secret: true,
+                description: 'Secret file',
+            },
         },
     },
     {

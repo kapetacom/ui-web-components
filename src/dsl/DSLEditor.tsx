@@ -68,6 +68,7 @@ export const DSLEditor = (props: DSLEditorProps) => {
         ignoreSemantics: props.ignoreSemantics,
         parameterAnnotations: props.parameterAnnotations,
         typeAnnotations: props.typeAnnotations,
+        typeFilter: props.typeFilter,
     };
 
     return (

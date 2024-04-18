@@ -9,6 +9,7 @@ import { DSLEditor } from './DSLEditor';
 import { DSLFormEditorProps } from './types';
 import { useFormContextField } from '../form/FormContext';
 import { DSLResult, METHOD_CONFIGURATION, restPathVariableValidator } from '@kapeta/kaplang-core';
+import { noFileTypeFilter } from './validators';
 
 export interface MethodEditorProps {
     value?: DSLResult | string;
@@ -30,6 +31,7 @@ export const MethodEditor = (props: MethodEditorProps) => {
             onCodeChange={props.onCodeChange}
             onError={props.onError}
             readOnly={props.readOnly}
+            typeFilter={noFileTypeFilter}
             validator={props.restMethods ? restPathVariableValidator : undefined}
             value={props.value}
         />

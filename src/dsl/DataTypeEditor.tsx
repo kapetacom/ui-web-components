@@ -9,6 +9,7 @@ import { DSLEditor } from './DSLEditor';
 import { DSLFormEditorProps } from './types';
 import { useFormContextField } from '../form/FormContext';
 import { DATATYPE_CONFIGURATION, DSLResult } from '@kapeta/kaplang-core';
+import { noFileTypeFilter } from './validators';
 
 export interface DataTypeEditorProps {
     value?: DSLResult | string;
@@ -24,6 +25,7 @@ export const DataTypeEditor = (props: DataTypeEditorProps) => {
         <DSLEditor
             {...DATATYPE_CONFIGURATION}
             validTypes={props.validTypes}
+            typeFilter={noFileTypeFilter}
             onError={props.onError}
             onCodeChange={props.onCodeChange}
             readOnly={props.readOnly}
