@@ -22,19 +22,27 @@ export type TooltipProps = MuiTooltipProps & {
      * @default 'top'
      */
     placement?: MuiTooltipProps['placement'];
+    /**
+     * Background color of the tooltip and arrow
+     */
+    backgroundColor?: string;
+    /**
+     * Text text color of the tooltip
+     */
+    color?: string;
 };
 
 export const Tooltip = styled(
     ({ className, maxWidth = 220, arrow = true, placement = 'top', ...props }: TooltipProps) => (
         <MuiTooltip {...props} arrow={arrow} placement={placement} classes={{ popper: className }} />
     )
-)(({ theme, maxWidth }) => ({
+)(({ theme, maxWidth, backgroundColor, color }) => ({
     [`& .${tooltipClasses.arrow}::before`]: {
-        color: '#ffffff',
+        color: backgroundColor || '#ffffff',
     },
     [`& .${tooltipClasses.tooltip}`]: {
-        backgroundColor: '#ffffff',
-        color: 'rgba(0, 0, 0, 0.87)',
+        backgroundColor: backgroundColor || '#ffffff',
+        color: color || 'rgba(0, 0, 0, 0.87)',
         maxWidth: maxWidth,
         fontSize: theme.typography.pxToRem(12),
         boxShadow: '0px 0px 26px 0px rgba(5, 9, 13, 0.16)',
