@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import './DSLEditor.less';
 
@@ -16,6 +16,7 @@ import { DSLValidator } from './DSLValidator';
 import { withAdditionalTypes } from './DSLLanguage';
 import { DSLLanguageOptions, DSLParser, DSLParserOptions, DSLResult, KaplangWriter } from '@kapeta/kaplang-core';
 import { DSL_LANGUAGE_ID } from './types';
+import AIAssist from './AIAssist';
 
 export interface DSLEditorProps extends DSLLanguageOptions {
     value?: DSLResult | string;
@@ -27,7 +28,7 @@ export interface DSLEditorProps extends DSLLanguageOptions {
 }
 
 export const DSLEditor = (props: DSLEditorProps) => {
-    const [current, setCurrent] = useState(() => {
+    const getValue = () => {
         let value: string;
         const result = props.value as DSLResult;
         if (typeof result === 'object') {
@@ -37,7 +38,12 @@ export const DSLEditor = (props: DSLEditorProps) => {
         }
 
         return value;
-    });
+    };
+    const [current, setCurrent] = useState(getValue());
+
+    useEffect(() => {
+        setCurrent(getValue());
+    }, [props.value]);
 
     const options: editor.IStandaloneEditorConstructionOptions = {
         lineNumbersMinChars: 3,
