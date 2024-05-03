@@ -19,7 +19,7 @@ export const AIStory = () => {
     return (
         <>
             <AIAssist
-                onGenerate={async (prompt) => {
+                onSubmit={async (prompt) => {
                     console.log(prompt);
                     const result = await new Promise<string>((resolve) =>
                         setTimeout(resolve, 1000, '# Super awesome content including ' + prompt)
