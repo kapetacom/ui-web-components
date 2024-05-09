@@ -7,11 +7,22 @@
     border: 1px solid #ddd;
     box-sizing: border-box;
     position: relative;
+    display: flex;
+    flex-direction: column;
 
-    .monaco-editor {
+    & > section > div > .monaco-editor {
         // To avoid the editor having an impact on the container size we make it absolute.
         position: absolute;
         top: 0;
         left: 0;
     }
+
+    .unused {
+        opacity: 0.5;
+    }
+
+    & > section {
+        flex: 1;
+    }
 }
+

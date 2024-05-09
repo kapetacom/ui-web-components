@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import { languages, editor } from 'monaco-editor';
+import { languages, editor, Position, CancellationToken } from 'monaco-editor';
 import * as monaco from 'monaco-editor';
 import loader from '@monaco-editor/loader';
 import IRichLanguageConfiguration = languages.LanguageConfiguration;
@@ -14,6 +14,7 @@ import { DSLDocumentFormattingEditProvider } from './DSLDocumentFormattingEditPr
 import CodeAction = languages.CodeAction;
 import { BUILT_IN_TYPES } from '@kapeta/kaplang-core';
 import { DSL_LANGUAGE_ID } from './types';
+import { ModelMetadatas } from './DSLModelMetadata';
 
 const configuration: IRichLanguageConfiguration = {
     comments: {
@@ -211,6 +212,45 @@ loader.init().then((monacoInstance) => {
 
         //Auto-complete:
         languages.registerCompletionItemProvider(DSL_LANGUAGE_ID, completionItemProvider);
+
+        languages.registerTypeDefinitionProvider(DSL_LANGUAGE_ID, {
+            provideTypeDefinition(
+                model: editor.ITextModel,
+                position: Position,
+                token: CancellationToken
+            ): languages.ProviderResult<languages.Definition> {
+                const word = model.getWordAtPosition(position);
+                if (!word) {
+                    return [];
+                }
+                const metadata = ModelMetadatas.get(model);
+
+                return metadata.getDefinitionFor(word.word);
+            },
+        });
+
+        languages.registerReferenceProvider(DSL_LANGUAGE_ID, {
+            provideReferences(
+                model: editor.ITextModel,
+                position: Position,
+                context: languages.ReferenceContext,
+                token: CancellationToken
+            ): languages.ProviderResult<languages.Location[]> {
+                const word = model.getWordAtPosition(position);
+                if (!word) {
+                    return [];
+                }
+                const metadata = ModelMetadatas.get(model);
+
+                const locations = metadata.getReferencesFor(word.word);
+
+                if (locations.length === 0) {
+                    return null;
+                }
+
+                return locations;
+            },
+        });
 
         languages.registerCodeActionProvider(DSL_LANGUAGE_ID, {
             provideCodeActions(model, range, context, token): languages.ProviderResult<languages.CodeActionList> {

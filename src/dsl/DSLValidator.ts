@@ -78,12 +78,14 @@ export class DSLValidator {
 
         //Syntax and semantic validation
 
-        model.onDidChangeContent(() => {
+        const disposable = model.onDidChangeContent(() => {
             // here we are Debouncing the user changes, so everytime a new change is done, we wait 500ms before validating
             // otherwise if the user is still typing, we cancel the
             clearTimeout(validationHandle);
             validationHandle = setTimeout(() => this.validate(model), 200);
         });
         this.validate(model);
+
+        return disposable;
     }
 }
