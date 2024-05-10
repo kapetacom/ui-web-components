@@ -24,3 +24,16 @@ export const BlockContext = createContext<BlockContextData>({
     },
 });
 export const BlockContextProvider = BlockContext.Provider;
+
+export interface EditableBlockContextData {
+    consumer?: BlockDefinition;
+    provider?: BlockDefinition;
+    callbacks: {
+        onConsumerChange?: (definition: BlockDefinition) => void;
+        onProviderChange?: (definition: BlockDefinition) => void;
+    };
+}
+export const EditableBlockContext = createContext<EditableBlockContextData>({
+    callbacks: {},
+});
+export const EditableBlockContextProvider = EditableBlockContext.Provider;
