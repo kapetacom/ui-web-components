@@ -21,13 +21,15 @@ export const DSLDiffEditor = (props: DiffEditorProps) => {
     const modified = DSLWriter.write(props.entitiesB || []);
 
     return (
-        <DiffEditor
-            language={DSL_LANGUAGE_ID}
-            original={original}
-            modified={modified}
-            options={{
-                readOnly: !!props.readOnly,
-            }}
-        />
+        <div className={'dsl-editor'}>
+            <DiffEditor
+                language={DSL_LANGUAGE_ID}
+                original={original}
+                modified={modified}
+                options={{
+                    readOnly: !!props.readOnly,
+                }}
+            />
+        </div>
     );
 };
