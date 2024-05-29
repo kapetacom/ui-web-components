@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { DataTypeEditor, MethodEditor } from '../src';
-import { DSLEntity, DSLEntityType, DSLMethod } from '@kapeta/kaplang-core';
+import { DSLEntity, DSLEntityType, DSLMethod, DSLModel } from '@kapeta/kaplang-core';
 import { DSLEditor } from '../src/dsl/DSLEditor';
 import { ConfigurationEditor } from '../src/dsl/ConfigurationEditor';
 import { ModelEditor } from '../src/dsl/ModelEditor';
