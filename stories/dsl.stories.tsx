@@ -5,9 +5,10 @@
 
 import React from 'react';
 import { DataTypeEditor, MethodEditor } from '../src';
-import { DSLEntity, DSLEntityType, DSLMethod } from '@kapeta/kaplang-core';
+import { DSLEntity, DSLEntityType, DSLMethod, DSLModel } from '@kapeta/kaplang-core';
 import { DSLEditor } from '../src/dsl/DSLEditor';
 import { ConfigurationEditor } from '../src/dsl/ConfigurationEditor';
+import { ModelEditor } from '../src/dsl/ModelEditor';
 
 const REST_METHODS = `
 #Get todo 
@@ -125,6 +126,39 @@ type CoreConfig {
     
     test:file
 }`;
+
+const MODELS = `
+type Entry {
+    @Id
+    id: string
+    
+    name: string
+}
+`;
+
+const MODELS_ENTITIES: DSLModel[] = [
+    {
+        type: DSLEntityType.MODEL,
+        name: 'Entry',
+        properties: [
+            {
+                name: 'id',
+                annotations: [
+                    {
+                        type: '@Id',
+                        arguments: [],
+                    },
+                ],
+                type: 'string',
+                primary: true,
+            },
+            {
+                name: 'name',
+                type: 'string',
+            },
+        ],
+    },
+];
 
 const CONFIGURATION_ENTITIES: DSLEntity[] = [
     {
@@ -524,4 +558,19 @@ export const ConfigurationEditorObject = () => (
 
 ConfigurationEditorObject.story = {
     name: 'Configuration Editor (Object)',
+};
+
+export const _ModelEditor = () => (
+    <ModelEditor value={MODELS} onChange={(result) => console.log('result', result)} onError={(result) => console.error('error', result)}/>
+);
+
+export const ModelEditorObject = () => (
+    <ModelEditor
+        value={{ entities: MODELS_ENTITIES, code: '' }}
+        onChange={(result) => console.log('result', result)}
+    />
+);
+
+ModelEditorObject.story = {
+    name: 'Model Editor (Object)',
 };

@@ -78,6 +78,7 @@ export * from './dsl/DSLEditor';
 export * from './dsl/MethodEditor';
 export * from './dsl/DataTypeEditor';
 export * from './dsl/ConfigurationEditor';
+export * from './dsl/ModelEditor';
 
 export * from './grid/DataGrid';
 export * from './grid/DataList';
