@@ -1,5 +1,5 @@
 /**
- * Copyright 2023 Kapeta Inc.
+ * Copyright 2024 Kapeta Inc.
  * SPDX-License-Identifier: MIT
  */
 

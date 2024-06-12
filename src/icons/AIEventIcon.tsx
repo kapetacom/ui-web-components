@@ -1,3 +1,8 @@
+/**
+ * Copyright 2024 Kapeta Inc.
+ * SPDX-License-Identifier: BUSL-1.1
+ */
+
 import { SvgIcon, SvgIconProps } from '@mui/material';
 import React, { ForwardedRef, forwardRef } from 'react';
 
