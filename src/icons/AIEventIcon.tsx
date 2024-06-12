@@ -4,7 +4,7 @@
  */
 
 import { SvgIcon, SvgIconProps } from '@mui/material';
-import React, { ForwardedRef, forwardRef } from 'react';
+import React, { ForwardedRef, forwardRef, useId } from 'react';
 
 export const AIEventIcons = [
     'API',
@@ -74,10 +74,11 @@ export const AIEventIcon = forwardRef((props: AIEventIconProps, ref: ForwardedRe
             );
         }
         case 'CONNECTION': {
+            const connectionClipPathId = useId();
             return (
                 <SvgIcon {...rest} ref={ref}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clipPath="url(#clip0_840_275583)">
+                        <g clipPath={`url(#${connectionClipPathId})`}>
                             <path
                                 fillRule="evenodd"
                                 clipRule="evenodd"
@@ -98,7 +99,7 @@ export const AIEventIcon = forwardRef((props: AIEventIconProps, ref: ForwardedRe
                             />
                         </g>
                         <defs>
-                            <clipPath id="clip0_840_275583">
+                            <clipPath id={connectionClipPathId}>
                                 <rect width="24" height="24" fill="currentColor" />
                             </clipPath>
                         </defs>
@@ -110,10 +111,11 @@ export const AIEventIcon = forwardRef((props: AIEventIconProps, ref: ForwardedRe
             return null;
         }
         case 'MODEL': {
+            const modelClipPathId = useId();
             return (
                 <SvgIcon {...rest} ref={ref}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clipPath="url(#clip0_699_67164)">
+                        <g clipPath={`url(#${modelClipPathId})`}>
                             <path
                                 d="M5.7931 10.3483C2.9142 10.3483 0 9.4955 0 7.86577C0 6.23564 2.91408 5.38281 5.7931 5.38281C8.67177 5.38281 11.5862 6.23564 11.5862 7.86577C11.5862 9.4955 8.67177 10.3483 5.7931 10.3483ZM5.7931 6.2259C2.7145 6.2259 0.750139 7.19704 0.750139 7.86564C0.750139 8.5341 2.7145 9.50511 5.7931 9.50511C8.87135 9.50511 10.8361 8.5341 10.8361 7.86564C10.8361 7.19718 8.87135 6.2259 5.7931 6.2259Z"
                                 fill="currentColor"
@@ -170,7 +172,7 @@ export const AIEventIcon = forwardRef((props: AIEventIconProps, ref: ForwardedRe
                             />
                         </g>
                         <defs>
-                            <clipPath id="clip0_699_67164">
+                            <clipPath id={modelClipPathId}>
                                 <rect width="24" height="24" fill="currentColor" />
                             </clipPath>
                         </defs>
@@ -243,10 +245,11 @@ export const AIEventIcon = forwardRef((props: AIEventIconProps, ref: ForwardedRe
             );
         }
         case 'TYPE': {
+            const typeClipPathId = useId();
             return (
                 <SvgIcon {...rest} ref={ref}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clipPath="url(#clip0_699_67099)">
+                        <g clipPath={`url(#${typeClipPathId})`}>
                             <path
                                 fillRule="evenodd"
                                 clipRule="evenodd"
@@ -261,7 +264,7 @@ export const AIEventIcon = forwardRef((props: AIEventIconProps, ref: ForwardedRe
                             />
                         </g>
                         <defs>
-                            <clipPath id="clip0_699_67099">
+                            <clipPath id={typeClipPathId}>
                                 <rect width="24" height="24" fill="currentColor" />
                             </clipPath>
                         </defs>
