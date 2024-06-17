@@ -20,12 +20,6 @@ type Story = StoryObj<typeof HenrikIcon>;
 
 export const Basic: Story = {};
 
-export const AnimateOnHover: Story = {
-    args: {
-        animateOnHover: true,
-    },
-};
-
 export const WithTooltip: Story = {
     render: (args) => {
         return (
