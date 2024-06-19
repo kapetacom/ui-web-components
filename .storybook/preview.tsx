@@ -1,9 +1,9 @@
+import React, { useMemo } from 'react';
 import { Preview } from '@storybook/react';
 import { configure } from 'mobx';
 import { MemoryRouter } from 'react-router-dom';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { lightTheme, darkTheme } from '@kapeta/style';
-import { useMemo } from 'react';
 import '../styles/index.less';
 
 configure({
