@@ -5,7 +5,6 @@
 
 import React from 'react';
 import _, { cloneDeep } from 'lodash';
-import './FormContainer.less';
 
 import { FormContext, FormContextType, ResetListener } from './FormContext';
 import { toClass } from '@kapeta/ui-web-utils';
