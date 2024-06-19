@@ -21,8 +21,13 @@ export default meta;
 export const InfoBoxExample = () => {
     return (
         <Box>
-            <InfoBox>This is an info box</InfoBox>
-            <InfoBox readMoreLink="https://kapeta.com">This is an info box with a read more link</InfoBox>
+            <InfoBox sx={{ mb: 2 }}>This is an info box</InfoBox>
+            <InfoBox sx={{ mb: 2 }} readMoreLink="https://kapeta.com">
+                This is an info box with a read more link
+            </InfoBox>
+            <InfoBox sx={{ mb: 2 }} readMoreLink="https://kapeta.com" readMoreText="Learn more">
+                This is an info box with a custom read more link text
+            </InfoBox>
         </Box>
     );
 };

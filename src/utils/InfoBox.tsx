@@ -3,49 +3,42 @@
  * SPDX-License-Identifier: MIT
  */
 
-import React, { PropsWithChildren } from 'react';
-import { Link, Typography } from '@mui/material';
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material/styles';
-import { grey } from '@mui/material/colors';
+import React from 'react';
+import { Link, Alert, AlertProps } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
 
-interface Props extends PropsWithChildren {
-    sx?: SxProps<Theme>;
+interface Props extends AlertProps {
     readMoreLink?: string;
+    readMoreText?: string;
 }
 
 export const InfoBox = (props: Props) => {
-    const infoBoxSX = {
-        fontSize: '12px',
-        backgroundColor: grey[100],
-        padding: '10px',
-        margin: 0,
-        marginBottom: '10px',
-        ...props.sx,
-    };
-
-    const readMoreLink = props.readMoreLink ? (
-        <>
-            <Link
-                href={props.readMoreLink}
-                target="_blank"
-                sx={{
-                    display: 'flex',
-                    direction: 'row',
-                    alignItems: 'center',
-                }}
-            >
-                <InfoOutlined fontSize={'inherit'} sx={{ mr: '2px' }} />
-                Click here to read more
-            </Link>
-        </>
-    ) : null;
+    const { variant, severity = 'info', sx, readMoreLink, readMoreText, children, icon = false, ...alertProps } = props;
 
     return (
-        <Typography sx={infoBoxSX}>
-            {props.children}
-            {readMoreLink}
-        </Typography>
+        <Alert variant={variant} severity={severity} sx={{ ...sx }} {...alertProps} icon={icon}>
+            {children}
+
+            {readMoreLink ? (
+                <Link
+                    href={props.readMoreLink}
+                    target="_blank"
+                    sx={{
+                        display: 'inline',
+                    }}
+                >
+                    <InfoOutlined
+                        fontSize={'inherit'}
+                        sx={{
+                            ml: 1,
+                            mr: 0.5,
+                            transform: 'translateY(2px)',
+                        }}
+                    />
+
+                    {readMoreText ? readMoreText : 'Click here to read more'}
+                </Link>
+            ) : null}
+        </Alert>
     );
 };
