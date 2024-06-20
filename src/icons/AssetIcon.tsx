@@ -6,6 +6,7 @@
 import React from 'react';
 import { IconValue, Kind } from '@kapeta/schemas';
 import './AssetIcon.less';
+import { useTheme } from '@mui/material';
 
 interface KindIconProps {
     kind: string;
@@ -16,6 +17,7 @@ interface KindIconProps {
 
 export const KindIcon = (props: KindIconProps) => {
     const size = props.size || 16;
+    const isDarkMode = useTheme().palette.mode === 'dark';
     const style = {
         fontSize: size + 'px',
         height: size + 'px',
@@ -25,7 +27,17 @@ export const KindIcon = (props: KindIconProps) => {
             case 'fontawesome5':
                 return <i style={style} className={`asset-icon ${props.icon.value}`} title={props.title} />;
             case 'url':
-                return <img style={style} className="asset-icon" src={props.icon.value} alt={props.title} />;
+                return (
+                    <img
+                        style={{
+                            ...style,
+                            ...(isDarkMode && { filter: 'invert(1) brightness(2) contrast(1.5)' }),
+                        }}
+                        className="asset-icon"
+                        src={props.icon.value}
+                        alt={props.title}
+                    />
+                );
         }
     }
 
