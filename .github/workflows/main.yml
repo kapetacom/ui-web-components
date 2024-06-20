@@ -20,7 +20,7 @@ jobs:
       - run: npm test -- --passWithNoTests
       # Probably move this to its own job when it makes sense
       - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v3
+        uses: cycjimmy/semantic-release-action@v4
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
