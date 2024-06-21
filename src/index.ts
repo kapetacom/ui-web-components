@@ -91,6 +91,7 @@ export * from './utils/rounding';
 export * from './utils/global-object';
 export * from './utils/desktop';
 export * from './utils/scroll-shadow';
+export * from './utils/scrollbars';
 export * from './utils/InfoBox';
 
 export * from './special/Logo';
