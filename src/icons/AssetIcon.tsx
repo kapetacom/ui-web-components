@@ -10,35 +10,47 @@ import { useTheme } from '@mui/material';
 
 interface KindIconProps {
     kind: string;
-    icon?: IconValue;
+    icons?: IconValue[];
     size?: number;
     title?: string;
 }
 
 export const KindIcon = (props: KindIconProps) => {
     const size = props.size || 16;
-    const isDarkMode = useTheme().palette.mode === 'dark';
+    const theme = useTheme().palette.mode;
+    const isDarkMode = theme === 'dark';
     const style = {
         fontSize: size + 'px',
         height: size + 'px',
     };
-    if (props.icon) {
-        switch (props.icon.type) {
-            case 'fontawesome5':
-                return <i style={style} className={`asset-icon ${props.icon.value}`} title={props.title} />;
-            case 'url':
-                return (
-                    <img
-                        style={{
-                            ...style,
-                            ...(isDarkMode && { filter: 'invert(1) brightness(2) contrast(1.5)' }),
-                        }}
-                        className="asset-icon"
-                        src={props.icon.value}
-                        alt={props.title}
-                    />
-                );
-        }
+
+    // Select icon based on theme, priority order:
+    // - matching theme (light/dark)
+    // - fontawesome icon (if available)
+    // - opposite theme (light/dark) - invert it
+    const faIcon = props.icons?.find((icon) => icon.type === 'fontawesome5');
+    const svgIcons =
+        props.icons?.filter((icon) => icon.type === 'url').map((icon) => ({ ...icon, theme: icon.theme || 'light' })) ||
+        [];
+    const themeIcon = svgIcons.find((icon) => icon.theme === theme);
+    const invertIcon = svgIcons.find((icon) => icon.theme !== theme);
+
+    if (themeIcon) {
+        return <img style={style} className="asset-icon" src={themeIcon.value} alt={props.title} />;
+    } else if (faIcon) {
+        return <i style={style} className={`asset-icon ${faIcon.value}`} title={props.title} />;
+    } else if (invertIcon) {
+        return (
+            <img
+                style={{
+                    ...style,
+                    filter: 'invert(1) brightness(2) contrast(1.5)',
+                }}
+                className="asset-icon"
+                src={invertIcon.value}
+                alt={props.title}
+            />
+        );
     }
 
     if (props.kind.startsWith('core/')) {
@@ -98,7 +110,7 @@ export const AssetKindIcon = (props: AssetKindIconProps) => {
     return (
         <KindIcon
             kind={props.asset.kind}
-            icon={props.asset.spec?.icon}
+            icons={props.asset.spec?.icons ?? [props.asset.spec?.icon].filter(Boolean)}
             size={props.size}
             title={props.asset.metadata.title}
         />
@@ -111,5 +123,12 @@ export const AssetKindIconText = (props: AssetKindIconProps) => {
     }
 
     let title = props.asset.metadata.title ?? props.asset.metadata.name;
-    return <KindIconText kind={props.asset.kind} icon={props.asset.spec?.icon} size={props.size} title={title} />;
+    return (
+        <KindIconText
+            kind={props.asset.kind}
+            icons={props.asset.spec?.icons ?? [props.asset.spec?.icon].filter(Boolean)}
+            size={props.size}
+            title={title}
+        />
+    );
 };

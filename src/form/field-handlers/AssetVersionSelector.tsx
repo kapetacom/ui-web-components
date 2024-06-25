@@ -62,6 +62,7 @@ export interface AssetVersionSelectorEntry {
     kind: string;
     title?: string;
     icon?: IconValue;
+    icons?: IconValue[];
 }
 
 export function fromAssetsToAssetVersionSelectorEntries(assets: Asset[]): AssetVersionSelectorEntry[] {
@@ -84,7 +85,7 @@ type UriType = {
     name: string;
     key: string;
     ref: string;
-    icon?: IconValue;
+    icons?: IconValue[];
 };
 
 interface Props extends FormFieldControllerProps<string> {
@@ -127,7 +128,7 @@ export const AssetVersionSelector = (props: Props) => {
                 title: type.title || uri.name,
                 uri: uri,
                 kind: type.kind,
-                icon: type.icon,
+                icons: type.icons ?? ([type.icon].filter(Boolean) as IconValue[]),
             };
         });
     }, [props.assetTypes]);
@@ -142,7 +143,7 @@ export const AssetVersionSelector = (props: Props) => {
                 ref: uriType.uri.id,
                 key: uriType.uri.fullName,
                 kind: uriType.kind,
-                icon: uriType.icon,
+                icons: uriType.icons,
             };
         });
 
@@ -286,7 +287,12 @@ export const AssetVersionSelector = (props: Props) => {
                                 }}
                             >
                                 <Stack direction={'row'} gap={1} alignItems={'center'} pl={1}>
-                                    <KindIcon kind={uriType.kind} icon={uriType.icon} size={24} title={uriType.title} />
+                                    <KindIcon
+                                        kind={uriType.kind}
+                                        icons={uriType.icons}
+                                        size={24}
+                                        title={uriType.title}
+                                    />
                                     <Stack direction={'column'}>
                                         <Typography
                                             component={'p'}
