@@ -16,7 +16,7 @@ import { DSLValidator } from './DSLValidator';
 import { withAdditionalTypes } from './DSLLanguage';
 import { DSLLanguageOptions, DSLParser, DSLParserOptions, DSLResult, KaplangWriter } from '@kapeta/kaplang-core';
 import { DSL_LANGUAGE_ID } from './types';
-import { useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 
 export interface DSLEditorProps extends DSLLanguageOptions {
     value?: DSLResult | string;
@@ -76,9 +76,9 @@ export const DSLEditor = (props: DSLEditorProps) => {
     const isDarkMode = useTheme().palette.mode === 'dark';
 
     return (
-        <div className={'dsl-editor'}>
+        <Box className={'dsl-editor'} sx={(theme) => ({ p: 1, border: `1px solid ${theme.palette.divider}` })}>
             <Monaco
-                theme={isDarkMode ? 'vs-dark' : 'vs-light'}
+                theme={isDarkMode ? 'vs-dark' : 'light'}
                 options={options}
                 value={current}
                 onChange={(code) => {
@@ -118,6 +118,6 @@ export const DSLEditor = (props: DSLEditorProps) => {
                     }
                 }}
             />
-        </div>
+        </Box>
     );
 };
