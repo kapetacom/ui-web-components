@@ -1,3 +1,8 @@
+/**
+ * Copyright 2024 Kapeta Inc.
+ * SPDX-License-Identifier: BUSL-1.1
+ */
+
 import React, { ForwardedRef, forwardRef } from 'react';
 import { getIcon } from 'material-file-icons';
 import { Box, SvgIconProps } from '@mui/material';
