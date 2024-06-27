@@ -10,6 +10,7 @@ import { useTheme } from '@mui/material';
 
 interface KindIconProps {
     kind: string;
+    icon?: IconValue;
     icons?: IconValue[];
     size?: number;
     title?: string;
@@ -18,20 +19,19 @@ interface KindIconProps {
 export const KindIcon = (props: KindIconProps) => {
     const size = props.size || 16;
     const theme = useTheme().palette.mode;
-    const isDarkMode = theme === 'dark';
     const style = {
         fontSize: size + 'px',
         height: size + 'px',
     };
+    const icons = props.icons ?? ([props.icon].filter(Boolean) as IconValue[]);
 
     // Select icon based on theme, priority order:
     // - matching theme (light/dark)
     // - fontawesome icon (if available)
     // - opposite theme (light/dark) - invert it
-    const faIcon = props.icons?.find((icon) => icon.type === 'fontawesome5');
+    const faIcon = icons.find((icon) => icon.type === 'fontawesome5');
     const svgIcons =
-        props.icons?.filter((icon) => icon.type === 'url').map((icon) => ({ ...icon, theme: icon.theme || 'light' })) ||
-        [];
+        icons.filter((icon) => icon.type === 'url').map((icon) => ({ ...icon, theme: icon.theme || 'light' })) || [];
     const themeIcon = svgIcons.find((icon) => icon.theme === theme);
     const invertIcon = svgIcons.find((icon) => icon.theme !== theme);
 
@@ -110,7 +110,8 @@ export const AssetKindIcon = (props: AssetKindIconProps) => {
     return (
         <KindIcon
             kind={props.asset.kind}
-            icons={props.asset.spec?.icons ?? [props.asset.spec?.icon].filter(Boolean)}
+            icon={props.asset.spec?.icon}
+            icons={props.asset.spec?.icons}
             size={props.size}
             title={props.asset.metadata.title}
         />
@@ -126,7 +127,8 @@ export const AssetKindIconText = (props: AssetKindIconProps) => {
     return (
         <KindIconText
             kind={props.asset.kind}
-            icons={props.asset.spec?.icons ?? [props.asset.spec?.icon].filter(Boolean)}
+            icon={props.asset.spec?.icon}
+            icons={props.asset.spec?.icons}
             size={props.size}
             title={title}
         />
