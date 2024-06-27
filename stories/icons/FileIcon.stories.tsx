@@ -14,6 +14,42 @@ export default meta;
 
 type Story = StoryObj<typeof FileIcon>;
 
+export const AllFileIcons: Story = {
+    render: () => (
+        <div>
+            <Box
+                sx={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+                    gap: 2,
+                }}
+            >
+                {getAllIcons().map((icon) => {
+                    const { files, name } = icon;
+                    const firstFile = files?.[0];
+
+                    return firstFile ? (
+                        <Tooltip title={JSON.stringify(files, null, 2)} key={name} followCursor>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    gap: 1,
+                                    flexWrap: 'wrap',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <FileIcon filename={firstFile} fontSize="large" />
+                                <Typography variant="caption">{name}</Typography>
+                            </Box>
+                        </Tooltip>
+                    ) : null;
+                })}
+            </Box>
+        </div>
+    ),
+};
+
 export const Sizes: Story = {
     render: () => (
         <Stack direction="column">
@@ -35,52 +71,28 @@ export const TooltipExample: Story = {
     ),
 };
 
-export const AllFileIcons: Story = {
-    render: () => (
-        <Box>
-            {getAllIcons().map(({ files }) => {
-                // files is a list of complete filenames this icon should be applied to.
-                return files?.map((file) => (
-                    <Box
-                        key={file}
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 1,
-                        }}
-                    >
-                        <FileIcon filename={file} fontSize="small" />
-                        <Typography variant="caption">{file}</Typography>
-                    </Box>
-                ));
-            })}
-        </Box>
-    ),
-};
-
 export const TestFileIcons: Story = {
     render: () => {
         const [filename, setFilename] = React.useState('src');
 
         return (
             <Box>
-                <TextField
-                    label="Filename"
-                    value={filename}
-                    onChange={(e) => setFilename(e.target.value)}
-                    variant="filled"
-                    size="small"
-                    sx={{ mb: 4 }}
-                />
+                <Typography variant="body1">Test different filenames to see what icon is displayed</Typography>
                 <Box
                     sx={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: 1,
                     }}
                 >
-                    <FileIcon filename={filename} fontSize="small" />
-                    <Typography variant="caption">{filename}</Typography>
+                    <TextField
+                        label="Filename"
+                        value={filename}
+                        onChange={(e) => setFilename(e.target.value)}
+                        variant="filled"
+                        size="small"
+                        sx={{ my: 3, mr: 3 }}
+                    />
+                    <FileIcon filename={filename} fontSize="large" />
                 </Box>
             </Box>
         );
