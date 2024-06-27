@@ -25,11 +25,6 @@ export interface DSLEditorProps extends DSLLanguageOptions {
     onChange?: (structure: DSLResult) => any;
     onCodeChange?: (code: string) => any;
     onError?: (err: any) => any;
-    /**
-     * Around the DSLEditor there is a wrapping div. This property allows to pass props to this div
-     * (MUI Box component)
-     */
-    wrapperProps?: BoxProps;
 }
 
 export const DSLEditor = (props: DSLEditorProps) => {
@@ -78,10 +73,19 @@ export const DSLEditor = (props: DSLEditorProps) => {
         entitiesType: props.entitiesType,
     };
 
-    const isDarkMode = useTheme().palette.mode === 'dark';
+    const { palette } = useTheme();
+    const isDarkMode = palette.mode === 'dark';
 
     return (
-        <Box className={'dsl-editor'} {...props.wrapperProps}>
+        <Box
+            className={'dsl-editor'}
+            sx={{
+                p: 1,
+                // These colors match monaco editor background colors for the themes vs-dark and light
+                background: isDarkMode ? '#1e1e1e' : '#fffffe',
+                border: `1px solid ${palette.divider}`,
+            }}
+        >
             <Monaco
                 theme={isDarkMode ? 'vs-dark' : 'light'}
                 options={options}
