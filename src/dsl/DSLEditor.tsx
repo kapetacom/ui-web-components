@@ -16,7 +16,7 @@ import { DSLValidator } from './DSLValidator';
 import { withAdditionalTypes } from './DSLLanguage';
 import { DSLLanguageOptions, DSLParser, DSLParserOptions, DSLResult, KaplangWriter } from '@kapeta/kaplang-core';
 import { DSL_LANGUAGE_ID } from './types';
-import { Box, useTheme } from '@mui/material';
+import { Box, BoxProps, useTheme } from '@mui/material';
 
 export interface DSLEditorProps extends DSLLanguageOptions {
     value?: DSLResult | string;
@@ -25,6 +25,11 @@ export interface DSLEditorProps extends DSLLanguageOptions {
     onChange?: (structure: DSLResult) => any;
     onCodeChange?: (code: string) => any;
     onError?: (err: any) => any;
+    /**
+     * Around the DSLEditor there is a wrapping div. This property allows to pass props to this div
+     * (MUI Box component)
+     */
+    wrapperProps?: BoxProps;
 }
 
 export const DSLEditor = (props: DSLEditorProps) => {
@@ -76,7 +81,7 @@ export const DSLEditor = (props: DSLEditorProps) => {
     const isDarkMode = useTheme().palette.mode === 'dark';
 
     return (
-        <Box className={'dsl-editor'} sx={(theme) => ({ p: 1, border: `1px solid ${theme.palette.divider}` })}>
+        <Box className={'dsl-editor'} {...props.wrapperProps}>
             <Monaco
                 theme={isDarkMode ? 'vs-dark' : 'light'}
                 options={options}
