@@ -488,31 +488,6 @@ DslEditorRestObject.story = {
     name: 'DSL Editor (REST - Object)',
 };
 
-export const DslEditorCustomWrapper = () => (
-    <DSLEditor
-        types={true}
-        methods={true}
-        rest={true}
-        onChange={(result) => console.log('result', result)}
-        value={{
-            code: '',
-            entities: [...DATA_TYPE_ENTITIES, ...REST_METHOD_ENTITIES],
-        }}
-        wrapperProps={{
-            sx: {
-                // Rainbow border to show off that you can style the wrapper around the DSL editor
-                border: '32px solid',
-                borderImage: 'linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet) 1',
-                padding: 4,
-            },
-        }}
-    />
-);
-
-DslEditorRestObject.story = {
-    name: 'DSL Editor (REST - Object)',
-};
-
 export const RestMethodEditor = () => (
     <MethodEditor
         value={REST_METHODS}
