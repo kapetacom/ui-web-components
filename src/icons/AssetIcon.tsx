@@ -18,10 +18,12 @@ interface KindIconProps {
 
 export const KindIcon = (props: KindIconProps) => {
     const size = props.size || 16;
-    const theme = useTheme().palette.mode;
+    const theme = useTheme();
+    const themeName = theme.palette.mode;
     const style = {
         fontSize: size + 'px',
         height: size + 'px',
+        color: theme.palette.text.primary,
     };
     const icons = props.icons ?? ([props.icon].filter(Boolean) as IconValue[]);
 
@@ -32,8 +34,8 @@ export const KindIcon = (props: KindIconProps) => {
     const faIcon = icons.find((icon) => icon.type === 'fontawesome5');
     const svgIcons =
         icons.filter((icon) => icon.type === 'url').map((icon) => ({ ...icon, theme: icon.theme || 'light' })) || [];
-    const themeIcon = svgIcons.find((icon) => icon.theme === theme);
-    const invertIcon = svgIcons.find((icon) => icon.theme !== theme);
+    const themeIcon = svgIcons.find((icon) => icon.theme === themeName);
+    const invertIcon = svgIcons.find((icon) => icon.theme !== themeName);
 
     if (themeIcon) {
         return <img style={style} className="asset-icon" src={themeIcon.value} alt={props.title} />;
@@ -52,7 +54,6 @@ export const KindIcon = (props: KindIconProps) => {
             />
         );
     }
-
     if (props.kind.startsWith('core/')) {
         //Core concepts
         switch (props.kind) {
