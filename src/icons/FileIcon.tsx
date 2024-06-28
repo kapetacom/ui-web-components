@@ -7,12 +7,12 @@ import React, { ForwardedRef, forwardRef } from 'react';
 import { getIcon } from 'material-file-icons';
 import { Box, SvgIconProps } from '@mui/material';
 
-export interface FileIconProps extends Pick<SvgIconProps, 'fontSize'> {
+export interface FileIconProps extends Pick<SvgIconProps, 'fontSize' | 'sx'> {
     filename: string;
 }
 
 export const FileIcon = forwardRef((props: FileIconProps, ref: ForwardedRef<HTMLDivElement>) => {
-    const { filename, fontSize, ...rest } = props;
+    const { filename, fontSize, sx, ...rest } = props;
 
     let scale = 1;
     if (fontSize === 'small') {
@@ -33,9 +33,12 @@ export const FileIcon = forwardRef((props: FileIconProps, ref: ForwardedRef<HTML
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                flexShrink: 0,
+                userSelect: 'none',
                 width: '1em',
                 height: '1em',
-                fontSize: `${scale}em`,
+                fontSize: `${scale}rem`,
+                ...sx,
             }}
             dangerouslySetInnerHTML={{ __html: getIcon(filename).svg }}
         />
