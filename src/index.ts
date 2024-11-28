@@ -112,6 +112,7 @@ export * from './icons/FileIcon';
 export * from './icons/AIEventIcon';
 export * from './icons/RightSidebarIcon';
 export * from './icons/RightSidebarOpenedIcon';
+export * from './icons/CursorSelectIcon';
 export * from './avatars/AvatarEditor';
 
 export * from './terminal/XTerm';
