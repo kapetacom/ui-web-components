@@ -113,6 +113,8 @@ export * from './icons/AIEventIcon';
 export * from './icons/RightSidebarIcon';
 export * from './icons/RightSidebarOpenedIcon';
 export * from './icons/CursorSelectIcon';
+export * from './icons/UndoIcon';
+export * from './icons/RedoIcon';
 export * from './avatars/AvatarEditor';
 
 export * from './terminal/XTerm';
