@@ -165,6 +165,7 @@ export const AuthProviderIcons = () => {
                 <AuthProviderIcon name={'google'} size={50} />
                 <AuthProviderIcon name={'microsoft'} size={50} />
                 <AuthProviderIcon name={'github'} size={50} />
+                <AuthProviderIcon name={'linkedin'} size={50} />
             </Box>
 
             <Typography variant="body1">Color</Typography>
@@ -172,6 +173,7 @@ export const AuthProviderIcons = () => {
                 <AuthProviderIcon name={'google'} size={50} color={color} />
                 <AuthProviderIcon name={'microsoft'} size={50} color={color} />
                 <AuthProviderIcon name={'github'} size={50} color={color} />
+                <AuthProviderIcon name={'linkedin'} size={50} color={color} />
                 <TextField value={color} onChange={(e) => setColor(e.target.value)} variant="outlined" />
             </Box>
 
@@ -181,6 +183,7 @@ export const AuthProviderIcons = () => {
                     <AuthProviderIcon name={'google'} size={50} color="currentColor" />
                     <AuthProviderIcon name={'microsoft'} size={50} color="currentColor" />
                     <AuthProviderIcon name={'github'} size={50} color="currentColor" />
+                    <AuthProviderIcon name={'linkedin'} size={50} color="currentColor" />
                     <TextField value="currentColor" variant="outlined" disabled />
                 </Box>
             </Box>
@@ -190,6 +193,7 @@ export const AuthProviderIcons = () => {
                 <AuthProviderIcon name={'google'} size={size} />
                 <AuthProviderIcon name={'microsoft'} size={size} />
                 <AuthProviderIcon name={'github'} size={size} />
+                <AuthProviderIcon name={'linkedin'} size={size} />
                 <TextField
                     type="number"
                     value={size}
