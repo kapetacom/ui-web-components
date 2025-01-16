@@ -108,6 +108,7 @@ export * from './icons/InfinityIcon';
 export * from './icons/PromoIcon';
 export * from './icons/DonutProgressIcon';
 export * from './icons/HenrikIcon';
+export * from './icons/StormIcon';
 export * from './icons/FileIcon';
 export * from './icons/AIEventIcon';
 export * from './icons/RightSidebarIcon';
