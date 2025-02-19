@@ -1,19 +1,9 @@
 import React, { useMemo } from 'react';
 import { Preview } from '@storybook/react';
-import { configure } from 'mobx';
-import { MemoryRouter } from 'react-router-dom';
 import { Box, CssBaseline, GlobalStyles, ThemeProvider, createTheme } from '@mui/material';
 import { lightTheme, darkTheme } from '@kapeta/style';
 import '../styles/index.less';
 import { useNiceScrollbars } from '../src/utils/scrollbars';
-
-configure({
-    enforceActions: 'always',
-    computedRequiresReaction: true,
-    reactionRequiresObservable: true,
-    observableRequiresReaction: true,
-    disableErrorBoundaries: true,
-});
 
 // Add your theme configurations to an object that you can
 // pull your desired theme from.

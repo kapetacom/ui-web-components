@@ -48,8 +48,6 @@
         "@mui/material": "^5.14.3",
         "guid-typescript": "*",
         "lodash": ">=4",
-        "mobx": ">=6",
-        "mobx-react": ">=6",
         "react": ">=18",
         "react-dom": ">=18",
         "react-router-dom": "^6.14.2"
