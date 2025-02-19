@@ -4,7 +4,4 @@ module.exports = {
     moduleNameMapper: {
         '\\.(css|less)$': '<rootDir>/__mocks__/styles.js',
     },
-    transform: {
-        '^.+\\.pegjs?$': 'pegjs-jest-transformer',
-    },
 };
