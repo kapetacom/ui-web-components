@@ -14,9 +14,6 @@ export * from './dnd/DnDDrag';
 export * from './dnd/DnDDrop';
 export * from './dnd/Draggable';
 
-export * from './entities/EntityMapper';
-export * from './entities/EntityEditor';
-
 export * from './form/Checkbox';
 export * from './form/FormButtons';
 export * from './form/field-handlers/AssetNameInput';
@@ -66,19 +63,6 @@ export * from './list/ListElement';
 export * from './list/List';
 
 export * from './containers/DefaultContext';
-
-export * from './dsl/types';
-
-// For backwards compatibility
-export * from '@kapeta/kaplang-core';
-export { KaplangWriter as DSLWriter, DSLConverters } from '@kapeta/kaplang-core';
-
-//Requires browser environment due to monaco editor
-export * from './dsl/DSLEditor';
-export * from './dsl/MethodEditor';
-export * from './dsl/DataTypeEditor';
-export * from './dsl/ConfigurationEditor';
-export * from './dsl/ModelEditor';
 
 export * from './utils/init-utils';
 export * from './utils/async-utils';
