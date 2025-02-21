@@ -4,7 +4,12 @@
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
     "types": "dist/index.d.ts",
-    "sideEffects": false,
+    "sideEffects": [
+        "*.css",
+        "*.less",
+        "*.css.js",
+        "*.less.js"
+    ],
     "files": [
         "dist",
         "package.json",
