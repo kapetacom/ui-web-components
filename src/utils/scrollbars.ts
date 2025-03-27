@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: BUSL-1.1
  */
 
-import { getContrastRatio, lighten, darken } from '@mui/material/styles';
-import { SxProps } from '@mui/system';
+import { getContrastRatio } from '@mui/material/styles';
+import { alpha, SxProps } from '@mui/system';
 
 /**
  * Returns a MUI Sx style object that can be used to style scrollbars in a nice way. The hook will
@@ -18,9 +18,7 @@ export const useNiceScrollbars = (backgroundColor: string) => {
         getContrastRatio('#ffffff', backgroundColor) > getContrastRatio('#121212', backgroundColor) ? 'dark' : 'light';
 
     const scrollbarWidth = '16px';
-    let scrollbarThumbBackground = mode === 'light' ? '#d4d4d4' : '#555555';
-    let scrollbarThumbBackgroundHover =
-        mode === 'light' ? darken(scrollbarThumbBackground, 0.2) : lighten(scrollbarThumbBackground, 0.2);
+    const scrollbarThumbBackground = mode === 'light' ? '#d4d4d4' : '#555555';
 
     const sx: SxProps = {
         '&::-webkit-scrollbar': {
@@ -31,14 +29,17 @@ export const useNiceScrollbars = (backgroundColor: string) => {
             borderRadius: '4px',
         },
         '&::-webkit-scrollbar-thumb': {
-            backgroundColor: scrollbarThumbBackground,
+            backgroundColor: alpha(scrollbarThumbBackground, 0.2),
             borderRadius: scrollbarWidth,
             border: '5px solid',
             borderColor: 'transparent',
             backgroundClip: 'content-box', // Prevents the border from being included in the background
-            '&:hover': {
-                backgroundColor: scrollbarThumbBackgroundHover,
-            },
+        },
+        '&::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: alpha(scrollbarThumbBackground, 0.8) + ' !important',
+        },
+        '&:hover::-webkit-scrollbar-thumb': {
+            backgroundColor: alpha(scrollbarThumbBackground, 0.5),
         },
         '&::-webkit-scrollbar-button': {
             display: 'none',
