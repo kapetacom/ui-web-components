@@ -6,6 +6,33 @@
 import { Tooltip as MuiTooltip, TooltipProps as MuiTooltipProps, styled, tooltipClasses } from '@mui/material';
 import React from 'react';
 
+export type ElevationNumber =
+    | 0
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 6
+    | 7
+    | 8
+    | 9
+    | 10
+    | 11
+    | 12
+    | 13
+    | 14
+    | 15
+    | 16
+    | 17
+    | 18
+    | 19
+    | 20
+    | 21
+    | 22
+    | 23
+    | 24;
+
 export type TooltipProps = MuiTooltipProps & {
     /**
      * The maximum width of the tooltip.
@@ -36,35 +63,40 @@ export type TooltipProps = MuiTooltipProps & {
      * The elevation of the tooltip.
      * @default 1
      */
-    elevation?: number;
+    elevation?: ElevationNumber;
 };
 
-type PaperElevation = `paper-elevation-${
-    | 0
-    | 1
-    | 2
-    | 3
-    | 4
-    | 5
-    | 6
-    | 7
-    | 8
-    | 9
-    | 10
-    | 11
-    | 12
-    | 13
-    | 14
-    | 15
-    | 16
-    | 17
-    | 18
-    | 19
-    | 20
-    | 21
-    | 22
-    | 23
-    | 24}`;
+type PaperElevation = `paper-elevation-${ElevationNumber}`;
+
+// Paper elevation background is a combination of the background color and a linear gradient added
+// on top as a background image.
+const elevationBackgroundImage = {
+    0: 'linear-gradient(rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0))',
+    1: 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))',
+    2: 'linear-gradient(rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07))',
+    3: 'linear-gradient(rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07))',
+    4: 'linear-gradient(rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08))',
+    5: 'linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))',
+    6: 'linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1))',
+    7: 'linear-gradient(rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.11))',
+    8: 'linear-gradient(rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.11))',
+    9: 'linear-gradient(rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.12))',
+    10: 'linear-gradient(rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.12))',
+    11: 'linear-gradient(rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.13))',
+    12: 'linear-gradient(rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.13))',
+    13: 'linear-gradient(rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.14))',
+    14: 'linear-gradient(rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.14))',
+    15: 'linear-gradient(rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.14))',
+    16: 'linear-gradient(rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.14))',
+    17: 'linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15))',
+    18: 'linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15))',
+    19: 'linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15))',
+    20: 'linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15))',
+    21: 'linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))',
+    22: 'linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))',
+    23: 'linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))',
+    24: 'linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))',
+};
 
 export const Tooltip = styled(
     ({
@@ -94,9 +126,11 @@ export const Tooltip = styled(
     return {
         [`&& .${tooltipClasses.arrow}::before`]: {
             color: backgroundColor || theme.palette.background[paperElevation] + ' !important',
+            backgroundImage: elevationBackgroundImage[elevation],
         },
         [`&& .${tooltipClasses.tooltip}`]: {
             backgroundColor: backgroundColor || theme.palette.background[paperElevation] + ' !important',
+            backgroundImage: elevationBackgroundImage[elevation],
             color: color || theme.palette.text.primary,
             maxWidth: maxWidth,
             fontSize: theme.typography.pxToRem(12),

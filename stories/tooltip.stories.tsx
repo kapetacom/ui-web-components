@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { Tooltip } from '../src/tooltip/Tooltip';
+import { ElevationNumber, Tooltip } from '../src/tooltip/Tooltip';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { Box, Grid, Paper, Stack, TooltipProps, Typography } from '@mui/material';
 
@@ -192,7 +192,9 @@ export const CustomColor: Story = {
 
 export const Elevation: Story = {
     render: () => {
-        const elevations = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+        const elevations: ElevationNumber[] = [
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+        ];
 
         return (
             <Box>
@@ -203,7 +205,7 @@ export const Elevation: Story = {
                             title={elevation}
                             elevation={elevation}
                             placement="bottom"
-                            leaveDelay={2000000}
+                            leaveDelay={2000}
                         >
                             <Box
                                 sx={(theme) => ({
