@@ -5,9 +5,9 @@
 
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { Tooltip } from '../src/tooltip/Tooltip';
+import { ElevationNumber, Tooltip } from '../src/tooltip/Tooltip';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { Grid, Paper, Stack, TooltipProps } from '@mui/material';
+import { Box, Grid, Paper, Stack, TooltipProps, Typography } from '@mui/material';
 
 const meta: Meta = {
     title: 'Tooltip',
@@ -24,7 +24,7 @@ export const Default: Story = {
     args: {
         title: loremIpsum,
     },
-    render: ({ title, maxWidth, placement }) => (
+    render: ({ title }) => (
         <Stack sx={{ height: '300px' }} alignItems="center" justifyContent="center">
             <Tooltip title={title}>
                 <InfoOutlinedIcon />
@@ -40,7 +40,7 @@ export const Arrow: Story = {
     },
     render: ({ title, arrow }) => (
         <Stack sx={{ height: '300px' }} alignItems="center" justifyContent="center">
-            <Tooltip title={title} arrow={arrow}>
+            <Tooltip title={title} arrow={arrow} elevation={12}>
                 <InfoOutlinedIcon />
             </Tooltip>
         </Stack>
@@ -188,4 +188,42 @@ export const CustomColor: Story = {
             </Tooltip>
         </Stack>
     ),
+};
+
+export const Elevation: Story = {
+    render: () => {
+        const elevations: ElevationNumber[] = [
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+        ];
+
+        return (
+            <Box>
+                <Stack direction="row">
+                    {elevations.map((elevation) => (
+                        <Tooltip
+                            key={elevation}
+                            title={elevation}
+                            elevation={elevation}
+                            placement="bottom"
+                            leaveDelay={2000}
+                        >
+                            <Paper
+                                sx={(theme) => ({
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    width: '50px',
+                                    height: '50px',
+                                    border: `2px solid ${theme.palette.divider}`,
+                                })}
+                                elevation={elevation}
+                            >
+                                {elevation}
+                            </Paper>
+                        </Tooltip>
+                    ))}
+                </Stack>
+            </Box>
+        );
+    },
 };
