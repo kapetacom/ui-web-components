@@ -207,7 +207,7 @@ export const Elevation: Story = {
                             placement="bottom"
                             leaveDelay={2000}
                         >
-                            <Box
+                            <Paper
                                 sx={(theme) => ({
                                     display: 'flex',
                                     justifyContent: 'center',
@@ -216,9 +216,10 @@ export const Elevation: Story = {
                                     height: '50px',
                                     border: `2px solid ${theme.palette.divider}`,
                                 })}
+                                elevation={elevation}
                             >
                                 {elevation}
-                            </Box>
+                            </Paper>
                         </Tooltip>
                     ))}
                 </Stack>
