@@ -80,10 +80,6 @@ export * from './dsl/DataTypeEditor';
 export * from './dsl/ConfigurationEditor';
 export * from './dsl/ModelEditor';
 
-export * from './grid/DataGrid';
-export * from './grid/DataList';
-export * from './grid/DataListDetails';
-
 export * from './utils/init-utils';
 export * from './utils/async-utils';
 export * from './utils/hexagon';

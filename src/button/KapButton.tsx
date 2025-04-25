@@ -125,7 +125,7 @@ export const KapButton = forwardRef<HTMLButtonElement, KapButtonProps<ElementTyp
             >
                 <Box component="span" className="button-circular-progress" ref={spinnerRef}>
                     <CircularProgress
-                        size={sizeToSpinnerSize[buttonProps.size || 'medium']}
+                        size={sizeToSpinnerSize[(buttonProps.size as keyof typeof sizeToSpinnerSize) || 'medium']}
                         color="inherit"
                         sx={{ opacity: 0.5 }}
                     />

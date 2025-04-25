@@ -23,8 +23,8 @@ export const FormButtons = (formButtonProps: Props) => {
 
     const newChildren = React.Children.map(formButtonProps.children, (child, index) => {
         if (React.isValidElement(child)) {
-            const { props } = child;
-
+            const { props: rawProps } = child;
+            const props: Record<string, any> = typeof rawProps === 'object' && rawProps ? rawProps : {};
             const isButton = child.type === 'button';
             const isMuiButton = child.type === Button;
             const isKapButton = child.type === KapButton;

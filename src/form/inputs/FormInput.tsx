@@ -83,7 +83,7 @@ export const FormInput = withFormFieldController<string | number | boolean>((pro
         }
     }
 
-    const inputRef = useRef<HTMLInputElement>();
+    const inputRef = useRef<HTMLInputElement>(undefined);
 
     return (
         <FormFieldProcessingContainer controller={controller} inputElement={inputRef.current}>

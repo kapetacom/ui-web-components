@@ -184,7 +184,9 @@ export class FormContainer<TData extends FormData = any> extends React.Component
             <div
                 className={className}
                 form-container="true"
-                ref={(container) => (this.container = container)}
+                ref={(container) => {
+                    this.container = container;
+                }}
                 onKeyPress={(evt) => this.handleKeyPress(evt)}
             >
                 {this.props.children}

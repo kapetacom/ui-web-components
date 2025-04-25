@@ -7,8 +7,6 @@ import React, { useEffect, useState } from 'react';
 import { toClass } from '@kapeta/ui-web-utils';
 
 import './SimpleLoader.less';
-import { Simulate } from 'react-dom/test-utils';
-import load = Simulate.load;
 
 export enum LoaderType {
     CIRCLE = 'circle',
