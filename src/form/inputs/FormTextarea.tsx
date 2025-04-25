@@ -20,7 +20,7 @@ export const FormTextarea = withFormFieldController((props: Props, controller) =
         }
     };
 
-    const inputRef = useRef<HTMLTextAreaElement>();
+    const inputRef = useRef<HTMLTextAreaElement>(undefined);
 
     return (
         <FormFieldProcessingContainer controller={controller} inputElement={inputRef.current}>

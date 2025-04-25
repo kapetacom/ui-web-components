@@ -105,7 +105,12 @@ export class StackContainer extends React.Component<StackContainerProps, StackCo
                     onStackUpdated: this.handlePageUpdated,
                 }}
             >
-                <div className={'stack-container'} ref={(ref) => (this.container = asHTMLElement(ref))}>
+                <div
+                    className={'stack-container'}
+                    ref={(ref) => {
+                        this.container = asHTMLElement(ref);
+                    }}
+                >
                     <div className={'stack-breadcrumbs'} style={{ width: fullStackWidth + 'px' }}>
                         <svg height={containerSize.height} width={fullStackWidth}>
                             {pages.map((page, ix) => {
