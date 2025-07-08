@@ -111,6 +111,7 @@ export * from './icons/MondayIcon';
 export * from './icons/SalesforceIcon';
 export * from './icons/SugarCRMIcon';
 export * from './icons/ZohoIcon';
+export * from './icons/ZendeskIcon';
 export * from './icons/FileIcon';
 export * from './icons/AIEventIcon';
 export * from './icons/RightSidebarIcon';
