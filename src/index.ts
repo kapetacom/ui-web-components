@@ -102,6 +102,7 @@ export * from './icons/AssetIcon';
 export * from './icons/AuthProviderIcon';
 export * from './icons/InfinityIcon';
 export * from './icons/PromoIcon';
+export * from './icons/DevModeIcon';
 export * from './icons/DonutProgressIcon';
 export * from './icons/HenrikIcon';
 export * from './icons/StormIcon';
