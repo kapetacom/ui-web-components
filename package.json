@@ -18,6 +18,10 @@
         "src"
     ],
     "description": "Provides shared ReactJS components for implementing Kapeta UI",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kapetacom/ui-web-components.git"
+    },
     "private": false,
     "publishConfig": {
         "access": "public"
