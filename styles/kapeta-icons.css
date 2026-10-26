@@ -1,0 +1,44 @@
+/* kapeta-icons: recovered from the defunct cdn.myfontastic.com kit, font inlined to avoid an external request */
+@font-face {
+    font-family: 'kapeta-icons';
+    src: url('data:font/woff;base64,d09GRgABAAAAAAVYAA0AAAAAB+gAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAABMAAAABoAAAAcl6rt40dERUYAAAFMAAAAHgAAAB4AKQAMT1MvMgAAAWwAAABBAAAAVk/7XKljbWFwAAABsAAAAE0AAAFQA+8FxGdhc3AAAAIAAAAACAAAAAj//wADZ2x5ZgAAAggAAAG4AAACgE2XYtpoZWFkAAADwAAAACsAAAA2ItvpKGhoZWEAAAPsAAAAGgAAACQEMAIFaG10eAAABAgAAAAQAAAAFAYAAAFsb2NhAAAEGAAAAA4AAAAOAXwA6m1heHAAAAQoAAAAHgAAACAAUQCBbmFtZQAABEgAAADfAAABvGN7Qitwb3N0AAAFKAAAAC4AAABCsx+rznicY2BgYGQAgqtvXXeA6Af3rojCaABYaAgPAAAAAQAAAAwAAAAWAAAAAgABAAMABQABAAQAAAACAAAAAHicY2BkYmCcwMDKwMHow5jGwMDgDqW/MkgytDAwMDGwcjLAACMDEghIc01hcGBIZEhmfPD/AYMeEyNCDQBxXAlJAAAAeJxjYGBgZoBgGQZGBhDwAvIYwXwWBj0gzQakGRmYgKzk///BKhKhNEgVCxizgkxgZGOAGgGkQeqZGFABIwPlgIWVmQqm0AwAAG+XBbgAAAAAAAAB//8AAnichVK/T9tAFH7vLvbZbuKD+Ee4RKR1LiQSA1HjYk8QkFqZdm4XL60QQyUYkJDYGPkPyp/B0NEbihg7I3WMunbpymD6bDK0aqtKp+/e+753evreO+AAsMcAb2AVnsEGQKpTPZih3sU0FvE0lCyaznA80tHADFb90Is6Irp13edNwVAkPkUGR/yOe0Hr7MwNy3lbqTbuHh2V88tDmzXfDw8Nxu6862tPtcu7tsJ3V1dgU9+I+n4DizoHMIYUXkMOJ3AB4Olt6ryOOtBBPE12UKdxoMfCnOBoB1/MMHmKJPsiTqeU67EWA0pj728VSV0xkliVdDb+X/KjN7DdvtkikJub+wfN5kGnU+MJyxCzCj7/wdbnn/zHvmuf5+st58OT/n6P856l8q7VbTQIcsW7LGfdCsr7mqtFw1iKiKQiko74pqZ/f/yrTmMFDnThA0OabDVXQLJmkjUyTLbJ7KQy30eiTFImuIVEJqn3uPtkuXlEy7IKKYsav66tFYFSfqFU4SsVzKVMHAMbb+mufgB+4fyVsbKQIuM8E3KxYpw6zksxDBfhUGS2nS3D8vbYQevTscE4/AQHP1zeeJxjYGRgYADizRJeLPH8Nl8ZuJkYQODBvSuiyDQTAxNIJQcDWBoA+dQIJQB4nGNgZGBgAmIGPSYGEACSjAyogAUABfEAPAAAeJxjYoAAJigGAkYAAGUACAAAAAAAAAAAADwA6gFAAAB4nGNgZGBgYGOoY+BkAAEmIGZkAIk5gPkMAA/4ANMAAHicjZAxTsNAEEWfEzsSkBoB1XbQrLVZiogcwDVVeiuyIiuSHTm+BT0n4RxcgGNwAPhepkiDlJVG8+bPn9FogSXvZEwvEz8Yzyh4Np7zxJtxLs+nccEN38YLltm9nFl+JeUuTU0845pH4zmvvBjn8nwYF9zyZbyQ/sOBmiMNo7KnZUdPxwkO9bEZa9/u+k7VWcOUKtVjygN7rXBESoLyRvHf4r9ulM+zVkwU9QFUfTdW/bBvXCyD27jzA1TG4Nc+hijnhTdvZRkkt6ntWKXr2DbDqe07tyrDpat+ATHRRxgAeJxjYGJABowM6IANLMrEyMTIzMjCUZRanF9alJzKUpCTmMealJOfnA0ATVgHSAAA')
+        format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[data-icon]:before {
+    font-family: 'kapeta-icons' !important;
+    content: attr(data-icon);
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    speak: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+[class^='kap-icon-']:before,
+[class*=' kap-icon-']:before {
+    font-family: 'kapeta-icons' !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    speak: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.kap-icon-resource:before {
+    content: '\63';
+}
+.kap-icon-plan:before {
+    content: '\61';
+}
+.kap-icon-block:before {
+    content: '\62';
+}
